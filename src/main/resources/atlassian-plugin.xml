@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<atlassian-plugin key="${project.groupId}.${project.artifactId}" name="${project.name}" plugins-version="2">
+  <plugin-info>
+    <description>${project.description}</description>
+    <version>${project.version}</version>
+    <vendor name="${project.organization.name}" url="${project.organization.url}"/>
+    <param name="plugin-icon">images/pluginIcon.png</param>
+    <param name="plugin-logo">images/pluginLogo.png</param>
+  </plugin-info>
+  <!-- add our i18n resource -->
+  <resource type="i18n" name="i18n" location="EpicPlugin"/>
+  <!-- add our web resources -->
+  <web-resource key="EpicPlugin-resources" name="EpicPlugin Web Resources">
+    <dependency>com.atlassian.auiplugin:ajs</dependency>
+    <resource type="download" name="EpicPlugin.css" location="/css/EpicPlugin.css"/>
+    <resource type="download" name="EpicPlugin.js" location="/js/EpicPlugin.js"/>
+    <resource type="download" name="images/" location="/images"/>
+    <context>EpicPlugin</context>
+  </web-resource>
+  <!-- publish our component -->
+  <servlet name="EpicPlugin" class="com.teamepic.plugin.MyPluginServlet" key="epic">
+    <url-pattern>/epic</url-pattern>
+  </servlet>
+  <!-- import from the product container -->
+  <component-import key="applicationProperties" interface="com.atlassian.sal.api.ApplicationProperties"/>
+  <component-import key="templateRenderer" interface="com.atlassian.templaterenderer.TemplateRenderer" filter=""/>
+  <component-import key="userManager" interface="com.atlassian.sal.api.user.UserManager" filter=""/>
+  <component-import key="loginUriProvider" interface="com.atlassian.sal.api.auth.LoginUriProvider" filter=""/>
+  <component-import key="pluginSettingsFactory" interface="com.atlassian.sal.api.pluginsettings.PluginSettingsFactory" filter=""/>
+  <web-item name="Epic Plugin" i18n-name-key="epic-plugin.name" key="epic-plugin" section="system.top.navigation.bar" weight="1000">
+    <description key="epic-plugin.description">The Epic Plugin Plugin</description>
+    <label key="epic-plugin.label"></label>
+    <link linkId="epic-plugin-link">/plugins/servlet/epic</link>
+  </web-item>
+</atlassian-plugin>

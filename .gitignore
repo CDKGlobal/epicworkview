@@ -1,0 +1,14 @@
+# Generated files
+target/
+
+# Emacs temporary files
+*.*~
+
+# Finder file
+.DS_Store
+
+# Java class files
+*.class
+
+# Vi Temporary files
+*.swp

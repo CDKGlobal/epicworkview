@@ -2,22 +2,29 @@
   <head>
     <title>My Epic</title>
     <meta name="decorator" content="atl.general">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
     $webResourceManager.requireResource("com.teamepic.plugin.EpicPlugin:EpicPlugin-resources")
   </head>
   <body>
     <div class="content-container content-body">
-    <table id="projects" class="aui">
-      <thead>
-        <tr>
-          <th>Project Name</th>
-          <th>Project Id</th>
-          <th>Project Key</th>
-          <th>Project Description</th>
-        </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
+	    <table ng-app ng-controller="ProjectController" id="projects" class="aui">
+	      <thead>
+	        <tr>
+	          <th>Project Name</th>
+	          <th>Project Id</th>
+	          <th>Project Key</th>
+	          <th>Project Description</th>
+	        </tr>
+	      </thead>
+	      <tbody>
+	      	<tr ng-repeat="project in projects">
+	      		<td>{{project.name}}</td>
+	      		<td>{{project.id}}</td>
+	      		<td>{{project.key}}</td>
+	      		<td>{{project.description}}</td>
+	      	</tr>
+	      </tbody>
+    	</table>
     </div>
   </body>
 </html>

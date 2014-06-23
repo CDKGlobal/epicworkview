@@ -2,8 +2,22 @@
   <head>
     <title>My Epic</title>
     <meta name="decorator" content="atl.general">
+    $webResourceManager.requireResource("com.teamepic.plugin.EpicPlugin:EpicPlugin-resources")
   </head>
   <body>
-    <h1>Hello World!</h1>
+    <div class="content-container content-body">
+    <table id="projects" class="aui">
+      <thead>
+        <tr>
+          <th>Project Name</th>
+          <th>Project Id</th>
+          <th>Project Key</th>
+          <th>Project Description</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+    </div>
   </body>
 </html>

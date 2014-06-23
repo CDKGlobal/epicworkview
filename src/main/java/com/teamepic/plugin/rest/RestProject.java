@@ -46,7 +46,7 @@ public class RestProject
 
 		try
 		{
-			Query q = JqlQueryBuilder.newBuilder().where().project(name).and().issueType("Epic").and().updatedAfter("-7d").endWhere().orderBy().updatedDate(SortOrder.DESC).endOrderBy().buildQuery();
+			Query q = JqlQueryBuilder.newBuilder().where().project(name).and().issueType("Epic").endWhere().orderBy().updatedDate(SortOrder.DESC).endOrderBy().buildQuery();
 			List<Issue> results = searchService.search(user, q, PagerFilter.getUnlimitedFilter()).getIssues();
 			epics = new RestEpic[results.size()];
 

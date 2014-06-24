@@ -1,4 +1,8 @@
-li {
-	display:inline;
+li.inline {
+	display: inline;
 	padding-right: 25px;
+}
+
+.epics {
+	padding-left: 0px;
 }

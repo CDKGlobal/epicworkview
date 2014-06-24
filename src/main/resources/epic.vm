@@ -24,8 +24,8 @@
 	      		<td>{{project.key}}</td>
 	      		<td>{{project.description}}</td>
 	      		<td>
-	      			<ul>
-	      				<li ng-repeat="epic in project.epics">{{epic.summary}}</li>
+	      			<ul class="epics">
+	      				<li class="inline" ng-repeat="epic in project.epics">{{epic.name}}</li>
 	      			</ul>
 	      		</td>
 	      	</tr>

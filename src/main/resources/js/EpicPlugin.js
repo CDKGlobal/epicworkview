@@ -7,3 +7,4 @@ function ProjectController($scope, $http){
       // log error
     });
 }
+	

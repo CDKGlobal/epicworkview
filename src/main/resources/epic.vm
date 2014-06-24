@@ -14,6 +14,7 @@
 	          <th>Project Id</th>
 	          <th>Project Key</th>
 	          <th>Project Description</th>
+	          <th>Epics</th>
 	        </tr>
 	      </thead>
 	      <tbody>
@@ -22,6 +23,11 @@
 	      		<td>{{project.id}}</td>
 	      		<td>{{project.key}}</td>
 	      		<td>{{project.description}}</td>
+	      		<td>
+	      			<ul>
+	      				<li ng-repeat="epic in project.epics">{{epic.summary}}</li>
+	      			</ul>
+	      		</td>
 	      	</tr>
 	      </tbody>
     	</table>

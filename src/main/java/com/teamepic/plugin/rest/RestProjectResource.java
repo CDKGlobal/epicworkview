@@ -2,13 +2,16 @@ package com.teamepic.plugin.rest;
 
 import com.atlassian.crowd.embedded.api.User;
 import com.atlassian.jira.bc.issue.search.SearchService;
+import com.atlassian.jira.bc.project.ProjectService;
+import com.atlassian.jira.project.Project;
+import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.plugins.rest.common.security.AnonymousAllowed;
-import com.atlassian.jira.project.ProjectManager;
 import com.atlassian.sal.api.user.UserManager;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 
 /**
@@ -17,14 +20,14 @@ import javax.ws.rs.core.Response;
 @Path("/projects")
 public class RestProjectResource {
 
-	private ProjectManager projectManager;
+	private ProjectService projectService;
 	private SearchService searchService;
 	private UserManager userManager;
 	private com.atlassian.jira.user.util.UserManager jiraUserManager;
 
-	public RestProjectResource(ProjectManager projectManager, SearchService searchService,
+	public RestProjectResource(ProjectService projectService, SearchService searchService,
 							   UserManager userManager, com.atlassian.jira.user.util.UserManager jiraUserManager) {
-		this.projectManager = projectManager;
+		this.projectService = projectService;
 		this.searchService = searchService;
 		this.userManager = userManager;
 		this.jiraUserManager = jiraUserManager;
@@ -39,17 +42,23 @@ public class RestProjectResource {
 		// To get the current user, we first get the username from the session.
 		// Then we pass that over to the jiraUserManager in order to get an
 		// actual User object.
-		return jiraUserManager.getUserByName(userManager.getRemoteUsername()).getDirectoryUser();
+		ApplicationUser appUser = jiraUserManager.getUserByName(userManager.getRemoteUsername());
+		return appUser != null ? appUser.getDirectoryUser() : null;
 	}
 
 	/**
 	 * Called when the rest url is submitted
-	 * @return all the projects in jira in either xml or json
+	 * @return all the projects in jira in either xml or json viewable to the current user
 	 */
     @GET
     @AnonymousAllowed
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response getProjects() {
-       return Response.ok(new RestProjectResourceModel(projectManager.getProjectObjects(), searchService, getCurrentUser())).build();
+		User user = getCurrentUser();
+
+		//get the projects viewable to the current user
+		List<Project> projects = projectService.getAllProjects(user).get();
+
+        return Response.ok(new RestProjectResourceModel(projects, searchService, user)).build();
     }
 }

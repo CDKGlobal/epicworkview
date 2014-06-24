@@ -27,7 +27,7 @@ public class RestProjectResourceFuncTest {
     public void messageIsValid() {
 
         String baseUrl = System.getProperty("baseurl");
-        String resourceUrl = baseUrl + "/rest/project/1/message";
+        String resourceUrl = baseUrl + "/rest/epic/1/projects";
 
         RestClient client = new RestClient();
         Resource resource = client.resource(resourceUrl);

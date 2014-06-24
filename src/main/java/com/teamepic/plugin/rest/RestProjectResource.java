@@ -44,7 +44,7 @@ public class RestProjectResource {
 		// To get the current user, we first get the username from the session.
 		// Then we pass that over to the jiraUserManager in order to get an
 		// actual User object.
-		ApplicationUser appUser = jiraUserManager.getUserByName(userManager.getRemoteUsername());
+		ApplicationUser appUser = jiraUserManager.getUserByName(userManager.getRemoteUser().getUsername());
 		return appUser != null ? appUser.getDirectoryUser() : null;
 	}
 

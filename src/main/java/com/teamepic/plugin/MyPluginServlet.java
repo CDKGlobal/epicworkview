@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
 import com.atlassian.sal.api.auth.LoginUriProvider;
+import com.atlassian.sal.api.user.UserKey;
 import com.atlassian.sal.api.user.UserManager;
 import com.atlassian.templaterenderer.TemplateRenderer;
 
@@ -26,8 +27,8 @@ public class MyPluginServlet extends HttpServlet {
 	
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String username = userManager.getRemoteUsername(req);
-		if (username == null || !userManager.isSystemAdmin(username)) {
+		UserKey userKey = userManager.getRemoteUserKey(req);
+		if (userKey == null || !userManager.isSystemAdmin(userKey)) {
 			redirectToLogin(req, resp);
 			return;
 		}

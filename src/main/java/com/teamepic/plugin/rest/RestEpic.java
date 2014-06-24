@@ -1,9 +1,12 @@
 package com.teamepic.plugin.rest;
 
+import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.issue.Issue;
+import com.atlassian.jira.issue.fields.CustomField;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
 
 /**
  * Contains information about a single epic in jira
@@ -11,8 +14,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "epic")
 public class RestEpic
 {
-	@XmlElement(name = "summary")
-	private String summary;
+	//custom field used to get the Epic Name out of jira
+	private static final CustomField field = ComponentAccessor.getCustomFieldManager().getCustomFieldObjectByName("Epic Name");
+
+	@XmlElement(name = "name")
+	private String name;
+
+	@XmlElement(name = "description")
+	private String description;
 
 	@XmlElement(name = "key")
 	private String key;
@@ -32,8 +41,9 @@ public class RestEpic
 	 */
 	public RestEpic(Issue issue) {
 		//store information that we want about the issue
-		summary = issue.getSummary();
+		description = issue.getSummary();
 		key = issue.getKey();
 		id = issue.getId();
+		name = (String)issue.getCustomFieldValue(field);
 	}
 }

@@ -40,4 +40,9 @@ public class RestProjectResourceModel {
 			i++;
 		}
     }
+
+	public RestProject[] getProjects()
+	{
+		return projects;
+	}
 }

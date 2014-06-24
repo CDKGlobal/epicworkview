@@ -27,9 +27,9 @@ public class RestProjectResourceTest {
     public void messageIsValid() {
         /*RestProjectResource resource = new RestProjectResource();
 
-        Response response = resource.getMessage();
+        Response response = resource.getProjects();
         final RestProjectResourceModel message = (RestProjectResourceModel) response.getEntity();
 
-        assertEquals("wrong message","Hello World",message.getMessage());*/
+        assertEquals("wrong message","Hello World",message.getProjects());*/
     }
 }

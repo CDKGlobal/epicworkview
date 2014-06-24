@@ -17,6 +17,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
 
+/**
+ * Contains information about a single project in jira
+ */
 @XmlRootElement(name = "project")
 public class RestProject
 {
@@ -35,10 +38,20 @@ public class RestProject
 	@XmlElement(name = "epics")
 	private RestEpic[] epics;
 
+	/**
+	 * required for JAXB
+	 */
 	public RestProject() {
 	}
 
+	/**
+	 * Constructs a project that the REST Api can send to the client
+	 * @param p - the project to store
+	 * @param searchService - service to search for issues for this project
+	 * @param user - the current user to use for searching
+	 */
 	public RestProject(Project p, SearchService searchService, User user) {
+		//store information that we want about the project
 		name = p.getName();
 		key = p.getKey();
 		id = p.getId();
@@ -46,8 +59,12 @@ public class RestProject
 
 		try
 		{
+			//get all issue of type epic for this project
+			//jql query: project = name AND issueType = Epic ORDER BY updated DESC
 			Query q = JqlQueryBuilder.newBuilder().where().project(name).and().issueType("Epic").endWhere().orderBy().updatedDate(SortOrder.DESC).endOrderBy().buildQuery();
 			List<Issue> results = searchService.search(user, q, PagerFilter.getUnlimitedFilter()).getIssues();
+
+			//store the epic results
 			epics = new RestEpic[results.size()];
 
 			int i = 0;

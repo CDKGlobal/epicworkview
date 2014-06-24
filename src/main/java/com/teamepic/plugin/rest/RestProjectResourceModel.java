@@ -8,6 +8,9 @@ import javax.xml.bind.annotation.*;
 import java.util.List;
 
 
+/**
+ * Contains information about all projects in jira
+ */
 @XmlRootElement(name = "jira")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class RestProjectResourceModel {
@@ -15,9 +18,18 @@ public class RestProjectResourceModel {
     @XmlElement(name = "projects")
     private RestProject[] projects;
 
+	/**
+	 * required for JAXB
+	 */
     public RestProjectResourceModel() {
     }
 
+	/**
+	 * Constructs a resource that has information on all the projects in jira
+	 * @param projects - all the projects in jira
+	 * @param searchService - service used to search for issues
+	 * @param user - currently logged in user
+	 */
     public RestProjectResourceModel(List<Project> projects, SearchService searchService, User user) {
 		this.projects = new RestProject[projects.size()];
 

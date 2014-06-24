@@ -11,6 +11,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 
+/**
+ * Entry point for REST calls for projects
+ */
 @Path("/projects")
 public class RestProjectResource {
 
@@ -27,6 +30,10 @@ public class RestProjectResource {
 		this.jiraUserManager = jiraUserManager;
 	}
 
+	/**
+	 * Gets the current user that is logged into jira
+	 * @return the user currently logged in
+	 */
 	private User getCurrentUser()
 	{
 		// To get the current user, we first get the username from the session.
@@ -35,10 +42,14 @@ public class RestProjectResource {
 		return jiraUserManager.getUserByName(userManager.getRemoteUsername()).getDirectoryUser();
 	}
 
+	/**
+	 * Called when the rest url is submitted
+	 * @return all the projects in jira in either xml or json
+	 */
     @GET
     @AnonymousAllowed
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Response getMessage() {
+    public Response getProjects() {
        return Response.ok(new RestProjectResourceModel(projectManager.getProjectObjects(), searchService, getCurrentUser())).build();
     }
 }

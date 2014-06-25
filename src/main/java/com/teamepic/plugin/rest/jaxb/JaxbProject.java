@@ -75,4 +75,29 @@ public class JaxbProject
 			e.printStackTrace();
 		}
 	}
+
+	public String getName()
+	{
+		return name;
+	}
+
+	public String getKey()
+	{
+		return key;
+	}
+
+	public long getId()
+	{
+		return id;
+	}
+
+	public String getDescription()
+	{
+		return description;
+	}
+
+	public JaxbEpic[] getEpics()
+	{
+		return epics;
+	}
 }

@@ -12,9 +12,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "issue")
 public class JaxbIssue
 {
-	@XmlElement(name = "name")
-	private String name;
-
 	@XmlElement(name = "description")
 	private String description;
 
@@ -39,5 +36,20 @@ public class JaxbIssue
 		description = issue.getSummary();
 		key = issue.getKey();
 		id = issue.getId();
+	}
+
+	public String getDescription()
+	{
+		return description;
+	}
+
+	public String getKey()
+	{
+		return key;
+	}
+
+	public long getId()
+	{
+		return id;
 	}
 }

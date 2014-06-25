@@ -31,4 +31,9 @@ public class JaxbEpic extends JaxbIssue
 		assert(issue.getIssueTypeObject().getName().equals("Epic"));
 		name = (String)issue.getCustomFieldValue(field);
 	}
+
+	public String getName()
+	{
+		return name;
+	}
 }

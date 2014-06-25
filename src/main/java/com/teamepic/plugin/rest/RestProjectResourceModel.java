@@ -2,6 +2,7 @@ package com.teamepic.plugin.rest;
 
 import com.atlassian.crowd.embedded.api.User;
 import com.atlassian.jira.bc.issue.search.SearchService;
+import com.atlassian.jira.project.Project;
 import com.teamepic.plugin.rest.jaxb.JaxbProject;
 
 import javax.xml.bind.annotation.*;
@@ -29,13 +30,13 @@ public class RestProjectResourceModel {
 	 * @param searchService - service used to search for issues
 	 * @param user - currently logged in user
 	 */
-    public RestProjectResourceModel(List<com.atlassian.jira.project.Project> projects, SearchService searchService, User user) {
-		this.jaxbProjects = new JaxbProject[projects.size()];
+    public RestProjectResourceModel(List<Project> projects, SearchService searchService, User user) {
+		jaxbProjects = new JaxbProject[projects.size()];
 
 		int i = 0;
-		for(com.atlassian.jira.project.Project p : projects)
+		for(Project p : projects)
 		{
-			this.jaxbProjects[i] = new JaxbProject(p, searchService, user);
+			jaxbProjects[i] = new JaxbProject(p, searchService, user);
 			i++;
 		}
     }

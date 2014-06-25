@@ -24,8 +24,13 @@
 	      		<td>{{project.key}}</td>
 	      		<td>{{project.description}}</td>
 	      		<td>
-	      			<ul class="epics">
-	      				<li class="inline" ng-repeat="epic in project.epics">{{epic.name}}</li>
+	      			<ul class="epics" ng-controller="EpicController">
+	      				<li class="inline" ng-repeat="epic in project.epics">
+	      					<a href="#" class="epic" ng-click="toggleEpic(epic.name)">{{epic.name}}</a>
+	      					<div class="epic-info" ng-show="showEpicDescription(epic.name)">
+	      						<p>{{epic.description}}</p>
+	      					</div>
+	      				</li>
 	      			</ul>
 	      		</td>
 	      	</tr>

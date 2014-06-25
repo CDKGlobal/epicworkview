@@ -1,8 +1,32 @@
+table {
+	border-spacing: 2px;
+}
+
 li.inline {
 	display: inline;
-	padding-right: 25px;
 }
 
 .epics {
 	padding-left: 0px;
+}
+
+.epic {
+	border: 1px solid #ddd;
+	padding: 7px 10px;
+	background-color: #F0F0F0;
+	color: #000000;
+	text-decoration: none;
+}
+
+.epic:hover {
+	text-decoration: none;
+	color: #000000;
+}
+
+.epic-info {
+	position: absolute;
+	margin-top: 7px;
+	padding: 7px 10px;
+	border: 1px solid #ddd;
+	background-color: #F0F0F0;
 }

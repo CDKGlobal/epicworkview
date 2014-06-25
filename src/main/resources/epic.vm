@@ -26,8 +26,8 @@
 	      		<td>
 	      			<ul class="epics" ng-controller="EpicController">
 	      				<li class="inline" ng-repeat="epic in project.epics">
-	      					<a href="#" class="epic" ng-click="toggleEpic(epic.name)">{{epic.name}}</a>
-	      					<div class="epic-info" ng-show="showEpicDescription(epic.name)">
+	      					<a href="#" ng-class="{'clicked-epic': isClicked(epic.id)}" class="epic" ng-click="toggleEpic(epic.id)">{{epic.name}}</a>
+	      					<div class="epic-info" ng-show="isClicked(epic.id)">
 	      						<p>{{epic.description}}</p>
 	      					</div>
 	      				</li>

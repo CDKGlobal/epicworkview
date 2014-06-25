@@ -18,6 +18,10 @@ li.inline {
 	text-decoration: none;
 }
 
+.clicked-epic {
+	background-color: #ddd;
+}
+
 .epic:hover {
 	text-decoration: none;
 	color: #000000;

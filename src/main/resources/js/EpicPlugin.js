@@ -1,5 +1,6 @@
 
 var refresh = true;
+var clickedEpic = null;
 
 /*
  * Controller to manage table of projects
@@ -29,22 +30,21 @@ function ProjectController($scope, $http) {
  * Determines which epic information to display
  */
 function EpicController($scope) {
-	$scope.clickedEpic = null;
     
     // Set the clicked epic to be name or null if it is already name
-    $scope.toggleEpic = function(name) {
-    	if ($scope.clickedEpic == name) {
-    		$scope.clickedEpic = null;
+    $scope.toggleEpic = function(id) {
+    	if (clickedEpic == id) {
+    		clickedEpic = null;
     		refresh = true;
     	} else {
-    		$scope.clickedEpic = name;
+    		clickedEpic = id;
     		refresh = false; // halt project refresh if epic info is open
     	}
     }
     
     // Return whether the clicked epic is this epic
-    $scope.showEpicDescription = function(name) {
-    	return $scope.clickedEpic == name;
+    $scope.isClicked = function(id) {
+    	return clickedEpic == id;
     }
 }
 	

@@ -34,8 +34,11 @@
     <label key="epic-plugin.label"/>
     <link linkId="epic-plugin-link">/plugins/servlet/epic</link>
   </web-item>
-  <rest name="Rest Project Resource" i18n-name-key="rest-project-resource.name" key="rest-project-resource" path="/epic" version="1">
+  <rest name="Rest Resource" i18n-name-key="rest-project-resource.name" key="rest-project-resource" path="/epic" version="1">
     <description key="rest-project-resource.description">The Rest Project Resource Plugin</description>
   </rest>
-
+  <component-import key="eventPublisher" interface="com.atlassian.event.api.EventPublisher" filter=""/>
+  <component key="eventListener" class="com.teamepic.plugin.rest.RestResource">
+    <description>Class that processes the incoming JIRA issue events.</description>
+  </component>
 </atlassian-plugin>

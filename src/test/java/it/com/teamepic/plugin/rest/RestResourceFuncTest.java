@@ -3,15 +3,12 @@ package it.com.teamepic.plugin.rest;
 import org.junit.Test;
 import org.junit.After;
 import org.junit.Before;
-import org.mockito.Mockito;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-import com.teamepic.plugin.rest.RestProjectResource;
 import com.teamepic.plugin.rest.RestProjectResourceModel;
 import org.apache.wink.client.Resource;
 import org.apache.wink.client.RestClient;
 
-public class RestProjectResourceFuncTest {
+public class RestResourceFuncTest
+{
 
     @Before
     public void setup() {

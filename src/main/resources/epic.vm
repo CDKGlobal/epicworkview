@@ -7,7 +7,7 @@
   </head>
   <body>
     <div class="content-container content-body">
-	    <table ng-app ng-controller="ProjectController" id="projects" class="aui">
+	    <table ng-app ng-controller="ProjectController" ng-click="hideEpicInfo()" id="projects" class="aui">
 	      <thead>
 	        <tr>
 	          <th>Project Name</th>
@@ -26,7 +26,9 @@
 	      		<td>
 	      			<ul class="epics" ng-controller="EpicController">
 	      				<li class="inline" ng-repeat="epic in project.epics">
-	      					<a href="#" ng-class="{'clicked-epic': isClicked(epic.id)}" class="epic" ng-click="toggleEpic(epic.id)">{{epic.name}}</a>
+	      					<a href="#" ng-class="{'clicked-epic': isClicked(epic.id)}" class="epic" ng-click="toggleEpic($event, epic.id)">
+	      						{{epic.name}}
+	      					</a>
 	      					<div class="epic-info" ng-show="isClicked(epic.id)">
 	      						<p>{{epic.description}}</p>
 	      					</div>

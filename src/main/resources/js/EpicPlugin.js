@@ -18,6 +18,11 @@ function ProjectController($scope, $http) {
 	    });
     }
     
+    $scope.hideEpicInfo = function() {
+    	refresh = true;
+    	clickedEpic = null;
+    }
+    
     // Get the projects now
     $scope.getProjects();
     
@@ -32,7 +37,8 @@ function ProjectController($scope, $http) {
 function EpicController($scope) {
     
     // Set the clicked epic to be name or null if it is already name
-    $scope.toggleEpic = function(id) {
+    $scope.toggleEpic = function(e, id) {
+    	e.stopPropagation();
     	if (clickedEpic == id) {
     		clickedEpic = null;
     		refresh = true;

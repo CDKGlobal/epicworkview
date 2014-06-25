@@ -1,5 +1,8 @@
 
+// Whether to continuously refresh projects
 var refresh = true;
+
+// The currently clicked epic, or null if none clicked
 var clickedEpic = null;
 
 /*
@@ -8,7 +11,7 @@ var clickedEpic = null;
 function ProjectController($scope, $http) {
        
     // Get all the projects and set them in a local variable (projects)
-    $scope.getProjects = function() {
+    getProjects = function() {
     	$http.get('/jira/rest/epic/1/projects.json').
 	    success(function(data, status, headers, config) {
 	      $scope.projects = data.projects;
@@ -24,10 +27,10 @@ function ProjectController($scope, $http) {
     }
     
     // Get the projects now
-    $scope.getProjects();
+    getProjects();
     
     // Get projects again every 10 seconds
-    setInterval(function(){if (refresh) $scope.getProjects();}, 10000); 
+    setInterval(function(){if (refresh) getProjects();}, 10000); 
 }
 
 /*

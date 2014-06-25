@@ -1,12 +1,10 @@
 package it.com.teamepic.plugin.test;
 
-import static org.junit.Assert.*;
-
-import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.atlassian.jira.functest.framework.FuncTestCase;
-import com.atlassian.jira.functest.framework.locator.WebPageLocator;
+import com.atlassian.jira.functest.framework.locator.TableLocator;
 
 public class ProjectTableTest extends FuncTestCase {
 	
@@ -20,17 +18,15 @@ public class ProjectTableTest extends FuncTestCase {
 		tester.assertTablePresent(TABLE_ID);
 	}
 	
-	/*
-	 * error executing administration.project().addProject
-	 * 
+	@Ignore
 	@Test
 	public void testNewProjectAppearsInTable() {
 		navigation.login(ADMIN_USERNAME, ADMIN_PASSWORD);
-		long projectId = administration.project().addProject("TestProject", "TEST", ADMIN_USERNAME);
+		long projectId = administration.project().addProject("Test Project", "TP", ADMIN_USERNAME);
 		tester.clickLink(PLUGIN_LINK_ID);
-		tester.assertTextInTable(TABLE_ID, "TestProject");
+		tester.assertTablePresent(TABLE_ID);
+		text.assertTextPresent(new TableLocator(tester, TABLE_ID), "Test Project");
 		administration.project().deleteProject(projectId);
-		tester.assertTextNotInTable(TABLE_ID, "TestProject");
+		text.assertTextNotPresent(new TableLocator(tester, TABLE_ID), "Test Project");
 	}
-	*/
 }

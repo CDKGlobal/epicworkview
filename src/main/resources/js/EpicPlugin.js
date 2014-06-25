@@ -1,3 +1,6 @@
+
+var refresh = true;
+
 /*
  * Controller to manage table of projects
  */
@@ -18,8 +21,7 @@ function ProjectController($scope, $http) {
     $scope.getProjects();
     
     // Get projects again every 10 seconds
-    setInterval(function(){$scope.getProjects();}, 10000);
-    
+    setInterval(function(){if (refresh) $scope.getProjects();}, 10000); 
 }
 
 /*
@@ -33,8 +35,10 @@ function EpicController($scope) {
     $scope.toggleEpic = function(name) {
     	if ($scope.clickedEpic == name) {
     		$scope.clickedEpic = null;
+    		refresh = true;
     	} else {
     		$scope.clickedEpic = name;
+    		refresh = false; // halt project refresh if epic info is open
     	}
     }
     

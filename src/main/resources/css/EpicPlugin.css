@@ -2,12 +2,18 @@ table {
 	border-spacing: 2px;
 }
 
+table.aui > tbody > tr > td {
+	vertical-align: middle;
+}
+
 li.inline {
 	display: inline;
 }
 
 .epics {
 	padding-left: 0px;
+	padding-top: 3px;
+	padding-bottom: 3px;
 }
 
 .epic {

@@ -50,8 +50,17 @@ li.inline {
 	top: 60px;
 	display: block;
 	box-shadow: 3px 3px 5px #888888;
+	padding: 5px;
 }
 
 .item-label {
 	font-weight: normal;
+}
+
+.aui-list-section {
+	padding-left: 0px;
+}
+
+input {
+	font-size: 14px;
 }

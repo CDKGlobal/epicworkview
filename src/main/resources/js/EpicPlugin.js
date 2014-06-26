@@ -11,6 +11,7 @@ var clickedEpic = null;
 function ProjectController($scope, $http) {
 	
 	$scope.filter = false;
+	$scope.projects = [];
 	
 	$scope.toggleFilter = function(e) {
 		e.stopPropagation();
@@ -21,7 +22,18 @@ function ProjectController($scope, $http) {
     getProjects = function() {
     	$http.get('/jira/rest/epic/1/projects.json').
 	    success(function(data, status, headers, config) {
-	      $scope.projects = data.projects;
+	      angular.forEach(data.projects, function(project, index) {
+	        var contains = false;
+	        angular.forEach($scope.projects, function(p, i) {
+	          if(p.key == project.key) {
+	            contains = true;
+	          }
+	        });
+            if(!contains) {
+              $scope.projects.push(project);
+            }
+	      });
+	      //$scope.projects = data.projects;
 	    }).
 	    error(function(data, status, headers, config) {
 	      // log error

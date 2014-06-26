@@ -9,7 +9,14 @@ var clickedEpic = null;
  * Controller to manage table of projects
  */
 function ProjectController($scope, $http) {
-       
+	
+	$scope.filter = false;
+	
+	$scope.toggleFilter = function(e) {
+		e.stopPropagation();
+		$scope.filter = !$scope.filter;
+	}
+	
     // Get all the projects and set them in a local variable (projects)
     getProjects = function() {
     	$http.get('/jira/rest/epic/1/projects.json').

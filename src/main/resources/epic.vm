@@ -10,7 +10,27 @@
 	    <table ng-app ng-controller="ProjectController" ng-click="hideEpicInfo()" id="projects" class="aui">
 	      <thead>
 	        <tr>
-	          <th>Project Name</th>
+	          <th>
+	          	<span class="fieldLabel">Projects</span>
+	          	<span ng-click="toggleFilter($event)" class="criteria-selector aui-button aui-button-subtle drop-arrow">
+	          		filter
+	          	</span>
+	          	<div ng-show="filter" class="project-filter">
+			    	<form action="#" class="searchfilter aui top-label aui-popup-content project-criteria">
+			    		<input autocomplete="off" placeholder="Find Projects..." class="aui-field" wrap="off">
+			    		<div class="aui-list-scroll">
+			    			<ul class="aui-list-section">
+			    				<li ng-repeat="project in projects" class="check-list-item">
+			    					<label class="item-label" title="{{project.name}}">
+			    						<input type="checkbox" tabindex="-1" value="13198">
+			    						{{project.name}}
+			    					</label>
+			    				</li>
+			    			</ul>
+			    		</div>
+			    	</form>
+			    </div>
+	          </th>
 	          <th>Project Id</th>
 	          <th>Project Key</th>
 	          <th>Project Description</th>

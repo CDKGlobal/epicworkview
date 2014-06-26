@@ -41,3 +41,17 @@ li.inline {
 	background-color: #F0F0F0;
 	box-shadow: 3px 3px 5px #888888;
 }
+
+.project-filter {
+	background-color: #F0F0F0;
+	position: absolute;
+	width: auto;
+	left: 90px;
+	top: 60px;
+	display: block;
+	box-shadow: 3px 3px 5px #888888;
+}
+
+.item-label {
+	font-weight: normal;
+}

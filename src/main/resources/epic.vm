@@ -17,7 +17,7 @@
 	          	</span>
 	          	<div ng-show="filter" ng-click="$event.stopPropagation()" class="project-filter">
 			    	<form action="#" class="searchfilter aui top-label aui-popup-content project-criteria">
-			    		<input type='text' ng-model='searchText' autocomplete="off" placeholder="Find Projects..." class="aui-field" wrap="off">
+			    		<input type='text' ng-model='searchText.name' autocomplete="off" placeholder="Find Projects..." class="aui-field" wrap="off">
 			    		<div class="aui-list-scroll">
 			    			<ul class="aui-list-section">
 			    				<li ng-repeat="project in projects | filter:searchText" class="check-list-item">

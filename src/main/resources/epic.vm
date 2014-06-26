@@ -15,7 +15,7 @@
 	          	<span ng-click="toggleFilter($event)" class="criteria-selector aui-button aui-button-subtle drop-arrow">
 	          		filter
 	          	</span>
-	          	<div ng-show="filter" ng-click="$event.stopPropagation()" class="project-filter">
+	          	<div ng-show="filter" ng-click="$event.stopPropagation()" class="project-filter pop-up">
 			    	<form action="#" class="searchfilter aui top-label aui-popup-content project-criteria">
 			    		<input type='text' ng-model='searchText.name' autocomplete="off" placeholder="Find Projects..." class="aui-field" wrap="off">
 			    		<div class="aui-list-scroll">
@@ -49,7 +49,7 @@
 	      					<a href="#" ng-class="{'clicked-epic': isClicked(epic.id)}" class="epic" ng-click="toggleEpic($event, epic.id)">
 	      						{{epic.name}}
 	      					</a>
-	      					<div class="epic-info" ng-show="isClicked(epic.id)">
+	      					<div class="epic-info pop-up" ng-show="isClicked(epic.id)">
 	      						<p>{{epic.description}}</p>
 	      					</div>
 	      				</li>

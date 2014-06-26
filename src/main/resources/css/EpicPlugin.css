@@ -33,23 +33,23 @@ li.inline {
 	color: #000000;
 }
 
-.epic-info {
+.pop-up {
 	position: absolute;
-	margin-top: 7px;
-	padding: 7px 10px;
 	border: 1px solid #ddd;
 	background-color: #F0F0F0;
 	box-shadow: 3px 3px 5px #888888;
 }
 
+.epic-info {
+	margin-top: 7px;
+	padding: 7px 10px;
+}
+
 .project-filter {
-	background-color: #F0F0F0;
-	position: absolute;
 	width: auto;
 	left: 90px;
 	top: 60px;
 	display: block;
-	box-shadow: 3px 3px 5px #888888;
 	padding: 5px;
 }
 

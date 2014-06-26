@@ -22,18 +22,12 @@ function ProjectController($scope, $http) {
     getProjects = function() {
     	$http.get('/jira/rest/epic/1/projects.json').
 	    success(function(data, status, headers, config) {
+	      //add the new projects to the projects array
 	      angular.forEach(data.projects, function(project, index) {
-	        var contains = false;
-	        angular.forEach($scope.projects, function(p, i) {
-	          if(p.key == project.key) {
-	            contains = true;
-	          }
-	        });
-            if(!contains) {
+            if(indexOf($scope.projects, project) == -1) {
               $scope.projects.push(project);
             }
 	      });
-	      //$scope.projects = data.projects;
 	    }).
 	    error(function(data, status, headers, config) {
 	      // log error
@@ -50,7 +44,21 @@ function ProjectController($scope, $http) {
     getProjects();
     
     // Get projects again every 10 seconds
-    setInterval(function(){if (refresh) getProjects();}, 10000); 
+    setInterval(function(){if (refresh) getProjects();}, 10000);
+
+    /*
+     * Finds if the project is already in the array and returns the index
+     * returns -1 if not found
+     */
+    function indexOf(projectsArray, project) {
+      var where = -1;
+      angular.forEach(projectsArray, function(p, i) {
+        if(p.key == project.key) {
+          where = i;
+        }
+      });
+      return where;
+    }
 }
 
 /*
@@ -76,4 +84,4 @@ function EpicController($scope) {
     	return clickedEpic == id;
     }
 }
-	
+

@@ -17,12 +17,12 @@
 	          	</span>
 	          	<div ng-show="filter" class="project-filter">
 			    	<form action="#" class="searchfilter aui top-label aui-popup-content project-criteria">
-			    		<input autocomplete="off" placeholder="Find Projects..." class="aui-field" wrap="off">
+			    		<input type='text' ng-model='searchText' autocomplete="off" placeholder="Find Projects..." class="aui-field" wrap="off">
 			    		<div class="aui-list-scroll">
 			    			<ul class="aui-list-section">
-			    				<li ng-repeat="project in projects" class="check-list-item">
+			    				<li ng-repeat="project in projects | filter:searchText" class="check-list-item">
 			    					<label class="item-label" title="{{project.name}}">
-			    						<input type="checkbox" tabindex="-1" value="13198">
+			    						<input type="checkbox" ng-model='project.included' tabindex="-1" value="13198">
 			    						{{project.name}}
 			    					</label>
 			    				</li>
@@ -38,7 +38,7 @@
 	        </tr>
 	      </thead>
 	      <tbody>
-	      	<tr ng-repeat="project in projects">
+	      	<tr ng-repeat="project in projects | filter: {included:true}">
 	      		<td><a href="/jira/browse/{{project.key}}">{{project.name}}</a></td>
 	      		<td>{{project.id}}</td>
 	      		<td>{{project.key}}</td>

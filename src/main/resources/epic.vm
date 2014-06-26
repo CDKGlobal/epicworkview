@@ -39,7 +39,7 @@
 	      </thead>
 	      <tbody>
 	      	<tr ng-repeat="project in projects">
-	      		<td>{{project.name}}</td>
+	      		<td><a href="/jira/browse/{{project.key}}">{{project.name}}</a></td>
 	      		<td>{{project.id}}</td>
 	      		<td>{{project.key}}</td>
 	      		<td>{{project.description}}</td>

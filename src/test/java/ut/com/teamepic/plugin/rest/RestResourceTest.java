@@ -33,7 +33,8 @@ public class RestResourceTest
 		UserProfile userProfile = mock(UserProfile.class);
 
 		when(userManager.getRemoteUser()).thenReturn(userProfile);
-		when(jiraUserManager.getUserByName(anyString())).thenReturn(mock(ApplicationUser.class));
+        ApplicationUser user = mock(ApplicationUser.class);
+		when(jiraUserManager.getUserByName(anyString())).thenReturn(user);
     }
 
     @Test

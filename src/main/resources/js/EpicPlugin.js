@@ -31,6 +31,7 @@ function ProjectController($scope, $http) {
     $scope.hideEpicInfo = function() {
     	refresh = true;
     	clickedEpic = null;
+    	$scope.filter = false;
     }
     
     // Get the projects now

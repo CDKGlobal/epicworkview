@@ -18,8 +18,7 @@ import org.springframework.beans.factory.InitializingBean;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -113,6 +112,32 @@ public class RestResource implements InitializingBean, DisposableBean {
 		List<Project> projects = outcome != null ? outcome.get() : new LinkedList<Project>();
 
         return Response.ok(new RestProjectResourceModel(projects, searchService, user)).build();
+    }
+
+    /**
+     * Called by the client to get all saved filters
+     * @return all of the saved filter for current user
+     */
+    @Path("/filter")
+    @GET
+    @AnonymousAllowed
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public Response getFilters() {
+        return Response.ok().build();
+    }
+
+    /**
+     * Called by the client to save the query filter
+     * @param query - the filter to save
+     * @return the filter that was saved
+     */
+    @Path("/filter/{query}")
+    @GET
+    @AnonymousAllowed
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public Response saveFilter(@PathParam("query") String query) {
+        System.out.println(query);
+        return Response.ok().build();
     }
 
 	/**

@@ -53,12 +53,20 @@ li.inline {
 	padding: 5px;
 }
 
+.aui-list-scroll {
+	max-height: 270px;
+	overflow-x: hidden;
+	overflow-y: auto;
+	clear: both;
+}
+
 .item-label {
 	font-weight: normal;
 }
 
 .aui-list-section {
 	padding-left: 0px;
+	list-style-type: none;
 }
 
 input {

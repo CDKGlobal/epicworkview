@@ -24,11 +24,14 @@ function ProjectController($scope, $http) {
 	    success(function(data, status, headers, config) {
 	      //add the new projects to the projects array
 	      angular.forEach(data.projects, function(project, index) {
+	        //get the index of this project in the list of projects we're displaying
 	        var projectIndex = indexOf($scope.projects, project);
+	        //add it if it doesn't exist
             if(projectIndex == -1) {
               $scope.projects.push(project);
             }
             else {
+              //otherwise copy the latest data retrieved into the existing one
               var savedProject = $scope.projects[projectIndex];
               savedProject.epics = project.epics;
               savedProject.name = project.name;

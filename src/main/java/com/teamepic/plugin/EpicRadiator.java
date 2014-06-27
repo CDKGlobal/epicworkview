@@ -13,15 +13,15 @@ import java.io.IOException;
 import java.net.URI;
 
 
-public class MyPluginServlet extends HttpServlet {
+public class EpicRadiator extends HttpServlet {
 
     private final UserManager userManager;
     private final LoginUriProvider loginUriProvider;
     private final TemplateRenderer templateRenderer;
 
-    public MyPluginServlet(UserManager userManager,
-                           LoginUriProvider loginUriProvider,
-                           TemplateRenderer templateRenderer) {
+    public EpicRadiator(UserManager userManager,
+                        LoginUriProvider loginUriProvider,
+                        TemplateRenderer templateRenderer) {
         this.userManager = userManager;
         this.loginUriProvider = loginUriProvider;
         this.templateRenderer = templateRenderer;

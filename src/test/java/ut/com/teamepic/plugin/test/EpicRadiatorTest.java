@@ -5,7 +5,7 @@ import com.atlassian.sal.api.user.UserKey;
 import com.atlassian.sal.api.user.UserManager;
 import com.atlassian.templaterenderer.RenderingException;
 import com.atlassian.templaterenderer.TemplateRenderer;
-import com.teamepic.plugin.MyPluginServlet;
+import com.teamepic.plugin.EpicRadiator;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,7 +23,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
-public class MyPluginServletTest {
+public class EpicRadiatorTest {
 
     private static final String USERNAME = "test";
     private static final String URI_PATH = "test/";
@@ -101,7 +101,7 @@ public class MyPluginServletTest {
     public void nullUserKey() {
         when(httpServletRequest.getRequestURL()).thenReturn(new StringBuffer(URI_PATH));
 
-        MyPluginServlet servlet = new MyPluginServlet(userManager, loginUriProvider, templateRenderer);
+        EpicRadiator servlet = new EpicRadiator(userManager, loginUriProvider, templateRenderer);
 
         try {
             servlet.doGet(httpServletRequest, httpServletResponse);
@@ -122,7 +122,7 @@ public class MyPluginServletTest {
         when(userManager.getRemoteUserKey(httpServletRequest)).thenReturn(userKey);
         when(userManager.isSystemAdmin(userKey)).thenReturn(true);
 
-        MyPluginServlet servlet = new MyPluginServlet(userManager, loginUriProvider, templateRenderer);
+        EpicRadiator servlet = new EpicRadiator(userManager, loginUriProvider, templateRenderer);
 
         try {
             servlet.doGet(httpServletRequest, httpServletResponse);

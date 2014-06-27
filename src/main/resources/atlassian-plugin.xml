@@ -19,7 +19,7 @@
     <context>EpicPlugin</context>
   </web-resource>
   <!-- publish our component -->
-  <servlet name="EpicPlugin" class="com.teamepic.plugin.MyPluginServlet" key="epic">
+  <servlet name="EpicPlugin" class="com.teamepic.plugin.EpicRadiator" key="epic">
     <url-pattern>/epic</url-pattern>
   </servlet>
   <!-- import from the product container -->

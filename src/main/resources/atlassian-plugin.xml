@@ -19,7 +19,7 @@
     <context>EpicPlugin</context>
   </web-resource>
   <!-- publish our component -->
-  <servlet name="EpicPlugin" class="com.teamepic.plugin.EpicRadiator" key="epic">
+  <servlet name="EpicPlugin" class="com.cobalt.jira.plugin.epic.EpicRadiator" key="epic">
     <url-pattern>/epic</url-pattern>
   </servlet>
   <!-- import from the product container -->
@@ -38,7 +38,7 @@
     <description key="rest-project-resource.description">The Rest Project Resource Plugin</description>
   </rest>
   <component-import key="eventPublisher" interface="com.atlassian.event.api.EventPublisher" filter=""/>
-  <component key="eventListener" class="com.teamepic.plugin.rest.RestResource">
+  <component key="eventListener" class="com.cobalt.jira.plugin.epic.rest.RestResource">
     <description>Class that processes the incoming JIRA issue events.</description>
   </component>
 </atlassian-plugin>

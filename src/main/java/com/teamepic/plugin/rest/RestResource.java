@@ -109,7 +109,7 @@ public class RestResource implements InitializingBean, DisposableBean {
 		User user = getCurrentUser();
 		//get the projects viewable to the current user
 		ServiceOutcome<List<Project>> outcome =  projectService.getAllProjects(user);
-		List<Project> projects = outcome != null ? outcome.get() : new LinkedList<Project>();
+		List<Project> projects = outcome != null ? outcome.getReturnedValue() : new LinkedList<Project>();
 
         return Response.ok(new RestProjectResourceModel(projects, searchService, user)).build();
     }

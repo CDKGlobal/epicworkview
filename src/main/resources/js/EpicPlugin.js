@@ -24,8 +24,16 @@ function ProjectController($scope, $http) {
 	    success(function(data, status, headers, config) {
 	      //add the new projects to the projects array
 	      angular.forEach(data.projects, function(project, index) {
-            if(indexOf($scope.projects, project) == -1) {
+	        var projectIndex = indexOf($scope.projects, project);
+            if(projectIndex == -1) {
               $scope.projects.push(project);
+            }
+            else {
+              var savedProject = $scope.projects[projectIndex];
+              savedProject.epics = project.epics;
+              savedProject.name = project.name;
+              savedProject.key = project.key;
+              savedProject.description = project.description;
             }
 	      });
 	    }).
@@ -44,7 +52,7 @@ function ProjectController($scope, $http) {
     getProjects();
     
     // Get projects again every 10 seconds
-    setInterval(function(){if (refresh) getProjects();}, 10000);
+    setInterval(function(){if (refresh) getProjects();}, 5000);
 
     /*
      * Finds if the project is already in the array and returns the index
@@ -53,7 +61,7 @@ function ProjectController($scope, $http) {
     function indexOf(projectsArray, project) {
       var where = -1;
       angular.forEach(projectsArray, function(p, i) {
-        if(p.key == project.key) {
+        if(p.id == project.id) {
           where = i;
         }
       });

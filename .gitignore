@@ -12,3 +12,8 @@ target/
 
 # Vi Temporary files
 *.swp
+
+# Eclipse files
+.classpath
+.settings
+.project

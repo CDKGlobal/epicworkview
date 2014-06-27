@@ -1,3 +1,4 @@
+var app = angular.module("EpicPlugin", []);
 
 // Whether to continuously refresh projects
 var refresh = true;

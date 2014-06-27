@@ -2,7 +2,7 @@
   <head>
     <title>My Epic</title>
     <meta name="decorator" content="atl.general">
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular.min.js"></script>
     $webResourceManager.requireResource("com.teamepic.plugin.EpicPlugin:EpicPlugin-resources")
   </head>
   <body>

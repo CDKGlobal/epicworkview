@@ -7,12 +7,12 @@ import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.sal.api.user.UserManager;
 import com.atlassian.sal.api.user.UserProfile;
 import com.cobalt.jira.plugin.epic.rest.RestResource;
+import com.cobalt.jira.plugin.epic.rest.jaxb.JaxbProject;
 import org.junit.Test;
 import org.junit.Before;
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
-import com.cobalt.jira.plugin.epic.rest.RestProjectResourceModel;
 
 public class RestResourceTest
 {
@@ -48,9 +48,9 @@ public class RestResourceTest
 			fail("RestResource threw an exception when afterPropertiesSet() was called");
 		}
 
-		RestProjectResourceModel restProjectResourceModel = (RestProjectResourceModel)resource.getProjects().getEntity();
+		JaxbProject[] jaxbProjects = (JaxbProject[])resource.getProjects();
 
-		assertNotNull(restProjectResourceModel);
+		assertNotNull(jaxbProjects);
 
 		try {
 			resource.destroy();

@@ -1,9 +1,9 @@
 package it.com.cobalt.jira.plugin.epic.rest;
 
+import com.cobalt.jira.plugin.epic.rest.jaxb.JaxbProject;
 import org.junit.Test;
 import org.junit.After;
 import org.junit.Before;
-import com.cobalt.jira.plugin.epic.rest.RestProjectResourceModel;
 import org.apache.wink.client.Resource;
 import org.apache.wink.client.RestClient;
 
@@ -29,7 +29,7 @@ public class RestResourceFuncTest
         RestClient client = new RestClient();
         Resource resource = client.resource(resourceUrl);
 
-        RestProjectResourceModel message = resource.get(RestProjectResourceModel.class);
+        JaxbProject[] projects = resource.get(JaxbProject[].class);
 
         //assertEquals("wrong message","Hello World",message.getProjects());
     }

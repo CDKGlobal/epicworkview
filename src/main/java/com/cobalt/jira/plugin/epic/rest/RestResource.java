@@ -7,11 +7,20 @@ import com.atlassian.jira.bc.ServiceOutcome;
 import com.atlassian.jira.bc.issue.search.SearchService;
 import com.atlassian.jira.bc.project.ProjectService;
 import com.atlassian.jira.event.issue.IssueEvent;
+import com.atlassian.jira.issue.Issue;
+import com.atlassian.jira.issue.search.SearchException;
+import com.atlassian.jira.issue.search.SearchResults;
+import com.atlassian.jira.jql.builder.JqlQueryBuilder;
 import com.atlassian.jira.project.Project;
 import com.atlassian.jira.user.ApplicationUser;
+import com.atlassian.jira.web.bean.PagerFilter;
 import com.atlassian.plugins.rest.common.security.AnonymousAllowed;
+import com.atlassian.query.Query;
+import com.atlassian.query.order.SortOrder;
 import com.atlassian.sal.api.user.UserManager;
 import com.atlassian.sal.api.user.UserProfile;
+import com.cobalt.jira.plugin.epic.rest.jaxb.JaxbIssue;
+import com.cobalt.jira.plugin.epic.rest.jaxb.JaxbProject;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 
@@ -105,13 +114,22 @@ public class RestResource implements InitializingBean, DisposableBean {
     @GET
     @AnonymousAllowed
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Response getProjects() {
-		User user = getCurrentUser();
-		//get the projects viewable to the current user
+    public JaxbProject[] getProjects() {
+        User user = getCurrentUser();
+        //get the projects viewable to the current user
 		ServiceOutcome<List<Project>> outcome =  projectService.getAllProjects(user);
 		List<Project> projects = outcome != null ? outcome.getReturnedValue() : new LinkedList<Project>();
 
-        return Response.ok(new RestProjectResourceModel(projects, searchService, user)).build();
+        JaxbProject[] jaxbProjects = new JaxbProject[projects.size()];
+
+        int i = 0;
+        for(Project p : projects)
+        {
+            jaxbProjects[i] = new JaxbProject(p, searchService, user);
+            i++;
+        }
+
+        return jaxbProjects;
     }
 
     /**

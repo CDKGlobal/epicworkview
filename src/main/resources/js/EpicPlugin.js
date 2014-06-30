@@ -25,7 +25,7 @@ function ProjectController($scope, $http) {
     	$http.get('/jira/rest/epic/1/projects.json').
 	    success(function(data, status, headers, config) {
 	      //add the new projects to the projects array
-	      angular.forEach(data.projects, function(project, index) {
+	      angular.forEach(data, function(project, index) {
 	        //get the index of this project in the list of projects we're displaying
 	        var projectIndex = indexOf($scope.projects, project);
 	        //add it if it doesn't exist
@@ -61,7 +61,7 @@ function ProjectController($scope, $http) {
     getProjects();
     
     // Get projects again every 10 seconds
-    setInterval(function(){if (refresh) getProjects();}, 5000);
+    setInterval(function(){if (refresh) getProjects();}, 10000);
 
     /*
      * Finds if the project is already in the array and returns the index

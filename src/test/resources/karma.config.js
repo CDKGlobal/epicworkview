@@ -15,9 +15,9 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      '../../main/resources/angular.min.js',
-      '../../main/resources/angular-mocks.js', 
-      '../java/ut/com/teamepic/plugin/test/*.test.js',
+      'angular.js',
+      'angular-mocks.js', 
+      '../java/ut/com/cobalt/jira/plugin/epic/test/*.test.js',
       '../../main/resources/js/*.js' 
     ],
 

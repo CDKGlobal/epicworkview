@@ -13,6 +13,7 @@ function ProjectController($scope, $http) {
 	
 	$scope.filter = false;
 	$scope.projects = [];
+    $scope.isFullScreen = false;
 	
 	$scope.toggleFilter = function(e) {
 		e.stopPropagation();
@@ -50,6 +51,10 @@ function ProjectController($scope, $http) {
     	refresh = true;
     	clickedEpic = null;
     	$scope.filter = false;
+    }
+    
+    $scope.toggleFullScreen = function() {
+    	$scope.isFullScreen = !$scope.isFullScreen;
     }
     
     // Get the projects now

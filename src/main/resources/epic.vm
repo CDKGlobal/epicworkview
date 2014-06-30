@@ -6,8 +6,11 @@
     $webResourceManager.requireResource("com.cobalt.jira.plugin.epic.EpicPlugin:EpicPlugin-resources")
   </head>
   <body>
-    <div class="content-container content-body">
-	    <table ng-app ng-controller="ProjectController" ng-click="hideEpicInfo()" id="projects" class="aui">
+    <div ng-app ng-controller="ProjectController" ng-click="hideEpicInfo()" ng-class ="{'fullscreen': isFullScreen}" class="content-container content-body">
+    	<button ng-click="toggleFullScreen()" class="fullscreen-button">
+    		Full
+    	</button>
+	    <table id="projects" class="aui">
 	      <thead>
 	        <tr>
 	          <th>

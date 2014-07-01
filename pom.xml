@@ -12,6 +12,14 @@
     <name>Release Engineering / Epic Plugin</name>
     <description>This is the com.cobalt.jira.plugin.epic:EpicPlugin plugin for Atlassian JIRA.</description>
     <packaging>atlassian-plugin</packaging>
+
+    <scm>
+        <connection>scm:perforce:perforce.cobaltgroup.com:1667://ReleaseEngineering/EpicPlugin/trunk/</connection>
+        <developerConnection>scm:perforce:perforce.cobaltgroup.com:1667://ReleaseEngineering/EpicPlugin/trunk/
+        </developerConnection>
+        <url>http://perforce.cobaltgroup.com/ReleaseEngineering/EpicPlugin/trunk/</url>
+    </scm>
+
     <dependencies>
         <dependency>
             <groupId>com.atlassian.jira</groupId>

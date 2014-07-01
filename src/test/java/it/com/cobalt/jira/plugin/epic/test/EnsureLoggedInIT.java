@@ -5,7 +5,7 @@ import com.atlassian.jira.functest.framework.locator.WebPageLocator;
 
 import org.junit.Test;
 
-public class EnsureLoggedInTest extends FuncTestCase {
+public class EnsureLoggedInIT extends FuncTestCase {
 	
 	public static final String PLUGIN_LINK_ID = "epic-plugin-link";
 	

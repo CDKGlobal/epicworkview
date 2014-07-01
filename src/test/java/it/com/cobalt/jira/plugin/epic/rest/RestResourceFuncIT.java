@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.apache.wink.client.Resource;
 import org.apache.wink.client.RestClient;
 
-public class RestResourceFuncTest
+public class RestResourceFuncIT
 {
 
     @Before

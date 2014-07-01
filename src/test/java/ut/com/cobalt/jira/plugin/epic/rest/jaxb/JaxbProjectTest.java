@@ -10,11 +10,13 @@ import com.atlassian.jira.mock.component.MockComponentWorker;
 import com.atlassian.jira.project.Project;
 import com.atlassian.jira.web.bean.PagerFilter;
 import com.atlassian.query.Query;
+import com.cobalt.jira.plugin.epic.rest.jaxb.JaxbEpic;
 import com.cobalt.jira.plugin.epic.rest.jaxb.JaxbProject;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
@@ -61,12 +63,12 @@ public class JaxbProjectTest
 
 	@Test
 	public void jaxbProjectIsValid() {
-		JaxbProject jaxbProject = new JaxbProject(project, searchService, user);
+		JaxbProject jaxbProject = new JaxbProject(project, new LinkedList<JaxbEpic>());
 
 		assertEquals(PROJECT_NAME, jaxbProject.getName());
 		assertEquals(PROJECT_KEY, jaxbProject.getKey());
 		assertEquals(PROJECT_ID, jaxbProject.getId());
 		assertEquals(PROJECT_DESCRIPTION, jaxbProject.getDescription());
-		assertEquals(0, jaxbProject.getEpics().length);
+		assertEquals(0, jaxbProject.getEpics().size());
 	}
 }

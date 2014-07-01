@@ -3,43 +3,75 @@ package com.cobalt.jira.plugin.epic.data;
 
 import com.atlassian.jira.issue.Issue;
 
-
+/**
+ * A NullData represents a fake Jira Issue
+ */
 public class NullData extends EpicData {
-    private static long ID_COUNT = -1;
 
     private String name;
     private String description;
 
+    // needed to stop from instantiating with an issue
     private NullData(Issue epic) {
         super(null);
     }
 
+    /**
+     * Creates a new NullData
+     * 
+     * @param name the name of the NullData
+     * @param description the description of the NullData
+     */
     public NullData(String name, String description) {
         super(null);
         this.name = name;
         this.description = description;
     }
 
+    /**
+     * Returns the name of the data
+     * 
+     * @return the name of the data
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Returns the key of the data
+     * The key is a meaningless key
+     * 
+     * @return the key of the data
+     */
     public String getKey() {
         return "NOKEY";
     }
 
     /**
-     * return a unique negative id for this fake data
-     * @return
+     * Returns the id of the data
+     * The id is -1 so it will be unique from any real issues
+     * 
+     * @return the id of the data
      */
     public long getId() {
         return -1;
     }
 
+    /**
+     * Returns the description of the data
+     * 
+     * @return the description of the data
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Returns the last updated time of the data
+     * Returns -1 because the issue is not real
+     * 
+     * @return the timestamp of the data
+     */
     public long getTimestamp() {
         return -1;
     }

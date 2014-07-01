@@ -4,16 +4,16 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 
 
-public class JiraData<S extends JiraDataInterface, T extends JiraDataInterface> implements JiraDataInterface {
-    private S data;
-    private LinkedHashSet<T> list;
+public class JiraData implements JiraDataInterface {
+    private JiraDataInterface data;
+    private LinkedHashSet<JiraDataInterface> list;
 
-    public JiraData(S data) {
+    public JiraData(JiraDataInterface data) {
         this.data = data;
-        list = new LinkedHashSet<T>();
+        list = new LinkedHashSet<JiraDataInterface>();
     }
 
-    public void addToList(T data) {
+    public void addToList(JiraDataInterface data) {
         list.add(data);
     }
 
@@ -35,7 +35,7 @@ public class JiraData<S extends JiraDataInterface, T extends JiraDataInterface> 
 
     public long getTimestamp() {
         long timestamp = -1;
-        Iterator<T> iterator = getIterator();
+        Iterator<JiraDataInterface> iterator = getIterator();
         if(iterator.hasNext()) {
             long temp = iterator.next().getTimestamp();
             if(temp > timestamp) {
@@ -45,20 +45,20 @@ public class JiraData<S extends JiraDataInterface, T extends JiraDataInterface> 
         return timestamp;
     }
 
-    public S getData() {
+    public JiraDataInterface getData() {
         return data;
     }
 
-    public Iterator<T> getIterator() {
+    public Iterator<JiraDataInterface> getIterator() {
         return list.iterator();
     }
 
     public String toString() {
         StringBuilder sb = new StringBuilder(getName() + ": (");
 
-        Iterator<T> iterator = getIterator();
+        Iterator<JiraDataInterface> iterator = getIterator();
         while(iterator.hasNext()) {
-            T e = iterator.next();
+            JiraDataInterface e = iterator.next();
             sb.append(e.toString() + " ");
         }
         sb.deleteCharAt(sb.length() - 1);

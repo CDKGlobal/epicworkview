@@ -120,14 +120,13 @@ public class RestResource implements InitializingBean, DisposableBean {
     @AnonymousAllowed
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public JaxbProject[] getProjects() {
-        List<JiraData<ProjectData, JiraData<EpicData, JiraData<StoryData, IssueData>>>> ps = dataManager.getProjects(getCurrentUser());
+        List<JiraData> ps = dataManager.getProjects(getCurrentUser());
 
-        for(JiraData<ProjectData, JiraData<EpicData, JiraData<StoryData, IssueData>>> p : ps) {
+        for(JiraData p : ps) {
             System.out.println(p.toString());
         }
 
-        /*List<JaxbProject> jaxbProjects = new ArrayList<JaxbProject>();
-        for(ProjectData : )*/
+
 
         searchService.parseQuery(getCurrentUser(), "(status changed from Open after -1w or status changed to Closed after -1w) order by updated desc").getQuery();
 

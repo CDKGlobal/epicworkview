@@ -23,9 +23,9 @@ public class DataManager {
         this.searchService = searchService;
     }
 
-    public List<JiraData<ProjectData, JiraData<EpicData, JiraData<StoryData, IssueData>>>> getProjects(User user) {
+    public List<JiraData> getProjects(User user) {
         //list of projects with references to epics
-        List<JiraData<ProjectData, JiraData<EpicData, JiraData<StoryData, IssueData>>>> projects = new ArrayList<JiraData<ProjectData, JiraData<EpicData, JiraData<StoryData, IssueData>>>>();
+        List<JiraData> projects = new ArrayList<JiraData>();
 
         try {
             //get all issues that changed status (stories and subtasks)
@@ -33,17 +33,17 @@ public class DataManager {
             List<Issue> issues = searchService.search(user, q, PagerFilter.getUnlimitedFilter()).getIssues();
 
             //get list of stories with subtasks
-            List<JiraData<StoryData, IssueData>> stories = new ArrayList<JiraData<StoryData, IssueData>>();
+            List<JiraData> stories = new ArrayList<JiraData>();
 
             for(Issue i : issues) {
                 if(i.isSubTask()) {
                     //get parent story and get the story data
                     Issue story = i.getParentObject();
-                    JiraData<StoryData, IssueData> issueData = getData(stories.iterator(), story.getId());
+                    JiraData issueData = (JiraData)getData(stories.iterator(), story.getId());
 
                     //if the story data doesn't exist create the storydata
                     if(issueData == null) {
-                        issueData = new JiraData<StoryData, IssueData>(new StoryData(story));
+                        issueData = new JiraData(new StoryData(story));
                         stories.add(issueData);
                     }
                     //add the sub task to the story
@@ -51,58 +51,57 @@ public class DataManager {
                 }
                 else {
                     //if the story has subtasks and hasn't been stored add it to the list
-                    JiraData<StoryData, IssueData> issueData = getData(stories.iterator(), i.getId());
+                    JiraData issueData = (JiraData)getData(stories.iterator(), i.getId());
 
                     if(issueData == null) {
-                        issueData = new JiraData<StoryData, IssueData>(new StoryData(i));
+                        issueData = new JiraData(new StoryData(i));
                         stories.add(issueData);
                     }
                 }
             }
 
             //from the stories create the projects and epics
-            for(JiraData<StoryData, IssueData> jiraData : stories) {
+            for(JiraData storyData : stories) {
                 //get the epic and project
-                Project p = jiraData.getData().getProject();
-                Issue epic = jiraData.getData().getEpic();
+                Project p = ((StoryData)storyData.getData()).getProject();
+                Issue epic = ((StoryData)storyData.getData()).getEpic();
 
-                JiraData<ProjectData, JiraData<EpicData, JiraData<StoryData, IssueData>>> projectData = getData(projects.iterator(), p.getId());
+                JiraData projectData = (JiraData)getData(projects.iterator(), p.getId());
 
                 //create the project data if doesn't exist
                 if(projectData == null) {
-                    projectData = new JiraData<ProjectData, JiraData<EpicData, JiraData<StoryData, IssueData>>>(new ProjectData(p));
+                    projectData = new JiraData(new ProjectData(p));
                     projects.add(projectData);
                 }
 
+                //adding an epic to a project
+                JiraData epicData;
 
+                //get the id for the epic
+                long id = -1;
                 if(epic != null) {
-                    //find the epic data
-                    JiraData<EpicData, JiraData<StoryData, IssueData>> epicData = getData(projectData.getIterator(), epic.getId());
-
-                    //create if it doesn't exist and add the story
-                    if(epicData == null) {
-                        epicData = new JiraData<EpicData, JiraData<StoryData, IssueData>>(new EpicData(epic));
-                        epicData.addToList(jiraData);
-                        projectData.addToList(epicData);
-                    }
-                    else {//just add the story if it exists
-                        epicData.addToList(jiraData);
-                    }
+                    id = epic.getId();
                 }
-                else {//story has no epic
-                    //find if the project already has a null epic
-                    JiraData<EpicData, JiraData<StoryData, IssueData>> epicData = getData(projectData.getIterator(), -1);
 
-                    //create if it doesn't exist and add the story
-                    if(epicData == null) {
-                        epicData = new JiraData<EpicData, JiraData<StoryData, IssueData>>(new NullData("Other Stories", "Other Stories"));
-                        epicData.addToList(jiraData);
-                        projectData.addToList(epicData);
+                //get the epicdata if it already exist
+                epicData = (JiraData)getData(projectData.getIterator(), id);
+
+                //create a new epicdata if it doens't
+                if(epicData == null) {
+                    //if the story has no epic create a fake epic
+                    if(id == -1) {
+                        epicData = new JiraData(new NullData("Other Stories", "Other Stories"));
                     }
-                    else {//just add the story if it exists
-                        epicData.addToList(jiraData);
+                    else { //otherwise make a new epic
+                        epicData = new JiraData(new EpicData(epic));
                     }
+
+                    //add the epic to the project
+                    projectData.addToList(epicData);
                 }
+
+                //add the story to the epic
+                epicData.addToList(storyData);
             }
         }
         catch(SearchException e) {
@@ -112,9 +111,9 @@ public class DataManager {
         return projects;
     }
 
-    private static <T extends JiraDataInterface, S extends JiraDataInterface> JiraData<T, S> getData(Iterator<JiraData<T, S>> iter, long id) {
+    private static <T extends JiraDataInterface> T getData(Iterator<T> iter, long id) {
         while(iter.hasNext()) {
-            JiraData<T, S> j = iter.next();
+            T j = iter.next();
             if(j.getId() == id) {
                 return j;
             }

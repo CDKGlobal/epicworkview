@@ -1,6 +1,7 @@
 package com.cobalt.jira.plugin.epic.data;
 
 import com.atlassian.jira.component.ComponentAccessor;
+import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.project.Project;
 
@@ -15,7 +16,8 @@ public class StoryData extends IssueData {
     }
 
     public Issue getEpic() {
-        Object o = issue.getCustomFieldValue(ComponentAccessor.getCustomFieldManager().getCustomFieldObjectByName("Epic Link"));
+        CustomFieldManager manager = ComponentAccessor.getCustomFieldManager();
+        Object o = issue.getCustomFieldValue(manager.getCustomFieldObjectByName("Epic Link"));
         return o instanceof Issue ? (Issue)o : null;
     }
 }

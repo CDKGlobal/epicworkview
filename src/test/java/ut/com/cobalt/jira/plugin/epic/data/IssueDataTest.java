@@ -1,6 +1,7 @@
 package ut.com.cobalt.jira.plugin.epic.data;
 
 import com.atlassian.jira.action.issue.customfields.MockCustomFieldType;
+import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.fields.MockCustomField;
 import com.atlassian.jira.mock.component.MockComponentWorker;
@@ -67,6 +68,7 @@ public class IssueDataTest {
         assertEquals(ISSUE_ID, issueData.getId());
         assertEquals(ISSUE_DESCRIPTION, issueData.getDescription());
         assertEquals(ISSUE_TIMESTAMP.getTime(), issueData.getTimestamp());
+        assertEquals(ISSUE_NAME, issueData.toString());
     }
 
     @Test
@@ -113,5 +115,6 @@ public class IssueDataTest {
         assertEquals(PROJECT_KEY, projectData.getKey());
         assertEquals(PROJECT_ID, projectData.getId());
         assertEquals(PROJECT_DESCRIPTION, projectData.getDescription());
+        assertEquals(-1, projectData.getTimestamp());
     }
 }

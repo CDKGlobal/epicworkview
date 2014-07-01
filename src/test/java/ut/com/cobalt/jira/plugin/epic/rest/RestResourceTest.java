@@ -38,7 +38,6 @@ public class RestResourceTest
 		when(jiraUserManager.getUserByName(anyString())).thenReturn(user);
     }
 
-    @Ignore
     @Test
     public void getProjectsisValid() {
 		RestResource resource = new RestResource(projectService, searchService, userManager, jiraUserManager, eventPublisher);

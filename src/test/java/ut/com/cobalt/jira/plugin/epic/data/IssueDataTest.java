@@ -14,6 +14,7 @@ import org.junit.Test;
 import java.sql.Timestamp;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.*;
 
 public class IssueDataTest {
@@ -54,9 +55,7 @@ public class IssueDataTest {
         worker.addMock(CustomFieldManager.class, mockCustomFieldManager);
         worker.init();
 
-        MockCustomField mockCustomField = new MockCustomField("Epic Link", "Epic Link", new MockCustomFieldType());
-        doReturn(mockCustomField).when(mockCustomFieldManager).getCustomFieldObjectByName("Epic Link");
-        doReturn(ISSUE_EPIC).when(issue).getCustomFieldValue(mockCustomField);
+
     }
 
     @Test
@@ -75,6 +74,15 @@ public class IssueDataTest {
     public void storyDataIsValid() {
         StoryData storyData = new StoryData(issue);
 
+        //test with no epic link
+        assertNull(storyData.getEpic());
+
+        //add the Epic Link custom field
+        MockCustomField mockCustomField = new MockCustomField("Epic Link", "Epic Link", new MockCustomFieldType());
+        doReturn(mockCustomField).when(mockCustomFieldManager).getCustomFieldObjectByName("Epic Link");
+        doReturn(ISSUE_EPIC).when(issue).getCustomFieldValue(mockCustomField);
+
+        //test with the epic link
         assertEquals(project, storyData.getProject());
         assertEquals(ISSUE_EPIC, storyData.getEpic());
     }

@@ -120,15 +120,13 @@ public class RestResource implements InitializingBean, DisposableBean {
     @AnonymousAllowed
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public JaxbProject[] getProjects() {
+        /*
         List<JiraData> ps = dataManager.getProjects(getCurrentUser());
 
         for(JiraData p : ps) {
             System.out.println(p.toString());
         }
-
-
-
-        searchService.parseQuery(getCurrentUser(), "(status changed from Open after -1w or status changed to Closed after -1w) order by updated desc").getQuery();
+        */
 
         User user = getCurrentUser();
         //get the projects viewable to the current user

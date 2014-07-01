@@ -10,22 +10,19 @@ import java.util.LinkedHashSet;
 
 
 public class EpicData extends IssueData {
-    private static final CustomField EPIC_NAME;
-
-    static {
-        CustomFieldManager manager = ComponentAccessor.getCustomFieldManager();
-        if(manager != null)
-            EPIC_NAME = manager.getCustomFieldObjectByName("Epic Name");
-        else
-            EPIC_NAME = null;
-    }
 
     public EpicData(Issue epic) {
         super(epic);
     }
 
     public String getName() {
-        return EPIC_NAME != null ? (String)issue.getCustomFieldValue(EPIC_NAME) : "No Name Epic";
+        CustomField epicName = null;
+        CustomFieldManager manager = ComponentAccessor.getCustomFieldManager();
+        if(manager != null) {
+            epicName = manager.getCustomFieldObjectByName("Epic Name");
+        }
+
+        return epicName != null ? (String)issue.getCustomFieldValue(epicName) : "No Name Epic";
     }
 
     public String getDescription() {

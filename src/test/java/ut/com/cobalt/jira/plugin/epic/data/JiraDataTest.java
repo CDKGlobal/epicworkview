@@ -128,4 +128,10 @@ public class JiraDataTest {
 		jd.addToList(epic);
 		assertEquals("Timestamp is not element's timestamp", EPIC_TIME, jd.getTimestamp());
 	}
+	
+	@Test
+	public void testToStringNotNull() {
+		String toString = jd.toString();
+		assertNotNull("ToString is null", toString);
+	}
 }

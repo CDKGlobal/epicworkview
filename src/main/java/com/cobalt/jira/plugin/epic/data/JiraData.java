@@ -118,14 +118,4 @@ public class JiraData implements JiraDataInterface {
 
         return sb.toString();
     }
-
-    public boolean equals(Object o) {
-        if(o instanceof JiraData)
-        {
-            JiraData jd = (JiraData)o;
-            boolean equals = jd.data.getClass().equals(data.getClass());
-            return equals && (getId() == jd.getId());
-        }
-        return false;
-    }
 }

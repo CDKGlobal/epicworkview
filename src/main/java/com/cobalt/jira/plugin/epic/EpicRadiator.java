@@ -30,7 +30,7 @@ public class EpicRadiator extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserKey userKey = userManager.getRemoteUserKey(req);
-        if(userKey == null || !userManager.isSystemAdmin(userKey)) { //does the second check need to be made?
+        if(userKey == null) {
             redirectToLogin(req, resp);
             return;
         }

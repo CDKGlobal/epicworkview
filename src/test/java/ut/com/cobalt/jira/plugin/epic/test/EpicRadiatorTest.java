@@ -27,11 +27,14 @@ public class EpicRadiatorTest {
 
     private static final String USERNAME = "test";
     private static final String URI_PATH = "test/";
+    private static final String URL_QUERY = "test=query";
     private static URI REFERENCE_URI;
+    private static URI REFERENCE_URI2;
 
     static {
         try {
             REFERENCE_URI = new URI(URI_PATH);
+            REFERENCE_URI2 = new URI(URI_PATH + "?" + URL_QUERY);
         }
         catch(URISyntaxException e) {
             e.printStackTrace();
@@ -112,6 +115,22 @@ public class EpicRadiatorTest {
         }
 
         assertEquals(REFERENCE_URI, uri);
+        assertNull(templateName);
+        assertNull(writer);
+
+        when(httpServletRequest.getQueryString()).thenReturn(URL_QUERY);
+
+        servlet = new EpicRadiator(userManager, loginUriProvider, templateRenderer);
+
+        try {
+            servlet.doGet(httpServletRequest, httpServletResponse);
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            fail("MyPluginServlet doGet() method threw an exception");
+        }
+
+        assertEquals(REFERENCE_URI2, uri);
         assertNull(templateName);
         assertNull(writer);
     }

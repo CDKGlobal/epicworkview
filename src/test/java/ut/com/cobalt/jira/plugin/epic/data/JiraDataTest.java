@@ -130,6 +130,14 @@ public class JiraDataTest {
 	}
 	
 	@Test
+	public void testTimeStampWithLessRecentElement() {
+		EpicData oldEpic = mock(EpicData.class);
+		when(oldEpic.getTimestamp()).thenReturn((long) -2);
+		jd.addToList(oldEpic);
+		assertEquals("Timestamp is not most recent element", (long) -1, jd.getTimestamp());
+	}
+	
+	@Test
 	public void testToStringNotNull() {
 		String toString = jd.toString();
 		assertNotNull("ToString is null", toString);

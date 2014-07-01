@@ -1,20 +1,12 @@
 package com.cobalt.jira.plugin.epic.data;
 
 
-import com.atlassian.jira.issue.Issue;
-
 /**
  * A NullData represents a fake Jira Issue
  */
-public class NullData extends EpicData {
-
+public class NullData implements JiraDataInterface {
     private String name;
     private String description;
-
-    // needed to stop from instantiating with an issue
-    private NullData(Issue epic) {
-        super(null);
-    }
 
     /**
      * Creates a new NullData
@@ -23,7 +15,6 @@ public class NullData extends EpicData {
      * @param description the description of the NullData
      */
     public NullData(String name, String description) {
-        super(null);
         this.name = name;
         this.description = description;
     }

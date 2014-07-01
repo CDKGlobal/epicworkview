@@ -15,11 +15,7 @@ public class StoryData extends IssueData {
     }
 
     public Issue getEpic() {
-        //TODO probably returns the key which we need to get the issue from
         Object o = issue.getCustomFieldValue(ComponentAccessor.getCustomFieldManager().getCustomFieldObjectByName("Epic Link"));
-        System.out.println(o);
-        if(o instanceof Issue)
-            return (Issue)o;
-        return null;
+        return o instanceof Issue ? (Issue)o : null;
     }
 }

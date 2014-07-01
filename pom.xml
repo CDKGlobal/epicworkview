@@ -9,7 +9,7 @@
         <name>Team Epic</name>
         <url>http://www.cobalt.com/</url>
     </organization>
-    <name>EpicPlugin</name>
+    <name>Release Engineering / Epic Plugin</name>
     <description>This is the com.cobalt.jira.plugin.epic:EpicPlugin plugin for Atlassian JIRA.</description>
     <packaging>atlassian-plugin</packaging>
     <dependencies>

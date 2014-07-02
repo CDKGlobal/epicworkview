@@ -1,5 +1,3 @@
-var app = angular.module("EpicPlugin", []);
-
 // Whether to continuously refresh projects
 var refresh = true;
 
@@ -82,7 +80,7 @@ function ProjectController($scope, $http) {
     getProjects();
     
     // Get projects again every 10 seconds
-    setInterval(function(){if (refresh) getProjects();}, 10000);
+    setInterval(function(){if (refresh) getProjects();}, 5000);
 
     /*
      * Finds if the project is already in the array and returns the index

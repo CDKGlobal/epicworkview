@@ -58,7 +58,9 @@
 	      						<p>{{epic.description}}</p>
 	      						<p>Stories:</p>
 	      						<ul class="aui-list-section">
-	      							<li class="story" ng-repeat="story in epic.stories">{{story.name}}</li>
+	      							<li class="story" ng-repeat="story in epic.stories">
+	      								<a href="/jira/browse/{{story.key}}">{{story.name}}</a>
+	      							</li>
 	      						</ul>
 	      					</div>
 	      				</li>

@@ -76,7 +76,7 @@ public class JiraData implements JiraDataInterface {
      * @return the timestamp of the JiraData
      */
     public long getTimestamp() {
-        long timestamp = -1;
+        long timestamp = data.getTimestamp();
         Iterator<JiraDataInterface> iterator = getIterator();
         if(iterator.hasNext()) {
             long temp = iterator.next().getTimestamp();

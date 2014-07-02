@@ -8,7 +8,7 @@ import java.util.LinkedHashSet;
 /**
  * A ProjectData represents and manages a Jira Project
  */
-public class ProjectData  implements JiraDataInterface{
+public class ProjectData  implements JiraDataInterface {
     private Project project;
 
     /**

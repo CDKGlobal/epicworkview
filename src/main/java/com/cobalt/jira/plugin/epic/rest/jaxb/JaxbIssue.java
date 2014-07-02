@@ -1,7 +1,5 @@
 package com.cobalt.jira.plugin.epic.rest.jaxb;
 
-import com.atlassian.jira.issue.Issue;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -12,14 +10,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "issue")
 public class JaxbIssue
 {
+    @XmlElement(name = "name")
+    String name;
+
 	@XmlElement(name = "description")
-	private String description;
+	String description;
 
 	@XmlElement(name = "key")
-	private String key;
+	String key;
 
 	@XmlElement(name = "id")
-	private long id;
+	long id;
+
+    @XmlElement(name = "timestamp")
+    long timestamp;
 
 	/**
 	 * required for JAXB
@@ -27,16 +31,9 @@ public class JaxbIssue
 	public JaxbIssue() {
 	}
 
-	/**
-	 * Constructs an issue that the REST Api can send to the client
-	 * @param issue - the issue to store
-	 */
-	public JaxbIssue(Issue issue) {
-		//store information that we want about the issue
-		description = issue.getSummary();
-		key = issue.getKey();
-		id = issue.getId();
-	}
+    public String getName() {
+        return name;
+    }
 
 	public String getDescription()
 	{
@@ -52,4 +49,8 @@ public class JaxbIssue
 	{
 		return id;
 	}
+
+    public long getTimestamp() {
+        return timestamp;
+    }
 }

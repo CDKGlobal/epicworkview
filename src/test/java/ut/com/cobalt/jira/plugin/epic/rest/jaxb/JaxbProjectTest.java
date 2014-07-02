@@ -10,7 +10,9 @@ import com.atlassian.jira.mock.component.MockComponentWorker;
 import com.atlassian.jira.project.Project;
 import com.atlassian.jira.web.bean.PagerFilter;
 import com.atlassian.query.Query;
+import com.cobalt.jira.plugin.epic.data.ProjectData;
 import com.cobalt.jira.plugin.epic.rest.jaxb.JaxbEpic;
+import com.cobalt.jira.plugin.epic.rest.jaxb.JaxbFactory;
 import com.cobalt.jira.plugin.epic.rest.jaxb.JaxbProject;
 import org.junit.Before;
 import org.junit.Test;
@@ -63,7 +65,7 @@ public class JaxbProjectTest
 
 	@Test
 	public void jaxbProjectIsValid() {
-		JaxbProject jaxbProject = new JaxbProject(project, new LinkedList<JaxbEpic>());
+		JaxbProject jaxbProject = JaxbFactory.newJaxbProject(new ProjectData(project), new LinkedList<JaxbEpic>());
 
 		assertEquals(PROJECT_NAME, jaxbProject.getName());
 		assertEquals(PROJECT_KEY, jaxbProject.getKey());

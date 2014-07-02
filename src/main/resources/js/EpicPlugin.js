@@ -75,18 +75,26 @@ function ProjectController($scope, $http) {
     	lastUpdated = currentTime - milli;
     	seconds = Math.round(lastUpdated / 1000);
     	if (seconds < 60) {
-    		return seconds + " seconds";
+    		return pluralize(seconds, "second");
     	}
     	minutes = Math.round(seconds / 60);
     	if (minutes < 60) {
-    		return minutes + " minutes";
+    		return pluralize(minutes, "minute");
     	}
     	hours = Math.round(minutes / 60);
     	if (hours < 24) {
-    		return hours + " hours";
+    		return pluralize(hours, "hour");
     	}
     	days = Math.round(hours / 24);
-    	return days + " days";
+    	return pluralize(days, "day");
+    }
+    
+    // appends an "s" to the unit if the number is greater than one
+    function pluralize(num, unit) {
+    	if (num == 1) {
+    		return num + " " + unit;
+    	}
+    	return num + " " + unit + "s";
     }
     
     // Get the projects now

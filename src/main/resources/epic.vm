@@ -54,8 +54,12 @@
 	      					<a href="#" ng-class="{'clicked-epic': isClicked(epic.id)}" class="epic" ng-click="toggleEpic($event, epic.id)">
 	      						{{epic.name}}
 	      					</a>
-	      					<div class="epic-info pop-up" ng-show="isClicked(epic.id)">
+	      					<div class="epic-info pop-up aui-list-scroll" ng-show="isClicked(epic.id)" ng-click="$event.stopPropagation()">
 	      						<p>{{epic.description}}</p>
+	      						<p>Stories:</p>
+	      						<ul class="aui-list-section">
+	      							<li class="story" ng-repeat="story in epic.stories">{{story.name}}</li>
+	      						</ul>
 	      					</div>
 	      				</li>
 	      			</ul>

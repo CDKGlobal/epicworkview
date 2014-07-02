@@ -4,6 +4,9 @@ var refresh = true;
 // The currently clicked epic, or null if none clicked
 var clickedEpic = null;
 
+// Unique epic id to use for fake epics
+var uniqueEpicId = -1;
+
 /*
  * Controller to manage table of projects
  */
@@ -128,6 +131,14 @@ function EpicController($scope) {
     // Return whether the clicked epic is this epic
     $scope.isClicked = function(id) {
     	return clickedEpic == id;
+    }
+    
+    // Set a unique id for the epic
+    $scope.setUniqueId = function(epic) {
+    	if (epic.id == -1) {
+    		epic.id = uniqueEpicId;
+    		uniqueEpicId--;
+    	}
     }
 }
 

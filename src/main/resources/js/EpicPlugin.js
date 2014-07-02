@@ -57,6 +57,26 @@ function ProjectController($scope, $http) {
     	$scope.isFullScreen = !$scope.isFullScreen;
     }
     
+    // Return the difference between the current time and the given time, as a string
+    $scope.millisecondToString = function(milli) {
+    	currentTime = new Date().getTime();
+    	lastUpdated = currentTime - milli;
+    	seconds = Math.round(lastUpdated / 1000);
+    	if (seconds < 60) {
+    		return seconds + " seconds";
+    	}
+    	minutes = Math.round(seconds / 60);
+    	if (minutes < 60) {
+    		return minutes + " minutes";
+    	}
+    	hours = Math.round(minutes / 60);
+    	if (hours < 24) {
+    		return hours + " hours";
+    	}
+    	days = Math.round(hours / 24);
+    	return days + " days";
+    }
+    
     // Get the projects now
     getProjects();
     

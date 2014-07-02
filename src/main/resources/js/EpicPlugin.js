@@ -46,6 +46,16 @@ function ProjectController($scope, $http) {
 	    });
     }
     
+    $scope.alphabeticalProjects = function() {
+    	$scope.projects.sort();
+    	return $scope.projects;
+    }
+    
+    $scope.timeOrderedProjects = function() {
+    	$scope.projects.sort(function(a, b){return b.timestamp - a.timestamp});
+    	return $scope.projects;
+    }
+    
     $scope.hideEpicInfo = function() {
     	refresh = true;
     	clickedEpic = null;

@@ -23,7 +23,7 @@
 			    		<input type='text' ng-model='searchText.name' autocomplete="off" placeholder="Find Projects..." class="aui-field" wrap="off">
 			    		<div class="aui-list-scroll">
 			    			<ul class="aui-list-section">
-			    				<li ng-repeat="project in projects | filter:searchText" class="check-list-item">
+			    				<li ng-repeat="project in alphabeticalProjects() | filter:searchText" class="check-list-item">
 			    					<label class="item-label" title="{{project.name}}">
 			    						<input type="checkbox" ng-init="project.included=true" ng-model='project.included'>
 			    						{{project.name}}
@@ -42,7 +42,7 @@
 	        </tr>
 	      </thead>
 	      <tbody>
-	      	<tr ng-repeat="project in projects | filter: {included:true}">
+	      	<tr ng-repeat="project in timeOrderedProjects() | filter: {included:true}">
 	      		<td><a href="/jira/browse/{{project.key}}">{{project.name}}</a></td>
 	      		<td>{{project.id}}</td>
 	      		<td>{{project.key}}</td>

@@ -3,19 +3,10 @@ package com.cobalt.jira.plugin.epic.rest;
 import com.atlassian.crowd.embedded.api.User;
 import com.atlassian.event.api.EventListener;
 import com.atlassian.event.api.EventPublisher;
-import com.atlassian.jira.bc.ServiceOutcome;
 import com.atlassian.jira.bc.issue.search.SearchService;
-import com.atlassian.jira.bc.project.ProjectService;
 import com.atlassian.jira.event.issue.IssueEvent;
-import com.atlassian.jira.issue.Issue;
-import com.atlassian.jira.issue.search.SearchException;
-import com.atlassian.jira.jql.builder.JqlQueryBuilder;
-import com.atlassian.jira.project.Project;
 import com.atlassian.jira.user.ApplicationUser;
-import com.atlassian.jira.web.bean.PagerFilter;
 import com.atlassian.plugins.rest.common.security.AnonymousAllowed;
-import com.atlassian.query.Query;
-import com.atlassian.query.order.SortOrder;
 import com.atlassian.sal.api.user.UserManager;
 import com.atlassian.sal.api.user.UserProfile;
 import com.cobalt.jira.plugin.epic.data.*;
@@ -37,9 +28,6 @@ import java.util.*;
  */
 @Path("/")
 public class RestResource implements InitializingBean, DisposableBean {
-
-
-    private ProjectService projectService;
     private SearchService searchService;
     private UserManager userManager;
     private com.atlassian.jira.user.util.UserManager jiraUserManager;
@@ -49,16 +37,14 @@ public class RestResource implements InitializingBean, DisposableBean {
     /**
      * Rest resource that use dependency injection to get necessary components
      *
-     * @param projectService  - used to get projects from jira
      * @param searchService   - used to search for issue in jira
      * @param userManager     - used to get the current user from the browser session
      * @param jiraUserManager - used to get the user in jira from the remote user
      * @param eventPublisher  - used to register listeners to jira's notification system
      */
-    public RestResource(ProjectService projectService, SearchService searchService,
-                        UserManager userManager, com.atlassian.jira.user.util.UserManager jiraUserManager,
+    public RestResource(SearchService searchService, UserManager userManager,
+                        com.atlassian.jira.user.util.UserManager jiraUserManager,
                         EventPublisher eventPublisher) {
-        this.projectService = projectService;
         this.searchService = searchService;
         this.userManager = userManager;
         this.jiraUserManager = jiraUserManager;
@@ -127,37 +113,52 @@ public class RestResource implements InitializingBean, DisposableBean {
     public List<JaxbProject> getProjects() {
         List<JaxbProject> projects = new ArrayList<JaxbProject>();
 
+        //get all project with epics
         List<JiraData> ps = dataManager.getProjects(getCurrentUser());
+
+        //for each project
         for(JiraData project : ps) {
+
+            //get all the epics for the project
             List<JaxbEpic> epics = new ArrayList<JaxbEpic>();
 
+            //for each epic
             Iterator<JiraDataInterface> epicIter = project.getIterator();
             while(epicIter.hasNext()) {
                 JiraData epic = (JiraData)epicIter.next();
 
+                //get all of the stories for this epic
                 List<JaxbStory> stories = new ArrayList<JaxbStory>();
 
+                //for each story
                 Iterator<JiraDataInterface> storyIter = epic.getIterator();
                 while(storyIter.hasNext()) {
                     JiraData story = (JiraData)storyIter.next();
 
+                    //get all of the subtasks for this story
                     List<JaxbIssue> subtasks = new ArrayList<JaxbIssue>();
 
+                    //for each sub-task
                     Iterator<JiraDataInterface> subtaskIter = story.getIterator();
                     while(subtaskIter.hasNext()) {
-                        IssueData subtask = (IssueData)subtaskIter.next();
+                        JiraDataInterface subtask = subtaskIter.next();
+
+                        //convert the sub-task to a JaxbIssue and store it
                         JaxbIssue jaxbIssue = JaxbFactory.newJaxbIssue(subtask);
                         subtasks.add(jaxbIssue);
                     }
 
+                    //convert the story and sub-tasks to a JaxbStory and store it
                     JaxbStory jaxbStory = JaxbFactory.newJaxbStory(story.getData(), story.getTimestamp(), subtasks);
                     stories.add(jaxbStory);
                 }
 
+                //convert the epic and stories to a JaxbEpic and store it
                 JaxbEpic jaxbEpic = JaxbFactory.newJaxbEpic(epic.getData(), epic.getTimestamp(), stories);
                 epics.add(jaxbEpic);
             }
 
+            //convert the project and epics to a jaxbProject and store it
             JaxbProject jaxbProject = JaxbFactory.newJaxbProject(project.getData(), project.getTimestamp(), epics);
             projects.add(jaxbProject);
         }
@@ -189,7 +190,6 @@ public class RestResource implements InitializingBean, DisposableBean {
     @AnonymousAllowed
     @Produces(MediaType.APPLICATION_JSON)
     public Response saveFilter(@PathParam("query") String query) {
-        System.out.println(query);
         return Response.ok().build();
     }
 
@@ -200,5 +200,13 @@ public class RestResource implements InitializingBean, DisposableBean {
      */
     @EventListener
     public void issueEventListener(IssueEvent issueEvent) {
+    }
+
+    /**
+     * Used for unit testing only
+     * @param dataManager - the dataManager the rest resource will use
+     */
+    public void setDataManager(DataManager dataManager) {
+        this.dataManager = dataManager;
     }
 }

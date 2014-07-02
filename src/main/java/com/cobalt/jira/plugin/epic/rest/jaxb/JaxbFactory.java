@@ -1,15 +1,12 @@
 package com.cobalt.jira.plugin.epic.rest.jaxb;
 
-import com.cobalt.jira.plugin.epic.data.EpicData;
-import com.cobalt.jira.plugin.epic.data.IssueData;
-import com.cobalt.jira.plugin.epic.data.ProjectData;
-import com.cobalt.jira.plugin.epic.data.StoryData;
+import com.cobalt.jira.plugin.epic.data.*;
 
 import java.util.List;
 
 
 public class JaxbFactory {
-    public static JaxbProject newJaxbProject(ProjectData p, long timestamp, List<JaxbEpic> epics) {
+    public static JaxbProject newJaxbProject(JiraDataInterface p, long timestamp, List<JaxbEpic> epics) {
         return newJaxbProject(p.getName(), p.getKey(), p.getId(), p.getDescription(), timestamp, epics);
     }
 
@@ -20,7 +17,7 @@ public class JaxbFactory {
         return jaxbProject;
     }
 
-    public static JaxbEpic newJaxbEpic(EpicData e, long timestamp, List<JaxbStory> stories) {
+    public static JaxbEpic newJaxbEpic(JiraDataInterface e, long timestamp, List<JaxbStory> stories) {
         return newJaxbEpic(e.getName(), e.getKey(), e.getId(), e.getDescription(), timestamp, stories);
     }
 
@@ -31,7 +28,7 @@ public class JaxbFactory {
         return jaxbEpic;
     }
 
-    public static JaxbStory newJaxbStory(StoryData s, long timestamp, List<JaxbIssue> subtasks) {
+    public static JaxbStory newJaxbStory(JiraDataInterface s, long timestamp, List<JaxbIssue> subtasks) {
         return newJaxbStory(s.getName(), s.getKey(), s.getId(), s.getDescription(), timestamp, subtasks);
     }
 
@@ -42,7 +39,7 @@ public class JaxbFactory {
         return jaxbStory;
     }
 
-    public static JaxbIssue newJaxbIssue(IssueData i) {
+    public static JaxbIssue newJaxbIssue(JiraDataInterface i) {
         return newJaxbIssue(i.getName(), i.getKey(), i.getId(), i.getDescription(), i.getTimestamp());
     }
 

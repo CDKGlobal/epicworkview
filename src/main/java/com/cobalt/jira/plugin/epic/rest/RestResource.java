@@ -150,15 +150,15 @@ public class RestResource implements InitializingBean, DisposableBean {
                         subtasks.add(jaxbIssue);
                     }
 
-                    JaxbStory jaxbStory = JaxbFactory.newJaxbStory((StoryData)story.getData(), story.getTimestamp(), subtasks);
+                    JaxbStory jaxbStory = JaxbFactory.newJaxbStory(story.getData(), story.getTimestamp(), subtasks);
                     stories.add(jaxbStory);
                 }
 
-                JaxbEpic jaxbEpic = JaxbFactory.newJaxbEpic((EpicData)epic.getData(), epic.getTimestamp(), stories);
+                JaxbEpic jaxbEpic = JaxbFactory.newJaxbEpic(epic.getData(), epic.getTimestamp(), stories);
                 epics.add(jaxbEpic);
             }
 
-            JaxbProject jaxbProject = JaxbFactory.newJaxbProject((ProjectData)project.getData(), project.getTimestamp(), epics);
+            JaxbProject jaxbProject = JaxbFactory.newJaxbProject(project.getData(), project.getTimestamp(), epics);
             projects.add(jaxbProject);
         }
 

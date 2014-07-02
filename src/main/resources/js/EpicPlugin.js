@@ -39,6 +39,7 @@ function ProjectController($scope, $http) {
               savedProject.name = project.name;
               savedProject.key = project.key;
               savedProject.description = project.description;
+              savedProject.timestamp = project.timestamp;
             }
 	      });
 	    }).

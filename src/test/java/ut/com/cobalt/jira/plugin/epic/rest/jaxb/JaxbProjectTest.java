@@ -65,7 +65,7 @@ public class JaxbProjectTest
 
 	@Test
 	public void jaxbProjectIsValid() {
-		JaxbProject jaxbProject = JaxbFactory.newJaxbProject(new ProjectData(project), new LinkedList<JaxbEpic>());
+		JaxbProject jaxbProject = JaxbFactory.newJaxbProject(new ProjectData(project), -1, new LinkedList<JaxbEpic>());
 
 		assertEquals(PROJECT_NAME, jaxbProject.getName());
 		assertEquals(PROJECT_KEY, jaxbProject.getKey());

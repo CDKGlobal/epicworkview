@@ -7,6 +7,12 @@ var clickedEpic = null;
 // Unique epic id to use for fake epics
 var uniqueEpicId = -1;
 
+var baseURL;
+
+AJS.$(document).ready(function() {
+    baseURL = AJS.$('input[title="baseURL"]').val();
+});
+
 /*
  * Controller to manage table of projects
  */
@@ -23,7 +29,7 @@ function ProjectController($scope, $http) {
 	
     // Get all the projects and set them in a local variable (projects)
     getProjects = function() {
-    	$http.get('/jira/rest/epic/1/projects.json').
+    	$http.get(baseURL+'/rest/epic/1/projects.json').
 	    success(function(data, status, headers, config) {
 	      //add the new projects to the projects array
 	      angular.forEach(data, function(project, index) {

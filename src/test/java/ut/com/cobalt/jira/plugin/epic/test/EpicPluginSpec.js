@@ -3,7 +3,7 @@ describe('ProjectController', function(){
     var httpBackend, http, controller;
     var projects;
     
-    
+    var app = angular.module("EpicPlugin", []);
  
     //mock Application to allow us to inject our own dependencies
     beforeEach(angular.mock.module('EpicPlugin'));

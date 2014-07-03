@@ -43,7 +43,7 @@
 	      </thead>
 	      <tbody>
 	      	<tr ng-repeat="project in timeOrderedProjects() | filter: {included:true}">
-	      		<td><a href="/jira/browse/{{project.key}}">{{project.name}}</a></td>
+	      		<td><a href="{{getBaseURL()}}/browse/{{project.key}}">{{project.name}}</a></td>
 	      		<td>{{project.id}}</td>
 	      		<td>{{project.key}}</td>
 	      		<td>{{project.description}}</td>
@@ -59,7 +59,7 @@
 	      						<p>Stories:</p>
 	      						<ul class="aui-list-section">
 	      							<li class="story" ng-repeat="story in epic.stories">
-	      								<a href="/jira/browse/{{story.key}}">{{story.name}}</a>
+	      								<a href="{{getBaseURL()}}/browse/{{story.key}}">{{story.name}}</a>
 	      							</li>
 	      						</ul>
 	      					</div>

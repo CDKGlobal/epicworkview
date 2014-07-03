@@ -78,6 +78,10 @@ function ProjectController($scope, $http) {
     $scope.toggleFullScreen = function() {
     	$scope.isFullScreen = !$scope.isFullScreen;
     }
+
+    $scope.getBaseURL = function() {
+        return baseURL;
+    }
     
     // Return the difference between the current time and the given time, as a string
     $scope.millisecondToString = function(milli) {
@@ -126,6 +130,8 @@ function ProjectController($scope, $http) {
       });
       return where;
     }
+
+
 }
 
 /*

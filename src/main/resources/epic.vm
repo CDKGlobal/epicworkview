@@ -36,7 +36,6 @@
 	          </th>
 	          <th>Project Id</th>
 	          <th>Project Key</th>
-	          <th>Project Description</th>
 	          <th>Last Update</th>
 	          <th>Epics</th>
 	        </tr>
@@ -46,7 +45,6 @@
 	      		<td><a href="{{getBaseURL()}}/browse/{{project.key}}">{{project.name}}</a></td>
 	      		<td>{{project.id}}</td>
 	      		<td>{{project.key}}</td>
-	      		<td>{{project.description}}</td>
 	      		<td>{{millisecondToString(project.timestamp)}}</td>
 	      		<td>
 	      			<ul class="epics" ng-controller="EpicController">

@@ -16,6 +16,7 @@ import java.util.List;
  * A DataManager manages getting data out of the Jira database
  */
 public class DataManager {
+    //issues that has changed in the given time span excluding a list of given issues
     private static final String QUERY = "(status CHANGED FROM (Open, 'To Do') AFTER %s OR status CHANGED TO (Closed, Resolved, Done) AFTER %s) AND issuetype not in (%s) ORDER BY updated DESC";
     private static final String DEFAULT_QUERY = String.format(QUERY, "-2w", "-2w", "Epic");
 

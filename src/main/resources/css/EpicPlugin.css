@@ -95,6 +95,7 @@ input {
 	padding-left: 10px;
 }
 
-th {
+#projects th {
 	white-space: nowrap;
+	vertical-align: middle;
 }

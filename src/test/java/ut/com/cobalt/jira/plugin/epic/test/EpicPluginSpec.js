@@ -1,7 +1,7 @@
 describe('ProjectController', function(){
     var scope;//we'll use this scope in our tests
     var httpBackend, http, controller;
-    var projects;
+    var projects, alphabeticalProjects;
     
     var app = angular.module("EpicPlugin", []);
  
@@ -15,7 +15,8 @@ describe('ProjectController', function(){
         controller = $controller;
         http = $http;
 
-        httpBackend.when("GET", "/jira/rest/epic/1/projects.json").respond([
+		//httpBackend.when("GET", "jira/rest/epic/1/projects.json").respond([
+        httpBackend.when("GET", "undefined/rest/epic/1/projects.json?days=14").respond([
         {"name":"newpro","key":"NEW","id":10102,"description":"","epics":[]},
         {"name":"Project1","key":"PROJ","id":10000,"description":"","epics":[]},
         {"name":"Project2","key":"TEST","id":10100,"description":"","epics":[]},
@@ -43,7 +44,7 @@ describe('ProjectController', function(){
     
     
     it('should make a http GET request for projects and get 4 projects', function () {
-        httpBackend.expectGET('/jira/rest/epic/1/projects.json');
+        httpBackend.expectGET('undefined/rest/epic/1/projects.json?days=14');
         controller('ProjectController', {
         	$scope: scope,
         	$http: http
@@ -84,6 +85,7 @@ describe('ProjectController', function(){
         expect(epic1.id).toEqual(10000);
         expect(epic1.description).toEqual("To test project containing epic");
     });
+    
     
     
 });

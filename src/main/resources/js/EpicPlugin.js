@@ -66,7 +66,23 @@ function ProjectController($scope, $http) {
     
     $scope.timeOrderedProjects = function() {
     	$scope.projects.sort(function(a, b){return b.timestamp - a.timestamp});
+    	removeOldProjects($scope.projects, $scope.filterDays);
     	return $scope.projects;
+    }
+    
+    /*
+     * Remove projects from the list that are older than days old
+     * (projects should be in time order)
+     */
+    function removeOldProjects(projects, days) {
+    	var time = new Date().getTime();
+    	var i = projects.length - 1;
+    	var project = projects[i];
+    	while (i >= 0 && ((time - project.timestamp) / (1000 * 60 * 60 * 24)) > days) {
+    		projects.pop();
+    		i--;
+    		project = projects[i];
+    	}
     }
     
     $scope.hideEpicInfo = function() {

@@ -6,6 +6,9 @@ import java.util.List;
 
 
 public class JaxbFactory {
+    private JaxbFactory() {
+    }
+
     public static JaxbProject newJaxbProject(JiraDataInterface p, long timestamp, List<JaxbEpic> epics) {
         return newJaxbProject(p.getName(), p.getKey(), p.getId(), p.getDescription(), timestamp, epics);
     }

@@ -14,7 +14,7 @@ import java.util.List;
 
 
 public class DataManager {
-    private static final String QUERY = "(status CHANGED FROM Open AFTER %s OR status CHANGED TO (Closed, Resolved) AFTER %s) AND issuetype not in (%s) ORDER BY updated DESC";
+    private static final String QUERY = "(status CHANGED FROM (Open, 'To Do') AFTER %s OR status CHANGED TO (Closed, Resolved, Done) AFTER %s) AND issuetype not in (%s) ORDER BY updated DESC";
     private static final String DEFAULT_QUERY = String.format(QUERY, "-1w", "-1w", "Epic");
 
     private SearchService searchService;

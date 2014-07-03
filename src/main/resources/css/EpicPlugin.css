@@ -24,6 +24,7 @@ li.inline {
 	background-color: #F0F0F0;
 	color: #000000;
 	text-decoration: none;
+	cursor: pointer;
 }
 
 .clicked-epic {

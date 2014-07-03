@@ -15,7 +15,7 @@ import java.util.List;
 
 public class DataManager {
     private static final String QUERY = "(status CHANGED FROM (Open, 'To Do') AFTER %s OR status CHANGED TO (Closed, Resolved, Done) AFTER %s) AND issuetype not in (%s) ORDER BY updated DESC";
-    private static final String DEFAULT_QUERY = String.format(QUERY, "-1w", "-1w", "Epic");
+    private static final String DEFAULT_QUERY = String.format(QUERY, "-4w", "-4w", "Epic");
 
     private SearchService searchService;
 
@@ -36,27 +36,27 @@ public class DataManager {
             List<JiraData> stories = new ArrayList<JiraData>();
 
             for(Issue i : issues) {
+                Issue helper = null, story;
                 if(i.isSubTask()) {
                     //get parent story and get the story data
-                    Issue story = i.getParentObject();
-                    JiraData issueData = (JiraData)getData(stories.iterator(), story.getId());
-
-                    //if the story data doesn't exist create the storydata
-                    if(issueData == null) {
-                        issueData = new JiraData(new StoryData(story));
-                        stories.add(issueData);
-                    }
-                    //add the sub task to the story
-                    issueData.addToList(new IssueData(i));
+                    story = i.getParentObject();
+                    helper = i;
                 }
                 else {
-                    //if the story has subtasks and hasn't been stored add it to the list
-                    JiraData issueData = (JiraData)getData(stories.iterator(), i.getId());
+                    story = i;
+                }
 
-                    if(issueData == null) {
-                        issueData = new JiraData(new StoryData(i));
-                        stories.add(issueData);
-                    }
+                JiraData issueData = (JiraData)getData(stories.iterator(), story.getId());
+
+                //if the story data doesn't exist create the storydata
+                if(issueData == null) {
+                    issueData = new JiraData(new StoryData(story));
+                    stories.add(issueData);
+                }
+
+                if(helper != null) {
+                    //add the sub task to the story
+                    issueData.addToList(new IssueData(i));
                 }
             }
 

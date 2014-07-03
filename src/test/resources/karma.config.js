@@ -17,7 +17,7 @@ module.exports = function(config) {
     files: [
       'angular.js',
       'angular-mocks.js', 
-      '../java/ut/com/cobalt/jira/plugin/epic/test/*.test.js',
+      '../java/ut/com/cobalt/jira/plugin/epic/test/*Spec.js',
       '../../main/resources/js/*.js' 
     ],
 
@@ -27,6 +27,11 @@ module.exports = function(config) {
       
     ],
 
+    plugins:[
+     'karma-jasmine',
+     'karma-phantomjs-launcher',
+     'karma-chrome-launcher',
+     ],
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
@@ -60,7 +65,8 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['PhantomJS'],
+    //browsers: ['PhantomJS'],
+    browsers: ['Chrome'],
 
 
     // Continuous Integration mode

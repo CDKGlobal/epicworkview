@@ -58,38 +58,58 @@ describe('ProjectController', function(){
     	httpBackend.flush();
         expect(scope.projects[0]).not.toBeNull();
         var project1 = scope.projects[0];
-        expect(project1.name).toBe("newpro");
-        expect(project1.key).toBe("NEW");
-        expect(project1.id).toBe(10102);
+        expect(project1.name).toEqual("newpro");
+        expect(project1.key).toEqual("NEW");
+        expect(project1.id).toEqual(10102);
        
         project1 = scope.projects[1];
-        expect(project1.name).toBe("Project1");
-        expect(project1.key).toBe("PROJ");
-        expect(project1.id).toBe(10000);
+        expect(project1.name).toEqual("Project1");
+        expect(project1.key).toEqual("PROJ");
+        expect(project1.id).toEqual(10000);
         project1 = scope.projects[2];
-        expect(project1.name).toBe("Project2");
-        expect(project1.key).toBe("TEST");
-        expect(project1.id).toBe(10100);
+        expect(project1.name).toEqual("Project2");
+        expect(project1.key).toEqual("TEST");
+        expect(project1.id).toEqual(10100);
    });
    
    it('should have a project with epic', function(){
    		httpBackend.flush();
         var project2 = scope.projects[3];
-        expect(project2.name).toBe("Scrum1");
-        expect(project2.key).toBe("TESTSCRUM");
-        expect(project2.id).toBe(10101);
+        expect(project2.name).toEqual("Scrum1");
+        expect(project2.key).toEqual("TESTSCRUM");
+        expect(project2.id).toEqual(10101);
         var epic1 = project2.epics[0];
-        expect(epic1.name).toBe("Epic1");
-        expect(epic1.key).toBe("TESTSCRUM-1");
-        expect(epic1.id).toBe(10000);
-        expect(epic1.description).toBe("To test project containing epic");
+        expect(epic1.name).toEqual("Epic1");
+        expect(epic1.key).toEqual("TESTSCRUM-1");
+        expect(epic1.id).toEqual(10000);
+        expect(epic1.description).toEqual("To test project containing epic");
     });
     
     
 });
 
 
-
+describe('EpicController', function(){
+    var scope;//we'll use this scope in our tests
+    var controller;
+ 
+    //mock Application to allow us to inject our own dependencies
+    beforeEach(angular.mock.module('EpicPlugin'));
+    //mock the controller for the same reason and include $rootScope and $controller
+    beforeEach(angular.mock.inject(function($rootScope, $controller){
+        //create an empty scope
+        scope = $rootScope.$new();
+        //declare the controller and inject our empty scope
+        $controller('EpicController', {$scope: scope});
+        
+    }));
+    
+    //test
+    it('should not initially be clicked', function(){
+    	expect(scope.clickedEpic).toBeFalsy();
+    });
+});   
+    
 
 
           

@@ -31,16 +31,26 @@ public class DataManager {
         this.searchService = searchService;
     }
 
+    public List<JiraData> getProjects(User user) {
+        return getProjects(user, 7);
+    }
+
+    public List<JiraData> getProjects(User user, int days) {
+        String timePeriod = "-" + days + "d";
+        return getProjectsFromQuery(user, String.format(QUERY, timePeriod, timePeriod, "Epic"));
+    }
+
     /**
      * Get the projects from Jira according to the desired query.
      * Changing the global query variable will change which projects are retrieved.
      * Projects contain epics which contain stories which contain subtasks
-     * 
+     *
      * @param user the current user
+     * @param query the query used to search for issues
      * @requires all issues have projects, all subtasks have stories
      * @return a list of projects, an empty list if there are none
      */
-    public List<JiraData> getProjects(User user) {
+    private List<JiraData> getProjectsFromQuery(User user, String query) {
     	assert(searchService != null);
     	
         //list of projects
@@ -48,7 +58,7 @@ public class DataManager {
 
         try {
             //get all issues that changed status (stories and subtasks)
-            Query q = searchService.parseQuery(user, DEFAULT_QUERY).getQuery();
+            Query q = searchService.parseQuery(user, query).getQuery();
             List<Issue> issues = searchService.search(user, q, PagerFilter.getUnlimitedFilter()).getIssues();
 
             //list of stories

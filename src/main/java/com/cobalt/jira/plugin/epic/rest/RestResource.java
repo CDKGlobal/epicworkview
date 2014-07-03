@@ -14,10 +14,7 @@ import com.cobalt.jira.plugin.epic.rest.jaxb.*;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.*;
@@ -110,11 +107,11 @@ public class RestResource implements InitializingBean, DisposableBean {
     @GET
     @AnonymousAllowed
     @Produces(MediaType.APPLICATION_JSON)
-    public List<JaxbProject> getProjects() {
+    public List<JaxbProject> getProjects(@DefaultValue("7") @QueryParam("days") int days) {
         List<JaxbProject> projects = new ArrayList<JaxbProject>();
 
         //get all project with epics
-        List<JiraData> ps = dataManager.getProjects(getCurrentUser());
+        List<JiraData> ps = dataManager.getProjects(getCurrentUser(), days);
 
         //for each project
         for(JiraData project : ps) {

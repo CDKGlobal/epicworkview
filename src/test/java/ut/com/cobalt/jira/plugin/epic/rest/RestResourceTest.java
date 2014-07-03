@@ -115,24 +115,24 @@ public class RestResourceTest
         count = 0; //reset count
 
         DataManager dataManager = mock(DataManager.class);
-        when(dataManager.getProjects(null)).thenReturn(new ArrayList<JiraData>());
+        when(dataManager.getProjects(null, 7)).thenReturn(new ArrayList<JiraData>());
         restResource.setDataManager(dataManager);
 
-        List<JaxbProject> jaxbProjects = restResource.getProjects();
+        List<JaxbProject> jaxbProjects = restResource.getProjects(7);
         assertEquals(0, jaxbProjects.size());
 
         UserProfile userProfile = mock(UserProfile.class);
         when(userProfile.getUsername()).thenReturn(USERNAME);
         when(userManager.getRemoteUser()).thenReturn(userProfile);
 
-        jaxbProjects = restResource.getProjects();
+        jaxbProjects = restResource.getProjects(7);
         assertEquals(0, jaxbProjects.size());
 
         MockApplicationUser mockApplicationUser = spy(new MockApplicationUser(USERNAME));
         ((MockUserManager)jiraUserManager).addUser(mockApplicationUser);
-        when(dataManager.getProjects(mockApplicationUser.getDirectoryUser())).thenReturn(projects);
+        when(dataManager.getProjects(mockApplicationUser.getDirectoryUser(), 7)).thenReturn(projects);
 
-        jaxbProjects = restResource.getProjects();
+        jaxbProjects = restResource.getProjects(7);
         assertEquals(1, jaxbProjects.size());
         List<JaxbEpic> epics = jaxbProjects.get(0).getEpics();
         assertEquals(1, epics.size());

@@ -20,8 +20,7 @@ function ProjectController($scope, $http) {
 	
 	$scope.filter = false;
 	$scope.projects = [];
-    $scope.isFullScreen = false;
-	
+
 	$scope.toggleFilter = function(e) {
 		e.stopPropagation();
 		$scope.filter = !$scope.filter;
@@ -76,7 +75,8 @@ function ProjectController($scope, $http) {
     }
     
     $scope.toggleFullScreen = function() {
-    	$scope.isFullScreen = !$scope.isFullScreen;
+    	AJS.$("header").slideToggle();
+    	AJS.$("footer").fadeToggle();
     }
 
     $scope.getBaseURL = function() {

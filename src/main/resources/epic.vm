@@ -6,7 +6,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.js"></script>
   </head>
   <body>
-    <div ng-app ng-controller="ProjectController" ng-click="hideEpicInfo()" ng-class ="{'fullscreen': isFullScreen}" class="content-container content-body">
+    <div ng-app ng-controller="ProjectController" ng-click="hideEpicInfo()" class="content-container content-body">
     	<button ng-click="toggleFullScreen()" class="fullscreen-button">
     		Full
     	</button>

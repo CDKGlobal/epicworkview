@@ -36,7 +36,15 @@
 	          </th>
 	          <th>Project Id</th>
 	          <th>Project Key</th>
-	          <th>Last Update</th>
+	          <th>Last Update (
+	          	<select ng-model='filterDays'>
+  					<option value="1">1</option>
+ 				 	<option value="2">2</option>
+  					<option value="7">7</option>
+  					<option value="14">14</option>
+				</select>
+	           Days)
+	           </th>
 	          <th>Epics</th>
 	        </tr>
 	      </thead>

@@ -9,8 +9,8 @@ var uniqueEpicId = -1;
 
 var baseURL;
 
-AJS.$(document).ready(function() {
-    baseURL = AJS.$('input[title="baseURL"]').val();
+jQuery(document).ready(function() {
+    baseURL = jQuery('input[title="baseURL"]').val();
 });
 
 /*
@@ -18,6 +18,7 @@ AJS.$(document).ready(function() {
  */
 function ProjectController($scope, $http) {
 	
+	$scope.filterDays = 14;
 	$scope.filter = false;
 	$scope.projects = [];
 
@@ -28,7 +29,7 @@ function ProjectController($scope, $http) {
 	
     // Get all the projects and set them in a local variable (projects)
     getProjects = function() {
-    	$http.get(baseURL+'/rest/epic/1/projects.json').
+    	$http.get(baseURL+'/rest/epic/1/projects.json?days='+$scope.filterDays).
 	    success(function(data, status, headers, config) {
 	      //add the new projects to the projects array
 	      angular.forEach(data, function(project, index) {
@@ -75,8 +76,8 @@ function ProjectController($scope, $http) {
     }
     
     $scope.toggleFullScreen = function() {
-    	AJS.$("header").slideToggle();
-    	AJS.$("footer").fadeToggle();
+    	jQuery("header").slideToggle();
+    	jQuery("footer").fadeToggle();
     }
 
     $scope.getBaseURL = function() {

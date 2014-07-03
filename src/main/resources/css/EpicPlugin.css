@@ -7,13 +7,15 @@ table.aui > tbody > tr > td {
 }
 
 li.inline {
-	display: inline;
+	display: inline-block;
+	margin-top: 8px;
+	margin-bottom: 8px;
 }
 
 .epics {
 	padding-left: 0px;
-	padding-top: 3px;
-	padding-bottom: 3px;
+	display: flex;
+	flex-wrap: wrap;
 }
 
 .epic {
@@ -90,4 +92,8 @@ input {
 
 .story {
 	padding-left: 10px;
+}
+
+th {
+	white-space: nowrap;
 }

@@ -25,7 +25,7 @@
 			    			<ul class="aui-list-section">
 			    				<li ng-repeat="project in alphabeticalProjects() | filter:searchText" class="check-list-item">
 			    					<label class="item-label" title="{{project.name}}">
-			    						<input type="checkbox" ng-init="project.included=true" ng-model='project.included'>
+			    						<input type="checkbox" ng-click="project.state=!project.state" ng-init="project.included=project.state" ng-model='project.included'>
 			    						{{project.name}}
 			    					</label>
 			    				</li>

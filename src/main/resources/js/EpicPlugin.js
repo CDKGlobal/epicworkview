@@ -38,6 +38,7 @@ function ProjectController($scope, $http) {
 	        //add it if it doesn't exist
             if(projectIndex == -1) {
               $scope.projects.push(project);
+              project.state = true;
             }
             else {
               //otherwise copy the latest data retrieved into the existing one

@@ -111,56 +111,55 @@ public class RestResource implements InitializingBean, DisposableBean {
         List<JaxbProject> projects = new ArrayList<JaxbProject>();
 
         //get all project with epics
-        List<JiraData> ps = dataManager.getProjects(getCurrentUser(), days);
+        List<IJiraData> preOrder = dataManager.getProjects(getCurrentUser(), days);
 
-        //for each project
-        for(JiraData project : ps) {
-
-            //get all the epics for the project
-            List<JaxbEpic> epics = new ArrayList<JaxbEpic>();
-
-            //for each epic
-            Iterator<JiraDataInterface> epicIter = project.getIterator();
-            while(epicIter.hasNext()) {
-                JiraData epic = (JiraData)epicIter.next();
-
-                //get all of the stories for this epic
-                List<JaxbStory> stories = new ArrayList<JaxbStory>();
-
-                //for each story
-                Iterator<JiraDataInterface> storyIter = epic.getIterator();
-                while(storyIter.hasNext()) {
-                    JiraData story = (JiraData)storyIter.next();
-
-                    //get all of the subtasks for this story
-                    List<JaxbIssue> subtasks = new ArrayList<JaxbIssue>();
-
-                    //for each sub-task
-                    Iterator<JiraDataInterface> subtaskIter = story.getIterator();
-                    while(subtaskIter.hasNext()) {
-                        JiraDataInterface subtask = subtaskIter.next();
-
-                        //convert the sub-task to a JaxbIssue and store it
-                        JaxbIssue jaxbIssue = JaxbFactory.newJaxbIssue(subtask);
-                        subtasks.add(jaxbIssue);
-                    }
-
-                    //convert the story and sub-tasks to a JaxbStory and store it
-                    JaxbStory jaxbStory = JaxbFactory.newJaxbStory(story.getData(), story.getTimestamp(), subtasks);
-                    stories.add(jaxbStory);
-                }
-
-                //convert the epic and stories to a JaxbEpic and store it
-                JaxbEpic jaxbEpic = JaxbFactory.newJaxbEpic(epic.getData(), epic.getTimestamp(), stories);
-                epics.add(jaxbEpic);
-            }
-
-            //convert the project and epics to a jaxbProject and store it
-            JaxbProject jaxbProject = JaxbFactory.newJaxbProject(project.getData(), project.getTimestamp(), epics);
-            projects.add(jaxbProject);
-        }
+        while(preOrder.size() > 0)
+            buildJaxb(preOrder, projects);
 
         return projects;
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T extends JaxbIssue> void buildJaxb(List<IJiraData> input, List<T> output) {
+        if(input.size() == 0)
+            return;
+
+        IJiraData data = input.get(0);
+        input.remove(0);
+
+        if(data.getType() == IJiraData.DataType.SUBTASK)
+            output.add((T)JaxbFactory.newJaxbIssue(data));
+        else {
+            List temp = null;
+            switch(data.getType()) {
+            case PROJECT:
+                temp = new ArrayList<JaxbEpic>();
+                break;
+            case EPIC:
+                temp = new ArrayList<JaxbStory>();
+                break;
+            case STORY:
+                temp = new ArrayList<JaxbIssue>();
+                break;
+            }
+
+            //while the next element is a subtype of data
+            while(input.size() > 0 && input.get(0).getType().compareTo(data.getType()) > 0) {
+                buildJaxb(input, temp);
+            }
+
+            switch(data.getType()) {
+            case PROJECT:
+                output.add((T)JaxbFactory.newJaxbProject(data, temp));
+                break;
+            case EPIC:
+                output.add((T)JaxbFactory.newJaxbEpic(data, temp));
+                break;
+            case STORY:
+                output.add((T)JaxbFactory.newJaxbStory(data, temp));
+                break;
+            }
+        }
     }
 
     /**
@@ -193,7 +192,7 @@ public class RestResource implements InitializingBean, DisposableBean {
     /**
      * Event listening testing
      *
-     * @param issueEvent
+     * @param issueEvent - the event containing the issue
      */
     @EventListener
     public void issueEventListener(IssueEvent issueEvent) {

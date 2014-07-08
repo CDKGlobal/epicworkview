@@ -1,71 +1,55 @@
 package ut.com.cobalt.jira.plugin.epic.rest.jaxb;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
 
-import com.atlassian.jira.issue.CustomFieldManager;
-import com.atlassian.jira.issue.Issue;
-import com.atlassian.jira.issue.fields.CustomField;
-import com.atlassian.jira.issue.issuetype.IssueType;
-import com.atlassian.jira.mock.component.MockComponentWorker;
-import com.cobalt.jira.plugin.epic.rest.jaxb.JaxbEpic;
-import com.cobalt.jira.plugin.epic.rest.jaxb.JaxbFactory;
-import com.cobalt.jira.plugin.epic.rest.jaxb.JaxbIssue;
+import com.cobalt.jira.plugin.epic.rest.jaxb.*;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
+
+import java.util.ArrayList;
 
 
 public class JaxbIssuesTest
 {
+    private static final String ISSUE_NAME = "Test Name";
+    private static final String ISSUE_KEY = "TP-1";
+    private static final long ISSUE_ID = 100000l;
 	private static final String ISSUE_DESCRIPTION = "Test issue description";
-	private static final String ISSUE_KEY = "TP-1";
-	private static final long ISSUE_ID = 100000l;
-	private static final String ISSUE_NAME = "Test Epic";
-
-	private Issue issue;
+    private static final long ISSUE_TIMESTAMP = 1000l;
 
 	@Before
 	public void setup() {
-		CustomField customField = mock(CustomField.class);
-
-		CustomFieldManager customFieldManager = mock(CustomFieldManager.class);
-		when(customFieldManager.getCustomFieldObjectByName(anyString())).thenReturn(customField);
-
-		MockComponentWorker worker = new MockComponentWorker();
-		worker.addMock(CustomFieldManager.class, customFieldManager);
-		worker.init();
-
-		IssueType issueType = mock(IssueType.class);
-		when(issueType.getName()).thenReturn("Epic");
-
-		issue = mock(Issue.class);
-		when(issue.getSummary()).thenReturn(ISSUE_DESCRIPTION);
-		when(issue.getKey()).thenReturn(ISSUE_KEY);
-		when(issue.getId()).thenReturn(ISSUE_ID);
-		when(issue.getCustomFieldValue(customField)).thenReturn(ISSUE_NAME);
-		when(issue.getIssueTypeObject()).thenReturn(issueType);
 	}
 
-    @Ignore
 	@Test
 	public void jaxbIssueIsValid() {
-		/*JaxbIssue jaxbIssue = newJaxbIssue(issue);
+		JaxbIssue jaxbIssue = JaxbFactory.newJaxbIssue(ISSUE_NAME, ISSUE_KEY, ISSUE_ID, ISSUE_DESCRIPTION, ISSUE_TIMESTAMP);
 
-		assertEquals(ISSUE_DESCRIPTION, jaxbIssue.getDescription());
-		assertEquals(ISSUE_KEY, jaxbIssue.getKey());
-		assertEquals(ISSUE_ID, jaxbIssue.getId());*/
+        assertEquals(ISSUE_NAME, jaxbIssue.getName());
+        assertEquals(ISSUE_KEY, jaxbIssue.getKey());
+        assertEquals(ISSUE_ID, jaxbIssue.getId());
+        assertEquals(ISSUE_DESCRIPTION, jaxbIssue.getDescription());
+        assertEquals(ISSUE_TIMESTAMP, jaxbIssue.getTimestamp());
 	}
 
-    @Ignore
+    @Test
+    public void jaxbStoryIsValid() {
+        JaxbStory jaxbStory = JaxbFactory.newJaxbStory(ISSUE_NAME, ISSUE_KEY, ISSUE_ID, ISSUE_DESCRIPTION, ISSUE_TIMESTAMP, new ArrayList<JaxbIssue>());
+
+        assertEquals(0, jaxbStory.getSubtasks().size());
+    }
+
 	@Test
 	public void jaxbEpicIsValid() {
-		/*JaxbEpic jaxbEpic = JaxbFactory.newJaxbEpic();
+		JaxbEpic jaxbEpic = JaxbFactory.newJaxbEpic(ISSUE_NAME, ISSUE_KEY, ISSUE_ID, ISSUE_DESCRIPTION, ISSUE_TIMESTAMP, new ArrayList<JaxbStory>());
 
-		assertEquals(ISSUE_DESCRIPTION, jaxbEpic.getDescription());
-		assertEquals(ISSUE_KEY, jaxbEpic.getKey());
-		assertEquals(ISSUE_ID, jaxbEpic.getId());
-
-		assertEquals(ISSUE_NAME, jaxbEpic.getName());*/
+        assertEquals(0, jaxbEpic.getStories().size());
 	}
+
+    @Test
+    public void jaxbProjectIsValid() {
+        JaxbProject jaxbProject = JaxbFactory.newJaxbProject(ISSUE_NAME, ISSUE_KEY, ISSUE_ID, ISSUE_DESCRIPTION, ISSUE_TIMESTAMP, new ArrayList<JaxbEpic>());
+
+        assertEquals(0, jaxbProject.getEpics().size());
+    }
 }

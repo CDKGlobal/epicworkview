@@ -1,11 +1,14 @@
 package com.cobalt.jira.plugin.epic.data;
 
+import com.atlassian.jira.component.ComponentAccessor;
+import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.Issue;
+
 
 /**
  * An IssueData represents a Jira Issue, which can be an epic, story, or subtask
  */
-public class IssueData implements JiraDataInterface{
+public class IssueData extends JiraData {
     Issue issue;
 
     /**
@@ -15,6 +18,12 @@ public class IssueData implements JiraDataInterface{
      */
     public IssueData(Issue issue) {
         this.issue = issue;
+        setTimestamp(issue.getUpdated().getTime());
+    }
+
+    @Override
+    public DataType getType() {
+        return DataType.SUBTASK;
     }
 
     /**
@@ -53,16 +62,23 @@ public class IssueData implements JiraDataInterface{
         return issue.getDescription();
     }
 
-    /**
-     * Returns the last updated time of the issue
-     * 
-     * @return the last updated time of the issue
-     */
-    public long getTimestamp() {
-        return issue.getUpdated().getTime();
+    @Override
+    public IJiraData getProject() {
+        return new ProjectData(issue.getProjectObject());
     }
 
-    public String toString() {
-        return getName();
+    @Override
+    public IJiraData getEpic() {
+        CustomFieldManager manager = ComponentAccessor.getCustomFieldManager();
+        Issue epic = (Issue)issue.getParentObject().getCustomFieldValue(manager.getCustomFieldObjectByName("Epic Link"));
+        if(epic == null) {
+            return new NullEpicData("Other Stories", "Stories without an epic");
+        }
+        return new EpicData(epic);
+    }
+
+    @Override
+    public IJiraData getStory() {
+        return new StoryData(issue.getParentObject());
     }
 }

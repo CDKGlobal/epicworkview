@@ -9,8 +9,8 @@ public class JaxbFactory {
     private JaxbFactory() {
     }
 
-    public static JaxbProject newJaxbProject(JiraDataInterface p, long timestamp, List<JaxbEpic> epics) {
-        return newJaxbProject(p.getName(), p.getKey(), p.getId(), p.getDescription(), timestamp, epics);
+    public static JaxbProject newJaxbProject(IJiraData p, List<JaxbEpic> epics) {
+        return newJaxbProject(p.getName(), p.getKey(), p.getId(), p.getDescription(), p.getTimestamp(), epics);
     }
 
     public static JaxbProject newJaxbProject(String name, String key, long id, String description, long timestamp, List<JaxbEpic> epics) {
@@ -20,8 +20,8 @@ public class JaxbFactory {
         return jaxbProject;
     }
 
-    public static JaxbEpic newJaxbEpic(JiraDataInterface e, long timestamp, List<JaxbStory> stories) {
-        return newJaxbEpic(e.getName(), e.getKey(), e.getId(), e.getDescription(), timestamp, stories);
+    public static JaxbEpic newJaxbEpic(IJiraData e, List<JaxbStory> stories) {
+        return newJaxbEpic(e.getName(), e.getKey(), e.getId(), e.getDescription(), e.getTimestamp(), stories);
     }
 
     public static JaxbEpic newJaxbEpic(String name, String key, long id, String description, long timestamp, List<JaxbStory> stories) {
@@ -31,8 +31,8 @@ public class JaxbFactory {
         return jaxbEpic;
     }
 
-    public static JaxbStory newJaxbStory(JiraDataInterface s, long timestamp, List<JaxbIssue> subtasks) {
-        return newJaxbStory(s.getName(), s.getKey(), s.getId(), s.getDescription(), timestamp, subtasks);
+    public static JaxbStory newJaxbStory(IJiraData s, List<JaxbIssue> subtasks) {
+        return newJaxbStory(s.getName(), s.getKey(), s.getId(), s.getDescription(), s.getTimestamp(), subtasks);
     }
 
     public static JaxbStory newJaxbStory(String name, String key, long id, String description, long timestamp, List<JaxbIssue> subtasks) {
@@ -42,7 +42,7 @@ public class JaxbFactory {
         return jaxbStory;
     }
 
-    public static JaxbIssue newJaxbIssue(JiraDataInterface i) {
+    public static JaxbIssue newJaxbIssue(IJiraData i) {
         return newJaxbIssue(i.getName(), i.getKey(), i.getId(), i.getDescription(), i.getTimestamp());
     }
 

@@ -1,10 +1,9 @@
 package com.cobalt.jira.plugin.epic.data;
 
-
 /**
  * A NullData represents a fake Jira Issue
  */
-public class NullData implements JiraDataInterface {
+public class NullEpicData extends JiraData {
     private String name;
     private String description;
 
@@ -14,9 +13,14 @@ public class NullData implements JiraDataInterface {
      * @param name the name of the NullData
      * @param description the description of the NullData
      */
-    public NullData(String name, String description) {
+    public NullEpicData(String name, String description) {
         this.name = name;
         this.description = description;
+    }
+
+    @Override
+    public DataType getType() {
+        return DataType.EPIC;
     }
 
     /**
@@ -57,13 +61,18 @@ public class NullData implements JiraDataInterface {
         return description;
     }
 
-    /**
-     * Returns the last updated time of the data
-     * Returns -1 because the issue is not real
-     * 
-     * @return the timestamp of the data
-     */
-    public long getTimestamp() {
-        return -1;
+    @Override
+    public IJiraData getProject() {
+        return null;
+    }
+
+    @Override
+    public IJiraData getEpic() {
+        return this;
+    }
+
+    @Override
+    public IJiraData getStory() {
+        return null;
     }
 }

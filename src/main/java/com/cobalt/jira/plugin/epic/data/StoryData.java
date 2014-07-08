@@ -3,7 +3,6 @@ package com.cobalt.jira.plugin.epic.data;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.Issue;
-import com.atlassian.jira.project.Project;
 
 
 public class StoryData extends IssueData {
@@ -11,13 +10,21 @@ public class StoryData extends IssueData {
         super(story);
     }
 
-    public Project getProject() {
-        return issue.getProjectObject();
+    public DataType getType() {
+        return DataType.STORY;
     }
 
-    public Issue getEpic() {
+    @Override
+    public IJiraData getEpic() {
         CustomFieldManager manager = ComponentAccessor.getCustomFieldManager();
-        Object o = issue.getCustomFieldValue(manager.getCustomFieldObjectByName("Epic Link"));
-        return o instanceof Issue ? (Issue)o : null;
+        Issue epic = (Issue)issue.getCustomFieldValue(manager.getCustomFieldObjectByName("Epic Link"));
+        if(epic == null) {
+            return new NullEpicData("Other Stories", "Stories without an epic");
+        }
+        return new EpicData(epic);
+    }
+
+    public IJiraData getStory() {
+        return this;
     }
 }

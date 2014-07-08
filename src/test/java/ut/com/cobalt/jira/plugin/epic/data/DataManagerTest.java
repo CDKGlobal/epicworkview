@@ -16,13 +16,11 @@ import com.atlassian.crowd.embedded.api.User;
 import com.atlassian.jira.bc.issue.search.SearchService;
 import com.atlassian.query.Query;
 import com.cobalt.jira.plugin.epic.data.DataManager;
-import com.cobalt.jira.plugin.epic.data.JiraData;
-import com.cobalt.jira.plugin.epic.data.JiraDataInterface;
+import com.cobalt.jira.plugin.epic.data.IJiraData;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -65,10 +63,10 @@ public class DataManagerTest {
 
         when(nullSearchResults.getIssues()).thenReturn(new ArrayList<Issue>());
 
-        MockIssue mockSubTask = spy(new MockIssue(1l, System.currentTimeMillis()));
-        MockIssue mockStory1 = new MockIssue(2l, System.currentTimeMillis());
-        MockIssue mockStory2 = spy(new MockIssue(3l, System.currentTimeMillis()));
-        MockIssue mockEpic = new MockIssue(4l, System.currentTimeMillis());
+        MockIssue mockSubTask = spy(new MockIssue(1l, 100l));
+        MockIssue mockStory1 = new MockIssue(2l, 90l);
+        MockIssue mockStory2 = spy(new MockIssue(3l, 90l));
+        MockIssue mockEpic = new MockIssue(4l, 80l);
         MockProject mockProject = new MockProject(5l);
 
         mockSubTask.setProjectObject(mockProject);
@@ -93,7 +91,7 @@ public class DataManagerTest {
     public void dataManagerIsValidWithNullUser() {
         DataManager dataManager = new DataManager(searchService);
 
-        List<JiraData> projects = dataManager.getProjects(null);
+        List<IJiraData> projects = dataManager.getProjects(null);
 
         assertEquals(0, projects.size());
     }
@@ -102,17 +100,26 @@ public class DataManagerTest {
     public void dataManagerIsValidWithUser() {
         DataManager dataManager = new DataManager(searchService);
 
-        List<JiraData> projects = dataManager.getProjects(mockUser);
+        List<IJiraData> projects = dataManager.getProjects(mockUser);
 
-        assertEquals(1, projects.size());//number of projects
+        assertEquals(6, projects.size());//number of elements in the tree
 
-        Iterator<JiraDataInterface> iter = projects.get(0).getIterator();
-        int count = 0;
-        while(iter.hasNext()) {
-            count++;
-            iter.next();
-        }
-
-        assertEquals(2, count);//number of epics one mockEpic and the Other stories Epic
+        assertEquals(IJiraData.DataType.PROJECT, projects.get(0).getType());
+        assertEquals(100l, projects.get(0).getTimestamp());
+        projects.remove(0);
+        assertEquals(IJiraData.DataType.EPIC, projects.get(0).getType());
+        assertEquals(100l, projects.get(0).getTimestamp());
+        projects.remove(0);
+        assertEquals(IJiraData.DataType.STORY, projects.get(0).getType());
+        assertEquals(100l, projects.get(0).getTimestamp());
+        projects.remove(0);
+        assertEquals(IJiraData.DataType.SUBTASK, projects.get(0).getType());
+        assertEquals(100l, projects.get(0).getTimestamp());
+        projects.remove(0);
+        assertEquals(IJiraData.DataType.EPIC, projects.get(0).getType());
+        assertEquals(90l, projects.get(0).getTimestamp());
+        projects.remove(0);
+        assertEquals(IJiraData.DataType.STORY, projects.get(0).getType());
+        assertEquals(90l, projects.get(0).getTimestamp());
     }
 }

@@ -7,9 +7,7 @@ import com.atlassian.jira.user.MockApplicationUser;
 import com.atlassian.jira.user.util.MockUserManager;
 import com.atlassian.sal.api.user.UserManager;
 import com.atlassian.sal.api.user.UserProfile;
-import com.cobalt.jira.plugin.epic.data.DataManager;
-import com.cobalt.jira.plugin.epic.data.JiraData;
-import com.cobalt.jira.plugin.epic.data.JiraDataInterface;
+import com.cobalt.jira.plugin.epic.data.*;
 import com.cobalt.jira.plugin.epic.rest.RestResource;
 import com.cobalt.jira.plugin.epic.rest.jaxb.JaxbEpic;
 import com.cobalt.jira.plugin.epic.rest.jaxb.JaxbIssue;
@@ -35,40 +33,49 @@ public class RestResourceTest
 	private EventPublisher eventPublisher;
 
     private int count = 0;
-    private List<JiraData> projects;
 
-    private class MockJiraDataInterface implements JiraDataInterface {
-        private long id;
+    private List<IJiraData> projects;
 
-        public MockJiraDataInterface(long id) {
-            this.id = id;
+    private class MockJiraData extends JiraData {
+        private DataType type;
+
+        public MockJiraData(DataType type) {
+            this.type = type;
         }
 
-        @Override
+        public DataType getType() {
+            return type;
+        }
+
         public String getName() {
-            return "Mock " + id;
+            return null;
         }
 
-        @Override
         public String getDescription() {
-            return getName();
+            return null;
         }
 
-        @Override
         public long getId() {
-            return id;
+            return 0;
         }
 
-        @Override
         public String getKey() {
-            return getName();
+            return null;
         }
 
-        @Override
-        public long getTimestamp() {
-            return id;
+        public IJiraData getProject() {
+            return null;
+        }
+
+        public IJiraData getEpic() {
+            return null;
+        }
+
+        public IJiraData getStory() {
+            return null;
         }
     }
+
 
     @Before
     public void setup() {
@@ -89,15 +96,15 @@ public class RestResourceTest
 
         jiraUserManager = new MockUserManager();
 
-        JiraDataInterface subtask = new MockJiraDataInterface(4l);
-        JiraData story = new JiraData(new MockJiraDataInterface(3l));
-        JiraData epic = new JiraData(new MockJiraDataInterface(2l));
-        JiraData project = new JiraData(new MockJiraDataInterface(1l));
-        story.addToList(subtask);
-        epic.addToList(story);
-        project.addToList(epic);
-        projects = new ArrayList<JiraData>();
+        IJiraData subtask = new MockJiraData(IJiraData.DataType.SUBTASK);
+        IJiraData story = new MockJiraData(IJiraData.DataType.STORY);
+        IJiraData epic = new MockJiraData(IJiraData.DataType.EPIC);
+        IJiraData project = new MockJiraData(IJiraData.DataType.PROJECT);
+        projects = new ArrayList<IJiraData>();
         projects.add(project);
+        projects.add(epic);
+        projects.add(story);
+        projects.add(subtask);
     }
 
     @Test
@@ -115,7 +122,7 @@ public class RestResourceTest
         count = 0; //reset count
 
         DataManager dataManager = mock(DataManager.class);
-        when(dataManager.getProjects(null, 7)).thenReturn(new ArrayList<JiraData>());
+        when(dataManager.getProjects(null, 7)).thenReturn(new ArrayList<IJiraData>());
         restResource.setDataManager(dataManager);
 
         List<JaxbProject> jaxbProjects = restResource.getProjects(7);

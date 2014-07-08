@@ -2,13 +2,11 @@ package com.cobalt.jira.plugin.epic.data;
 
 import com.atlassian.jira.project.Project;
 
-import java.util.Iterator;
-import java.util.LinkedHashSet;
 
 /**
  * A ProjectData represents and manages a Jira Project
  */
-public class ProjectData  implements JiraDataInterface {
+public class ProjectData extends JiraData {
     private Project project;
 
     /**
@@ -18,6 +16,11 @@ public class ProjectData  implements JiraDataInterface {
      */
     public ProjectData(Project project) {
         this.project = project;
+    }
+
+    @Override
+    public DataType getType() {
+        return DataType.PROJECT;
     }
 
     /**
@@ -56,13 +59,15 @@ public class ProjectData  implements JiraDataInterface {
         return project.getDescription();
     }
 
-    /**
-     * Returns the last updated time of the project
-     * This is -1 because projects do not have timestamps
-     * 
-     * @return the timestamp of the project
-     */
-    public long getTimestamp() {
-        return -1;
+    public IJiraData getProject() {
+        return this;
+    }
+
+    public IJiraData getEpic() {
+        return null;
+    }
+
+    public IJiraData getStory() {
+        return null;
     }
 }

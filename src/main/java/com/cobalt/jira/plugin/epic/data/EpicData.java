@@ -3,7 +3,7 @@ package com.cobalt.jira.plugin.epic.data;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.Issue;
-import com.atlassian.jira.issue.fields.CustomField;
+
 
 /**
  * An EpicData represents a Jira Epic
@@ -17,6 +17,10 @@ public class EpicData extends IssueData {
 	 */
     public EpicData(Issue epic) {
         super(epic);
+    }
+
+    public DataType getType() {
+        return DataType.EPIC;
     }
 
     /**

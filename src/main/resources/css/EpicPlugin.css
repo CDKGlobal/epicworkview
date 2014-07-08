@@ -117,3 +117,17 @@ input {
     right: -50px;
     height: 0px;
 }
+
+/* Project row animations */
+
+.project-row.ng-move { 
+	-webkit-transition-duration: 1s;
+	-moz-transition-duration: 1s;
+	-ms-transition-duration: 1s;
+	-o-transition-duration: 1s;
+    transition-duration: 1s;
+} 
+
+.project-row.ng-move.ng-move-active {
+	background: red;
+}

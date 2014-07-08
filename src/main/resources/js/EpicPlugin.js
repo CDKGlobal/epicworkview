@@ -57,6 +57,20 @@ function ProjectController($scope, $http) {
 	    });
     }
     
+    $scope.clearchkbox = function() {
+        angular.forEach($scope.projects, function (project) {
+            project.included = false;
+        });
+    };
+    
+    
+    
+    $scope.checkchkbox = function() {
+        angular.forEach($scope.projects, function (project) {
+            project.included = true;
+        });
+    };
+    
     $scope.alphabeticalProjects = function() {
     	$scope.projects.sort(function(a, b){
     		if(a.name < b.name) return -1;

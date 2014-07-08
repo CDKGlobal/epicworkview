@@ -2,11 +2,16 @@
   <head>
     <title>My Epic</title>
     <meta name="decorator" content="atl.general">
-    $webResourceManager.requireResource("com.cobalt.jira.plugin.epic.EpicPlugin:EpicPlugin-resources")
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular-animate.js"></script>
+    $webResourceManager.requireResource("com.cobalt.jira.plugin.epic.EpicPlugin:EpicPlugin-resources")
+    <script type="text/javascript">
+      //replace this with whatever your module ends up being
+      var myApp = angular.module('myApp', ['ngAnimate']);
+    </script>
   </head>
   <body>
-    <div ng-app ng-controller="ProjectController" ng-click="hideEpicInfo()" class="content-container content-body">
+    <div ng-app="myApp" ng-controller="ProjectController" ng-click="hideEpicInfo()" class="content-container content-body">
     	<button ng-click="toggleFullScreen()" class="fullscreen-button">
     		Full
     	</button>
@@ -23,7 +28,7 @@
 			    		<input type='text' ng-model='searchText.name' autocomplete="off" placeholder="Find Projects..." class="aui-field" wrap="off">
 			    		<div class="aui-list-scroll">
 			    			<ul class="aui-list-section">
-			    				<li ng-repeat="project in alphabeticalProjects() | filter:searchText" class="check-list-item">
+			    				<li ng-repeat="project in alphabeticalProjects() | filter:searchText" class="check-list-item repeat-item">
 			    					<label class="item-label" title="{{project.name}}">
 			    						<input type="checkbox" ng-click="project.state=!project.state" ng-init="project.included=project.state" ng-model='project.included'>
 			    						{{project.name}}

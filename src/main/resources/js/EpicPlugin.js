@@ -1,3 +1,4 @@
+
 // Whether to continuously refresh projects
 var refresh = true;
 
@@ -157,7 +158,7 @@ function ProjectController($scope, $http) {
  * Determines which epic information to display
  */
 function EpicController($scope) {
-    
+
     // Set the clicked epic to be name or null if it is already name
     $scope.toggleEpic = function(e, id) {
     	e.stopPropagation();
@@ -183,4 +184,3 @@ function EpicController($scope) {
     	}
     }
 }
-

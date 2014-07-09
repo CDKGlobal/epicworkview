@@ -1,4 +1,7 @@
 
+// Time of most recent update
+var lastUpdateTime = 0;
+
 // Whether to continuously refresh projects
 var refresh = true;
 
@@ -28,33 +31,60 @@ function ProjectController($scope, $http) {
 		$scope.filter = !$scope.filter;
 	}
 	
-    // Get all the projects and set them in a local variable (projects)
-    getProjects = function() {
-    	$http.get(baseURL+'/rest/epic/1/projects.json?seconds='+($scope.filterDays * 60 * 60 * 24)).
+    // Get all the projects in the last amount of seconds and set them in a local variable (projects)
+    $scope.getProjects = function(seconds) {
+    	$http.get(baseURL+'/rest/epic/1/projects.json?seconds='+seconds).
 	    success(function(data, status, headers, config) {
+	      lastUpdateTime = new Date().getTime();
 	      //add the new projects to the projects array
-	      angular.forEach(data, function(project, index) {
-	        //get the index of this project in the list of projects we're displaying
-	        var projectIndex = indexOf($scope.projects, project);
-	        //add it if it doesn't exist
-            if(projectIndex == -1) {
-              $scope.projects.push(project);
-              project.state = true;
-            }
-            else {
-              //otherwise copy the latest data retrieved into the existing one
-              var savedProject = $scope.projects[projectIndex];
-              savedProject.epics = project.epics;
-              savedProject.name = project.name;
-              savedProject.key = project.key;
-              savedProject.description = project.description;
-              savedProject.timestamp = project.timestamp;
-            }
-	      });
+	      updateElementList($scope.projects, data, "project");
 	    }).
 	    error(function(data, status, headers, config) {
 	      // log error
 	    });
+    }
+    
+    // Updates the current list with any changes from the new list of elements
+    function updateElementList(currentList, newList, elementType) {
+    	angular.forEach(newList, function(element, index) {
+    		//find index of the element in the current list
+    		var elementIndex = indexOf(currentList, element);
+    		//if the element isn't there, add it
+    		if (elementIndex == -1) {
+    			//add to front of list
+    			currentList.unshift(element);
+    			if (elementType == "project") {
+    				element.state = true;
+    			}
+    		} else {
+    			//element is in the current list, so update it
+    			var savedElement = currentList[elementIndex];
+    			if (savedElement.timestamp != element.timestamp) {
+    				savedElement.timestamp = element.timestamp;
+    				savedElement.name = element.name;
+  	              	savedElement.key = element.key;
+  	              	savedElement.description = element.description;
+  	              	//update the list held in the current element, if it has one
+  	              	if (elementType == "project") {
+  	              		// this is a project
+  	              		updateElementList(savedElement.epics, element.epics, "epic");
+  	              	} else if (elementType == "epic") {
+  	              		// this is an epic
+  	              		updateElementList(savedElement.stories, element.stories, "story");
+  	              	} else if (elementType == "story") {
+  	              		// this is a story
+  	              		updateElementList(savedElement.subtasks, element.subtasks, "subtask");
+  	              	}
+    			}
+    		}
+    	});
+    	currentList.sort(function(a, b){return b.timestamp - a.timestamp});
+    }
+    
+    // Get all recently changed projects and update or add them to the local projects variable
+    updateProjects = function() {
+    	var secsSinceUpdate = (new Date().getTime() - lastUpdateTime) / 1000;
+    	$scope.getProjects(Math.floor(secsSinceUpdate));
     }
     
     $scope.clearchkbox = function() {
@@ -143,19 +173,19 @@ function ProjectController($scope, $http) {
     }
     
     // Get the projects now
-    getProjects();
+    $scope.getProjects($scope.filterDays * 24 * 60 * 60);
     
-    // Get projects again every 10 seconds
-    setInterval(function(){if (refresh) getProjects();}, 5000);
+    // Update projects every 5 seconds
+    setInterval(function(){if (refresh) updateProjects();}, 5000);
 
     /*
-     * Finds if the project is already in the array and returns the index
+     * Finds if the element is already in the list and returns the index
      * returns -1 if not found
      */
-    function indexOf(projectsArray, project) {
+    function indexOf(list, elem) {
       var where = -1;
-      angular.forEach(projectsArray, function(p, i) {
-        if(p.id == project.id) {
+      angular.forEach(list, function(e, i) {
+        if(e.id == elem.id) {
           where = i;
         }
       });

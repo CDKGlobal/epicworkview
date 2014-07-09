@@ -46,7 +46,7 @@
 	          <th>Project Id</th>
 	          <th>Project Key</th>
 	          <th>Last Update (
-	          	<select ng-model='filterDays'>
+	          	<select ng-model='filterDays' ng-change='getProjects(filterDays * 24 * 60 * 60)'>
   					<option value="1">1</option>
  				 	<option value="2">2</option>
   					<option value="7">7</option>

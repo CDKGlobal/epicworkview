@@ -218,6 +218,14 @@ public class RestResource implements InitializingBean, DisposableBean {
         return Response.ok().build();
     }
 
+    @Path("/debug")
+    @GET
+    @AnonymousAllowed
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getDebug() {
+        return DataManager.DebugLog.toString();
+    }
+    
     /**
      * Event listening testing
      *

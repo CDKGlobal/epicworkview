@@ -28,6 +28,8 @@ public class DataManager {
     private NaryTree tree;
     private ProjectService projectService;
 
+    public static StringBuilder DebugLog = new StringBuilder("Log Start:\r\n");
+
     /**
      * Constructs a new DataManager
      * 
@@ -120,9 +122,13 @@ public class DataManager {
             List<ChangeItemBean> cibs = changeHistory.getChangeItemBeans();
 
             ChangeItemBean cib = cibs.get(cibs.size() - 1);
+            System.out.println("Most Recent From: " + cib.getFromString());
+            System.out.println("Most Recent From: " + cib.getToString());
 
             if((cib.getFromString() == null || cib.getToString() == null) && cibs.size() > 1) {
                 cib = cibs.get(cibs.size() - 2);
+                System.out.println("Second Recent From: " + cib.getFromString());
+                System.out.println("Second Recent From: " + cib.getToString());
             }
 
             boolean insert = false;

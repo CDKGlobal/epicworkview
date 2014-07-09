@@ -66,6 +66,6 @@ public class JaxbFactory {
         JaxbUser jaxbUser = new JaxbUser();
         jaxbUser.name = name;
         jaxbUser.avatar = avatar;
-        return jaxbUser
+        return jaxbUser;
     }
 }

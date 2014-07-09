@@ -88,22 +88,27 @@ function ProjectController($scope, $http, $cookieStore) {
     	$scope.getProjects(Math.floor(secsSinceUpdate));
     }
     
+    // clear all checkboxes and update projects accordingly
     $scope.clearchkbox = function() {
         angular.forEach($scope.projects, function (project) {
             project.included = false;
+            // set the state to true, then check the project, which flips the state to false
             project.state = true;
             $scope.checkProject(project);
         });
     };
     
+    // check all checkboxes and update projects accordingly
     $scope.checkchkbox = function() {
         angular.forEach($scope.projects, function (project) {
             project.included = true;
+            // set the state to false, then check the project, which flips the state to true
             project.state = false;
             $scope.checkProject(project);
         });
     };
     
+    // sort the projects alphabetically by name
     $scope.alphabeticalProjects = function() {
     	$scope.projects.sort(function(a, b){
     		if(a.name < b.name) return -1;
@@ -113,6 +118,7 @@ function ProjectController($scope, $http, $cookieStore) {
     	return $scope.projects;
     }
     
+    // sort the projects by last updated time
     $scope.timeOrderedProjects = function() {
     	$scope.projects.sort(function(a, b){return b.timestamp - a.timestamp});
     	removeOldProjects($scope.projects, $scope.filterDays);
@@ -179,6 +185,7 @@ function ProjectController($scope, $http, $cookieStore) {
     
     // toggle the projects state and update the cookie for the users checked projects
     $scope.checkProject = function(project) {
+    	// flip the projects state
     	project.state = !project.state;
     	if (project.state == true) {
     		// remove project from unchecked projects list
@@ -190,12 +197,14 @@ function ProjectController($scope, $http, $cookieStore) {
     		// add project to unchecked projects list
     		$scope.uncheckedProjectIds.push(project.id);
     	}
+    	// update the cookie
     	$cookieStore.remove('projectIds');
 		$cookieStore.put('projectIds', $scope.uncheckedProjectIds);
     }
     
     // get the projects which are unchecked by this user
     $scope.uncheckedProjectIds = $cookieStore.get('projectIds');
+    // if the user does not have checked preferences, create one for them
     if (typeof $scope.uncheckedProjectIds === 'undefined') {
     	$scope.uncheckedProjectIds = [];
     	$cookieStore.put('projectIds', $scope.uncheckedProjectIds);
@@ -221,6 +230,7 @@ function ProjectController($scope, $http, $cookieStore) {
       return where;
     }
 
+    // returns whether the given object is contained in the given list
     function contains(a, obj) {
         var i = a.length;
         while (i--) {

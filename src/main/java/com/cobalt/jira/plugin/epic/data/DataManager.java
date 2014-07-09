@@ -21,12 +21,12 @@ import java.util.*;
  * A DataManager manages getting data out of the Jira database
  */
 public class DataManager {
-    //issues that has changed in the given time span excluding a list of given issues
-    private static final String QUERY = "(status CHANGED FROM (Open, 'To Do') AFTER %s OR status CHANGED TO (Closed, Resolved, Done) AFTER %s) AND issuetype not in (%s) ORDER BY updated DESC";
-    private static final String DEFAULT_QUERY = String.format(QUERY, "-21d", "-21d", "Epic");
-
-    private static final String FROM_STATES = "Open, To Do";
+    private static final String FROM_STATES = "Open, 'To Do'";
     private static final String TO_STATES = "Closed, Resolved, Done";
+
+    //issues that has changed in the given time span excluding a list of given issues
+    private static final String QUERY = "(status CHANGED FROM (%s) AFTER %s OR status CHANGED TO (%s) AFTER %s) AND issuetype not in (%s) ORDER BY updated DESC";
+    private static final String DEFAULT_QUERY = String.format(QUERY, FROM_STATES, "-21d", TO_STATES, "-21d", "Epic");
 
     private NaryTree tree;
     private ProjectService projectService;
@@ -142,12 +142,12 @@ public class DataManager {
             boolean insert = false;
 
             String s = cib.getFromString();
-            if(s != null && FROM_STATES.contains(s)) {
+            if(s != null && s.length() > 0 && FROM_STATES.contains(s)) {
                 insert = true;
             }
 
             String s1 = cib.getToString();
-            if(s1 != null && TO_STATES.contains(s1)) {
+            if(s1 != null && s1.length() > 0 && TO_STATES.contains(s1)) {
                 insert = true;
             }
 

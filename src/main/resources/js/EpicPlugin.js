@@ -85,7 +85,7 @@ function ProjectController($scope, $http, $cookieStore) {
     // Get all recently changed projects and update or add them to the local projects variable
     updateProjects = function() {
     	var secsSinceUpdate = (new Date().getTime() - lastUpdateTime) / 1000;
-    	$scope.getProjects(Math.floor(secsSinceUpdate));
+    	$scope.getProjects(Math.ceil(secsSinceUpdate));
     }
     
     // clear all checkboxes and update projects accordingly

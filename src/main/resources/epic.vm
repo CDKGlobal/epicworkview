@@ -45,7 +45,7 @@
 			    </div>
 	          </th>
 	          <th>Project Id</th>
-	          <th>Project Key</th>
+	          <th>Stories Completed</th>
 	          <th>Last Update (
 	          	<select ng-model='filterDays' ng-change='getProjects(filterDays * 24 * 60 * 60)'>
   					<option value="1">1</option>
@@ -62,7 +62,7 @@
 	      	<tr class="project-row" ng-repeat="project in timeOrderedProjects() | filter: {included:true}">
 	      		<td class="project-name"><a href="{{getBaseURL()}}/browse/{{project.key}}">{{project.name}}</a></td>
 	      		<td>{{project.id}}</td>
-	      		<td>{{project.key}}</td>
+	      		<td>{{project.completedStories}}</td>
 	      		<td>{{millisecondToString(project.timestamp)}}</td>
 	      		<td>
 	      			<ul class="epics" ng-controller="EpicController">

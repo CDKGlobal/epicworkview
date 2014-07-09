@@ -68,6 +68,7 @@ function ProjectController($scope, $http, $cookieStore) {
   	              	//update the list held in the current element, if it has one
   	              	if (elementType == "project") {
   	              		// this is a project
+  	              		savedElement.completedStories += element.completedStories;
   	              		updateElementList(savedElement.epics, element.epics, "epic");
   	              	} else if (elementType == "epic") {
   	              		// this is an epic

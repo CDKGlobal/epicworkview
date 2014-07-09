@@ -1,6 +1,5 @@
 package com.cobalt.jira.plugin.epic.rest.jaxb;
 
-import com.atlassian.crowd.embedded.api.User;
 import com.cobalt.jira.plugin.epic.data.*;
 
 import java.util.List;
@@ -64,6 +63,9 @@ public class JaxbFactory {
     }
 
     public static JaxbUser newJaxbUser(String name, String avatar) {
-        return newJaxbUser(name, avatar);
+        JaxbUser jaxbUser = new JaxbUser();
+        jaxbUser.name = name;
+        jaxbUser.avatar = avatar;
+        return jaxbUser
     }
 }

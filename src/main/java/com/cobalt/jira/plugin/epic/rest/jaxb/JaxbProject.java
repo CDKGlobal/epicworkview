@@ -34,4 +34,8 @@ public class JaxbProject extends JaxbIssue
     public int getCompletedStories() {
         return completedStories;
     }
+
+    public List<JaxbUser> getContributers() {
+        return contributers;
+    }
 }

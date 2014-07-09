@@ -40,7 +40,7 @@ public class RestResource implements InitializingBean, DisposableBean {
 
     private boolean enabled = false;
 
-    private class IntHolder {
+    private static class IntHolder {
         private int value;
 
         public void add(int value) {
@@ -208,7 +208,7 @@ public class RestResource implements InitializingBean, DisposableBean {
                     jaxbUsers.add(JaxbFactory.newJaxbUser(user.getName(), url));
                 }
                 assignees.clear();
-                
+
                 output.add((T)JaxbFactory.newJaxbProject(data, temp, storiesCompleted.getValue(), jaxbUsers));
                 break;
             case EPIC:

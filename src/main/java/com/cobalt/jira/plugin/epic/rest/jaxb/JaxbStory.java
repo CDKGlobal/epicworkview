@@ -7,10 +7,17 @@ import java.util.List;
 
 @XmlRootElement(name = "story")
 public class JaxbStory extends JaxbIssue {
+    @XmlElement(name = "completed")
+    boolean completed;
+
     @XmlElement(name = "subtasks")
     List<JaxbIssue> subtasks;
 
     public JaxbStory() {
+    }
+
+    public boolean getCompleted() {
+        return completed;
     }
 
     public List<JaxbIssue> getSubtasks() {

@@ -6,14 +6,24 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "user")
 public class JaxbUser {
+    @XmlElement(name = "id")
+    String id;
+
     @XmlElement(name = "name")
     String name;
 
     @XmlElement(name = "avatar")
     String avatar;
 
+    @XmlElement(name = "timestamp")
+    long timestamp;
+
     public JaxbUser() {
 
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getName() {
@@ -22,5 +32,9 @@ public class JaxbUser {
 
     public String getAvatar() {
         return avatar;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
     }
 }

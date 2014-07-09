@@ -1,8 +1,11 @@
 package com.cobalt.jira.plugin.epic.data.util;
 
-public class StatusUtil {
+public final class StatusUtil {
     private static final String INITIAL_STATES = "Open, 'To Do'";
     private static final String END_STATES = "Closed, Resolved, Done";
+
+    private StatusUtil() {
+    }
 
     public static String getInitialStates() {
         return INITIAL_STATES;
@@ -13,10 +16,10 @@ public class StatusUtil {
     }
 
     public static boolean leftInitialState(String fromState) {
-        return fromState != null && fromState.length() > 0 && INITIAL_STATES.contains(fromState);
+        return fromState != null && fromState.length() > 0 && getInitialStates().contains(fromState);
     }
 
     public static boolean enteredEndState(String toState) {
-        return toState != null && toState.length() > 0 && END_STATES.contains(toState);
+        return toState != null && toState.length() > 0 && getEndStates().contains(toState);
     }
 }

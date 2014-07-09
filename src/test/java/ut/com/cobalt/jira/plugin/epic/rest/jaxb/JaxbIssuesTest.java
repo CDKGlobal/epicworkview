@@ -17,6 +17,9 @@ public class JaxbIssuesTest
 	private static final String ISSUE_DESCRIPTION = "Test issue description";
     private static final long ISSUE_TIMESTAMP = 1000l;
 
+    private static final String USER_NAME = "test user";
+    private static final String USER_AVATAR = "url";
+
 	@Before
 	public void setup() {
 	}
@@ -34,7 +37,7 @@ public class JaxbIssuesTest
 
     @Test
     public void jaxbStoryIsValid() {
-        JaxbStory jaxbStory = JaxbFactory.newJaxbStory(ISSUE_NAME, ISSUE_KEY, ISSUE_ID, ISSUE_DESCRIPTION, ISSUE_TIMESTAMP, new ArrayList<JaxbIssue>());
+        JaxbStory jaxbStory = JaxbFactory.newJaxbStory(ISSUE_NAME, ISSUE_KEY, ISSUE_ID, ISSUE_DESCRIPTION, ISSUE_TIMESTAMP, true, new ArrayList<JaxbIssue>());
 
         assertEquals(0, jaxbStory.getSubtasks().size());
     }
@@ -52,5 +55,13 @@ public class JaxbIssuesTest
 
         assertEquals(0, jaxbProject.getEpics().size());
         assertEquals(0, jaxbProject.getCompletedStories());
+    }
+
+    @Test
+    public void jaxbUserIsValid() {
+        JaxbUser jaxbUser = JaxbFactory.newJaxbUser("KEY", USER_NAME, USER_AVATAR, 1l);
+
+        assertEquals(USER_NAME, jaxbUser.getName());
+        assertEquals(USER_AVATAR, jaxbUser.getAvatar());
     }
 }

@@ -153,7 +153,7 @@ public class RestResource implements InitializingBean, DisposableBean {
             List<IJiraData> preOrder = dataManager.getProjects(getCurrentUser(), seconds);
 
             while(preOrder.size() > 0) {
-                buildJaxb(preOrder, projects, new IntHolder(), new LinkedHashSet<User>());
+                buildJaxb(preOrder, projects, new IntHolder(), new LinkedList<IJiraData>());
             }
         }
 
@@ -161,16 +161,15 @@ public class RestResource implements InitializingBean, DisposableBean {
     }
 
     @SuppressWarnings("unchecked")
-    private <T extends JaxbIssue> void buildJaxb(List<IJiraData> input, List<T> output, IntHolder count, Collection<User> assignees) {
+    private <T extends JaxbIssue> void buildJaxb(List<IJiraData> input, List<T> output, IntHolder count, List<IJiraData> issues) {
         if(input.size() == 0)
             return;
 
         IJiraData data = input.get(0);
         input.remove(0);
 
-        User assignee = data.getAssignee();
-        if(assignee != null) {
-            assignees.add(assignee);
+        if(data.getAssignee() != null) {
+            issues.add(data);
         }
 
         if(data.getType() == IJiraData.DataType.STORY && data.completed())
@@ -197,17 +196,18 @@ public class RestResource implements InitializingBean, DisposableBean {
 
             //while the next element is a subtype of data
             while(input.size() > 0 && input.get(0).getType().compareTo(data.getType()) > 0) {
-                buildJaxb(input, temp, storiesCompleted, assignees);
+                buildJaxb(input, temp, storiesCompleted, issues);
             }
 
             switch(data.getType()) {
             case PROJECT:
                 List<JaxbUser> jaxbUsers = new ArrayList<JaxbUser>();
-                for(User user : assignees) {
-                    String url = avatarService.getAvatarUrlNoPermCheck(ApplicationUsers.from(user), Avatar.Size.NORMAL).toString();
-                    jaxbUsers.add(JaxbFactory.newJaxbUser(user.getDisplayName(), url));
+                for(IJiraData issue : issues) {
+                    ApplicationUser appUser = ApplicationUsers.from(issue.getAssignee());
+                    String url = avatarService.getAvatarUrlNoPermCheck(appUser, Avatar.Size.NORMAL).toString();
+                    jaxbUsers.add(JaxbFactory.newJaxbUser(appUser.getKey(), appUser.getDisplayName(), url, issue.getTimestamp()));
                 }
-                assignees.clear();
+                issues.clear();
 
                 output.add((T)JaxbFactory.newJaxbProject(data, temp, storiesCompleted.getValue(), jaxbUsers));
                 break;

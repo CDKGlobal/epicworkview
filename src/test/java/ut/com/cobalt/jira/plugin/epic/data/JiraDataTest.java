@@ -5,18 +5,18 @@ import com.atlassian.jira.action.issue.customfields.MockCustomFieldType;
 import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.fields.MockCustomField;
+import com.atlassian.jira.issue.status.MockStatus;
 import com.atlassian.jira.mock.component.MockComponentWorker;
 import com.atlassian.jira.mock.issue.MockIssue;
 import com.atlassian.jira.project.MockProject;
+import com.atlassian.jira.user.MockUser;
 import com.cobalt.jira.plugin.epic.data.*;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Timestamp;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class JiraDataTest {
@@ -33,7 +33,7 @@ public class JiraDataTest {
     private static final String PROJECT_DESCRIPTION = "TEST PROJECT DESCRIPTION";
 
     private MockIssue issue;
-    private MockProject project;
+    private MockProject project, project2;
     private CustomFieldManager mockCustomFieldManager;
 
     @Before
@@ -43,6 +43,12 @@ public class JiraDataTest {
         project.setKey(PROJECT_KEY);
         project.setId(PROJECT_ID);
         project.setDescription(PROJECT_DESCRIPTION);
+
+        project2 = spy(new MockProject());
+        project2.setName(PROJECT_NAME + 1);
+        project2.setKey(PROJECT_KEY + 1);
+        project2.setId(PROJECT_ID + 1);
+        project2.setDescription(PROJECT_DESCRIPTION + 1);
 
         issue = spy(new MockIssue() {
             public Issue getParentObject() {
@@ -55,6 +61,8 @@ public class JiraDataTest {
         issue.setDescription(ISSUE_DESCRIPTION);
         issue.setUpdated(ISSUE_TIMESTAMP);
         issue.setProjectObject(project);
+        doReturn(new MockStatus("6", "Done")).when(issue).getStatusObject();
+        issue.setAssignee(new MockUser("username"));
 
         MockComponentWorker worker = new MockComponentWorker();
         mockCustomFieldManager = mock(CustomFieldManager.class);
@@ -123,6 +131,8 @@ public class JiraDataTest {
         assertEquals(ISSUE_ID, issueData.getId());
         assertEquals(ISSUE_DESCRIPTION, issueData.getDescription());
         assertEquals(ISSUE_TIMESTAMP.getTime(), issueData.getTimestamp());
+        assertTrue(issueData.completed());
+        assertEquals("username", issueData.getAssignee().getName());
         assertTrue(issueData.getProject() instanceof ProjectData);
 
         //test with no epic link
@@ -135,6 +145,8 @@ public class JiraDataTest {
 
         assertTrue(issueData.getEpic() instanceof EpicData);
         assertTrue(issueData.getStory() instanceof StoryData);
+
+
     }
 
     @Test
@@ -184,9 +196,17 @@ public class JiraDataTest {
         assertEquals(ISSUE_DESCRIPTION, nullEpicData.getDescription());
         assertEquals(-1, nullEpicData.getId());
         assertEquals("NOKEY", nullEpicData.getKey());
+        assertFalse(nullEpicData.completed());
+        assertNull(nullEpicData.getAssignee());
         assertNull(nullEpicData.getProject());
         assertEquals(nullEpicData.getEpic(), nullEpicData);
         assertNull(nullEpicData.getStory());
+
+        NullEpicData nullEpicData2 = new NullEpicData(ISSUE_NAME + 1, ISSUE_DESCRIPTION + 1);
+        nullEpicData.update(nullEpicData2);
+
+        assertEquals(ISSUE_NAME + 1, nullEpicData.getName());
+        assertEquals(ISSUE_DESCRIPTION + 1, nullEpicData.getDescription());
     }
 
     @Test
@@ -198,8 +218,18 @@ public class JiraDataTest {
         assertEquals(PROJECT_KEY, projectData.getKey());
         assertEquals(PROJECT_ID, projectData.getId());
         assertEquals(PROJECT_DESCRIPTION, projectData.getDescription());
+        assertFalse(projectData.completed());
+        assertNull(projectData.getAssignee());
         assertEquals(projectData, projectData.getProject());
         assertNull(projectData.getEpic());
         assertNull(projectData.getStory());
+
+        ProjectData projectData2 = new ProjectData(project2);
+        projectData.update(projectData2);
+
+        assertEquals(projectData2.getName(), projectData.getName());
+        assertEquals(projectData2.getKey(), projectData.getKey());
+        assertEquals(projectData2.getId(), projectData.getId());
+        assertEquals(projectData2.getDescription(), projectData.getDescription());
     }
 }

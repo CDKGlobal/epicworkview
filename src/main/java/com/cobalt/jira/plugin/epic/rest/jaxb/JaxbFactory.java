@@ -34,12 +34,13 @@ public class JaxbFactory {
     }
 
     public static JaxbStory newJaxbStory(IJiraData s, List<JaxbIssue> subtasks) {
-        return newJaxbStory(s.getName(), s.getKey(), s.getId(), s.getDescription(), s.getTimestamp(), subtasks);
+        return newJaxbStory(s.getName(), s.getKey(), s.getId(), s.getDescription(), s.getTimestamp(), s.completed(), subtasks);
     }
 
-    public static JaxbStory newJaxbStory(String name, String key, long id, String description, long timestamp, List<JaxbIssue> subtasks) {
+    public static JaxbStory newJaxbStory(String name, String key, long id, String description, long timestamp, boolean completed, List<JaxbIssue> subtasks) {
         JaxbStory jaxbStory = new JaxbStory();
         setData(jaxbStory, name, key, id, description, timestamp);
+        jaxbStory.completed = completed;
         jaxbStory.subtasks = subtasks;
         return jaxbStory;
     }
@@ -62,10 +63,12 @@ public class JaxbFactory {
         issue.timestamp = timestamp;
     }
 
-    public static JaxbUser newJaxbUser(String name, String avatar) {
+    public static JaxbUser newJaxbUser(String id, String name, String avatar, long timestamp) {
         JaxbUser jaxbUser = new JaxbUser();
+        jaxbUser.id = id;
         jaxbUser.name = name;
         jaxbUser.avatar = avatar;
+        jaxbUser.timestamp = timestamp;
         return jaxbUser;
     }
 }

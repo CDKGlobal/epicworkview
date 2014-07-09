@@ -17,8 +17,8 @@ public class JaxbProject extends JaxbIssue
     @XmlElement(name = "completedStories")
     int completedStories;
 
-    @XmlElement(name = "contributers")
-    List<JaxbUser> contributers;
+    @XmlElement(name = "contributors")
+    List<JaxbUser> contributors;
 
 	/**
 	 * required for JAXB
@@ -35,7 +35,7 @@ public class JaxbProject extends JaxbIssue
         return completedStories;
     }
 
-    public List<JaxbUser> getContributers() {
-        return contributers;
+    public List<JaxbUser> getContributors() {
+        return contributors;
     }
 }

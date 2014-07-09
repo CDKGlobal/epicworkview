@@ -205,7 +205,7 @@ public class RestResource implements InitializingBean, DisposableBean {
                 List<JaxbUser> jaxbUsers = new ArrayList<JaxbUser>();
                 for(User user : assignees) {
                     String url = avatarService.getAvatarUrlNoPermCheck(ApplicationUsers.from(user), Avatar.Size.NORMAL).toString();
-                    jaxbUsers.add(JaxbFactory.newJaxbUser(user.getName(), url));
+                    jaxbUsers.add(JaxbFactory.newJaxbUser(user.getDisplayName(), url));
                 }
                 assignees.clear();
 

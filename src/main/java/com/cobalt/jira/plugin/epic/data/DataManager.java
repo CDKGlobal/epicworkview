@@ -122,13 +122,13 @@ public class DataManager {
             List<ChangeItemBean> cibs = changeHistory.getChangeItemBeans();
 
             ChangeItemBean cib = cibs.get(cibs.size() - 1);
-            System.out.println("Most Recent From: " + cib.getFromString());
-            System.out.println("Most Recent From: " + cib.getToString());
+            DebugLog.append("Most Recent From: " + cib.getFromString());
+            DebugLog.append("Most Recent From: " + cib.getToString());
 
             if((cib.getFromString() == null || cib.getToString() == null) && cibs.size() > 1) {
                 cib = cibs.get(cibs.size() - 2);
-                System.out.println("Second Recent From: " + cib.getFromString());
-                System.out.println("Second Recent From: " + cib.getToString());
+                DebugLog.append("Second Recent From: " + cib.getFromString());
+                DebugLog.append("Second Recent From: " + cib.getToString());
             }
 
             boolean insert = false;

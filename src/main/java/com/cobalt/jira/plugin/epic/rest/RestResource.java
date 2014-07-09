@@ -40,18 +40,6 @@ public class RestResource implements InitializingBean, DisposableBean {
 
     private boolean enabled = false;
 
-    private static class IntHolder {
-        private int value;
-
-        public void add(int value) {
-            this.value += value;
-        }
-
-        public int getValue() {
-            return value;
-        }
-    }
-
     /**
      * Rest resource that use dependency injection to get necessary components
      *
@@ -153,7 +141,7 @@ public class RestResource implements InitializingBean, DisposableBean {
             List<IJiraData> preOrder = dataManager.getProjects(getCurrentUser(), seconds);
 
             while(preOrder.size() > 0) {
-                buildJaxb(preOrder, projects, new IntHolder(), new LinkedList<IJiraData>());
+                buildJaxb(preOrder, projects, new LinkedList<IJiraData>());
             }
         }
 
@@ -161,7 +149,7 @@ public class RestResource implements InitializingBean, DisposableBean {
     }
 
     @SuppressWarnings("unchecked")
-    private <T extends JaxbIssue> void buildJaxb(List<IJiraData> input, List<T> output, IntHolder count, List<IJiraData> issues) {
+    private <T extends JaxbIssue> void buildJaxb(List<IJiraData> input, List<T> output, List<IJiraData> issues) {
         if(input.size() == 0)
             return;
 
@@ -172,14 +160,10 @@ public class RestResource implements InitializingBean, DisposableBean {
             issues.add(data);
         }
 
-        if(data.getType() == IJiraData.DataType.STORY && data.completed())
-            count.add(1);
-
         if(data.getType() == IJiraData.DataType.SUBTASK)
             output.add((T)JaxbFactory.newJaxbIssue(data));
         else {
             List temp;
-            IntHolder storiesCompleted = new IntHolder();
             switch(data.getType()) {
             case PROJECT:
                 temp = new ArrayList<JaxbEpic>();
@@ -196,7 +180,7 @@ public class RestResource implements InitializingBean, DisposableBean {
 
             //while the next element is a subtype of data
             while(input.size() > 0 && input.get(0).getType().compareTo(data.getType()) > 0) {
-                buildJaxb(input, temp, storiesCompleted, issues);
+                buildJaxb(input, temp, issues);
             }
 
             switch(data.getType()) {
@@ -209,15 +193,13 @@ public class RestResource implements InitializingBean, DisposableBean {
                 }
                 issues.clear();
 
-                output.add((T)JaxbFactory.newJaxbProject(data, temp, storiesCompleted.getValue(), jaxbUsers));
+                output.add((T)JaxbFactory.newJaxbProject(data, temp, jaxbUsers));
                 break;
             case EPIC:
                 output.add((T)JaxbFactory.newJaxbEpic(data, temp));
-                count.add(storiesCompleted.getValue());
                 break;
             case STORY:
                 output.add((T)JaxbFactory.newJaxbStory(data, temp));
-                count.add(storiesCompleted.getValue());
                 break;
             default:
                 return;

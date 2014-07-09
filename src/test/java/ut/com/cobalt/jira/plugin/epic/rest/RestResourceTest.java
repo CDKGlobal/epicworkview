@@ -161,8 +161,6 @@ public class RestResourceTest
         jaxbProjects = restResource.getProjects(7);
         assertEquals(1, jaxbProjects.size());
 
-        assertEquals(1, jaxbProjects.get(0).getCompletedStories());
-
         List<JaxbEpic> epics = jaxbProjects.get(0).getEpics();
         assertEquals(1, epics.size());
         List<JaxbStory> stories = epics.get(0).getStories();

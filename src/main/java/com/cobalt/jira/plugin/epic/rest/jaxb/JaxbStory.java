@@ -7,7 +7,7 @@ import java.util.List;
 
 @XmlRootElement(name = "story")
 public class JaxbStory extends JaxbIssue {
-    @XmlElement(name = "sub-tasks")
+    @XmlElement(name = "subtasks")
     List<JaxbIssue> subtasks;
 
     public JaxbStory() {

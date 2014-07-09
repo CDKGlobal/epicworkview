@@ -55,6 +55,10 @@ public class NaryTreeTest {
             return timestamp;
         }
 
+        public boolean completed() {
+            return false;
+        }
+
         public IJiraData getProject() {
             return project;
         }
@@ -77,6 +81,9 @@ public class NaryTreeTest {
 
         public void setStory(IJiraData story) {
             this.story = story;
+        }
+
+        public void update(IJiraData update) {
         }
     }
 

@@ -34,7 +34,7 @@ public class NaryTree {
                 curNode.addChild(insertNode);
             }
             else {
-                curNode.getChildren().get(index).getData().setTimestamp(insertNode.getData().getTimestamp());
+                curNode.getChildren().get(index).getData().update(insertNode.getData());
             }
         }
         else {//we need to go deeper into the tree

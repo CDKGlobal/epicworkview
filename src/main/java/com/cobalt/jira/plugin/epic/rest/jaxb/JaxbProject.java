@@ -14,6 +14,9 @@ public class JaxbProject extends JaxbIssue
 	@XmlElement(name = "epics")
 	List<JaxbEpic> epics;
 
+    @XmlElement(name = "completedStories")
+    int completedStories;
+
 	/**
 	 * required for JAXB
 	 */
@@ -24,4 +27,8 @@ public class JaxbProject extends JaxbIssue
 	{
 		return epics;
 	}
+
+    public int getCompletedStories() {
+        return completedStories;
+    }
 }

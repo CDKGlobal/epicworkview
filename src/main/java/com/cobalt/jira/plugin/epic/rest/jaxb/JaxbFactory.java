@@ -9,14 +9,15 @@ public class JaxbFactory {
     private JaxbFactory() {
     }
 
-    public static JaxbProject newJaxbProject(IJiraData p, List<JaxbEpic> epics) {
-        return newJaxbProject(p.getName(), p.getKey(), p.getId(), p.getDescription(), p.getTimestamp(), epics);
+    public static JaxbProject newJaxbProject(IJiraData p, List<JaxbEpic> epics, int completedStories) {
+        return newJaxbProject(p.getName(), p.getKey(), p.getId(), p.getDescription(), p.getTimestamp(), epics, completedStories);
     }
 
-    public static JaxbProject newJaxbProject(String name, String key, long id, String description, long timestamp, List<JaxbEpic> epics) {
+    public static JaxbProject newJaxbProject(String name, String key, long id, String description, long timestamp, List<JaxbEpic> epics, int completedStories) {
         JaxbProject jaxbProject = new JaxbProject();
         setData(jaxbProject, name, key, id, description, timestamp);
         jaxbProject.epics = epics;
+        jaxbProject.completedStories = completedStories;
         return jaxbProject;
     }
 

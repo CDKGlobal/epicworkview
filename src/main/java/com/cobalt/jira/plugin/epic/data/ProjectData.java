@@ -59,6 +59,10 @@ public class ProjectData extends JiraData {
         return project.getDescription();
     }
 
+    public boolean completed() {
+        return false;
+    }
+
     public IJiraData getProject() {
         return this;
     }
@@ -69,5 +73,13 @@ public class ProjectData extends JiraData {
 
     public IJiraData getStory() {
         return null;
+    }
+
+    public void update(IJiraData updatedIssue) {
+        super.update(updatedIssue);
+
+        if(updatedIssue instanceof ProjectData) {
+            project = ((ProjectData)updatedIssue).project;
+        }
     }
 }

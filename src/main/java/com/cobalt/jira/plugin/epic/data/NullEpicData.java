@@ -61,6 +61,10 @@ public class NullEpicData extends JiraData {
         return description;
     }
 
+    public boolean completed() {
+        return false;
+    }
+
     @Override
     public IJiraData getProject() {
         return null;
@@ -74,5 +78,14 @@ public class NullEpicData extends JiraData {
     @Override
     public IJiraData getStory() {
         return null;
+    }
+
+    public void update(IJiraData iJiraData) {
+        super.update(iJiraData);
+
+        if(iJiraData instanceof NullEpicData) {
+            name = iJiraData.getName();
+            description = iJiraData.getDescription();
+        }
     }
 }

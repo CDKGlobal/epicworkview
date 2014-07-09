@@ -36,6 +36,18 @@ public class RestResource implements InitializingBean, DisposableBean {
 
     private boolean enabled = false;
 
+    private class IntHolder {
+        private int value;
+
+        public void add(int value) {
+            this.value += value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+
     /**
      * Rest resource that use dependency injection to get necessary components
      *
@@ -136,24 +148,28 @@ public class RestResource implements InitializingBean, DisposableBean {
             List<IJiraData> preOrder = dataManager.getProjects(getCurrentUser(), seconds);
 
             while(preOrder.size() > 0)
-                buildJaxb(preOrder, projects);
+                buildJaxb(preOrder, projects, new IntHolder());
         }
 
         return projects;
     }
 
     @SuppressWarnings("unchecked")
-    private <T extends JaxbIssue> void buildJaxb(List<IJiraData> input, List<T> output) {
+    private <T extends JaxbIssue> void buildJaxb(List<IJiraData> input, List<T> output, IntHolder count) {
         if(input.size() == 0)
             return;
 
         IJiraData data = input.get(0);
         input.remove(0);
 
+        if(data.getType() == IJiraData.DataType.STORY && data.completed())
+            count.add(1);
+
         if(data.getType() == IJiraData.DataType.SUBTASK)
             output.add((T)JaxbFactory.newJaxbIssue(data));
         else {
-            List temp = null;
+            List temp;
+            IntHolder storiesCompleted = new IntHolder();
             switch(data.getType()) {
             case PROJECT:
                 temp = new ArrayList<JaxbEpic>();
@@ -170,18 +186,20 @@ public class RestResource implements InitializingBean, DisposableBean {
 
             //while the next element is a subtype of data
             while(input.size() > 0 && input.get(0).getType().compareTo(data.getType()) > 0) {
-                buildJaxb(input, temp);
+                buildJaxb(input, temp, storiesCompleted);
             }
 
             switch(data.getType()) {
             case PROJECT:
-                output.add((T)JaxbFactory.newJaxbProject(data, temp));
+                output.add((T)JaxbFactory.newJaxbProject(data, temp, storiesCompleted.getValue()));
                 break;
             case EPIC:
                 output.add((T)JaxbFactory.newJaxbEpic(data, temp));
+                count.add(storiesCompleted.getValue());
                 break;
             case STORY:
                 output.add((T)JaxbFactory.newJaxbStory(data, temp));
+                count.add(storiesCompleted.getValue());
                 break;
             default:
                 return;

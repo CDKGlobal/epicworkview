@@ -11,4 +11,8 @@ public abstract class JiraData implements IJiraData {
     public long getTimestamp() {
         return timestamp;
     }
+
+    public void update(IJiraData updatedIssue) {
+        setTimestamp(updatedIssue.getTimestamp());
+    }
 }

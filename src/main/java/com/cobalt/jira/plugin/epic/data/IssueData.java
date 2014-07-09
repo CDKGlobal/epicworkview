@@ -3,6 +3,7 @@ package com.cobalt.jira.plugin.epic.data;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.Issue;
+import com.cobalt.jira.plugin.epic.data.util.StatusUtil;
 
 
 /**
@@ -62,6 +63,10 @@ public class IssueData extends JiraData {
         return issue.getDescription();
     }
 
+    public boolean completed() {
+        return StatusUtil.enteredEndState(issue.getStatusObject().getName());
+    }
+
     @Override
     public IJiraData getProject() {
         return new ProjectData(issue.getProjectObject());
@@ -80,5 +85,13 @@ public class IssueData extends JiraData {
     @Override
     public IJiraData getStory() {
         return new StoryData(issue.getParentObject());
+    }
+
+    public void update(IJiraData updatedIssue) {
+        super.update(updatedIssue);
+
+        if(updatedIssue instanceof IssueData) {
+            issue = ((IssueData)updatedIssue).issue;
+        }
     }
 }

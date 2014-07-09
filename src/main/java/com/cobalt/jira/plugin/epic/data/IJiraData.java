@@ -25,7 +25,10 @@ public interface IJiraData {
     public long getId();
     public String getKey();
     public long getTimestamp();
+    public boolean completed();
     public IJiraData getProject();
     public IJiraData getEpic();
     public IJiraData getStory();
+
+    public void update(IJiraData updatedIssue);
 }

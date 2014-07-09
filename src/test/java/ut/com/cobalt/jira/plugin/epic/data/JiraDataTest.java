@@ -80,6 +80,10 @@ public class JiraDataTest {
                 return 0;
             }
 
+            public boolean completed() {
+                return false;
+            }
+
             public String getKey() {
                 return null;
             }

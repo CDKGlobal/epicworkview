@@ -44,7 +44,7 @@
 			    	</form>
 			    </div>
 	          </th>
-	          <th>Project Id</th>
+	          <th>Contributors</th>
 	          <th>Stories Completed</th>
 	          <th>Last Update (
 	          	<select ng-model='filterDays' ng-change='getProjects(filterDays * 24 * 60 * 60)'>
@@ -61,8 +61,14 @@
 	      <tbody>
 	      	<tr class="project-row" ng-repeat="project in timeOrderedProjects() | filter: {included:true}">
 	      		<td class="project-name"><a href="{{getBaseURL()}}/browse/{{project.key}}">{{project.name}}</a></td>
-	      		<td>{{project.id}}</td>
-	      		<td>{{project.completedStories}}</td>
+	      		<td>
+	      			<ul>
+	      				<li class="inline" ng-repeat="contributor in project.contributors">
+	      					<img src="{{contributor.avatar}}" alt="{{contributor.name}}">
+	      				</li>
+	      			</ul>
+	      		</td>
+	      		<td>{{getCompletedStories(project)}}</td>
 	      		<td>{{millisecondToString(project.timestamp)}}</td>
 	      		<td>
 	      			<ul class="epics" ng-controller="EpicController">

@@ -63,12 +63,19 @@ function ProjectController($scope, $http, $cookieStore) {
     			if (savedElement.timestamp != element.timestamp) {
     				savedElement.timestamp = element.timestamp;
     				savedElement.name = element.name;
-  	              	savedElement.key = element.key;
-  	              	savedElement.description = element.description;
+    				// set key and description if not a contributor
+    				if (elementType != "contributor") {
+	  	              	savedElement.key = element.key;
+	  	              	savedElement.description = element.description;
+    				}
+    				// set completed field if a story
+    				if (elementType == "story") {
+    					savedElement.completed = element.completed;
+    				}
   	              	//update the list held in the current element, if it has one
   	              	if (elementType == "project") {
   	              		// this is a project
-  	              		savedElement.completedStories += element.completedStories;
+  	              		updateElementList(savedElement.contributors, element.contributors, "contributor");
   	              		updateElementList(savedElement.epics, element.epics, "epic");
   	              	} else if (elementType == "epic") {
   	              		// this is an epic
@@ -80,13 +87,40 @@ function ProjectController($scope, $http, $cookieStore) {
     			}
     		}
     	});
+    	// sort the list and remove all old elements
     	currentList.sort(function(a, b){return b.timestamp - a.timestamp});
+    	removeOldElements(currentList, $scope.filterDays);
+    }
+    
+    /*
+     * Remove elements from the list that are older than days old
+     * (elements should be in time order)
+     */
+    function removeOldElements(elements, days) {
+    	var time = new Date().getTime();
+    	var i = elements.length - 1;
+    	var element = elements[i];
+    	while (i >= 0 && ((time - element.timestamp) / (1000 * 60 * 60 * 24)) > days) {
+    		elements.pop();
+    		i--;
+    		element = elements[i];
+    	}
     }
     
     // Get all recently changed projects and update or add them to the local projects variable
     updateProjects = function() {
     	var secsSinceUpdate = (new Date().getTime() - lastUpdateTime) / 1000;
     	$scope.getProjects(Math.ceil(secsSinceUpdate));
+    }
+    
+    $scope.getCompletedStories = function(project) {
+    	var res = 0;
+    	angular.forEach(project.epics, function(epic) {
+    		angular.forEach(epic.stories, function(story) {
+    			if (story.completed) res++;
+    		});
+    	});
+    	return res;
     }
     
     // clear all checkboxes and update projects accordingly
@@ -122,23 +156,7 @@ function ProjectController($scope, $http, $cookieStore) {
     // sort the projects by last updated time
     $scope.timeOrderedProjects = function() {
     	$scope.projects.sort(function(a, b){return b.timestamp - a.timestamp});
-    	removeOldProjects($scope.projects, $scope.filterDays);
     	return $scope.projects;
-    }
-    
-    /*
-     * Remove projects from the list that are older than days old
-     * (projects should be in time order)
-     */
-    function removeOldProjects(projects, days) {
-    	var time = new Date().getTime();
-    	var i = projects.length - 1;
-    	var project = projects[i];
-    	while (i >= 0 && ((time - project.timestamp) / (1000 * 60 * 60 * 24)) > days) {
-    		projects.pop();
-    		i--;
-    		project = projects[i];
-    	}
     }
     
     $scope.hideEpicInfo = function() {

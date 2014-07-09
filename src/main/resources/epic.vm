@@ -4,10 +4,11 @@
     <meta name="decorator" content="atl.general">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular-animate.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular-cookies.js"></script>
     $webResourceManager.requireResource("com.cobalt.jira.plugin.epic.EpicPlugin:EpicPlugin-resources")
     <script type="text/javascript">
       //replace this with whatever your module ends up being
-      var myApp = angular.module('myApp', ['ngAnimate']);
+      var myApp = angular.module('myApp', ['ngAnimate', 'ngCookies']);
     </script>
   </head>
   <body>
@@ -34,7 +35,7 @@
 			    			<ul class="aui-list-section">
 			    				<li ng-repeat="project in alphabeticalProjects() | filter:searchText" class="check-list-item repeat-item">
 			    					<label class="item-label" title="{{project.name}}">
-			    						<input type="checkbox" ng-click="project.state=!project.state" ng-init="project.included=project.state" ng-model='project.included'>
+			    						<input type="checkbox" ng-click="checkProject(project)" ng-init="project.included=project.state" ng-model='project.included'>
 			    						{{project.name}}
 			    					</label>
 			    				</li>

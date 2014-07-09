@@ -23,9 +23,9 @@ import java.util.*;
 public class DataManager {
     //issues that has changed in the given time span excluding a list of given issues
     private static final String QUERY = "(status CHANGED FROM (Open, 'To Do') AFTER %s OR status CHANGED TO (Closed, Resolved, Done) AFTER %s) AND issuetype not in (%s) ORDER BY updated DESC";
-    private static final String DEFAULT_QUERY = String.format(QUERY, "-14d", "-14d", "Epic");
+    private static final String DEFAULT_QUERY = String.format(QUERY, "-21d", "-21d", "Epic");
 
-    private static final String FROM_STATES = "Open";
+    private static final String FROM_STATES = "Open, To Do";
     private static final String TO_STATES = "Closed, Resolved, Done";
 
     private NaryTree tree;

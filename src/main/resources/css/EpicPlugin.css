@@ -121,13 +121,14 @@ input {
 /* Project row animations */
 
 .project-row.ng-move { 
-	-webkit-transition-duration: 1s;
-	-moz-transition-duration: 1s;
-	-ms-transition-duration: 1s;
-	-o-transition-duration: 1s;
-    transition-duration: 1s;
+	-webkit-transition: 1s linear all;
+	transition: 1s linear all;
+	position: relative;
+	background: red;
+	opacity: 0;
 } 
 
 .project-row.ng-move.ng-move-active {
 	background: red;
+	opacity: 1;
 }

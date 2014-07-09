@@ -27,8 +27,8 @@
 			    	<form action="#" class="searchfilter aui top-label aui-popup-content project-criteria">
 			    		<input type='text' ng-model='searchText.name' autocomplete="off" placeholder="Find Projects..." class="aui-field" wrap="off">
 			    		<p>
-			    		<button ng-click="clearchkbox()">Clear</button>
-			    		<button ng-click="checkchkbox()">Check All</button>
+			    			<button ng-click="clearchkbox()">Clear</button>
+			    			<button ng-click="checkchkbox()">Check All</button>
 			    		</p>
 			    		<div class="aui-list-scroll">
 			    			<ul class="aui-list-section">

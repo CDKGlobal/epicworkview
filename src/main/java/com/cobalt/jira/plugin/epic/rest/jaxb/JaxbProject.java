@@ -17,6 +17,9 @@ public class JaxbProject extends JaxbIssue
     @XmlElement(name = "completedStories")
     int completedStories;
 
+    @XmlElement(name = "contributers")
+    List<JaxbUser> contributers;
+
 	/**
 	 * required for JAXB
 	 */

@@ -1,7 +1,9 @@
 package ut.com.cobalt.jira.plugin.epic.rest;
 
+import com.atlassian.crowd.embedded.api.User;
 import com.atlassian.event.api.EventPublisher;
 import com.atlassian.jira.MockEventPublisher;
+import com.atlassian.jira.avatar.AvatarService;
 import com.atlassian.jira.bc.issue.search.SearchService;
 import com.atlassian.jira.bc.project.ProjectService;
 import com.atlassian.jira.user.MockApplicationUser;
@@ -36,6 +38,7 @@ public class RestResourceTest
 	private EventPublisher eventPublisher;
     private UserUtil userUtil;
     private ProjectService projectService;
+    private AvatarService avatarService;
 
     private int count = 0;
 
@@ -72,6 +75,10 @@ public class RestResourceTest
             return true;
         }
 
+        public User getAssignee() {
+            return null;
+        }
+
         public IJiraData getProject() {
             return null;
         }
@@ -106,6 +113,7 @@ public class RestResourceTest
 
         jiraUserManager = new MockUserManager();
         projectService = mock(ProjectService.class);
+        avatarService = mock(AvatarService.class);
 
         IJiraData subtask = new MockJiraData(IJiraData.DataType.SUBTASK);
         IJiraData story = new MockJiraData(IJiraData.DataType.STORY);
@@ -120,7 +128,7 @@ public class RestResourceTest
 
     @Test
     public void getProjectsisValid() {
-        RestResource restResource = new RestResource(searchService, userManager, jiraUserManager, eventPublisher, userUtil, projectService);
+        RestResource restResource = new RestResource(searchService, userManager, jiraUserManager, eventPublisher, userUtil, projectService, avatarService);
 
         DataManager dataManager = mock(DataManager.class);
         when(dataManager.getProjects(null, 7)).thenReturn(new ArrayList<IJiraData>());

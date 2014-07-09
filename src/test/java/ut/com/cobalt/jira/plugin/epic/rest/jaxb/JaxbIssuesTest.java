@@ -48,7 +48,7 @@ public class JaxbIssuesTest
 
     @Test
     public void jaxbProjectIsValid() {
-        JaxbProject jaxbProject = JaxbFactory.newJaxbProject(ISSUE_NAME, ISSUE_KEY, ISSUE_ID, ISSUE_DESCRIPTION, ISSUE_TIMESTAMP, new ArrayList<JaxbEpic>(), 0);
+        JaxbProject jaxbProject = JaxbFactory.newJaxbProject(ISSUE_NAME, ISSUE_KEY, ISSUE_ID, ISSUE_DESCRIPTION, ISSUE_TIMESTAMP, new ArrayList<JaxbEpic>(), 0, new ArrayList<JaxbUser>());
 
         assertEquals(0, jaxbProject.getEpics().size());
         assertEquals(0, jaxbProject.getCompletedStories());

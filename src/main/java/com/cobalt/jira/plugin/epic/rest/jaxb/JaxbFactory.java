@@ -1,5 +1,6 @@
 package com.cobalt.jira.plugin.epic.rest.jaxb;
 
+import com.atlassian.crowd.embedded.api.User;
 import com.cobalt.jira.plugin.epic.data.*;
 
 import java.util.List;
@@ -9,15 +10,16 @@ public class JaxbFactory {
     private JaxbFactory() {
     }
 
-    public static JaxbProject newJaxbProject(IJiraData p, List<JaxbEpic> epics, int completedStories) {
-        return newJaxbProject(p.getName(), p.getKey(), p.getId(), p.getDescription(), p.getTimestamp(), epics, completedStories);
+    public static JaxbProject newJaxbProject(IJiraData p, List<JaxbEpic> epics, int completedStories, List<JaxbUser> contributers) {
+        return newJaxbProject(p.getName(), p.getKey(), p.getId(), p.getDescription(), p.getTimestamp(), epics, completedStories, contributers);
     }
 
-    public static JaxbProject newJaxbProject(String name, String key, long id, String description, long timestamp, List<JaxbEpic> epics, int completedStories) {
+    public static JaxbProject newJaxbProject(String name, String key, long id, String description, long timestamp, List<JaxbEpic> epics, int completedStories, List<JaxbUser> contributers) {
         JaxbProject jaxbProject = new JaxbProject();
         setData(jaxbProject, name, key, id, description, timestamp);
         jaxbProject.epics = epics;
         jaxbProject.completedStories = completedStories;
+        jaxbProject.contributers = contributers;
         return jaxbProject;
     }
 
@@ -59,5 +61,9 @@ public class JaxbFactory {
         issue.id = id;
         issue.description = description;
         issue.timestamp = timestamp;
+    }
+
+    public static JaxbUser newJaxbUser(String name, String avatar) {
+        return newJaxbUser(name, avatar);
     }
 }

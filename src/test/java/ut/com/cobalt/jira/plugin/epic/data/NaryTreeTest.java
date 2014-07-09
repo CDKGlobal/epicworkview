@@ -1,5 +1,6 @@
 package ut.com.cobalt.jira.plugin.epic.data;
 
+import com.atlassian.crowd.embedded.api.User;
 import com.cobalt.jira.plugin.epic.data.IJiraData;
 import com.cobalt.jira.plugin.epic.data.NaryTree;
 import com.cobalt.jira.plugin.epic.data.Node;
@@ -59,6 +60,13 @@ public class NaryTreeTest {
             return false;
         }
 
+        public void update(IJiraData update) {
+        }
+
+        public User getAssignee() {
+            return null;
+        }
+
         public IJiraData getProject() {
             return project;
         }
@@ -81,9 +89,6 @@ public class NaryTreeTest {
 
         public void setStory(IJiraData story) {
             this.story = story;
-        }
-
-        public void update(IJiraData update) {
         }
     }
 

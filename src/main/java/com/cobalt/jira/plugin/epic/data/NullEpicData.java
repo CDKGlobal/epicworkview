@@ -1,5 +1,8 @@
 package com.cobalt.jira.plugin.epic.data;
 
+import com.atlassian.crowd.embedded.api.User;
+
+
 /**
  * A NullData represents a fake Jira Issue
  */
@@ -63,6 +66,10 @@ public class NullEpicData extends JiraData {
 
     public boolean completed() {
         return false;
+    }
+
+    public User getAssignee() {
+        return null;
     }
 
     @Override

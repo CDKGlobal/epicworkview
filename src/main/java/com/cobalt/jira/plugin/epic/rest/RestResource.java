@@ -3,10 +3,13 @@ package com.cobalt.jira.plugin.epic.rest;
 import com.atlassian.crowd.embedded.api.User;
 import com.atlassian.event.api.EventListener;
 import com.atlassian.event.api.EventPublisher;
+import com.atlassian.jira.avatar.Avatar;
+import com.atlassian.jira.avatar.AvatarService;
 import com.atlassian.jira.bc.issue.search.SearchService;
 import com.atlassian.jira.bc.project.ProjectService;
 import com.atlassian.jira.event.issue.IssueEvent;
 import com.atlassian.jira.user.ApplicationUser;
+import com.atlassian.jira.user.ApplicationUsers;
 import com.atlassian.jira.user.util.UserUtil;
 import com.atlassian.plugins.rest.common.security.AnonymousAllowed;
 import com.atlassian.sal.api.user.UserManager;
@@ -33,6 +36,7 @@ public class RestResource implements InitializingBean, DisposableBean {
     private EventPublisher eventPublisher;
     private DataManager dataManager;
     private UserUtil userUtil;
+    private AvatarService avatarService;
 
     private boolean enabled = false;
 
@@ -59,12 +63,13 @@ public class RestResource implements InitializingBean, DisposableBean {
     public RestResource(SearchService searchService, UserManager userManager,
                         com.atlassian.jira.user.util.UserManager jiraUserManager,
                         EventPublisher eventPublisher, UserUtil userUtil,
-                        ProjectService projectService) {
+                        ProjectService projectService, AvatarService avatarService) {
         this.searchService = searchService;
         this.userManager = userManager;
         this.jiraUserManager = jiraUserManager;
         this.eventPublisher = eventPublisher;
         this.userUtil = userUtil;
+        this.avatarService = avatarService;
 
         dataManager = new DataManager(projectService);
     }
@@ -147,20 +152,26 @@ public class RestResource implements InitializingBean, DisposableBean {
             //get all project with epics
             List<IJiraData> preOrder = dataManager.getProjects(getCurrentUser(), seconds);
 
-            while(preOrder.size() > 0)
-                buildJaxb(preOrder, projects, new IntHolder());
+            while(preOrder.size() > 0) {
+                buildJaxb(preOrder, projects, new IntHolder(), new LinkedHashSet<User>());
+            }
         }
 
         return projects;
     }
 
     @SuppressWarnings("unchecked")
-    private <T extends JaxbIssue> void buildJaxb(List<IJiraData> input, List<T> output, IntHolder count) {
+    private <T extends JaxbIssue> void buildJaxb(List<IJiraData> input, List<T> output, IntHolder count, Collection<User> assignees) {
         if(input.size() == 0)
             return;
 
         IJiraData data = input.get(0);
         input.remove(0);
+
+        User assignee = data.getAssignee();
+        if(assignee != null) {
+            assignees.add(assignee);
+        }
 
         if(data.getType() == IJiraData.DataType.STORY && data.completed())
             count.add(1);
@@ -186,12 +197,19 @@ public class RestResource implements InitializingBean, DisposableBean {
 
             //while the next element is a subtype of data
             while(input.size() > 0 && input.get(0).getType().compareTo(data.getType()) > 0) {
-                buildJaxb(input, temp, storiesCompleted);
+                buildJaxb(input, temp, storiesCompleted, assignees);
             }
 
             switch(data.getType()) {
             case PROJECT:
-                output.add((T)JaxbFactory.newJaxbProject(data, temp, storiesCompleted.getValue()));
+                List<JaxbUser> jaxbUsers = new ArrayList<JaxbUser>();
+                for(User user : assignees) {
+                    String url = avatarService.getAvatarUrlNoPermCheck(ApplicationUsers.from(user), Avatar.Size.NORMAL).toString();
+                    jaxbUsers.add(JaxbFactory.newJaxbUser(user.getName(), url));
+                }
+                assignees.clear();
+                
+                output.add((T)JaxbFactory.newJaxbProject(data, temp, storiesCompleted.getValue(), jaxbUsers));
                 break;
             case EPIC:
                 output.add((T)JaxbFactory.newJaxbEpic(data, temp));

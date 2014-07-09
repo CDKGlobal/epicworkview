@@ -1,5 +1,6 @@
 package com.cobalt.jira.plugin.epic.data;
 
+import com.atlassian.crowd.embedded.api.User;
 import com.atlassian.jira.project.Project;
 
 
@@ -61,6 +62,10 @@ public class ProjectData extends JiraData {
 
     public boolean completed() {
         return false;
+    }
+
+    public User getAssignee() {
+        return null;
     }
 
     public IJiraData getProject() {

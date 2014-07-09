@@ -1,5 +1,8 @@
 package com.cobalt.jira.plugin.epic.data;
 
+import com.atlassian.crowd.embedded.api.User;
+
+
 public interface IJiraData {
     public static enum DataType {
         PROJECT, EPIC, STORY, SUBTASK;
@@ -26,6 +29,7 @@ public interface IJiraData {
     public String getKey();
     public long getTimestamp();
     public boolean completed();
+    public User getAssignee();
     public IJiraData getProject();
     public IJiraData getEpic();
     public IJiraData getStory();

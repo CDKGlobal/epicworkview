@@ -1,5 +1,6 @@
 package ut.com.cobalt.jira.plugin.epic.data;
 
+import com.atlassian.crowd.embedded.api.User;
 import com.atlassian.jira.action.issue.customfields.MockCustomFieldType;
 import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.Issue;
@@ -82,6 +83,10 @@ public class JiraDataTest {
 
             public boolean completed() {
                 return false;
+            }
+
+            public User getAssignee() {
+                return null;
             }
 
             public String getKey() {

@@ -1,5 +1,6 @@
 package com.cobalt.jira.plugin.epic.data;
 
+import com.atlassian.crowd.embedded.api.User;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.Issue;
@@ -65,6 +66,10 @@ public class IssueData extends JiraData {
 
     public boolean completed() {
         return StatusUtil.enteredEndState(issue.getStatusObject().getName());
+    }
+
+    public User getAssignee() {
+        return issue.getAssignee();
     }
 
     @Override

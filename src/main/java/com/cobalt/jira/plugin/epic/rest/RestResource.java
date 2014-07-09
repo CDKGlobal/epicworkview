@@ -5,9 +5,7 @@ import com.atlassian.event.api.EventListener;
 import com.atlassian.event.api.EventPublisher;
 import com.atlassian.jira.bc.issue.search.SearchService;
 import com.atlassian.jira.bc.project.ProjectService;
-import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.event.issue.IssueEvent;
-import com.atlassian.jira.event.type.EventType;
 import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.jira.user.util.UserUtil;
 import com.atlassian.plugins.rest.common.security.AnonymousAllowed;
@@ -223,9 +221,9 @@ public class RestResource implements InitializingBean, DisposableBean {
     @AnonymousAllowed
     @Produces(MediaType.TEXT_PLAIN)
     public String getDebug() {
-        return DataManager.DebugLog.toString();
+        return DataManager.DEBUG_LOG.toString();
     }
-    
+
     /**
      * Event listening testing
      *

@@ -25,10 +25,13 @@ public class DataManager {
     private static final String QUERY = "(status CHANGED FROM (Open, 'To Do') AFTER %s OR status CHANGED TO (Closed, Resolved, Done) AFTER %s) AND issuetype not in (%s) ORDER BY updated DESC";
     private static final String DEFAULT_QUERY = String.format(QUERY, "-14d", "-14d", "Epic");
 
+    private static final String FROM_STATES = "Open";
+    private static final String TO_STATES = "Closed, Resolved, Done";
+
     private NaryTree tree;
     private ProjectService projectService;
 
-    public static StringBuilder DebugLog = new StringBuilder("Log Start:\r\n");
+    public static final StringBuilder DEBUG_LOG = new StringBuilder("Log Start:\r\n");
 
     /**
      * Constructs a new DataManager
@@ -122,24 +125,29 @@ public class DataManager {
             List<ChangeItemBean> cibs = changeHistory.getChangeItemBeans();
 
             ChangeItemBean cib = cibs.get(cibs.size() - 1);
-            DebugLog.append("Most Recent From: " + cib.getFromString());
-            DebugLog.append("Most Recent From: " + cib.getToString());
+
+            DEBUG_LOG.append("Most Recent From: " + cib.getFromString() + "\r\n");
+            DEBUG_LOG.append("Most Recent From: " + cib.getToString() + "\r\n");
+
+            if(cibs.size() > 1) {
+                DEBUG_LOG.append("Second Recent From: " + cibs.get(cibs.size() - 2).getFromString() + "\r\n");
+                DEBUG_LOG.append("Second Recent From: " + cibs.get(cibs.size() - 2).getToString() + "\r\n");
+            }
 
             if((cib.getFromString() == null || cib.getToString() == null) && cibs.size() > 1) {
                 cib = cibs.get(cibs.size() - 2);
-                DebugLog.append("Second Recent From: " + cib.getFromString());
-                DebugLog.append("Second Recent From: " + cib.getToString());
+
             }
 
             boolean insert = false;
 
             String s = cib.getFromString();
-            if(s != null && s.equals("Open")) {
+            if(s != null && FROM_STATES.contains(s)) {
                 insert = true;
             }
 
             String s1 = cib.getToString();
-            if(s1 != null && (s1.equals("Closed") || s1.equals("Resolved"))) {
+            if(s1 != null && TO_STATES.contains(s1)) {
                 insert = true;
             }
 

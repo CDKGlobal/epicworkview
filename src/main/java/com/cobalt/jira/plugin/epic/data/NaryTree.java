@@ -21,7 +21,7 @@ public class NaryTree {
         int depth = getDepth(insertNode.getData());
 
         if(depth == -1 || curDepth >= IJiraData.DataType.values().length) {
-            System.out.printf("depth: %d, curDepth: %d%n", depth, curDepth);
+            //invalid depth or you've gone to down into the tree
             return;
         }
 

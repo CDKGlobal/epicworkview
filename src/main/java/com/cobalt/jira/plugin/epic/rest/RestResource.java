@@ -4,8 +4,12 @@ import com.atlassian.crowd.embedded.api.User;
 import com.atlassian.event.api.EventListener;
 import com.atlassian.event.api.EventPublisher;
 import com.atlassian.jira.bc.issue.search.SearchService;
+import com.atlassian.jira.bc.project.ProjectService;
+import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.event.issue.IssueEvent;
+import com.atlassian.jira.event.type.EventType;
 import com.atlassian.jira.user.ApplicationUser;
+import com.atlassian.jira.user.util.UserUtil;
 import com.atlassian.plugins.rest.common.security.AnonymousAllowed;
 import com.atlassian.sal.api.user.UserManager;
 import com.atlassian.sal.api.user.UserProfile;
@@ -30,6 +34,9 @@ public class RestResource implements InitializingBean, DisposableBean {
     private com.atlassian.jira.user.util.UserManager jiraUserManager;
     private EventPublisher eventPublisher;
     private DataManager dataManager;
+    private UserUtil userUtil;
+
+    private boolean enabled = false;
 
     /**
      * Rest resource that use dependency injection to get necessary components
@@ -41,11 +48,15 @@ public class RestResource implements InitializingBean, DisposableBean {
      */
     public RestResource(SearchService searchService, UserManager userManager,
                         com.atlassian.jira.user.util.UserManager jiraUserManager,
-                        EventPublisher eventPublisher) {
+                        EventPublisher eventPublisher, UserUtil userUtil,
+                        ProjectService projectService) {
         this.searchService = searchService;
         this.userManager = userManager;
         this.jiraUserManager = jiraUserManager;
         this.eventPublisher = eventPublisher;
+        this.userUtil = userUtil;
+
+        dataManager = new DataManager(projectService);
     }
 
     /**
@@ -55,11 +66,17 @@ public class RestResource implements InitializingBean, DisposableBean {
      */
     @Override
     public void afterPropertiesSet() throws Exception {
-        //remove any listeners already registered, in case jira enables this plugin without first disabling it
-        eventPublisher.unregister(this);
-        // register ourselves with the EventPublisher
-        eventPublisher.register(this);//add this object to listen for events
-        dataManager = new DataManager(searchService);
+        if(!enabled) {
+            // remove any listeners already registered, in case jira enables this plugin without first disabling it
+            eventPublisher.unregister(this);
+            // register ourselves with the EventPublisher
+            eventPublisher.register(this);//add this object to listen for events
+
+            // have datamanager initialize its resources
+            dataManager.init(searchService, userUtil);
+
+            enabled = true;
+        }
     }
 
     /**
@@ -69,9 +86,15 @@ public class RestResource implements InitializingBean, DisposableBean {
      */
     @Override
     public void destroy() throws Exception {
-        // unregister ourselves with the EventPublisher
-        eventPublisher.unregister(this);
-        dataManager = null;
+        if(enabled) {
+            // unregister ourselves with the EventPublisher
+            eventPublisher.unregister(this);
+
+            // have datamanager clean up its resources
+            dataManager.destroy();
+
+            enabled = false;
+        }
     }
 
     /**
@@ -107,14 +130,16 @@ public class RestResource implements InitializingBean, DisposableBean {
     @GET
     @AnonymousAllowed
     @Produces(MediaType.APPLICATION_JSON)
-    public List<JaxbProject> getProjects(@DefaultValue("7") @QueryParam("days") int days) {
+    public List<JaxbProject> getProjects(@DefaultValue("5") @QueryParam("seconds") int seconds) {
         List<JaxbProject> projects = new ArrayList<JaxbProject>();
 
-        //get all project with epics
-        List<IJiraData> preOrder = dataManager.getProjects(getCurrentUser(), days);
+        if(enabled) {
+            //get all project with epics
+            List<IJiraData> preOrder = dataManager.getProjects(getCurrentUser(), seconds);
 
-        while(preOrder.size() > 0)
-            buildJaxb(preOrder, projects);
+            while(preOrder.size() > 0)
+                buildJaxb(preOrder, projects);
+        }
 
         return projects;
     }
@@ -141,6 +166,8 @@ public class RestResource implements InitializingBean, DisposableBean {
             case STORY:
                 temp = new ArrayList<JaxbIssue>();
                 break;
+            default:
+                return;
             }
 
             //while the next element is a subtype of data
@@ -158,6 +185,8 @@ public class RestResource implements InitializingBean, DisposableBean {
             case STORY:
                 output.add((T)JaxbFactory.newJaxbStory(data, temp));
                 break;
+            default:
+                return;
             }
         }
     }
@@ -196,6 +225,7 @@ public class RestResource implements InitializingBean, DisposableBean {
      */
     @EventListener
     public void issueEventListener(IssueEvent issueEvent) {
+        dataManager.newIssueEvent(issueEvent);
     }
 
     /**

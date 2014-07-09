@@ -3,8 +3,10 @@ package ut.com.cobalt.jira.plugin.epic.rest;
 import com.atlassian.event.api.EventPublisher;
 import com.atlassian.jira.MockEventPublisher;
 import com.atlassian.jira.bc.issue.search.SearchService;
+import com.atlassian.jira.bc.project.ProjectService;
 import com.atlassian.jira.user.MockApplicationUser;
 import com.atlassian.jira.user.util.MockUserManager;
+import com.atlassian.jira.user.util.UserUtil;
 import com.atlassian.sal.api.user.UserManager;
 import com.atlassian.sal.api.user.UserProfile;
 import com.cobalt.jira.plugin.epic.data.*;
@@ -13,6 +15,7 @@ import com.cobalt.jira.plugin.epic.rest.jaxb.JaxbEpic;
 import com.cobalt.jira.plugin.epic.rest.jaxb.JaxbIssue;
 import com.cobalt.jira.plugin.epic.rest.jaxb.JaxbProject;
 import com.cobalt.jira.plugin.epic.rest.jaxb.JaxbStory;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.Before;
 
@@ -31,6 +34,8 @@ public class RestResourceTest
 	private UserManager userManager;
 	private com.atlassian.jira.user.util.UserManager jiraUserManager;
 	private EventPublisher eventPublisher;
+    private UserUtil userUtil;
+    private ProjectService projectService;
 
     private int count = 0;
 
@@ -81,6 +86,7 @@ public class RestResourceTest
     public void setup() {
 		searchService = mock(SearchService.class);
 		userManager = mock(UserManager.class);
+        userUtil = mock(UserUtil.class);
 
         eventPublisher = new MockEventPublisher() {
             public void register(Object o) {
@@ -95,6 +101,7 @@ public class RestResourceTest
         };
 
         jiraUserManager = new MockUserManager();
+        projectService = mock(ProjectService.class);
 
         IJiraData subtask = new MockJiraData(IJiraData.DataType.SUBTASK);
         IJiraData story = new MockJiraData(IJiraData.DataType.STORY);
@@ -109,7 +116,11 @@ public class RestResourceTest
 
     @Test
     public void getProjectsisValid() {
-        RestResource restResource = new RestResource(searchService, userManager, jiraUserManager, eventPublisher);
+        RestResource restResource = new RestResource(searchService, userManager, jiraUserManager, eventPublisher, userUtil, projectService);
+
+        DataManager dataManager = mock(DataManager.class);
+        when(dataManager.getProjects(null, 7)).thenReturn(new ArrayList<IJiraData>());
+        restResource.setDataManager(dataManager);
 
         try {
             restResource.afterPropertiesSet();
@@ -120,10 +131,6 @@ public class RestResourceTest
 
         assertEquals(2, count);//make sure that afterPropertiesSet called two functions of the eventPublisher
         count = 0; //reset count
-
-        DataManager dataManager = mock(DataManager.class);
-        when(dataManager.getProjects(null, 7)).thenReturn(new ArrayList<IJiraData>());
-        restResource.setDataManager(dataManager);
 
         List<JaxbProject> jaxbProjects = restResource.getProjects(7);
         assertEquals(0, jaxbProjects.size());

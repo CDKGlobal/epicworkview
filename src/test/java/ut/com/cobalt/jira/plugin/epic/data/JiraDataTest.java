@@ -1,7 +1,6 @@
 package ut.com.cobalt.jira.plugin.epic.data;
 
 import com.atlassian.jira.action.issue.customfields.MockCustomFieldType;
-import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.fields.MockCustomField;
@@ -10,7 +9,6 @@ import com.atlassian.jira.mock.issue.MockIssue;
 import com.atlassian.jira.project.MockProject;
 import com.cobalt.jira.plugin.epic.data.*;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.sql.Timestamp;
@@ -146,6 +144,7 @@ public class JiraDataTest {
 
         //test with the epic link
         assertTrue(storyData.getEpic() instanceof EpicData);
+        assertEquals(storyData, storyData.getStory());
     }
 
     @Test

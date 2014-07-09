@@ -83,7 +83,7 @@ public class NaryTreeTest {
     @Before
     public void setup() {
         mockIJiraData = new MockIJiraData(IJiraData.DataType.SUBTASK, JIRA_DATA_ID);
-        mockIJiraData.setProject(new MockIJiraData(IJiraData.DataType.PROJECT, JIRA_DATA_ID-1));
+        mockIJiraData.setProject(new MockIJiraData(IJiraData.DataType.PROJECT, JIRA_DATA_ID - 1));
         mockIJiraData.setEpic(new MockIJiraData(IJiraData.DataType.EPIC, JIRA_DATA_ID - 2));
         mockIJiraData.setStory(new MockIJiraData(IJiraData.DataType.STORY, JIRA_DATA_ID - 3));
     }
@@ -108,6 +108,9 @@ public class NaryTreeTest {
     @Test
     public void naryTreeIsValid() {
         NaryTree naryTree = new NaryTree();
+
+        naryTree.insert(new MockIJiraData(null, 0));
+        assertEquals(0, naryTree.getPreOrder().size());
 
         naryTree.insert(mockIJiraData);
 

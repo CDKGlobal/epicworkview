@@ -62,16 +62,16 @@
 	      	<tr class="project-row" ng-repeat="project in timeOrderedProjects() | filter: {included:true}">
 	      		<td class="project-name"><a href="{{getBaseURL()}}/browse/{{project.key}}">{{project.name}}</a></td>
 	      		<td>
-	      			<ul>
+	      			<ul class="list">
 	      				<li class="inline" ng-repeat="contributor in project.contributors">
-	      					<img src="{{contributor.avatar}}" alt="{{contributor.name}}">
+	      					<img src="{{contributor.avatar}}" alt="{{contributor.name}}" title="{{contributor.name}}">
 	      				</li>
 	      			</ul>
 	      		</td>
 	      		<td>{{getCompletedStories(project)}}</td>
 	      		<td>{{millisecondToString(project.timestamp)}}</td>
 	      		<td>
-	      			<ul class="epics" ng-controller="EpicController">
+	      			<ul class="list" ng-controller="EpicController">
 	      				<li class="inline" ng-repeat="epic in project.epics" ng-init="setUniqueId(epic)">
 	      					<a ng-class="{'clicked-epic': isClicked(epic.id)}" class="epic" ng-click="toggleEpic($event, epic.id)">
 	      						{{epic.name}}

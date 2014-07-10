@@ -242,8 +242,9 @@ function ProjectController($scope, $http, $cookieStore) {
     function indexOf(list, elem) {
       var where = -1;
       angular.forEach(list, function(e, i) {
-        if(e.id == elem.id) {
-          where = i;
+    	//if element ids are equal or both negative
+        if(e.id == elem.id || (typeof e.id === 'number' && e.id < 0) && (typeof elem.id === 'number' && elem.id < 0)) {
+        	where = i;
         }
       });
       return where;

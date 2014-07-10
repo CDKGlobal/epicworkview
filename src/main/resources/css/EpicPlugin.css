@@ -1,12 +1,50 @@
-table {
-	border-spacing: 2px;
+.table-header {
+	border-bottom: 1px solid #ccc;
+	font-weight: bold;
+}
+
+.table-header > li,
+.table-header > li > span {
+	vertical-align: top;
+}
+
+.table-row {
+	border-bottom: 1px solid #ccc;
+}
+
+.table-row > li {
+	vertical-align: middle;
+}
+
+.project-column {
+	width: 12%;
+	margin-right: 10px;
+}
+
+.contributor-column {
+	width: 9%;
+	margin-right: 10px;
+}
+
+.completed-story-column {
+	width: 7%;
+	margin-right: 10px;
+}
+
+.last-update-column {
+	width: 8%;
+	margin-right: 10px;
+}
+
+.epic-column {
+	margin-right: 10px;
 }
 
 table.aui > tbody > tr > td {
 	vertical-align: middle;
 }
 
-li.inline {
+ul.inline > li {
 	display: inline-block;
 	margin-top: 8px;
 	margin-bottom: 8px;
@@ -50,8 +88,8 @@ li.inline {
 
 .project-filter {
 	width: auto;
-	left: 90px;
-	top: 69px;
+	left: 120px;
+	top: 70px;
 	display: block;
 	padding: 5px;
 }
@@ -121,11 +159,14 @@ input {
 /* Project row animations */
 
 .project-row.ng-move { 
-	-webkit-transition: 1s linear all;
-	transition: 1s linear all;
-	position: relative;
-	background: red;
-	opacity: 0;
+	-webkit-transition: top 1s ease-in-out;
+    -moz-transition: top 1s ease-in-out;
+    -ms-transition: top 1s ease-in-out;
+    -o-transition: top 1s ease-in-out;
+    transition: top 1s ease-in-out;
+    opacity: 0;
+    position: relative;
+    display: block;
 } 
 
 .project-row.ng-move.ng-move-active {

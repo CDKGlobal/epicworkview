@@ -52,6 +52,7 @@
  				 	<option value="2">2</option>
   					<option value="7">7</option>
   					<option value="14">14</option>
+  					<option value="21">21</option>
 				</select>
 	           Days)
 	           </th>
@@ -64,7 +65,7 @@
 	      		<td>
 	      			<ul class="list">
 	      				<li class="inline" ng-repeat="contributor in project.contributors">
-	      					<img src="{{contributor.avatar}}" alt="{{contributor.name}}" title="{{contributor.name}}">
+	      					<img src="{{contributor.avatar}}" alt="{{contributor.name}}" title="{{contributor.name}}" height="24" width="24">
 	      				</li>
 	      			</ul>
 	      		</td>

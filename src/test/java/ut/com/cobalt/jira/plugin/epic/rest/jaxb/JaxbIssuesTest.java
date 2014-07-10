@@ -1,6 +1,6 @@
 package ut.com.cobalt.jira.plugin.epic.rest.jaxb;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import com.cobalt.jira.plugin.epic.rest.jaxb.*;
 import org.junit.Before;
@@ -39,6 +39,7 @@ public class JaxbIssuesTest
     public void jaxbStoryIsValid() {
         JaxbStory jaxbStory = JaxbFactory.newJaxbStory(ISSUE_NAME, ISSUE_KEY, ISSUE_ID, ISSUE_DESCRIPTION, ISSUE_TIMESTAMP, true, new ArrayList<JaxbIssue>());
 
+        assertTrue(jaxbStory.getCompleted());
         assertEquals(0, jaxbStory.getSubtasks().size());
     }
 
@@ -54,13 +55,16 @@ public class JaxbIssuesTest
         JaxbProject jaxbProject = JaxbFactory.newJaxbProject(ISSUE_NAME, ISSUE_KEY, ISSUE_ID, ISSUE_DESCRIPTION, ISSUE_TIMESTAMP, new ArrayList<JaxbEpic>(), new ArrayList<JaxbUser>());
 
         assertEquals(0, jaxbProject.getEpics().size());
+        assertEquals(0, jaxbProject.getContributors().size());
     }
 
     @Test
     public void jaxbUserIsValid() {
         JaxbUser jaxbUser = JaxbFactory.newJaxbUser("KEY", USER_NAME, USER_AVATAR, 1l);
 
+        assertEquals("KEY", jaxbUser.getId());
         assertEquals(USER_NAME, jaxbUser.getName());
         assertEquals(USER_AVATAR, jaxbUser.getAvatar());
+        assertEquals(1l, jaxbUser.getTimestamp());
     }
 }

@@ -32,9 +32,53 @@ public class JiraDataTest {
     private static final long PROJECT_ID = 10001;
     private static final String PROJECT_DESCRIPTION = "TEST PROJECT DESCRIPTION";
 
+    private static final String USERNAME = "username";
+
     private MockIssue issue;
     private MockProject project, project2;
     private CustomFieldManager mockCustomFieldManager;
+
+    private class MockJiraData extends JiraData {
+        public DataType getType() {
+            return null;
+        }
+
+        public String getName() {
+            return null;
+        }
+
+        public String getDescription() {
+            return null;
+        }
+
+        public long getId() {
+            return 0;
+        }
+
+        public String getKey() {
+            return null;
+        }
+
+        public boolean completed() {
+            return false;
+        }
+
+        public User getAssignee() {
+            return null;
+        }
+
+        public IJiraData getProject() {
+            return null;
+        }
+
+        public IJiraData getEpic() {
+            return null;
+        }
+
+        public IJiraData getStory() {
+            return null;
+        }
+    }
 
     @Before
     public void setup() {
@@ -62,7 +106,7 @@ public class JiraDataTest {
         issue.setUpdated(ISSUE_TIMESTAMP);
         issue.setProjectObject(project);
         doReturn(new MockStatus("6", "Done")).when(issue).getStatusObject();
-        issue.setAssignee(new MockUser("username"));
+        issue.setAssignee(new MockUser(USERNAME));
 
         MockComponentWorker worker = new MockComponentWorker();
         mockCustomFieldManager = mock(CustomFieldManager.class);
@@ -72,53 +116,17 @@ public class JiraDataTest {
 
     @Test
     public void jiraDataIsValid() {
-        JiraData jiraData = new JiraData() {
-            public DataType getType() {
-                return null;
-            }
-
-            public String getName() {
-                return null;
-            }
-
-            public String getDescription() {
-                return null;
-            }
-
-            public long getId() {
-                return 0;
-            }
-
-            public boolean completed() {
-                return false;
-            }
-
-            public User getAssignee() {
-                return null;
-            }
-
-            public String getKey() {
-                return null;
-            }
-
-            public IJiraData getProject() {
-                return null;
-            }
-
-            public IJiraData getEpic() {
-                return null;
-            }
-
-            public IJiraData getStory() {
-                return null;
-            }
-        };
-
+        JiraData jiraData = new MockJiraData();
         assertEquals(-1, jiraData.getTimestamp());
         jiraData.setTimestamp(-2);
         assertEquals(-1, jiraData.getTimestamp());
         jiraData.setTimestamp(1000);
         assertEquals(1000, jiraData.getTimestamp());
+
+        JiraData jiraData1 = new MockJiraData();
+        jiraData1.setTimestamp(2000l);
+        jiraData.update(jiraData1);
+        assertEquals(2000l, jiraData.getTimestamp());
     }
 
     @Test
@@ -132,7 +140,7 @@ public class JiraDataTest {
         assertEquals(ISSUE_DESCRIPTION, issueData.getDescription());
         assertEquals(ISSUE_TIMESTAMP.getTime(), issueData.getTimestamp());
         assertTrue(issueData.completed());
-        assertEquals("username", issueData.getAssignee().getName());
+        assertEquals(USERNAME, issueData.getAssignee().getName());
         assertTrue(issueData.getProject() instanceof ProjectData);
 
         //test with no epic link
@@ -146,7 +154,27 @@ public class JiraDataTest {
         assertTrue(issueData.getEpic() instanceof EpicData);
         assertTrue(issueData.getStory() instanceof StoryData);
 
+        MockIssue issue = spy(new MockIssue() {
+            public Issue getParentObject() {
+                return this;
+            }
+        });
+        issue.setSummary(ISSUE_NAME + 1);
+        issue.setKey(ISSUE_KEY + 1);
+        issue.setId(ISSUE_ID + 1);
+        issue.setDescription(ISSUE_DESCRIPTION + 1);
+        issue.setUpdated(ISSUE_TIMESTAMP);
+        issue.setProjectObject(project);
+        doReturn(new MockStatus("1", "Open")).when(issue).getStatusObject();
+        issue.setAssignee(new MockUser(USERNAME + 1));
+        issueData.update(new IssueData(issue));
 
+        assertEquals(ISSUE_NAME + 1, issueData.getName());
+        assertEquals(ISSUE_KEY + 1, issueData.getKey());
+        assertEquals(ISSUE_ID + 1, issueData.getId());
+        assertEquals(ISSUE_DESCRIPTION + 1, issueData.getDescription());
+        assertFalse(issueData.completed());
+        assertEquals(USERNAME + 1, issueData.getAssignee().getName());
     }
 
     @Test

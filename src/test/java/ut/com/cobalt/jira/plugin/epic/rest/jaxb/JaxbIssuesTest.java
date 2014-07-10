@@ -66,5 +66,15 @@ public class JaxbIssuesTest
         assertEquals(USER_NAME, jaxbUser.getName());
         assertEquals(USER_AVATAR, jaxbUser.getAvatar());
         assertEquals(1l, jaxbUser.getTimestamp());
+
+        JaxbUser jaxbUser1 = JaxbFactory.newJaxbUser("KEY", USER_NAME, USER_AVATAR, 1l);
+        JaxbUser jaxbUser2 = JaxbFactory.newJaxbUser("KEY1", USER_NAME, USER_AVATAR, 1l);
+        Object object = new Object();
+
+        assertTrue(jaxbUser.equals(jaxbUser));
+        assertFalse(jaxbUser.equals(object));
+        assertTrue(jaxbUser.equals(jaxbUser1));
+        assertFalse(jaxbUser.equals(jaxbUser2));
+        assertEquals("KEY".hashCode(), jaxbUser.hashCode());
     }
 }

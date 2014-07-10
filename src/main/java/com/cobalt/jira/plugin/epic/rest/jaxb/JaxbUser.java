@@ -37,4 +37,20 @@ public class JaxbUser {
     public long getTimestamp() {
         return timestamp;
     }
+
+    public boolean equals(Object o) {
+        if(o == this) {
+            return true;
+        }
+
+        if(!(o instanceof JaxbUser)) {
+            return false;
+        }
+
+        return id.equals(((JaxbUser) o).id);
+    }
+
+    public int hashCode() {
+        return id.hashCode();
+    }
 }

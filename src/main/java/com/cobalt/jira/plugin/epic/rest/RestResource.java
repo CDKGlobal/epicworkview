@@ -185,7 +185,7 @@ public class RestResource implements InitializingBean, DisposableBean {
 
             switch(data.getType()) {
             case PROJECT:
-                List<JaxbUser> jaxbUsers = new ArrayList<JaxbUser>();
+                LinkedHashSet<JaxbUser> jaxbUsers = new LinkedHashSet<JaxbUser>();
                 for(IJiraData issue : issues) {
                     ApplicationUser appUser = ApplicationUsers.from(issue.getAssignee());
                     String url = avatarService.getAvatarUrlNoPermCheck(appUser, Avatar.Size.NORMAL).toString();
@@ -193,7 +193,7 @@ public class RestResource implements InitializingBean, DisposableBean {
                 }
                 issues.clear();
 
-                output.add((T)JaxbFactory.newJaxbProject(data, temp, jaxbUsers));
+                output.add((T)JaxbFactory.newJaxbProject(data, temp, new ArrayList<JaxbUser>(jaxbUsers)));
                 break;
             case EPIC:
                 output.add((T)JaxbFactory.newJaxbEpic(data, temp));

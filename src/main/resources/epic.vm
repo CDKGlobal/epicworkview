@@ -65,7 +65,7 @@
 	      		<td>
 	      			<ul class="list">
 	      				<li class="inline" ng-repeat="contributor in project.contributors">
-	      					<img src="{{contributor.avatar}}" alt="{{contributor.name}}" title="{{contributor.name}}" height="24" width="24">
+	      					<img src="{{contributor.avatar}}" title="{{contributor.name}}" height="24" width="24">
 	      				</li>
 	      			</ul>
 	      		</td>

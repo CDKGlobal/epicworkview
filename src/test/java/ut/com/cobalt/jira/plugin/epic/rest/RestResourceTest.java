@@ -3,24 +3,25 @@ package ut.com.cobalt.jira.plugin.epic.rest;
 import com.atlassian.crowd.embedded.api.User;
 import com.atlassian.event.api.EventPublisher;
 import com.atlassian.jira.MockEventPublisher;
+import com.atlassian.jira.avatar.Avatar;
 import com.atlassian.jira.avatar.AvatarService;
 import com.atlassian.jira.bc.issue.search.SearchService;
 import com.atlassian.jira.bc.project.ProjectService;
-import com.atlassian.jira.user.MockApplicationUser;
+import com.atlassian.jira.component.ComponentAccessor;
+import com.atlassian.jira.mock.component.MockComponentWorker;
+import com.atlassian.jira.user.*;
 import com.atlassian.jira.user.util.MockUserManager;
 import com.atlassian.jira.user.util.UserUtil;
 import com.atlassian.sal.api.user.UserManager;
 import com.atlassian.sal.api.user.UserProfile;
 import com.cobalt.jira.plugin.epic.data.*;
 import com.cobalt.jira.plugin.epic.rest.RestResource;
-import com.cobalt.jira.plugin.epic.rest.jaxb.JaxbEpic;
-import com.cobalt.jira.plugin.epic.rest.jaxb.JaxbIssue;
-import com.cobalt.jira.plugin.epic.rest.jaxb.JaxbProject;
-import com.cobalt.jira.plugin.epic.rest.jaxb.JaxbStory;
+import com.cobalt.jira.plugin.epic.rest.jaxb.*;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.Before;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +32,11 @@ import static org.junit.Assert.*;
 public class RestResourceTest
 {
     private static final String USERNAME = "USERNAME";
+
+    private static final String USER_KEY = "testkey";
+    private static final String USER_DISPLAY_NAME = "User, Test";
+    private static final String USER_EMAIL = "test@test.com";
+    private static final String USER_AVATAR_PATH = "MockAvatarURI";
 
 	private SearchService searchService;
 	private UserManager userManager;
@@ -43,6 +49,8 @@ public class RestResourceTest
     private int count = 0;
 
     private List<IJiraData> projects;
+
+    private MockUser mockUser;
 
     private class MockJiraData extends JiraData {
         private DataType type;
@@ -111,11 +119,32 @@ public class RestResourceTest
             }
         };
 
-        jiraUserManager = new MockUserManager();
+        jiraUserManager = spy(new MockUserManager());
         projectService = mock(ProjectService.class);
         avatarService = mock(AvatarService.class);
 
-        IJiraData subtask = new MockJiraData(IJiraData.DataType.SUBTASK);
+        URI mockUri = URI.create(USER_AVATAR_PATH);
+
+        when(avatarService.getAvatarUrlNoPermCheck(any(ApplicationUser.class), eq(Avatar.Size.NORMAL))).thenReturn(mockUri);
+
+        UserKeyService mockUserKeyService = mock(UserKeyService.class);
+
+        MockComponentWorker worker = new MockComponentWorker();
+        worker.addMock(UserKeyService.class, mockUserKeyService);
+        worker.addMock(com.atlassian.jira.user.util.UserManager.class, jiraUserManager);
+        worker.init();
+
+        mockUser = new MockUser(USERNAME, USER_DISPLAY_NAME, USER_EMAIL);
+        MockApplicationUser mockApplicationUser = new MockApplicationUser(USER_KEY, USERNAME, USER_DISPLAY_NAME, USER_EMAIL);
+
+        when(mockUserKeyService.getKeyForUser(any(User.class))).thenReturn(USER_KEY);
+        when(jiraUserManager.getUserByKey(anyString())).thenReturn(mockApplicationUser);
+
+        IJiraData subtask = new MockJiraData(IJiraData.DataType.SUBTASK) {
+            public User getAssignee() {
+                return mockUser;
+            }
+        };
         IJiraData story = new MockJiraData(IJiraData.DataType.STORY);
         IJiraData epic = new MockJiraData(IJiraData.DataType.EPIC);
         IJiraData project = new MockJiraData(IJiraData.DataType.PROJECT);
@@ -144,6 +173,7 @@ public class RestResourceTest
         assertEquals(2, count);//make sure that afterPropertiesSet called two functions of the eventPublisher
         count = 0; //reset count
 
+
         List<JaxbProject> jaxbProjects = restResource.getProjects(7);
         assertEquals(0, jaxbProjects.size());
 
@@ -160,6 +190,9 @@ public class RestResourceTest
 
         jaxbProjects = restResource.getProjects(7);
         assertEquals(1, jaxbProjects.size());
+
+        List<JaxbUser> users = jaxbProjects.get(0).getContributors();
+        assertEquals(1, users.size());
 
         List<JaxbEpic> epics = jaxbProjects.get(0).getEpics();
         assertEquals(1, epics.size());

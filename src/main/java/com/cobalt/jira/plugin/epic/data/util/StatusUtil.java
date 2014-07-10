@@ -4,9 +4,6 @@ public final class StatusUtil {
     private static final String INITIAL_STATES = "Open, 'To Do'";
     private static final String END_STATES = "Closed, Resolved, Done";
 
-    private StatusUtil() {
-    }
-
     public static String getInitialStates() {
         return INITIAL_STATES;
     }

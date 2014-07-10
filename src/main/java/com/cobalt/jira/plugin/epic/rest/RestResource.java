@@ -7,6 +7,7 @@ import com.atlassian.jira.avatar.Avatar;
 import com.atlassian.jira.avatar.AvatarService;
 import com.atlassian.jira.bc.issue.search.SearchService;
 import com.atlassian.jira.bc.project.ProjectService;
+import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.event.issue.IssueEvent;
 import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.jira.user.ApplicationUsers;
@@ -187,7 +188,8 @@ public class RestResource implements InitializingBean, DisposableBean {
             case PROJECT:
                 LinkedHashSet<JaxbUser> jaxbUsers = new LinkedHashSet<JaxbUser>();
                 for(IJiraData issue : issues) {
-                    ApplicationUser appUser = ApplicationUsers.from(issue.getAssignee());
+                    String key = ComponentAccessor.getUserKeyService().getKeyForUser(issue.getAssignee());
+                    ApplicationUser appUser = ComponentAccessor.getUserManager().getUserByKey(key);
                     String url = avatarService.getAvatarUrlNoPermCheck(appUser, Avatar.Size.NORMAL).toString();
                     jaxbUsers.add(JaxbFactory.newJaxbUser(appUser.getKey(), appUser.getDisplayName(), url, issue.getTimestamp()));
                 }

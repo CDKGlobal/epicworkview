@@ -42,6 +42,20 @@ describe('Jira Epic Plugin: main page', function() {
   it('should list all projects', function(){
   	var elems = element.all(by.repeater('project in timeOrderedProjects()'));
   	expect(elems.count()).toBe(2);
+  	
+  });
+  
+  
+  // test the contributors image showed in the project
+  it('includes the contributor icon image per-element', function() {
+  	var elems = element.all(by.repeater('project in timeOrderedProjects()'));
+  	elems.first().then(function(elm) {
+    	elm.element(by.tagName('img')).then(function(img) {
+      		img.getAttribute('src').then(function(src) {
+        	expect(src).toMatch(/useravatar/);
+     		});
+    	})
+  	});
   });
   
   

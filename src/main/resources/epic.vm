@@ -63,13 +63,13 @@
 	      		<li class="project-name project-column"><a href="{{getBaseURL()}}/browse/{{project.key}}">{{project.name}}</a></li>
 	      		<li class="contributor-column">
 	      			<ul class="list inline">
-	      				<li ng-repeat="contributor in project.contributors">
-	      					<img src="{{contributor.avatar}}" title="{{contributor.name}}" height="24" width="24">
+	      				<li class="contributor" ng-repeat="contributor in project.contributors">
+	      					<img src="{{contributor.avatar}}" title="{{contributor.name}}" height="32" width="32">
 	      				</li>
 	      			</ul>
 	      		</li>
 	      		<li class="completed-story-column">{{getCompletedStories(project)}}</li>
-	      		<li class="last-update-column">{{millisecondToString(project.timestamp)}}</li>
+	      		<li class="last-update-column">{{millisecondToString(project.timestamp)}} ago</li>
 	      		<li class="epic-column">
 	      			<ul class="list inline" ng-controller="EpicController">
 	      				<li ng-repeat="epic in project.epics" ng-init="setUniqueId(epic)">

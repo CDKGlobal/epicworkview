@@ -18,26 +18,27 @@
 
 .project-column {
 	width: 12%;
-	margin-right: 10px;
+	margin-right: 1%;
 }
 
 .contributor-column {
 	width: 9%;
-	margin-right: 10px;
+	margin-right: 1%;
 }
 
 .completed-story-column {
 	width: 7%;
-	margin-right: 10px;
+	margin-right: 1%;
 }
 
 .last-update-column {
 	width: 8%;
-	margin-right: 10px;
+	margin-right: 1%;
 }
 
 .epic-column {
-	margin-right: 10px;
+	margin-right: 1%;
+	width: 57%;
 }
 
 table.aui > tbody > tr > td {
@@ -159,17 +160,20 @@ input {
 /* Project row animations */
 
 .project-row.ng-move { 
-	-webkit-transition: top 1s ease-in-out;
-    -moz-transition: top 1s ease-in-out;
-    -ms-transition: top 1s ease-in-out;
-    -o-transition: top 1s ease-in-out;
-    transition: top 1s ease-in-out;
+	-webkit-transition: all 2s linear;
+    -moz-transition: all 2s linear;
+    -ms-transition: all 2s linear;
+    -o-transition: all 2s linear;
+    transition: all 1s linear;
     opacity: 0;
+    background-color: #00FF00;
     position: relative;
-    display: block;
+    max-height: 0px;
+    //display: block;
 } 
 
 .project-row.ng-move.ng-move-active {
-	background: red;
+	background-color: white;
+	max-height: 800px;
 	opacity: 1;
 }

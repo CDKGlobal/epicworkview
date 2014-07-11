@@ -170,7 +170,7 @@ public class RestResourceTest
             fail("RestResource threw an exception when afterPropertiesSet() was called");
         }
 
-        assertEquals(2, count);//make sure that afterPropertiesSet called two functions of the eventPublisher
+        assertEquals(1, count);//make sure that afterPropertiesSet called one function of the eventPublisher
         count = 0; //reset count
 
 

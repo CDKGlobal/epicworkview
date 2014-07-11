@@ -9,7 +9,6 @@ import com.atlassian.jira.issue.Issue;
  * An EpicData represents a Jira Epic
  */
 public class EpicData extends IssueData {
-
 	/**
 	 * Creates a new EpicData
 	 * 

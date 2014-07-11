@@ -10,7 +10,6 @@ import com.atlassian.jira.bc.project.ProjectService;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.event.issue.IssueEvent;
 import com.atlassian.jira.user.ApplicationUser;
-import com.atlassian.jira.user.ApplicationUsers;
 import com.atlassian.jira.user.util.UserUtil;
 import com.atlassian.plugins.rest.common.security.AnonymousAllowed;
 import com.atlassian.sal.api.user.UserManager;
@@ -70,9 +69,8 @@ public class RestResource implements InitializingBean, DisposableBean {
      */
     @Override
     public void afterPropertiesSet() throws Exception {
+        //if our plugin is not already enabled
         if(!enabled) {
-            // remove any listeners already registered, in case jira enables this plugin without first disabling it
-            eventPublisher.unregister(this);
             // register ourselves with the EventPublisher
             eventPublisher.register(this);//add this object to listen for events
 
@@ -90,6 +88,7 @@ public class RestResource implements InitializingBean, DisposableBean {
      */
     @Override
     public void destroy() throws Exception {
+        //if our plugin is enabled
         if(enabled) {
             // unregister ourselves with the EventPublisher
             eventPublisher.unregister(this);
@@ -149,21 +148,31 @@ public class RestResource implements InitializingBean, DisposableBean {
         return projects;
     }
 
+    /**
+     * Recursively builds up the jaxb data to send to the client
+     * @param input list of issue to turn into jaxb
+     * @param output list holding the output jaxb objects
+     * @param issues helper list to build up the contributer list for projects
+     */
     @SuppressWarnings("unchecked")
     private <T extends JaxbIssue> void buildJaxb(List<IJiraData> input, List<T> output, List<IJiraData> issues) {
+        //if there are no more issues to convert
         if(input.size() == 0)
             return;
 
         IJiraData data = input.get(0);
         input.remove(0);
 
+        //add to the contributer list if there is an assignee
         if(data.getAssignee() != null) {
             issues.add(data);
         }
 
+        //if were down to subtasks build the jaxb and return it
         if(data.getType() == IJiraData.DataType.SUBTASK)
             output.add((T)JaxbFactory.newJaxbIssue(data));
         else {
+            //make a new list to build up based on our current data type
             List temp;
             switch(data.getType()) {
             case PROJECT:
@@ -176,7 +185,7 @@ public class RestResource implements InitializingBean, DisposableBean {
                 temp = new ArrayList<JaxbIssue>();
                 break;
             default:
-                return;
+                return;//should never get here
             }
 
             //while the next element is a subtype of data
@@ -184,8 +193,10 @@ public class RestResource implements InitializingBean, DisposableBean {
                 buildJaxb(input, temp, issues);
             }
 
+            //after build up all the sub types into a list create a new jaxb object of the current type
             switch(data.getType()) {
             case PROJECT:
+                //create a set of jaxb users from the contributers added in the previous recursive calls
                 LinkedHashSet<JaxbUser> jaxbUsers = new LinkedHashSet<JaxbUser>();
                 for(IJiraData issue : issues) {
                     String key = ComponentAccessor.getUserKeyService().getKeyForUser(issue.getAssignee());
@@ -204,7 +215,7 @@ public class RestResource implements InitializingBean, DisposableBean {
                 output.add((T)JaxbFactory.newJaxbStory(data, temp));
                 break;
             default:
-                return;
+                return;//should never get here
             }
         }
     }
@@ -236,6 +247,10 @@ public class RestResource implements InitializingBean, DisposableBean {
         return Response.ok().build();
     }
 
+    /**
+     * Simple rest endpoint to see what's going on for debugging purposes
+     * @return
+     */
     @Path("/debug")
     @GET
     @AnonymousAllowed
@@ -245,7 +260,7 @@ public class RestResource implements InitializingBean, DisposableBean {
     }
 
     /**
-     * Event listening testing
+     * event listener that passes changes for issues to the data manager
      *
      * @param issueEvent - the event containing the issue
      */

@@ -19,51 +19,39 @@ public class ProjectData extends JiraData {
         this.project = project;
     }
 
-    @Override
     public DataType getType() {
         return DataType.PROJECT;
     }
 
-    /**
-     * Returns the name of the project
-     * 
-     * @return the name of the project
-     */
     public String getName() {
         return project.getName();
     }
 
-    /**
-     * Returns the key of the project
-     * 
-     * @return the key of the project
-     */
     public String getKey() {
         return project.getKey();
     }
 
-    /**
-     * Returns the id of the project
-     * 
-     * @return the id of the project
-     */
     public long getId() {
         return project.getId();
     }
 
-    /**
-     * Returns the description of the project
-     * 
-     * @return the description of the project
-     */
     public String getDescription() {
         return project.getDescription();
     }
 
+    /**
+     * Projects are never completed
+     * @return false
+     */
     public boolean completed() {
         return false;
     }
 
+    /**
+     * Projects don't have a single assignee
+     * This could be repurposed for the project lead if we ever want the information
+     * @return null
+     */
     public User getAssignee() {
         return null;
     }
@@ -72,10 +60,18 @@ public class ProjectData extends JiraData {
         return this;
     }
 
+    /**
+     * Projects don't have an epic
+     * @return null
+     */
     public IJiraData getEpic() {
         return null;
     }
 
+    /**
+     * Projects don't have an story
+     * @return null
+     */
     public IJiraData getStory() {
         return null;
     }

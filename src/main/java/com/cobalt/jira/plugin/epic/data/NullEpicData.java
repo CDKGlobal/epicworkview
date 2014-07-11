@@ -4,43 +4,31 @@ import com.atlassian.crowd.embedded.api.User;
 
 
 /**
- * A NullData represents a fake Jira Issue
+ * A NullEpicData represents a fake Jira Epic
  */
 public class NullEpicData extends JiraData {
     private String name;
     private String description;
 
     /**
-     * Creates a new NullData
+     * Creates a new NullEpicData
      * 
-     * @param name the name of the NullData
-     * @param description the description of the NullData
+     * @param name the name of the NullEpicData
+     * @param description the description of the NullEpicData
      */
     public NullEpicData(String name, String description) {
         this.name = name;
         this.description = description;
     }
 
-    @Override
     public DataType getType() {
         return DataType.EPIC;
     }
 
-    /**
-     * Returns the name of the data
-     * 
-     * @return the name of the data
-     */
     public String getName() {
         return name;
     }
 
-    /**
-     * Returns the key of the data
-     * The key is a meaningless key
-     * 
-     * @return the key of the data
-     */
     public String getKey() {
         return "NOKEY";
     }
@@ -55,11 +43,6 @@ public class NullEpicData extends JiraData {
         return -1;
     }
 
-    /**
-     * Returns the description of the data
-     * 
-     * @return the description of the data
-     */
     public String getDescription() {
         return description;
     }
@@ -72,17 +55,14 @@ public class NullEpicData extends JiraData {
         return null;
     }
 
-    @Override
     public IJiraData getProject() {
         return null;
     }
 
-    @Override
     public IJiraData getEpic() {
         return this;
     }
 
-    @Override
     public IJiraData getStory() {
         return null;
     }

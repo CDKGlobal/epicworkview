@@ -105,7 +105,7 @@ public class NaryTreeTest {
         Node node = new Node();
 
         assertNull(node.getData());
-        assertEquals(0, node.getChildren().size());
+        assertNull(node.getChildren());
 
         node.setData(mockIJiraData);
         node.addChild(node);

@@ -24,11 +24,13 @@ import java.util.*;
 public class DataManager {
     //issues that has changed in the given time span excluding a list of given issues
     private static final String QUERY = "(status CHANGED FROM (%s) AFTER %s OR status CHANGED TO (%s) AFTER %s) AND issuetype not in (%s) ORDER BY updated DESC";
-    private static final String DEFAULT_QUERY = String.format(QUERY, StatusUtil.getInitialStates(), "-21d", StatusUtil.getEndStates(), "-21d", "Epic");
+    private static final int MAX_DAYS = 21;
+    private static final String DEFAULT_QUERY = String.format(QUERY, StatusUtil.getInitialStates(), "-" + MAX_DAYS + "d", StatusUtil.getEndStates(), "-" + MAX_DAYS + "d", "Epic");
 
     private NaryTree tree;
     private ProjectService projectService;
 
+    //string used for debugging with the test instance
     public static final StringBuilder DEBUG_LOG = new StringBuilder("Log Start:\r\n");
 
     /**
@@ -39,16 +41,26 @@ public class DataManager {
         this.projectService = projectService;
     }
 
+    /**
+     * initialize the data manager
+     * @param searchService - service to search jiras database
+     * @param userUtil - utility to find users in jira
+     */
     public void init(SearchService searchService, UserUtil userUtil) {
+        //build the tree with what a user with full access would see
+
+        //get an admin in jira
         User admin = null;
         Collection<User> admins = userUtil.getJiraSystemAdministrators();
         Iterator<User> iter = admins.iterator();
         if(iter.hasNext())
             admin = iter.next();
 
+
         tree = new NaryTree();
 
         try {
+            //search the database for issues to build up the initial tree
             Query q = searchService.parseQuery(admin, DEFAULT_QUERY).getQuery();
             List<Issue> issues = searchService.search(admin, q, PagerFilter.getUnlimitedFilter()).getIssues();
 
@@ -61,10 +73,18 @@ public class DataManager {
         }
     }
 
+    /**
+     * free up memory used by the DataManager
+     */
     public void destroy() {
         tree = null;
     }
 
+    /**
+     * get all projects from jira that the given user can see in the last 7 days
+     * @param user - user to prune the tree down
+     * @return
+     */
     public List<IJiraData> getProjects(User user) {
         return getProjects(user, 7 * 24 * 60 * 60);//get project in the last 7 days
     }
@@ -79,8 +99,11 @@ public class DataManager {
      * @return a list of projects, an empty list if there are none
      */
     public List<IJiraData> getProjects(User user, int seconds) {
+        //if datamanager has yet to be initialized return an empty list
         if(tree == null)
             return new ArrayList<IJiraData>();
+
+        tree.pruneOldData(MAX_DAYS * 24 * 60 * 60 * 1000);//remove all nodes older than MAX_DAYS
 
         //loop and get stuff the user can see and happen in the last x seconds
         List<IJiraData> issues = tree.getPreOrder();
@@ -94,14 +117,17 @@ public class DataManager {
         boolean remove = false;
         long time = System.currentTimeMillis() - seconds * 1000;
 
+        //for each issue
         Iterator<IJiraData> iter = issues.iterator();
         while(iter.hasNext()) {
             IJiraData ijd = iter.next();
 
+            //if its a project and the user isn't allowed to view it set a flag
             if(ijd.getType() == IJiraData.DataType.PROJECT) {
                 remove = !projectIds.contains(ijd.getId());
             }
 
+            //if the issue isn't allowed to be viewed or is to old remove it from the list
             if(remove || ijd.getTimestamp() < time) {
                 iter.remove();
             }
@@ -110,17 +136,29 @@ public class DataManager {
         return issues;
     }
 
+    /**
+     * Event listener for when changes occur to the tree
+     * @param issueEvent
+     */
     public void newIssueEvent(IssueEvent issueEvent) {
+        //if the datamanager has yet to be initialized
+        if(tree == null)
+            return;
+
+        //With the issue get a list of its change history
         Issue issue = issueEvent.getIssue();
         List<ChangeHistory> histories = ComponentAccessor.getChangeHistoryManager().getChangeHistories(issue);
 
         if(histories.size() > 0) {
+            //get the last history which is the newest change
             ChangeHistory changeHistory = histories.get(histories.size() - 1);
 
+            //get the latest bean
             List<ChangeItemBean> cibs = changeHistory.getChangeItemBeans();
 
             ChangeItemBean cib = cibs.get(cibs.size() - 1);
 
+            //Debug statements to see what kind of events we are recieving
             DEBUG_LOG.append("Most Recent From: " + cib.getFromString() + "\r\n");
             DEBUG_LOG.append("Most Recent From: " + cib.getToString() + "\r\n");
 
@@ -129,16 +167,23 @@ public class DataManager {
                 DEBUG_LOG.append("Second Recent From: " + cibs.get(cibs.size() - 2).getToString() + "\r\n");
             }
 
+            //if either the from string or to string is null then it is a custom event usually caused by jira agile
+            //so get the previous bean
             if((cib.getFromString() == null || cib.getToString() == null) && cibs.size() > 1) {
                 cib = cibs.get(cibs.size() - 2);
             }
 
+            //if it moved from or to a state that we're listening for add it to the tree to either insert or update it
             if(StatusUtil.leftInitialState(cib.getFromString()) || StatusUtil.enteredEndState(cib.getToString())) {
                 insertIssue(issue);
             }
         }
     }
 
+    /**
+     * insert the given issue into the tree
+     * @param issue - issue to add
+     */
     private void insertIssue(Issue issue) {
         IJiraData data;
 

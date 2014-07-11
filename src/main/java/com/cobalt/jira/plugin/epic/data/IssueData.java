@@ -23,43 +23,22 @@ public class IssueData extends JiraData {
         setTimestamp(issue.getUpdated().getTime());
     }
 
-    @Override
     public DataType getType() {
         return DataType.SUBTASK;
     }
 
-    /**
-     * Returns the name of the issue
-     * 
-     * @return the name of the issue
-     */
     public String getName() {
         return issue.getSummary();
     }
 
-    /**
-     * Returns the key of the issue
-     * 
-     * @return the key of the issue
-     */
     public String getKey() {
         return issue.getKey();
     }
 
-    /**
-     * Returns the id of the issue
-     * 
-     * @return the id of the issue
-     */
     public long getId() {
         return issue.getId();
     }
 
-    /**
-     * Returns the description of the issue
-     * 
-     * @return the description of the issue
-     */
     public String getDescription() {
         return issue.getDescription();
     }
@@ -72,12 +51,15 @@ public class IssueData extends JiraData {
         return issue.getAssignee();
     }
 
-    @Override
     public IJiraData getProject() {
         return new ProjectData(issue.getProjectObject());
     }
 
-    @Override
+    /**
+     * Get the epic this issue is apart of
+     *
+     * @return the EpicData for this issue if it has one, otherwise returns a fake Epic
+     */
     public IJiraData getEpic() {
         CustomFieldManager manager = ComponentAccessor.getCustomFieldManager();
         Issue epic = (Issue)issue.getParentObject().getCustomFieldValue(manager.getCustomFieldObjectByName("Epic Link"));
@@ -87,7 +69,6 @@ public class IssueData extends JiraData {
         return new EpicData(epic);
     }
 
-    @Override
     public IJiraData getStory() {
         return new StoryData(issue.getParentObject());
     }

@@ -14,7 +14,11 @@ public class StoryData extends IssueData {
         return DataType.STORY;
     }
 
-    @Override
+    /**
+     * Get the epic this story is apart of
+     *
+     * @return the EpicData for this issue if it has one, otherwise returns a fake Epic
+     */
     public IJiraData getEpic() {
         CustomFieldManager manager = ComponentAccessor.getCustomFieldManager();
         Issue epic = (Issue)issue.getCustomFieldValue(manager.getCustomFieldObjectByName("Epic Link"));

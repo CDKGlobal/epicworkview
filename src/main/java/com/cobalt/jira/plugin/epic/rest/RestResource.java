@@ -190,7 +190,7 @@ public class RestResource implements InitializingBean, DisposableBean {
                 for(IJiraData issue : issues) {
                     String key = ComponentAccessor.getUserKeyService().getKeyForUser(issue.getAssignee());
                     ApplicationUser appUser = ComponentAccessor.getUserManager().getUserByKey(key);
-                    String url = avatarService.getAvatarUrlNoPermCheck(appUser, Avatar.Size.NORMAL).toString();
+                    String url = avatarService.getAvatarUrlNoPermCheck(appUser, Avatar.Size.LARGE).toString();
                     jaxbUsers.add(JaxbFactory.newJaxbUser(appUser.getKey(), appUser.getDisplayName(), url, issue.getTimestamp()));
                 }
                 issues.clear();

@@ -16,8 +16,8 @@
     	<button ng-click="toggleFullScreen()" class="fullscreen-button">
     		Full
     	</button>
-	    <ul id="projects" ng-style="{height: (getTableHeight() + 'px')}" class="aui-list-section">
-	      <li id="top-element">
+	    <ul id="projects" class="aui-list-section">
+	      <li>
 	        <ul class="inline table-header">
 	          <li class="project-column">
 	          	<span class="fieldLabel">Projects</span>
@@ -52,13 +52,12 @@
  				 	<option value="2">2 days</option>
   					<option value="7">7 days</option>
   					<option value="14">14 days</option>
-  					<option value="21">21 days</option>
 				</select>
 	           </li>
 	          <li class="epic-column">Epics</li>
 	        </ul>
 	      </li>
-	      <li class="project-row" ng-style="{width: (getTableWidth() + 'px'), top: (getTop(project) + 'px')}" ng-repeat="project in timeOrderedProjects() | filter: {included:true}" id="{{project.id}}">
+	      <li class="project-row" ng-repeat="project in timeOrderedProjects() | filter: {included:true}">
 	      	<ul class="inline table-row">
 	      		<li class="project-name project-column"><a href="{{getBaseURL()}}/browse/{{project.key}}">{{project.name}}</a></li>
 	      		<li class="contributor-column">

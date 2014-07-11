@@ -221,39 +221,6 @@ function ProjectController($scope, $http, $cookieStore) {
 		$cookieStore.put('projectIds', $scope.uncheckedProjectIds);
     }
     
-    // return the top of the element that represents this project, in pixels
-    $scope.getTop = function(project) {
-    	var top = 90;
-    	for (var i = 0; i < $scope.projects.length; i++) {
-    		if ($scope.projects[i].id == project.id) {
-    			return top;
-    		}
-    		var element = document.getElementById($scope.projects[i].id);
-    		if (element != null) {
-    			top += element.offsetHeight;
-    		}
-    	}
-    	return top;
-    }
-    
-    // return the height of the table
-    $scope.getTableHeight = function() {
-    	tableHeight = 90;
-    	angular.forEach($scope.projects, function(p, index) {
-    		var element = document.getElementById(p.id);
-    		if (element != null) {
-    			tableHeight += element.offsetHeight;
-    		}
-    	});
-    	return tableHeight;
-    }
-    
-    // return the width of the table
-    $scope.getTableWidth = function() {
-    	var element = document.getElementById('top-element');
-    	return element.offsetWidth;
-    }
-    
     // get the projects which are unchecked by this user
     $scope.uncheckedProjectIds = $cookieStore.get('projectIds');
     // if the user does not have checked preferences, create one for them

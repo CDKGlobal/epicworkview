@@ -125,7 +125,7 @@ public class RestResourceTest
 
         URI mockUri = URI.create(USER_AVATAR_PATH);
 
-        when(avatarService.getAvatarUrlNoPermCheck(any(ApplicationUser.class), eq(Avatar.Size.NORMAL))).thenReturn(mockUri);
+        when(avatarService.getAvatarUrlNoPermCheck(any(ApplicationUser.class), eq(Avatar.Size.LARGE))).thenReturn(mockUri);
 
         UserKeyService mockUserKeyService = mock(UserKeyService.class);
 

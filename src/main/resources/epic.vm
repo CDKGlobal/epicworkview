@@ -16,10 +16,10 @@
     	<button id="Full button" ng-click="toggleFullScreen()" class="fullscreen-button">
     		Full
     	</button>
-	    <table id="projects" class="aui">
-	      <thead>
-	        <tr>
-	          <th>
+	    <ul id="projects" class="aui-list-section">
+	      <li>
+	        <ul class="inline table-header">
+	          <li class="project-column">
 	          	<span class="fieldLabel">Projects</span>
 	          	<span id='Filter button' ng-click="toggleFilter($event)" class="criteria-selector aui-button aui-button-subtle drop-arrow">
 	          		filter
@@ -35,7 +35,7 @@
 			    			<ul class="aui-list-section">
 			    				<li ng-repeat="project in alphabeticalProjects() | filter:searchText" class="check-list-item repeat-item">
 			    					<label class="item-label" title="{{project.name}}">
-			    					<span id="mycheckboxState" hidden="true">{{project.included}}</span>
+			    						<span id="mycheckboxState" hidden="true">{{project.included}}</span>
 			    						<input id="mycheckbox" type="checkbox" ng-click="checkProject(project)" ng-init="project.included=project.state" ng-model='project.included'>
 			    						{{project.name}}
 			    					</label>
@@ -44,35 +44,36 @@
 			    		</div>
 			    	</form>
 			    </div>
-	          </th>
-	          <th>Contributors</th>
-	          <th>Stories Completed</th>
-	          <th>Last Update 
+	          </li>
+	          <li class="contributor-column">Contributors</li>
+	          <li class="completed-story-column">Stories Completed</li>
+	          <li class="last-update-column">Last Update 
 	          	<select ng-model='filterDays' ng-change='getProjects(filterDays * 24 * 60 * 60)'>
   					<option value="1">1 day</option>
  				 	<option value="2">2 days</option>
   					<option value="7">7 days</option>
   					<option value="14">14 days</option>
+                    <option value="21">21 days</option>
 				</select>
-	           </th>
-	          <th>Epics</th>
-	        </tr>
-	      </thead>
-	      <tbody>
-	      	<tr class="project-row" ng-repeat="project in timeOrderedProjects() | filter: {included:true}">
-	      		<td class="project-name"><a href="{{getBaseURL()}}/browse/{{project.key}}">{{project.name}}</a></td>
-	      		<td>
-	      			<ul class="list">
-	      				<li class="inline" ng-repeat="contributor in project.contributors">
-	      					<img src="{{contributor.avatar}}" title="{{contributor.name}}" height="24" width="24">
+	           </li>
+	          <li class="epic-column">Epics</li>
+	        </ul>
+	      </li>
+	      <li class="project-row" ng-repeat="project in timeOrderedProjects() | filter: {included:true}">
+	      	<ul class="inline table-row">
+	      		<li class="project-name project-column"><a href="{{getBaseURL()}}/browse/{{project.key}}">{{project.name}}</a></li>
+	      		<li class="contributor-column">
+	      			<ul class="list inline">
+	      				<li class="contributor" ng-repeat="contributor in project.contributors">
+	      					<img src="{{contributor.avatar}}" title="{{contributor.name}}" height="32" width="32">
 	      				</li>
 	      			</ul>
-	      		</td>
-	      		<td>{{getCompletedStories(project)}}</td>
-	      		<td>{{millisecondToString(project.timestamp)}}</td>
-	      		<td>
-	      			<ul class="list" ng-controller="EpicController">
-	      				<li class="inline" ng-repeat="epic in project.epics" ng-init="setUniqueId(epic)">
+	      		</li>
+	      		<li class="completed-story-column">{{getCompletedStories(project)}}</li>
+	      		<li class="last-update-column">{{millisecondToString(project.timestamp)}} ago</li>
+	      		<li class="epic-column">
+	      			<ul class="list inline" ng-controller="EpicController">
+	      				<li ng-repeat="epic in project.epics" ng-init="setUniqueId(epic)">
 	      					<a ng-class="{'clicked-epic': isClicked(epic.id)}" class="epic" ng-click="toggleEpic($event, epic.id)">
 	      						{{epic.name}}
 	      					</a>
@@ -87,10 +88,10 @@
 	      					</div>
 	      				</li>
 	      			</ul>
-	      		</td>
-	      	</tr>
-	      </tbody>
-    	</table>
+	      		</li>
+	      	</ul>
+	      </li>
+    	</ul>
     </div>
   </body>
 </html>

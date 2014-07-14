@@ -51,23 +51,27 @@ function ProjectController($scope, $http, $cookieStore) {
     		var elementIndex = indexOf(currentList, element);
     		//if the element isn't there, add it
     		if (elementIndex == -1) {
-    			//add to front of list
-    			currentList.unshift(element);
-    			// set its state to true if it is a project and not in the list of unchecked projects
-    			if (elementType == "project" && !contains($scope.uncheckedProjectIds, element.id)) {
-    				element.state = true;
-    			}
+    			// if it is not a deleted element
+    			if (element.timestamp != -1) {
+	    			//add to front of list
+	    			currentList.unshift(element);
+	    			// set its state to true if it is a project and not in the list of unchecked projects
+	    			if (elementType == "project" && !contains($scope.uncheckedProjectIds, element.id)) {
+	    				element.state = true;
+	    			}
+    			}	
     		} else {
     			//element is in the current list, so update it
     			var savedElement = currentList[elementIndex];
-    			if (savedElement.timestamp != element.timestamp) {
+    			if (element.timestamp == -1) {
+    				// this element is marked for deletion, remove it
+    				currentList.splice(elementIndex, 1);
+    			} else {
     				savedElement.timestamp = element.timestamp;
     				savedElement.name = element.name;
-    				// set key and description if not a contributor
-    				if (elementType != "contributor") {
-	  	              	savedElement.key = element.key;
-	  	              	savedElement.description = element.description;
-    				}
+	  	            savedElement.key = element.key;
+	  	            savedElement.description = element.description;
+	  	            savedElement.contributor = element.contributor;
     				// set completed field if a story
     				if (elementType == "story") {
     					savedElement.completed = element.completed;
@@ -75,7 +79,6 @@ function ProjectController($scope, $http, $cookieStore) {
   	              	//update the list held in the current element, if it has one
   	              	if (elementType == "project") {
   	              		// this is a project
-  	              		updateElementList(savedElement.contributors, element.contributors, "contributor");
   	              		updateElementList(savedElement.epics, element.epics, "epic");
   	              	} else if (elementType == "epic") {
   	              		// this is an epic
@@ -121,6 +124,36 @@ function ProjectController($scope, $http, $cookieStore) {
     		});
     	});
     	return res;
+    }
+    
+    $scope.getContributors = function(project) {
+    	var contributors = [];
+    	getContributorsHelper(contributors, project, "project");
+    	return contributors;
+    }
+    
+    function getContributorsHelper(result, element, elementType) {
+    	var contributor = element.contributor;
+    	if (contributor != null && !contains(result, contributor)) {
+    		result.push(contributor);
+    	}
+    	//update the list held in the current element, if it has one
+    	if (elementType == "project") {
+    		// this is a project
+    		angular.forEach(element.epics, function(epic) {
+    			getContributorsHelper(result, epic, "epic");
+    		});
+    	} else if (elementType == "epic") {
+    		// this is an epic
+    		angular.forEach(element.stories, function(story) {
+    			getContributorsHelper(result, story, "stories");
+    		});
+    	} else if (elementType == "subtask") {
+    		// this is a story
+    		angular.forEach(element.subtasks, function(subtask) {
+    			getContributorsHelper(result, subtask, "subtask");
+    		});
+    	}
     }
     
     // clear all checkboxes and update projects accordingly
@@ -219,6 +252,33 @@ function ProjectController($scope, $http, $cookieStore) {
     	// update the cookie
     	$cookieStore.remove('projectIds');
 		$cookieStore.put('projectIds', $scope.uncheckedProjectIds);
+    }
+    
+    // return the clicked epic from the given project, or none if none are clicked
+    getClickedEpic = function(project) {
+    	for (var i = 0; i < project.epics.length; i++) {
+    		if (project.epics[i].id == clickedEpic) {
+    			return project.epics[i];
+    		}
+    	}
+    	return null;
+    }
+    
+    $scope.showEpicWindow = function(project) {
+    	var epic = getClickedEpic(project);
+    	return (epic != null);
+    }
+    
+    $scope.getClickedEpicDescription = function(project) {
+    	var epic = getClickedEpic(project);
+    	if (epic == null) return null;
+    	return epic.description;
+    }
+    
+    $scope.getClickedEpicStories = function(project) {
+    	var epic = getClickedEpic(project);
+    	if (epic == null) return null;
+    	return epic.stories;
     }
     
     // get the projects which are unchecked by this user

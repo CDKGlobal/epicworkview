@@ -58,12 +58,12 @@
 	          <li class="epic-column">Epics</li>
 	        </ul>
 	      </li>
-	      <li class="project-row" ng-repeat="project in timeOrderedProjects() | filter: {included:true}">
-	      	<ul class="inline table-row">
+	      <li class="project-row table-row" ng-repeat="project in timeOrderedProjects() | filter: {included:true}">
+	      	<ul class="inline">
 	      		<li class="project-name project-column"><a href="{{getBaseURL()}}/browse/{{project.key}}">{{project.name}}</a></li>
 	      		<li class="contributor-column">
 	      			<ul class="list inline">
-	      				<li class="contributor" ng-repeat="contributor in project.contributors">
+	      				<li class="contributor" ng-repeat="contributor in getContributors(project)">
 	      					<img src="{{contributor.avatar}}" title="{{contributor.name}}" height="32" width="32">
 	      				</li>
 	      			</ul>
@@ -76,19 +76,18 @@
 	      					<a ng-class="{'clicked-epic': isClicked(epic.id)}" class="epic" ng-click="toggleEpic($event, epic.id)">
 	      						{{epic.name}}
 	      					</a>
-	      					<div class="epic-info pop-up aui-list-scroll" ng-show="isClicked(epic.id)" ng-click="$event.stopPropagation()">
-	      						<p>{{epic.description}}</p>
-	      						<p>Stories:</p>
-	      						<ul class="aui-list-section">
-	      							<li class="story" ng-repeat="story in epic.stories">
-	      								<a href="{{getBaseURL()}}/browse/{{story.key}}">{{story.name}}</a>
-	      							</li>
-	      						</ul>
-	      					</div>
 	      				</li>
 	      			</ul>
 	      		</li>
 	      	</ul>
+	      	<div class="epic-info aui-list-scroll" ng-show="showEpicWindow(project)" ng-click="$event.stopPropagation()">
+	      		<p>{{getClickedEpicDescription(project)}}</p>
+	      		<ul class="aui-list-section inline">
+	      			<li class="story" ng-repeat="story in getClickedEpicStories(project)">
+	      				<a href="{{getBaseURL()}}/browse/{{story.key}}">{{story.name}}</a>
+	      			</li>
+	      		</ul>
+	      	</div>
 	      </li>
     	</ul>
     </div>

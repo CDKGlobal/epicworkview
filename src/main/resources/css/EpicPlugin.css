@@ -1,5 +1,8 @@
-.table-header {
+.table-row, .table-header {
 	border-bottom: 1px solid #ccc;
+}
+
+.table-header {
 	font-weight: bold;
 }
 
@@ -8,11 +11,7 @@
 	vertical-align: top;
 }
 
-.table-row {
-	border-bottom: 1px solid #ccc;
-}
-
-.table-row > li {
+.table-row > ul > li {
 	vertical-align: middle;
 }
 

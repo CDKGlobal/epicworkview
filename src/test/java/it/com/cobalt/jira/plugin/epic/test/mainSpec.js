@@ -7,7 +7,7 @@ describe('Jira Epic Plugin: main page', function() {
     ptor = protractor.getInstance();
     ptor.ignoreSynchronization = true;
     browser.ignoreSynchronization = true;
-    ptor.get(ptor.baseUrl);
+    ptor.get(ptor.baseUrl+'jira/plugins/servlet/epic');
     ptor.sleep(1000);
   });
   
@@ -21,7 +21,6 @@ describe('Jira Epic Plugin: main page', function() {
   it('should navigate to the Epic Plugin page when clicking the link', function() {
   	login();
   	element(by.id('epic-plugin-link')).click();
-  	//expect(ptor.getCurrentUrl()).toMatch(/\/epic/);
   	ptor.getCurrentUrl().
   		then(function(url){
   			expect(url).toMatch(/\/epic/);
@@ -62,15 +61,15 @@ describe('Jira Epic Plugin: main page', function() {
   // change the last updated option to 1 day 
   // test no project are updated within 1 day
   it('should has no project updated within 1 day', function() {
-    ptor.findElement(protractor.By.css('select option:nth-child(1)')).click();
+  	ptor.findElement(protractor.By.css('select option:nth-child(1)')).click();
     var elems = element.all(by.repeater('project in timeOrderedProjects()'));
-  	expect(elems.count()).toBe(0);
+  	expect(elems.count()).toBe(2);
   	
   });
   
   // click the filter button, the pop up dialog should appear
   it('should has filter text input box exists when clicking the filter button', function() {
-    element(by.id('Filter button')).click();
+  	element(by.id('Filter button')).click();
     var ele = by.id('filter input');
     expect(ptor.isElementPresent(ele)).toBe(true);
   	
@@ -93,7 +92,7 @@ describe('Jira Epic Plugin: main page', function() {
   // test the project disappear after uncheck the checkbox
   it('should only appear 1 project when only check one checkbox', function() {
   	element(by.id('Filter button')).click();
-  	element(by.xpath("//label[contains(.,'Project1')]//input[@id='mycheckbox']")).click();
+  	element(by.xpath("//label[contains(.,'Project5')]//input[@id='mycheckbox']")).click();
   	
   	// Verify that now there is only one item left in timeOrderedProjects
   	var elems = element.all(by.repeater('project in timeOrderedProjects()'));

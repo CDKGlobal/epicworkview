@@ -4,9 +4,7 @@ exports.config = {
   chromeOnly: true,
   chromeDriver: '../../../node_modules/protractor/selenium/chromedriver',
 
-  //baseUrl: 'http://127.0.0.1:2990/jira/plugins/servlet/epic',
-  //baseUrl: 'http://localhost:2990/jira/plugins/servlet/epic',
-  baseUrl: 'http://sea-fanju2-m.ds.ad.adp.com:2990/jira/plugins/servlet/epic',
+  baseUrl: 'http://localhost:2990/',
   
   // Capabilities to be passed to the webdriver instance.
   capabilities: {

@@ -13,7 +13,7 @@
   </head>
   <body>
     <div ng-app="myApp" ng-controller="ProjectController" ng-click="hideEpicInfo()" class="content-container content-body">
-    	<button ng-click="toggleFullScreen()" class="fullscreen-button">
+    	<button id="Full button" ng-click="toggleFullScreen()" class="fullscreen-button">
     		Full
     	</button>
 	    <ul id="projects" class="aui-list-section">
@@ -21,21 +21,22 @@
 	        <ul class="inline table-header">
 	          <li class="project-column">
 	          	<span class="fieldLabel">Projects</span>
-	          	<span ng-click="toggleFilter($event)" class="criteria-selector aui-button aui-button-subtle drop-arrow">
+	          	<span id='Filter button' ng-click="toggleFilter($event)" class="criteria-selector aui-button aui-button-subtle drop-arrow">
 	          		filter
 	          	</span>
 	          	<div ng-show="filter" ng-click="$event.stopPropagation()" class="project-filter pop-up">
 			    	<form action="#" class="searchfilter aui top-label aui-popup-content project-criteria">
-			    		<input type='text' ng-model='searchText.name' autocomplete="off" placeholder="Find Projects..." class="aui-field" wrap="off">
+			    		<input type='text' id='filter input' ng-model='searchText.name' autocomplete="off" placeholder="Find Projects..." class="aui-field" wrap="off">
 			    		<p>
-			    			<button ng-click="clearchkbox()">Clear</button>
-			    			<button ng-click="checkchkbox()">Check All</button>
+			    			<button id="Clear button" ng-click="clearchkbox()">Clear</button>
+			    			<button id="Checkall button" ng-click="checkchkbox()">Check All</button>
 			    		</p>
 			    		<div class="aui-list-scroll">
 			    			<ul class="aui-list-section">
 			    				<li ng-repeat="project in alphabeticalProjects() | filter:searchText" class="check-list-item repeat-item">
 			    					<label class="item-label" title="{{project.name}}">
-			    						<input type="checkbox" ng-click="checkProject(project)" ng-init="project.included=project.state" ng-model='project.included'>
+			    						<span id="mycheckboxState" hidden="true">{{project.included}}</span>
+			    						<input id="mycheckbox" type="checkbox" ng-click="checkProject(project)" ng-init="project.included=project.state" ng-model='project.included'>
 			    						{{project.name}}
 			    					</label>
 			    				</li>

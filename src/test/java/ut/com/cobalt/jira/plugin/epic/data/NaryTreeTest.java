@@ -28,7 +28,19 @@ public class NaryTreeTest {
             this.id = id;
         }
 
-        public void setTimestamp(long timestamp) {
+        public void remove() {
+
+        }
+
+        public void setUpdatedTimestamp(long timestamp) {
+
+        }
+
+        public long getUpdatedTimestamp() {
+            return 0;
+        }
+
+        public void setDisplayTimestamp(long timestamp) {
             this.timestamp = timestamp;
         }
 
@@ -52,7 +64,7 @@ public class NaryTreeTest {
             return null;
         }
 
-        public long getTimestamp() {
+        public long getDisplayTimestamp() {
             return timestamp;
         }
 
@@ -129,31 +141,31 @@ public class NaryTreeTest {
         List<IJiraData> data = naryTree.getPreOrder();
 
         assertEquals(IJiraData.DataType.PROJECT, data.get(0).getType());
-        assertEquals(0l, data.get(0).getTimestamp());
+        assertEquals(0l, data.get(0).getDisplayTimestamp());
         data.remove(0);
         assertEquals(IJiraData.DataType.EPIC, data.get(0).getType());
-        assertEquals(0l, data.get(0).getTimestamp());
+        assertEquals(0l, data.get(0).getDisplayTimestamp());
         data.remove(0);
         assertEquals(IJiraData.DataType.STORY, data.get(0).getType());
-        assertEquals(0l, data.get(0).getTimestamp());
+        assertEquals(0l, data.get(0).getDisplayTimestamp());
         data.remove(0);
         assertEquals(IJiraData.DataType.SUBTASK, data.get(0).getType());
-        assertEquals(0l, data.get(0).getTimestamp());
+        assertEquals(0l, data.get(0).getDisplayTimestamp());
 
-        mockIJiraData.setTimestamp(10l);
+        mockIJiraData.setDisplayTimestamp(10l);
         naryTree.insert(mockIJiraData);
         data = naryTree.getPreOrder();
 
         assertEquals(IJiraData.DataType.PROJECT, data.get(0).getType());
-        assertEquals(10l, data.get(0).getTimestamp());
+        assertEquals(10l, data.get(0).getDisplayTimestamp());
         data.remove(0);
         assertEquals(IJiraData.DataType.EPIC, data.get(0).getType());
-        assertEquals(10l, data.get(0).getTimestamp());
+        assertEquals(10l, data.get(0).getDisplayTimestamp());
         data.remove(0);
         assertEquals(IJiraData.DataType.STORY, data.get(0).getType());
-        assertEquals(10l, data.get(0).getTimestamp());
+        assertEquals(10l, data.get(0).getDisplayTimestamp());
         data.remove(0);
         assertEquals(IJiraData.DataType.SUBTASK, data.get(0).getType());
-        assertEquals(10l, data.get(0).getTimestamp());
+        assertEquals(10l, data.get(0).getDisplayTimestamp());
     }
 }

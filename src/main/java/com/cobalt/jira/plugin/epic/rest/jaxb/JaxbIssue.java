@@ -25,6 +25,9 @@ public class JaxbIssue
     @XmlElement(name = "timestamp")
     long timestamp;
 
+    @XmlElement(name = "contributor")
+    JaxbUser contributor;
+
 	/**
 	 * required for JAXB
 	 */
@@ -52,5 +55,9 @@ public class JaxbIssue
 
     public long getTimestamp() {
         return timestamp;
+    }
+
+    public JaxbUser getContributor() {
+        return contributor;
     }
 }

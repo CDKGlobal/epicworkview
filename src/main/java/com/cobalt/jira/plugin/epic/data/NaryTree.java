@@ -24,6 +24,7 @@ public class NaryTree {
      */
     public void insert(IJiraData data) {
         Node node = new Node();
+
         node.setData(data);
 
         insert(node, root, 0);
@@ -53,7 +54,7 @@ public class NaryTree {
         }
         //we need to go deeper into the tree
         else {
-            IJiraData parent = getParent(curDepth, insertNode);
+            IJiraData parent = getParent(curDepth, insertNode.getData());
 
             //get the index of the child that we need to follow
             int index = curNode.indexOf(parent.getId());
@@ -72,10 +73,83 @@ public class NaryTree {
             Node nextNode = curNode.getChildren().get(index);
 
             //update the timestamp in order to get the most recent update time
-            nextNode.getData().setTimestamp(insertNode.getData().getTimestamp());
+            nextNode.getData().setUpdatedTimestamp(insertNode.getData().getUpdatedTimestamp());
+            nextNode.getData().setDisplayTimestamp(insertNode.getData().getDisplayTimestamp());
 
             insert(insertNode, nextNode, curDepth+1);
         }
+    }
+
+    public void remove(IJiraData removeIssue) {
+        remove(removeIssue, root, 0);
+    }
+
+    private boolean remove(IJiraData removeIssue, Node curNode, int curDepth) {
+        int depth = getDepth(removeIssue);
+
+        if(depth == -1 || curDepth >= IJiraData.DataType.values().length) {
+            //invalid depth or you've gone to far down into the tree
+            throw new IllegalArgumentException("Invalid depth");
+        }
+
+        if(curDepth == depth) {
+            //remove node
+            int index = curNode.indexOf(removeIssue.getId());
+
+            if(index != -1) {
+                Node nodeToBeRemoved = curNode.getChildren().get(index);
+
+                //update timestamp to let others know this issue has been set to be removed
+                nodeToBeRemoved.getData().setUpdatedTimestamp(removeIssue.getUpdatedTimestamp());
+                nodeToBeRemoved.getData().remove();
+
+                if(curNode == root)
+                    return false;
+
+                for(Node n : curNode.getChildren()) {
+                    if(n.getData().getDisplayTimestamp() > -1) {
+                        return false;
+                    }
+                }
+
+                curNode.getData().remove();
+                return true;
+            }
+            //else remove node isnt in tree
+        }
+        else {
+            //continue
+            IJiraData parent = getParent(curDepth, removeIssue);
+
+            int index = curNode.indexOf(parent.getId());
+
+            if(index != -1) {
+                Node nextNode = curNode.getChildren().get(index);
+
+                //update timestamp to let others know this parent had one of its children change
+                nextNode.getData().setUpdatedTimestamp(removeIssue.getUpdatedTimestamp());
+
+                boolean delete = remove(removeIssue, nextNode, curDepth+1);
+
+                //if this node and all sub children have been deleted
+                if(delete) {
+                    if(curNode == root)
+                        return false;
+
+                    for(Node n : curNode.getChildren()) {
+                        if(n.getData().getDisplayTimestamp() > -1) {
+                            return false;
+                        }
+                    }
+
+                    curNode.getData().remove();
+                    return true;
+                }
+            }
+            //else the parent isn't in the tree so obviously neither is the child so fallout
+        }
+
+        return false;
     }
 
     private int getDepth(IJiraData data) {
@@ -88,15 +162,15 @@ public class NaryTree {
      * @param node - the node to get the data from
      * @return data for the given depth
      */
-    private IJiraData getParent(int depth, Node node)
+    private IJiraData getParent(int depth, IJiraData node)
     {
         switch(depth) {
         case 0:
-            return node.getData().getProject();
+            return node.getProject();
         case 1:
-            return node.getData().getEpic();
+            return node.getEpic();
         case 2:
-            return node.getData().getStory();
+            return node.getStory();
         default:
             //if the depth is to high throw an exception
             assert false;
@@ -135,14 +209,30 @@ public class NaryTree {
 
     private void pruneOldData(Node curNode, long timestamp) {
         //for each child node
+        List<Node> children = curNode.getChildren();
+        if(children == null) {
+            return;
+        }
+
         Iterator<Node> iter = curNode.getChildren().iterator();
 
         while(iter.hasNext()) {
             Node node = iter.next();
 
+            System.out.println(node.getData().getDisplayTimestamp());
+
+            long displayTime = node.getData().getDisplayTimestamp();
+
+            if(displayTime == -1l){
+                displayTime = node.getData().getUpdatedTimestamp();
+            }
+
             //if the timestamp is too old remove it from the tree
-            if(node.getData().getTimestamp() < timestamp) {
+            if(displayTime < timestamp) {
                 iter.remove();
+            }
+            else {
+                pruneOldData(node, timestamp);
             }
         }
     }

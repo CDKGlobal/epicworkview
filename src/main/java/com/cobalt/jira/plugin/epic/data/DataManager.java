@@ -5,6 +5,7 @@ import com.atlassian.jira.bc.issue.search.SearchService;
 import com.atlassian.jira.bc.project.ProjectService;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.event.issue.IssueEvent;
+import com.atlassian.jira.event.type.EventType;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.changehistory.ChangeHistory;
 import com.atlassian.jira.issue.history.ChangeItemBean;
@@ -53,9 +54,9 @@ public class DataManager {
         User admin = null;
         Collection<User> admins = userUtil.getJiraSystemAdministrators();
         Iterator<User> iter = admins.iterator();
-        if(iter.hasNext())
+        if(iter.hasNext()) {
             admin = iter.next();
-
+        }
 
         tree = new NaryTree();
 
@@ -65,7 +66,7 @@ public class DataManager {
             List<Issue> issues = searchService.search(admin, q, PagerFilter.getUnlimitedFilter()).getIssues();
 
             for(Issue i : issues) {
-                insertIssue(i);
+                tree.insert(getJiraDataIssue(i));
             }
         }
         catch(SearchException e) {
@@ -108,6 +109,8 @@ public class DataManager {
         //loop and get stuff the user can see and happen in the last x seconds
         List<IJiraData> issues = tree.getPreOrder();
 
+        System.out.println(issues.size());
+
         List<Project> projects = projectService.getAllProjects(user).getReturnedValue();
         HashSet<Long> projectIds = new HashSet<Long>();
         for(Project p : projects) {
@@ -128,10 +131,12 @@ public class DataManager {
             }
 
             //if the issue isn't allowed to be viewed or is to old remove it from the list
-            if(remove || ijd.getTimestamp() < time) {
+            if(remove || ijd.getUpdatedTimestamp() < time) {
                 iter.remove();
             }
         }
+
+        System.out.println(issues.size());
 
         return issues;
     }
@@ -141,42 +146,18 @@ public class DataManager {
      * @param issueEvent
      */
     public void newIssueEvent(IssueEvent issueEvent) {
-        //if the datamanager has yet to be initialized
-        if(tree == null)
-            return;
-
-        //With the issue get a list of its change history
+        long eventId = issueEvent.getEventTypeId();
         Issue issue = issueEvent.getIssue();
-        List<ChangeHistory> histories = ComponentAccessor.getChangeHistoryManager().getChangeHistories(issue);
 
-        if(histories.size() > 0) {
-            //get the last history which is the newest change
-            ChangeHistory changeHistory = histories.get(histories.size() - 1);
-
-            //get the latest bean
-            List<ChangeItemBean> cibs = changeHistory.getChangeItemBeans();
-
-            ChangeItemBean cib = cibs.get(cibs.size() - 1);
-
-            //Debug statements to see what kind of events we are recieving
-            DEBUG_LOG.append("Most Recent From: " + cib.getFromString() + "\r\n");
-            DEBUG_LOG.append("Most Recent From: " + cib.getToString() + "\r\n");
-
-            if(cibs.size() > 1) {
-                DEBUG_LOG.append("Second Recent From: " + cibs.get(cibs.size() - 2).getFromString() + "\r\n");
-                DEBUG_LOG.append("Second Recent From: " + cibs.get(cibs.size() - 2).getToString() + "\r\n");
-            }
-
-            //if either the from string or to string is null then it is a custom event usually caused by jira agile
-            //so get the previous bean
-            if((cib.getFromString() == null || cib.getToString() == null) && cibs.size() > 1) {
-                cib = cibs.get(cibs.size() - 2);
-            }
-
-            //if it moved from or to a state that we're listening for add it to the tree to either insert or update it
-            if(StatusUtil.leftInitialState(cib.getFromString()) || StatusUtil.enteredEndState(cib.getToString())) {
-                insertIssue(issue);
-            }
+        //if the datamanager has yet to be initialized
+        if(tree == null) {
+            return;
+        }
+        else if(eventId == EventType.ISSUE_DELETED_ID) {
+            tree.remove(getJiraDataIssue(issue));
+        }
+        else if(eventId != EventType.ISSUE_CREATED_ID && StatusUtil.hasBeenWorkedOn(issue)){
+            tree.insert(getJiraDataIssue(issue));
         }
     }
 
@@ -184,15 +165,7 @@ public class DataManager {
      * insert the given issue into the tree
      * @param issue - issue to add
      */
-    private void insertIssue(Issue issue) {
-        IJiraData data;
-
-        if(issue.isSubTask()) {
-            data = new IssueData(issue);
-        }
-        else {
-            data = new StoryData(issue);
-        }
-        tree.insert(data);
+    private IJiraData getJiraDataIssue(Issue issue) {
+        return issue.isSubTask() ? new IssueData(issue) : new StoryData(issue);
     }
 }

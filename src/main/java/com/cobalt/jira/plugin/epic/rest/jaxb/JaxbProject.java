@@ -14,9 +14,6 @@ public class JaxbProject extends JaxbIssue
 	@XmlElement(name = "epics")
 	List<JaxbEpic> epics;
 
-    @XmlElement(name = "contributors")
-    List<JaxbUser> contributors;
-
 	/**
 	 * required for JAXB
 	 */
@@ -27,8 +24,4 @@ public class JaxbProject extends JaxbIssue
 	{
 		return epics;
 	}
-
-    public List<JaxbUser> getContributors() {
-        return contributors;
-    }
 }

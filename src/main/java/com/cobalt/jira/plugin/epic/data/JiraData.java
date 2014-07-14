@@ -4,23 +4,39 @@ package com.cobalt.jira.plugin.epic.data;
  * Abstract class that implements fields common to all types of jira objects
  */
 public abstract class JiraData implements IJiraData {
-    private long timestamp = -1l;
+    private long displayTimestamp = 0l;
+    private long updatedTimestamp = 0l;
 
-    public void setTimestamp(long timestamp) {
-        if(timestamp > this.timestamp)
-            this.timestamp = timestamp;
+    public void remove() {
+        this.displayTimestamp = -1;
     }
 
-    public long getTimestamp() {
-        return timestamp;
+    public void setUpdatedTimestamp(long timestamp) {
+        if(timestamp > this.updatedTimestamp)
+            this.updatedTimestamp = timestamp;
+    }
+
+    public long getUpdatedTimestamp() {
+        return updatedTimestamp;
+    }
+
+    public void setDisplayTimestamp(long timestamp) {
+        if(timestamp > this.displayTimestamp)
+            this.displayTimestamp = timestamp;
+    }
+
+    public long getDisplayTimestamp() {
+        return displayTimestamp;
     }
 
     /**
-     * Updates the timestamp of with the given issue
+     * Updates the displayTimestamp of with the given issue
      *
-     * @param updatedIssue - issue to get the new timestamp from
+     * @param updatedIssue - issue to get the new displayTimestamp from
      */
     public void update(IJiraData updatedIssue) {
-        setTimestamp(updatedIssue.getTimestamp());
+        setUpdatedTimestamp(updatedIssue.getUpdatedTimestamp());
     }
+
+
 }

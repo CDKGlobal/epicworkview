@@ -36,7 +36,6 @@ public class RestResource implements InitializingBean, DisposableBean {
     private EventPublisher eventPublisher;
     private DataManager dataManager;
     private UserUtil userUtil;
-    private AvatarService avatarService;
 
     private boolean enabled = false;
 
@@ -51,13 +50,12 @@ public class RestResource implements InitializingBean, DisposableBean {
     public RestResource(SearchService searchService, UserManager userManager,
                         com.atlassian.jira.user.util.UserManager jiraUserManager,
                         EventPublisher eventPublisher, UserUtil userUtil,
-                        ProjectService projectService, AvatarService avatarService) {
+                        ProjectService projectService) {
         this.searchService = searchService;
         this.userManager = userManager;
         this.jiraUserManager = jiraUserManager;
         this.eventPublisher = eventPublisher;
         this.userUtil = userUtil;
-        this.avatarService = avatarService;
 
         dataManager = new DataManager(projectService);
     }
@@ -141,7 +139,7 @@ public class RestResource implements InitializingBean, DisposableBean {
             List<IJiraData> preOrder = dataManager.getProjects(getCurrentUser(), seconds);
 
             while(preOrder.size() > 0) {
-                buildJaxb(preOrder, projects, new LinkedList<IJiraData>());
+                buildJaxb(preOrder, projects);
             }
         }
 
@@ -152,21 +150,15 @@ public class RestResource implements InitializingBean, DisposableBean {
      * Recursively builds up the jaxb data to send to the client
      * @param input list of issue to turn into jaxb
      * @param output list holding the output jaxb objects
-     * @param issues helper list to build up the contributer list for projects
      */
     @SuppressWarnings("unchecked")
-    private <T extends JaxbIssue> void buildJaxb(List<IJiraData> input, List<T> output, List<IJiraData> issues) {
+    private <T extends JaxbIssue> void buildJaxb(List<IJiraData> input, List<T> output) {
         //if there are no more issues to convert
         if(input.size() == 0)
             return;
 
         IJiraData data = input.get(0);
         input.remove(0);
-
-        //add to the contributer list if there is an assignee
-        if(data.getAssignee() != null) {
-            issues.add(data);
-        }
 
         //if were down to subtasks build the jaxb and return it
         if(data.getType() == IJiraData.DataType.SUBTASK)
@@ -190,23 +182,13 @@ public class RestResource implements InitializingBean, DisposableBean {
 
             //while the next element is a subtype of data
             while(input.size() > 0 && input.get(0).getType().compareTo(data.getType()) > 0) {
-                buildJaxb(input, temp, issues);
+                buildJaxb(input, temp);
             }
 
             //after build up all the sub types into a list create a new jaxb object of the current type
             switch(data.getType()) {
             case PROJECT:
-                //create a set of jaxb users from the contributers added in the previous recursive calls
-                LinkedHashSet<JaxbUser> jaxbUsers = new LinkedHashSet<JaxbUser>();
-                for(IJiraData issue : issues) {
-                    String key = ComponentAccessor.getUserKeyService().getKeyForUser(issue.getAssignee());
-                    ApplicationUser appUser = ComponentAccessor.getUserManager().getUserByKey(key);
-                    String url = avatarService.getAvatarUrlNoPermCheck(appUser, Avatar.Size.LARGE).toString();
-                    jaxbUsers.add(JaxbFactory.newJaxbUser(appUser.getKey(), appUser.getDisplayName(), url, issue.getTimestamp()));
-                }
-                issues.clear();
-
-                output.add((T)JaxbFactory.newJaxbProject(data, temp, new ArrayList<JaxbUser>(jaxbUsers)));
+                output.add((T)JaxbFactory.newJaxbProject(data, temp));
                 break;
             case EPIC:
                 output.add((T)JaxbFactory.newJaxbEpic(data, temp));

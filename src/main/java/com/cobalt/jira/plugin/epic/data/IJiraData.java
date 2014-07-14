@@ -30,12 +30,18 @@ public interface IJiraData {
         }
     }
 
+    public void remove();
+
+    public void setUpdatedTimestamp(long timestamp);
+
+    public long getUpdatedTimestamp();
+
     /**
      * Sets the timestamp of this jira data to the given if it is greater than the one currently stored
      *
      * @param timestamp - the time to update to
      */
-    public void setTimestamp(long timestamp);
+    public void setDisplayTimestamp(long timestamp);
 
     /**
      * Gets the type of jira object being stored
@@ -76,7 +82,7 @@ public interface IJiraData {
      * Gets the time of this object's last update
      * @return the last update time in milliseconds
      */
-    public long getTimestamp();
+    public long getDisplayTimestamp();
 
     /**
      * Returns whether this issue is considered completed

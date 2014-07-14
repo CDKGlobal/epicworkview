@@ -20,7 +20,11 @@ public class IssueData extends JiraData {
      */
     public IssueData(Issue issue) {
         this.issue = issue;
-        setTimestamp(issue.getUpdated().getTime());
+        setUpdatedTimestamp(issue.getUpdated().getTime());
+
+        if(StatusUtil.hasBeenWorkedOn(issue)) {
+            setDisplayTimestamp(StatusUtil.lastWorkedOnTime(issue));
+        }
     }
 
     public DataType getType() {
@@ -78,6 +82,10 @@ public class IssueData extends JiraData {
 
         if(updatedIssue instanceof IssueData) {
             issue = ((IssueData)updatedIssue).issue;
+
+            if(StatusUtil.hasBeenWorkedOn(issue)) {
+                setDisplayTimestamp(StatusUtil.lastWorkedOnTime(issue));
+            }
         }
     }
 }

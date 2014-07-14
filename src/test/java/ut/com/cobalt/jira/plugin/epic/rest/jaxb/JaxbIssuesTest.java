@@ -26,7 +26,7 @@ public class JaxbIssuesTest
 
 	@Test
 	public void jaxbIssueIsValid() {
-		JaxbIssue jaxbIssue = JaxbFactory.newJaxbIssue(ISSUE_NAME, ISSUE_KEY, ISSUE_ID, ISSUE_DESCRIPTION, ISSUE_TIMESTAMP);
+		JaxbIssue jaxbIssue = JaxbFactory.newJaxbIssue(ISSUE_NAME, ISSUE_KEY, ISSUE_ID, ISSUE_DESCRIPTION, ISSUE_TIMESTAMP, new JaxbUser());
 
         assertEquals(ISSUE_NAME, jaxbIssue.getName());
         assertEquals(ISSUE_KEY, jaxbIssue.getKey());
@@ -37,7 +37,7 @@ public class JaxbIssuesTest
 
     @Test
     public void jaxbStoryIsValid() {
-        JaxbStory jaxbStory = JaxbFactory.newJaxbStory(ISSUE_NAME, ISSUE_KEY, ISSUE_ID, ISSUE_DESCRIPTION, ISSUE_TIMESTAMP, true, new ArrayList<JaxbIssue>());
+        JaxbStory jaxbStory = JaxbFactory.newJaxbStory(ISSUE_NAME, ISSUE_KEY, ISSUE_ID, ISSUE_DESCRIPTION, ISSUE_TIMESTAMP, new JaxbUser(), true, new ArrayList<JaxbIssue>());
 
         assertTrue(jaxbStory.getCompleted());
         assertEquals(0, jaxbStory.getSubtasks().size());
@@ -45,30 +45,28 @@ public class JaxbIssuesTest
 
 	@Test
 	public void jaxbEpicIsValid() {
-		JaxbEpic jaxbEpic = JaxbFactory.newJaxbEpic(ISSUE_NAME, ISSUE_KEY, ISSUE_ID, ISSUE_DESCRIPTION, ISSUE_TIMESTAMP, new ArrayList<JaxbStory>());
+		JaxbEpic jaxbEpic = JaxbFactory.newJaxbEpic(ISSUE_NAME, ISSUE_KEY, ISSUE_ID, ISSUE_DESCRIPTION, ISSUE_TIMESTAMP, new JaxbUser(), new ArrayList<JaxbStory>());
 
         assertEquals(0, jaxbEpic.getStories().size());
 	}
 
     @Test
     public void jaxbProjectIsValid() {
-        JaxbProject jaxbProject = JaxbFactory.newJaxbProject(ISSUE_NAME, ISSUE_KEY, ISSUE_ID, ISSUE_DESCRIPTION, ISSUE_TIMESTAMP, new ArrayList<JaxbEpic>(), new ArrayList<JaxbUser>());
+        JaxbProject jaxbProject = JaxbFactory.newJaxbProject(ISSUE_NAME, ISSUE_KEY, ISSUE_ID, ISSUE_DESCRIPTION, ISSUE_TIMESTAMP, new JaxbUser(), new ArrayList<JaxbEpic>());
 
         assertEquals(0, jaxbProject.getEpics().size());
-        assertEquals(0, jaxbProject.getContributors().size());
     }
 
     @Test
     public void jaxbUserIsValid() {
-        JaxbUser jaxbUser = JaxbFactory.newJaxbUser("KEY", USER_NAME, USER_AVATAR, 1l);
+        JaxbUser jaxbUser = JaxbFactory.newJaxbUser("KEY", USER_NAME, USER_AVATAR);
 
         assertEquals("KEY", jaxbUser.getId());
         assertEquals(USER_NAME, jaxbUser.getName());
         assertEquals(USER_AVATAR, jaxbUser.getAvatar());
-        assertEquals(1l, jaxbUser.getTimestamp());
 
-        JaxbUser jaxbUser1 = JaxbFactory.newJaxbUser("KEY", USER_NAME, USER_AVATAR, 1l);
-        JaxbUser jaxbUser2 = JaxbFactory.newJaxbUser("KEY1", USER_NAME, USER_AVATAR, 1l);
+        JaxbUser jaxbUser1 = JaxbFactory.newJaxbUser("KEY", USER_NAME, USER_AVATAR);
+        JaxbUser jaxbUser2 = JaxbFactory.newJaxbUser("KEY1", USER_NAME, USER_AVATAR);
         Object object = new Object();
 
         assertTrue(jaxbUser.equals(jaxbUser));

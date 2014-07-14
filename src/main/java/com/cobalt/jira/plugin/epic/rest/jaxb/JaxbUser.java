@@ -15,9 +15,6 @@ public class JaxbUser {
     @XmlElement(name = "avatar")
     String avatar;
 
-    @XmlElement(name = "timestamp")
-    long timestamp;
-
     public JaxbUser() {
 
     }
@@ -32,10 +29,6 @@ public class JaxbUser {
 
     public String getAvatar() {
         return avatar;
-    }
-
-    public long getTimestamp() {
-        return timestamp;
     }
 
     public boolean equals(Object o) {

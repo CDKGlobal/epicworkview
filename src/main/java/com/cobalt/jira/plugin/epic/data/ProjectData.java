@@ -19,6 +19,11 @@ public class ProjectData extends JiraData {
         this.project = project;
     }
 
+    public ProjectData(Project project, long updatedTime) {
+        this(project);
+        setUpdatedTimestamp(updatedTime);
+    }
+
     public JiraDataType getType() {
         return JiraDataType.PROJECT;
     }

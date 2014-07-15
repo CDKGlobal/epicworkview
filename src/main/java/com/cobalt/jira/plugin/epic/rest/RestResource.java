@@ -8,6 +8,7 @@ import com.atlassian.jira.avatar.AvatarService;
 import com.atlassian.jira.bc.issue.search.SearchService;
 import com.atlassian.jira.bc.project.ProjectService;
 import com.atlassian.jira.component.ComponentAccessor;
+import com.atlassian.jira.event.ProjectUpdatedEvent;
 import com.atlassian.jira.event.issue.IssueEvent;
 import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.jira.user.util.UserUtil;
@@ -237,6 +238,16 @@ public class RestResource implements InitializingBean, DisposableBean {
     @EventListener
     public void issueEventListener(IssueEvent issueEvent) {
         dataManager.newIssueEvent(issueEvent);
+    }
+
+    /**
+     * event listener that passes changes for projects to the data manager
+     *
+     * @param projectUpdatedEvent - the update event for a project
+     */
+    @EventListener
+    public void projectEventListener(ProjectUpdatedEvent projectUpdatedEvent) {
+        dataManager.newProjectUpdatedEvent(projectUpdatedEvent);
     }
 
     /**

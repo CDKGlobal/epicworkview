@@ -41,8 +41,8 @@ public class NaryTree {
         if(curDepth == depth) {
             Node index = curNode.getChild(insertNode.getData().getId());
 
-            //the current node doesn't have the same node already so insert it
-            if(index == null) {
+            //the current node doesn't have the same node already so insert it only if it is not an epic and not a project
+            if(index == null && (insertNode.getData().getType() != JiraDataType.EPIC && insertNode.getData().getType() != JiraDataType.PROJECT)) {
                 curNode.addChild(insertNode);
             }
             //otherwise just update the stored data

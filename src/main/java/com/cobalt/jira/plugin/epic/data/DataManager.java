@@ -4,8 +4,10 @@ import com.atlassian.crowd.embedded.api.User;
 import com.atlassian.jira.bc.issue.search.SearchService;
 import com.atlassian.jira.bc.project.ProjectService;
 import com.atlassian.jira.component.ComponentAccessor;
+import com.atlassian.jira.event.ProjectUpdatedEvent;
 import com.atlassian.jira.event.issue.IssueEvent;
 import com.atlassian.jira.event.type.EventType;
+import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.changehistory.ChangeHistory;
 import com.atlassian.jira.issue.history.ChangeItemBean;
@@ -149,8 +151,16 @@ public class DataManager {
         else if(eventId == EventType.ISSUE_DELETED_ID) {
             tree.remove(getJiraDataIssue(issue));
         }
-        else if(eventId != EventType.ISSUE_CREATED_ID && StatusUtil.hasBeenWorkedOn(issue)){
-            tree.insert(getJiraDataIssue(issue));
+        else if(eventId != EventType.ISSUE_CREATED_ID) {
+            CustomFieldManager manager = ComponentAccessor.getCustomFieldManager();
+            Object object = issue.getCustomFieldValue(manager.getCustomFieldObjectByName("Epic Name"));
+
+            if(object != null) {
+                tree.insert(new EpicData(issue));
+            }
+            else if(StatusUtil.hasBeenWorkedOn(issue)) {
+                tree.insert(getJiraDataIssue(issue));
+            }
         }
     }
 
@@ -160,5 +170,15 @@ public class DataManager {
      */
     private IJiraData getJiraDataIssue(Issue issue) {
         return issue.isSubTask() ? new IssueData(issue) : new StoryData(issue);
+    }
+
+    /**
+     * update a project in the tree if it is currently being stored otherwise it will do nothing
+     * @param event - update event for the project
+     */
+    public void newProjectUpdatedEvent(ProjectUpdatedEvent event) {
+        if(tree != null) {
+            tree.insert(new ProjectData(event.getProject(), event.getTime().getTime()));
+        }
     }
 }

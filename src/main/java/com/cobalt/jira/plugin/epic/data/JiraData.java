@@ -12,8 +12,9 @@ public abstract class JiraData implements IJiraData {
     }
 
     public void setUpdatedTimestamp(long timestamp) {
-        if(timestamp > this.updatedTimestamp)
+        if(timestamp > this.updatedTimestamp) {
             this.updatedTimestamp = timestamp;
+        }
     }
 
     public long getUpdatedTimestamp() {
@@ -21,8 +22,9 @@ public abstract class JiraData implements IJiraData {
     }
 
     public void setDisplayTimestamp(long timestamp) {
-        if(timestamp > this.displayTimestamp)
+        if(timestamp > this.displayTimestamp) {
             this.displayTimestamp = timestamp;
+        }
     }
 
     public long getDisplayTimestamp() {

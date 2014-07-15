@@ -31,6 +31,7 @@ public class EpicData extends IssueData {
     public String getName() {
         CustomFieldManager manager = ComponentAccessor.getCustomFieldManager();
         Object epicName = issue.getCustomFieldValue(manager.getCustomFieldObjectByName("Epic Name"));
+
         return epicName instanceof String ? (String)epicName : "No Name Epic";
     }
 

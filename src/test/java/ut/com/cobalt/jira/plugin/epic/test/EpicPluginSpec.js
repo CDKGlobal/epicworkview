@@ -94,7 +94,7 @@ describe('ProjectController', function(){
    });
    
         
-   it('should have a project with epic and stories', function(){
+   it('should have a project with epic, story and contributor', function(){
    		httpBackend.flush();
         var project2 = scope.projects[2];
         expect(project2.name).toEqual("Scrum1");
@@ -113,7 +113,9 @@ describe('ProjectController', function(){
         expect(story1.id).toEqual(10100);
         expect(story1.timestamp).toEqual("1405431614000");
         expect(story1.completed).toBe(false);
-        
+        expect(story1.contributor.id).toEqual("admin");
+        expect(story1.contributor.name).toEqual("admin");
+        expect(story1.contributor.avatar).toEqual("/jira/secure/useravatar?avatarId=10122");
     });
     
     

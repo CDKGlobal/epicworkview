@@ -126,36 +126,49 @@ function ProjectController($scope, $http, $cookieStore) {
     	return res;
     }
     
+    // returns all contributors for this project in order of time worked on project
     $scope.getContributors = function(project) {
-    	var contributors = [];
+    	var contributors = {};
     	getContributorsHelper(contributors, project, "project");
-    	return contributors;
+    	var timestamps = [];
+    	for (var key in contributors) {
+    		timestamps.push(key);
+    	}
+    	timestamps.sort(function(a, b){return b - a});
+    	var result = [];
+    	angular.forEach(timestamps, function(timestamp) {
+			result.push(contributors[timestamp]);
+		});
+    	return result;
     }
     
+    // helper to get list of key value pairs from timestamp to contributor
     function getContributorsHelper(result, element, elementType) {
-    	//update the list held in the current element, if it has one
     	if (elementType == "project") {
     		// this is a project
-    		element.epics.sort(function(a, b){return b.timestamp - a.timestamp});
     		angular.forEach(element.epics, function(epic) {
     			getContributorsHelper(result, epic, "epic");
     		});
     	} else if (elementType == "epic") {
     		// this is an epic
-    		element.stories.sort(function(a, b){return b.timestamp - a.timestamp});
     		angular.forEach(element.stories, function(story) {
     			getContributorsHelper(result, story, "story");
     		});
     	} else if (elementType == "story") {
     		// this is a story
-    		element.subtasks.sort(function(a, b){return b.timestamp - a.timestamp});
     		angular.forEach(element.subtasks, function(subtask) {
     			getContributorsHelper(result, subtask, "subtask");
     		});
     	}
+    	
+    	// add contributor to the result with the key as the element's timestamp
     	var contributor = element.contributor;
+    	var timestamp = element.timestamp;
+    	// make there is a contributor and they are not already in the result list
     	if (contributor != null && indexOf(result, contributor) == -1) {
-    		result.push(contributor);
+    		// if this timestamp is already in the list, add a millisecond to it
+    		if (timestamp in result) timestamp++;
+    		result[timestamp] = contributor;
     	}
     }
     

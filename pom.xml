@@ -161,6 +161,7 @@
                 <version>${amps.version}</version>
                 <extensions>true</extensions>
                 <configuration>
+                    <allowGoogleTracking>false</allowGoogleTracking>
                     <productVersion>${jira.version}</productVersion>
                     <productDataVersion>${jira.version}</productDataVersion>
                     <compressResources>false</compressResources>
@@ -183,6 +184,48 @@
                     <source>1.6</source>
                     <target>1.6</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <configuration>
+                            <target>
+                                <echo>NPM Install</echo>
+                                <exec executable="npm" dir="${project.basedir}" osfamily="unix" resultproperty="">
+                                    <env key="PATH" value="/usr/local/bin:/usr/bin:/bin"/>
+                                    <arg line="config set registry http://artifactory.cobalt.com/artifactory/api/npm/npm-repo"/>
+                                </exec>
+                                <echo>Pulling down node modules...</echo>
+                                <exec executable="npm" dir="${project.basedir}" osfamily="unix" resultproperty="npmresult" output="npm.status">
+                                    <env key="PATH" value="/usr/local/bin:/usr/bin:/bin"/>
+                                    <arg line="install"/>
+                                </exec>
+                                <echo>NPM Result: ${npmresult}</echo>
+                                <loadfile property="npm.status" srcFile="npm.status"/>
+                                <echo>NPM Status: ${npm.status}</echo>
+                                <echo>Running GRUNT.....</echo>
+                                <exec executable="node_modules/grunt-cli/bin/grunt" dir="${project.basedir}" osfamily="unix" resultproperty="cmdresult" output="grunt.status">
+                                    <env key="PATH" value="/usr/local/bin:/usr/bin:/bin:./node_modules/.bin"/>
+                                    <arg line="ut --no-color"/>
+                                </exec>
+                                <loadfile property="grunt.status" srcFile="grunt.status"/>
+                                <echo>${grunt.status}</echo>
+                                <delete file="grunt.status" quiet="true"/>
+                                <delete file="npm.status" quiet="true"/>
+                                <condition property="cmdsuccess">
+                                    <equals arg1="${cmdresult}" arg2="0"/>
+                                </condition>
+                                <fail unless="cmdsuccess"/>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

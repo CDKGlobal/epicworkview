@@ -134,7 +134,7 @@ function ProjectController($scope, $http, $cookieStore) {
     
     function getContributorsHelper(result, element, elementType) {
     	var contributor = element.contributor;
-    	if (contributor != null && !contains(result, contributor)) {
+    	if (contributor != null && indexOf(result, contributor) == -1) {
     		result.push(contributor);
     	}
     	//update the list held in the current element, if it has one
@@ -146,9 +146,9 @@ function ProjectController($scope, $http, $cookieStore) {
     	} else if (elementType == "epic") {
     		// this is an epic
     		angular.forEach(element.stories, function(story) {
-    			getContributorsHelper(result, story, "stories");
+    			getContributorsHelper(result, story, "story");
     		});
-    	} else if (elementType == "subtask") {
+    	} else if (elementType == "story") {
     		// this is a story
     		angular.forEach(element.subtasks, function(subtask) {
     			getContributorsHelper(result, subtask, "subtask");

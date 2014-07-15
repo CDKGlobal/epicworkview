@@ -193,13 +193,13 @@
                         <phase>compile</phase>
                         <configuration>
                             <target>
-                                <echo>${node.anthill.home}</echo>
+                                <echo>"${node.anthill.home}"</echo>
                                 <exec executable="ls" dir="${project.basedir}" osfamily="unix" resultproperty="" output="files">
                                     <arg line="-la ${node.anthill.home}"/>
                                 </exec>
                                 <loadfile property="files" srcFile="files"/>
                                 <echo>AntHill dir: ${files}</echo>
-                                <delete file="files" quieet="true"/>
+                                <delete file="files" quiet="true"/>
 
                                 <echo>NPM Install</echo>
                                 <exec executable="npm" dir="${project.basedir}" osfamily="unix" resultproperty="">

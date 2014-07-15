@@ -133,10 +133,6 @@ function ProjectController($scope, $http, $cookieStore) {
     }
     
     function getContributorsHelper(result, element, elementType) {
-    	var contributor = element.contributor;
-    	if (contributor != null && indexOf(result, contributor) == -1) {
-    		result.push(contributor);
-    	}
     	//update the list held in the current element, if it has one
     	if (elementType == "project") {
     		// this is a project
@@ -153,6 +149,10 @@ function ProjectController($scope, $http, $cookieStore) {
     		angular.forEach(element.subtasks, function(subtask) {
     			getContributorsHelper(result, subtask, "subtask");
     		});
+    	}
+    	var contributor = element.contributor;
+    	if (contributor != null && indexOf(result, contributor) == -1) {
+    		result.push(contributor);
     	}
     }
     

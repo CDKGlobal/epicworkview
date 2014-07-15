@@ -34,7 +34,7 @@ public class NaryTree {
         //get the depth we're trying to reach
         int depth = getDepth(insertNode.getData());
 
-        if(depth == -1 || curDepth >= IJiraData.DataType.values().length) {
+        if(depth == -1 || curDepth >= JiraDataType.values().length) {
             //invalid depth or you've gone to far down into the tree
             return;
         }
@@ -87,7 +87,7 @@ public class NaryTree {
     private boolean remove(IJiraData removeIssue, Node curNode, int curDepth) {
         int depth = getDepth(removeIssue);
 
-        if(depth == -1 || curDepth >= IJiraData.DataType.values().length) {
+        if(depth == -1 || curDepth >= JiraDataType.values().length) {
             //invalid depth or you've gone to far down into the tree
             throw new IllegalArgumentException("Invalid depth");
         }
@@ -153,7 +153,7 @@ public class NaryTree {
     }
 
     private int getDepth(IJiraData data) {
-        return IJiraData.DataType.getLevel(data.getType());
+        return JiraDataType.getLevel(data.getType());
     }
 
     /**
@@ -173,8 +173,7 @@ public class NaryTree {
             return node.getStory();
         default:
             //if the depth is to high throw an exception
-            assert false;
-            return null;
+            throw new IllegalArgumentException("Invalid Depth!");
         }
     }
 

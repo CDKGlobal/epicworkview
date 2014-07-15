@@ -161,7 +161,7 @@ public class RestResource implements InitializingBean, DisposableBean {
         input.remove(0);
 
         //if were down to subtasks build the jaxb and return it
-        if(data.getType() == IJiraData.DataType.SUBTASK)
+        if(data.getType() == JiraDataType.SUBTASK)
             output.add((T)JaxbFactory.newJaxbIssue(data));
         else {
             //make a new list to build up based on our current data type

@@ -10,8 +10,8 @@ public class StoryData extends IssueData {
         super(story);
     }
 
-    public DataType getType() {
-        return DataType.STORY;
+    public JiraDataType getType() {
+        return JiraDataType.STORY;
     }
 
     /**

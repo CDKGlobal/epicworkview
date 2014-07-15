@@ -27,6 +27,7 @@ import com.atlassian.jira.bc.issue.search.SearchService;
 import com.atlassian.query.Query;
 import com.cobalt.jira.plugin.epic.data.DataManager;
 import com.cobalt.jira.plugin.epic.data.IJiraData;
+import com.cobalt.jira.plugin.epic.data.JiraDataType;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -221,12 +222,12 @@ public class DataManagerTest {
 
         assertEquals(4, projects.size());//number of elements in the tree
 
-        assertEquals(IJiraData.DataType.PROJECT, projects.get(0).getType());
+        assertEquals(JiraDataType.PROJECT, projects.get(0).getType());
         projects.remove(0);
-        assertEquals(IJiraData.DataType.EPIC, projects.get(0).getType());
+        assertEquals(JiraDataType.EPIC, projects.get(0).getType());
         projects.remove(0);
-        assertEquals(IJiraData.DataType.STORY, projects.get(0).getType());
+        assertEquals(JiraDataType.STORY, projects.get(0).getType());
         projects.remove(0);
-        assertEquals(IJiraData.DataType.SUBTASK, projects.get(0).getType());
+        assertEquals(JiraDataType.SUBTASK, projects.get(0).getType());
     }
 }

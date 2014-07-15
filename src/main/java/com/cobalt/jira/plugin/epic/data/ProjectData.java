@@ -19,8 +19,8 @@ public class ProjectData extends JiraData {
         this.project = project;
     }
 
-    public DataType getType() {
-        return DataType.PROJECT;
+    public JiraDataType getType() {
+        return JiraDataType.PROJECT;
     }
 
     public String getName() {

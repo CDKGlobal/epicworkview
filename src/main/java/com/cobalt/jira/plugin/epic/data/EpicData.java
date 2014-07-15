@@ -18,8 +18,8 @@ public class EpicData extends IssueData {
         super(epic);
     }
 
-    public DataType getType() {
-        return DataType.EPIC;
+    public JiraDataType getType() {
+        return JiraDataType.EPIC;
     }
 
     /**

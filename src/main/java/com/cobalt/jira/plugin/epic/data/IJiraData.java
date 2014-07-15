@@ -5,30 +5,7 @@ import com.atlassian.crowd.embedded.api.User;
 
 public interface IJiraData {
 
-    /**
-     * enumeration for the different types of jira data stored
-     */
-    public static enum DataType {
-        PROJECT, EPIC, STORY, SUBTASK;
 
-        //explicitly set the order of the enum values
-        private static final DataType[] order = {PROJECT, EPIC, STORY, SUBTASK};
-
-        /**
-         * Gets the level of a data type in JIRA's hierarchy
-         * @param dt - DataType to check
-         * @return the level of the DataType given, -1 if null or not in the JIRA hierarchy
-         */
-        public static int getLevel(DataType dt) {
-            for(int i = 0; i < order.length; i++) {
-                if(dt == order[i]) {
-                    return i;
-                }
-            }
-
-            return -1;
-        }
-    }
 
     public void remove();
 
@@ -48,7 +25,7 @@ public interface IJiraData {
      *
      * @return the type of jira object
      */
-    public DataType getType();
+    public JiraDataType getType();
 
     /**
      * Returns the name of the issue

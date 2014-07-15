@@ -2,6 +2,7 @@ package ut.com.cobalt.jira.plugin.epic.data;
 
 import com.atlassian.crowd.embedded.api.User;
 import com.cobalt.jira.plugin.epic.data.IJiraData;
+import com.cobalt.jira.plugin.epic.data.JiraDataType;
 import com.cobalt.jira.plugin.epic.data.NaryTree;
 import com.cobalt.jira.plugin.epic.data.Node;
 import org.junit.Before;
@@ -18,12 +19,12 @@ public class NaryTreeTest {
     private MockIJiraData mockIJiraData;
 
     private class MockIJiraData implements IJiraData {
-        private DataType type;
+        private JiraDataType type;
         private long id;
         private IJiraData project, epic, story;
         private long timestamp;
 
-        public MockIJiraData(DataType type, long id) {
+        public MockIJiraData(JiraDataType type, long id) {
             this.type = type;
             this.id = id;
         }
@@ -44,7 +45,7 @@ public class NaryTreeTest {
             this.timestamp = timestamp;
         }
 
-        public DataType getType() {
+        public JiraDataType getType() {
             return type;
         }
 
@@ -106,10 +107,10 @@ public class NaryTreeTest {
 
     @Before
     public void setup() {
-        mockIJiraData = new MockIJiraData(IJiraData.DataType.SUBTASK, JIRA_DATA_ID);
-        mockIJiraData.setProject(new MockIJiraData(IJiraData.DataType.PROJECT, JIRA_DATA_ID - 1));
-        mockIJiraData.setEpic(new MockIJiraData(IJiraData.DataType.EPIC, JIRA_DATA_ID - 2));
-        mockIJiraData.setStory(new MockIJiraData(IJiraData.DataType.STORY, JIRA_DATA_ID - 3));
+        mockIJiraData = new MockIJiraData(JiraDataType.SUBTASK, JIRA_DATA_ID);
+        mockIJiraData.setProject(new MockIJiraData(JiraDataType.PROJECT, JIRA_DATA_ID - 1));
+        mockIJiraData.setEpic(new MockIJiraData(JiraDataType.EPIC, JIRA_DATA_ID - 2));
+        mockIJiraData.setStory(new MockIJiraData(JiraDataType.STORY, JIRA_DATA_ID - 3));
     }
 
     @Test
@@ -140,32 +141,32 @@ public class NaryTreeTest {
 
         List<IJiraData> data = naryTree.getPreOrder();
 
-        assertEquals(IJiraData.DataType.PROJECT, data.get(0).getType());
+        assertEquals(JiraDataType.PROJECT, data.get(0).getType());
         assertEquals(0l, data.get(0).getDisplayTimestamp());
         data.remove(0);
-        assertEquals(IJiraData.DataType.EPIC, data.get(0).getType());
+        assertEquals(JiraDataType.EPIC, data.get(0).getType());
         assertEquals(0l, data.get(0).getDisplayTimestamp());
         data.remove(0);
-        assertEquals(IJiraData.DataType.STORY, data.get(0).getType());
+        assertEquals(JiraDataType.STORY, data.get(0).getType());
         assertEquals(0l, data.get(0).getDisplayTimestamp());
         data.remove(0);
-        assertEquals(IJiraData.DataType.SUBTASK, data.get(0).getType());
+        assertEquals(JiraDataType.SUBTASK, data.get(0).getType());
         assertEquals(0l, data.get(0).getDisplayTimestamp());
 
         mockIJiraData.setDisplayTimestamp(10l);
         naryTree.insert(mockIJiraData);
         data = naryTree.getPreOrder();
 
-        assertEquals(IJiraData.DataType.PROJECT, data.get(0).getType());
+        assertEquals(JiraDataType.PROJECT, data.get(0).getType());
         assertEquals(10l, data.get(0).getDisplayTimestamp());
         data.remove(0);
-        assertEquals(IJiraData.DataType.EPIC, data.get(0).getType());
+        assertEquals(JiraDataType.EPIC, data.get(0).getType());
         assertEquals(10l, data.get(0).getDisplayTimestamp());
         data.remove(0);
-        assertEquals(IJiraData.DataType.STORY, data.get(0).getType());
+        assertEquals(JiraDataType.STORY, data.get(0).getType());
         assertEquals(10l, data.get(0).getDisplayTimestamp());
         data.remove(0);
-        assertEquals(IJiraData.DataType.SUBTASK, data.get(0).getType());
+        assertEquals(JiraDataType.SUBTASK, data.get(0).getType());
         assertEquals(10l, data.get(0).getDisplayTimestamp());
     }
 }

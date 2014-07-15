@@ -121,7 +121,7 @@ public class DataManager {
             IJiraData ijd = iter.next();
 
             //if its a project and the user isn't allowed to view it set a flag
-            if(ijd.getType() == IJiraData.DataType.PROJECT) {
+            if(ijd.getType() == JiraDataType.PROJECT) {
                 remove = !projectIds.contains(ijd.getId());
             }
 

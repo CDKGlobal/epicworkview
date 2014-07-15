@@ -21,8 +21,8 @@ public class NullEpicData extends JiraData {
         this.description = description;
     }
 
-    public DataType getType() {
-        return DataType.EPIC;
+    public JiraDataType getType() {
+        return JiraDataType.EPIC;
     }
 
     public String getName() {

@@ -45,7 +45,7 @@ public class JiraDataTest {
     private CustomFieldManager mockCustomFieldManager;
 
     private class MockJiraData extends JiraData {
-        public DataType getType() {
+        public JiraDataType getType() {
             return null;
         }
 
@@ -189,7 +189,7 @@ public class JiraDataTest {
     public void issueDataIsValid() {
         IssueData issueData = new IssueData(issue);
 
-        assertEquals(IJiraData.DataType.SUBTASK, issueData.getType());
+        assertEquals(JiraDataType.SUBTASK, issueData.getType());
         assertEquals(ISSUE_NAME, issueData.getName());
         assertEquals(ISSUE_KEY, issueData.getKey());
         assertEquals(ISSUE_ID, issueData.getId());
@@ -237,7 +237,7 @@ public class JiraDataTest {
     public void storyDataIsValid() {
         StoryData storyData = new StoryData(issue);
 
-        assertEquals(IJiraData.DataType.STORY, storyData.getType());
+        assertEquals(JiraDataType.STORY, storyData.getType());
 
         //test with no epic link
         assertTrue(storyData.getEpic() instanceof NullEpicData);
@@ -256,7 +256,7 @@ public class JiraDataTest {
     public void epicDataIsValid() {
         EpicData epicData = new EpicData(issue);
 
-        assertEquals(IJiraData.DataType.EPIC, epicData.getType());
+        assertEquals(JiraDataType.EPIC, epicData.getType());
 
         //test with no Epic Name custom field
         assertEquals("No Name Epic", epicData.getName());
@@ -275,7 +275,7 @@ public class JiraDataTest {
     public void nullEpicDataIsValid() {
         NullEpicData nullEpicData = new NullEpicData(ISSUE_NAME, ISSUE_DESCRIPTION);
 
-        assertEquals(IJiraData.DataType.EPIC, nullEpicData.getType());
+        assertEquals(JiraDataType.EPIC, nullEpicData.getType());
         assertEquals(ISSUE_NAME, nullEpicData.getName());
         assertEquals(ISSUE_DESCRIPTION, nullEpicData.getDescription());
         assertEquals(-1, nullEpicData.getId());
@@ -297,7 +297,7 @@ public class JiraDataTest {
     public void projectDataIsValid() {
         ProjectData projectData = new ProjectData(project);
 
-        assertEquals(IJiraData.DataType.PROJECT, projectData.getType());
+        assertEquals(JiraDataType.PROJECT, projectData.getType());
         assertEquals(PROJECT_NAME, projectData.getName());
         assertEquals(PROJECT_KEY, projectData.getKey());
         assertEquals(PROJECT_ID, projectData.getId());

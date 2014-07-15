@@ -27,8 +27,8 @@ public class IssueData extends JiraData {
         }
     }
 
-    public DataType getType() {
-        return DataType.SUBTASK;
+    public JiraDataType getType() {
+        return JiraDataType.SUBTASK;
     }
 
     public String getName() {

@@ -53,13 +53,13 @@ public class RestResourceTest
     private MockUser mockUser;
 
     private class MockJiraData extends JiraData {
-        private DataType type;
+        private JiraDataType type;
 
-        public MockJiraData(DataType type) {
+        public MockJiraData(JiraDataType type) {
             this.type = type;
         }
 
-        public DataType getType() {
+        public JiraDataType getType() {
             return type;
         }
 
@@ -141,14 +141,14 @@ public class RestResourceTest
         when(mockUserKeyService.getKeyForUser(any(User.class))).thenReturn(USER_KEY);
         when(jiraUserManager.getUserByKey(anyString())).thenReturn(mockApplicationUser);
 
-        IJiraData subtask = new MockJiraData(IJiraData.DataType.SUBTASK) {
+        IJiraData subtask = new MockJiraData(JiraDataType.SUBTASK) {
             public User getAssignee() {
                 return mockUser;
             }
         };
-        IJiraData story = new MockJiraData(IJiraData.DataType.STORY);
-        IJiraData epic = new MockJiraData(IJiraData.DataType.EPIC);
-        IJiraData project = new MockJiraData(IJiraData.DataType.PROJECT);
+        IJiraData story = new MockJiraData(JiraDataType.STORY);
+        IJiraData epic = new MockJiraData(JiraDataType.EPIC);
+        IJiraData project = new MockJiraData(JiraDataType.PROJECT);
         projects = new ArrayList<IJiraData>();
         projects.add(project);
         projects.add(epic);

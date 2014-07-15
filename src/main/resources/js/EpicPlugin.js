@@ -128,16 +128,26 @@ function ProjectController($scope, $http, $cookieStore) {
     
     // returns all contributors for this project in order of time worked on project
     $scope.getContributors = function(project) {
-    	var contributors = {};
-    	getContributorsHelper(contributors, project, "project");
+    	// get map of timestamps to lists of contributors
+    	var contributorTimestamps = {};
+    	getContributorsHelper(contributorTimestamps, project, "project");
+    	// get list of all timestamps
     	var timestamps = [];
-    	for (var key in contributors) {
+    	for (var key in contributorTimestamps) {
     		timestamps.push(key);
     	}
+    	// sort timestamps
     	timestamps.sort(function(a, b){return b - a});
+    	// add contributors for each timestamp to result
     	var result = [];
     	angular.forEach(timestamps, function(timestamp) {
-			result.push(contributors[timestamp]);
+			var contributors = contributorTimestamps[timestamp];
+			angular.forEach(contributors, function(c) {
+				// add to result if not a duplicate
+				if (indexOf(result, c) == -1) {
+					result.push(c);
+				}
+    		});
 		});
     	return result;
     }
@@ -164,11 +174,15 @@ function ProjectController($scope, $http, $cookieStore) {
     	// add contributor to the result with the key as the element's timestamp
     	var contributor = element.contributor;
     	var timestamp = element.timestamp;
-    	// make there is a contributor and they are not already in the result list
-    	if (contributor != null && indexOf(result, contributor) == -1) {
-    		// if this timestamp is already in the list, add a millisecond to it
-    		if (timestamp in result) timestamp++;
-    		result[timestamp] = contributor;
+    	// make sure there is a contributor
+    	if (contributor != null) {
+    		// if this timestamp is already in the list, add another contributor to it
+    		if (timestamp in result) {
+    			result[timestamp].push(contributor);
+    		} else {
+    			// if it is not in the list, add it with the contributor
+    			result[timestamp] = [contributor];
+    		}
     	}
     }
     

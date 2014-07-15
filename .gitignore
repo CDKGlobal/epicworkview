@@ -1,6 +1,9 @@
 # Generated files
 target/
 
+# Generated depencies
+node_modules/
+
 # Emacs temporary files
 *.*~
 

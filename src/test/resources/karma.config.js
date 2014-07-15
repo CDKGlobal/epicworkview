@@ -17,6 +17,7 @@ module.exports = function(config) {
     files: [
       'angular.js',
       'angular-mocks.js',
+      'angular-cookies.js',
       'jquery-1.7.2.js',
       '../java/ut/com/cobalt/jira/plugin/epic/test/*Spec.js',
       '../../main/resources/js/*.js' 

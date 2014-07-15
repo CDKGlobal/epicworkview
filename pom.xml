@@ -195,12 +195,12 @@
                             <target>
                                 <echo>NPM Install</echo>
                                 <exec executable="npm" dir="${project.basedir}" osfamily="unix" resultproperty="">
-                                    <env key="PATH" value="/usr/local/bin:/usr/bin:/bin"/>
+                                    <env key="PATH" value="/usr/local/bin:/usr/bin:/bin:${node.anthill.home}"/>
                                     <arg line="config set registry http://artifactory.cobalt.com/artifactory/api/npm/npm-repo"/>
                                 </exec>
                                 <echo>Pulling down node modules...</echo>
                                 <exec executable="npm" dir="${project.basedir}" osfamily="unix" resultproperty="npmresult" output="npm.status">
-                                    <env key="PATH" value="/usr/local/bin:/usr/bin:/bin"/>
+                                    <env key="PATH" value="/usr/local/bin:/usr/bin:/bin:${node.anthill.home}"/>
                                     <arg line="install"/>
                                 </exec>
                                 <echo>NPM Result: ${npmresult}</echo>
@@ -208,7 +208,7 @@
                                 <echo>NPM Status: ${npm.status}</echo>
                                 <echo>Running GRUNT.....</echo>
                                 <exec executable="node_modules/grunt-cli/bin/grunt" dir="${project.basedir}" osfamily="unix" resultproperty="cmdresult" output="grunt.status">
-                                    <env key="PATH" value="/usr/local/bin:/usr/bin:/bin:./node_modules/.bin"/>
+                                    <env key="PATH" value="/usr/local/bin:/usr/bin:/bin:./node_modules/.bin:${node.anthill.home}"/>
                                     <arg line="ut --no-color"/>
                                 </exec>
                                 <loadfile property="grunt.status" srcFile="grunt.status"/>

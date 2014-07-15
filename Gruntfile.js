@@ -6,10 +6,11 @@ module.exports = function(grunt) {
     //Interface with the Karma test runner
     //See: https://github.com/karma-runner/grunt-karma
     karma: {
-        angularunit: {
+        unit: {
             configFile: 'src/test/resources/karma.config.js',
             colors: false,
-            singleRun: true
+            singleRun: true,
+            browsers: ['PhantomJS']
         }
     },
   
@@ -32,7 +33,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-protractor-runner');
 
   grunt.registerTask('default', []);
-  grunt.registerTask('ut', ['karma']);
+  grunt.registerTask('ut', ['karma:unit']);
   grunt.registerTask('it', ['protractor']);
 
 };

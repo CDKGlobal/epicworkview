@@ -4,9 +4,13 @@ import com.atlassian.jira.action.issue.customfields.MockCustomFieldType;
 import com.atlassian.jira.bc.ServiceOutcome;
 import com.atlassian.jira.bc.ServiceOutcomeImpl;
 import com.atlassian.jira.bc.project.ProjectService;
+import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.Issue;
+import com.atlassian.jira.issue.changehistory.ChangeHistory;
+import com.atlassian.jira.issue.changehistory.ChangeHistoryManager;
 import com.atlassian.jira.issue.fields.MockCustomField;
+import com.atlassian.jira.issue.history.ChangeItemBean;
 import com.atlassian.jira.issue.managers.MockCustomFieldManager;
 import com.atlassian.jira.issue.search.SearchException;
 import com.atlassian.jira.issue.search.SearchResults;
@@ -27,6 +31,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -71,8 +76,52 @@ public class DataManagerTest {
         MockCustomFieldManager mockCustomFieldManager = spy(new MockCustomFieldManager());
         doReturn(mockCustomField).when(mockCustomFieldManager).getCustomFieldObjectByName("Epic Link");
 
+        ChangeHistoryManager changeHistoryManager = mock(ChangeHistoryManager.class);
+
+        List<ChangeHistory> changeHistories = new ArrayList<ChangeHistory>();
+        ChangeHistory changeHistory = mock(ChangeHistory.class);
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        when(changeHistory.getTimePerformed()).thenReturn(timestamp);
+
+        List<ChangeItemBean> cibs = new ArrayList<ChangeItemBean>();
+        ChangeItemBean cib = new ChangeItemBean();
+        cib.setField("status");
+        cib.setFrom("Open");
+        cib.setFromString("Open");
+        cib.setTo("In Progress");
+        cib.setToString("In Progress");
+        cib.setFieldType(ChangeItemBean.STATIC_FIELD);
+        cib.setCreated(timestamp);
+        cibs.add(cib);
+
+        cib = new ChangeItemBean();
+        cib.setField("resolution");
+        cib.setFrom("null");
+        cib.setFromString("null");
+        cib.setTo("Fixed");
+        cib.setToString("Fixed");
+        cib.setFieldType(ChangeItemBean.STATIC_FIELD);
+        cib.setCreated(timestamp);
+
+        cib = new ChangeItemBean();
+        cib.setField("status");
+        cib.setFrom("In Progress");
+        cib.setFromString("In Progress");
+        cib.setTo("Done");
+        cib.setToString("Done");
+        cib.setFieldType(ChangeItemBean.STATIC_FIELD);
+        cib.setCreated(timestamp);
+
+        when(changeHistory.getChangeItemBeans()).thenReturn(cibs);
+
+        changeHistories.add(changeHistory);
+
+        when(changeHistoryManager.getChangeHistories(any(Issue.class))).thenReturn(changeHistories);
+
+
         MockComponentWorker worker = new MockComponentWorker();
         worker.addMock(CustomFieldManager.class, mockCustomFieldManager);
+        worker.addMock(ChangeHistoryManager.class, changeHistoryManager);
         worker.init();
 
         mockUser = mock(User.class);
@@ -139,7 +188,6 @@ public class DataManagerTest {
         assertEquals(0, projects.size());
     }
 
-    @Ignore
     @Test
     public void dataManagerIsValidWithDestory() {
         DataManager dataManager = new DataManager(projectService);
@@ -154,7 +202,6 @@ public class DataManagerTest {
         assertEquals(0, projects.size());
     }
 
-    @Ignore
     @Test
     public void dataManagerIsValidWithNullUser() {
         DataManager dataManager = new DataManager(projectService);
@@ -165,7 +212,6 @@ public class DataManagerTest {
         assertEquals(0, projects.size());
     }
 
-    @Ignore
     @Test
     public void dataManagerIsValidWithUser() {
         DataManager dataManager = new DataManager(projectService);

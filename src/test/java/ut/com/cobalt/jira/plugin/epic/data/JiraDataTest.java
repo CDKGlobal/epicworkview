@@ -4,7 +4,10 @@ import com.atlassian.crowd.embedded.api.User;
 import com.atlassian.jira.action.issue.customfields.MockCustomFieldType;
 import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.Issue;
+import com.atlassian.jira.issue.changehistory.ChangeHistory;
+import com.atlassian.jira.issue.changehistory.ChangeHistoryManager;
 import com.atlassian.jira.issue.fields.MockCustomField;
+import com.atlassian.jira.issue.history.ChangeItemBean;
 import com.atlassian.jira.issue.status.MockStatus;
 import com.atlassian.jira.mock.component.MockComponentWorker;
 import com.atlassian.jira.mock.issue.MockIssue;
@@ -16,6 +19,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -83,6 +88,47 @@ public class JiraDataTest {
 
     @Before
     public void setup() {
+        ChangeHistoryManager changeHistoryManager = mock(ChangeHistoryManager.class);
+
+        List<ChangeHistory> changeHistories = new ArrayList<ChangeHistory>();
+        ChangeHistory changeHistory = mock(ChangeHistory.class);
+        when(changeHistory.getTimePerformed()).thenReturn(ISSUE_TIMESTAMP);
+
+        List<ChangeItemBean> cibs = new ArrayList<ChangeItemBean>();
+        ChangeItemBean cib = new ChangeItemBean();
+        cib.setField("status");
+        cib.setFrom("Open");
+        cib.setFromString("Open");
+        cib.setTo("In Progress");
+        cib.setToString("In Progress");
+        cib.setFieldType(ChangeItemBean.STATIC_FIELD);
+        cib.setCreated(ISSUE_TIMESTAMP);
+        cibs.add(cib);
+
+        cib = new ChangeItemBean();
+        cib.setField("resolution");
+        cib.setFrom("null");
+        cib.setFromString("null");
+        cib.setTo("Fixed");
+        cib.setToString("Fixed");
+        cib.setFieldType(ChangeItemBean.STATIC_FIELD);
+        cib.setCreated(ISSUE_TIMESTAMP);
+
+        cib = new ChangeItemBean();
+        cib.setField("status");
+        cib.setFrom("In Progress");
+        cib.setFromString("In Progress");
+        cib.setTo("Done");
+        cib.setToString("Done");
+        cib.setFieldType(ChangeItemBean.STATIC_FIELD);
+        cib.setCreated(ISSUE_TIMESTAMP);
+
+        when(changeHistory.getChangeItemBeans()).thenReturn(cibs);
+
+        changeHistories.add(changeHistory);
+
+        when(changeHistoryManager.getChangeHistories(any(Issue.class))).thenReturn(changeHistories);
+
         project = spy(new MockProject());
         project.setName(PROJECT_NAME);
         project.setKey(PROJECT_KEY);
@@ -112,26 +158,33 @@ public class JiraDataTest {
         MockComponentWorker worker = new MockComponentWorker();
         mockCustomFieldManager = mock(CustomFieldManager.class);
         worker.addMock(CustomFieldManager.class, mockCustomFieldManager);
+        worker.addMock(ChangeHistoryManager.class, changeHistoryManager);
         worker.init();
     }
 
-    @Ignore
     @Test
     public void jiraDataIsValid() {
         JiraData jiraData = new MockJiraData();
-        assertEquals(-1, jiraData.getDisplayTimestamp());
-        jiraData.setDisplayTimestamp(-2);
-        assertEquals(-1, jiraData.getDisplayTimestamp());
+        assertEquals(0, jiraData.getUpdatedTimestamp());
+        jiraData.setUpdatedTimestamp(-2);
+        assertEquals(0, jiraData.getUpdatedTimestamp());
+        jiraData.setUpdatedTimestamp(1000);
+        assertEquals(1000, jiraData.getUpdatedTimestamp());
+
+        assertEquals(0, jiraData.getDisplayTimestamp());
+        jiraData.setDisplayTimestamp(-1);
+        assertEquals(0, jiraData.getDisplayTimestamp());
         jiraData.setDisplayTimestamp(1000);
         assertEquals(1000, jiraData.getDisplayTimestamp());
+        jiraData.remove();
+        assertEquals(-1, jiraData.getDisplayTimestamp());
 
         JiraData jiraData1 = new MockJiraData();
-        jiraData1.setDisplayTimestamp(2000l);
+        jiraData1.setUpdatedTimestamp(2000l);
         jiraData.update(jiraData1);
-        assertEquals(2000l, jiraData.getDisplayTimestamp());
+        assertEquals(2000l, jiraData.getUpdatedTimestamp());
     }
 
-    @Ignore
     @Test
     public void issueDataIsValid() {
         IssueData issueData = new IssueData(issue);
@@ -180,7 +233,6 @@ public class JiraDataTest {
         assertEquals(USERNAME + 1, issueData.getAssignee().getName());
     }
 
-    @Ignore
     @Test
     public void storyDataIsValid() {
         StoryData storyData = new StoryData(issue);
@@ -200,7 +252,6 @@ public class JiraDataTest {
         assertEquals(storyData, storyData.getStory());
     }
 
-    @Ignore
     @Test
     public void epicDataIsValid() {
         EpicData epicData = new EpicData(issue);

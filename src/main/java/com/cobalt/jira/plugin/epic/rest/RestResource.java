@@ -230,18 +230,6 @@ public class RestResource implements InitializingBean, DisposableBean {
     }
 
     /**
-     * Simple rest endpoint to see what's going on for debugging purposes
-     * @return
-     */
-    @Path("/debug")
-    @GET
-    @AnonymousAllowed
-    @Produces(MediaType.TEXT_PLAIN)
-    public String getDebug() {
-        return DataManager.DEBUG_LOG.toString();
-    }
-
-    /**
      * event listener that passes changes for issues to the data manager
      *
      * @param issueEvent - the event containing the issue

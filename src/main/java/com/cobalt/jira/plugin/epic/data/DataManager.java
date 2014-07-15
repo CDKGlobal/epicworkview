@@ -31,9 +31,6 @@ public class DataManager {
     private NaryTree tree;
     private ProjectService projectService;
 
-    //string used for debugging with the test instance
-    public static final StringBuilder DEBUG_LOG = new StringBuilder("Log Start:\r\n");
-
     /**
      * Constructs a new DataManager
      * 
@@ -109,8 +106,6 @@ public class DataManager {
         //loop and get stuff the user can see and happen in the last x seconds
         List<IJiraData> issues = tree.getPreOrder();
 
-        System.out.println(issues.size());
-
         List<Project> projects = projectService.getAllProjects(user).getReturnedValue();
         HashSet<Long> projectIds = new HashSet<Long>();
         for(Project p : projects) {
@@ -135,8 +130,6 @@ public class DataManager {
                 iter.remove();
             }
         }
-
-        System.out.println(issues.size());
 
         return issues;
     }

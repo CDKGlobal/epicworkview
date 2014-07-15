@@ -132,6 +132,7 @@ public class RestResourceTest
         MockComponentWorker worker = new MockComponentWorker();
         worker.addMock(UserKeyService.class, mockUserKeyService);
         worker.addMock(com.atlassian.jira.user.util.UserManager.class, jiraUserManager);
+        worker.addMock(AvatarService.class, avatarService);
         worker.init();
 
         mockUser = new MockUser(USERNAME, USER_DISPLAY_NAME, USER_EMAIL);
@@ -155,7 +156,7 @@ public class RestResourceTest
         projects.add(subtask);
     }
 
-    @Ignore
+
     @Test
     public void getProjectsisValid() {
         RestResource restResource = new RestResource(searchService, userManager, jiraUserManager, eventPublisher, userUtil, projectService);

@@ -219,8 +219,6 @@ public class NaryTree {
         while(iter.hasNext()) {
             Node node = iter.next();
 
-            System.out.println(node.getData().getDisplayTimestamp());
-
             long displayTime = node.getData().getDisplayTimestamp();
 
             if(displayTime == -1l){

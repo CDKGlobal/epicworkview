@@ -126,8 +126,8 @@ public class NaryTreeTest {
         assertEquals(mockIJiraData, node.getData());
         assertEquals(1, node.getChildren().size());
 
-        assertEquals(-1, node.indexOf(-1));
-        assertEquals(0, node.indexOf(JIRA_DATA_ID));
+        assertNull(node.getChild(-1));
+        assertNotNull(node.getChild(JIRA_DATA_ID));
     }
 
     @Test

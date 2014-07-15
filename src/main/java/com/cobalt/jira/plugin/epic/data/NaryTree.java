@@ -1,8 +1,6 @@
 package com.cobalt.jira.plugin.epic.data;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -20,7 +18,7 @@ public class NaryTree {
 
     /**
      * Inserts the given JIRA data into the tree
-     * @param data
+     * @param data - IJiraData to be inserted into the tree
      */
     public void insert(IJiraData data) {
         Node node = new Node();
@@ -41,36 +39,30 @@ public class NaryTree {
 
         //we're at the correct depth
         if(curDepth == depth) {
-            int index = curNode.indexOf(insertNode.getData().getId());
+            Node index = curNode.getChild(insertNode.getData().getId());
 
             //the current node doesn't have the same node already so insert it
-            if(index == -1) {
+            if(index == null) {
                 curNode.addChild(insertNode);
             }
             //otherwise just update the stored data
             else {
-                curNode.getChildren().get(index).getData().update(insertNode.getData());
+                index.getData().update(insertNode.getData());
             }
         }
         //we need to go deeper into the tree
         else {
             IJiraData parent = getParent(curDepth, insertNode.getData());
 
-            //get the index of the child that we need to follow
-            int index = curNode.indexOf(parent.getId());
+            //get the node of the child that we need to follow
+            Node nextNode = curNode.getChild(parent.getId());
 
             //the node currently doesn't contain the child we need so add it
-            if(index == -1) {
-                Node newNode = new Node();
-
-                newNode.setData(parent);
-
-                curNode.addChild(newNode);
-                index = curNode.getChildren().size() - 1;
+            if(nextNode == null) {
+                nextNode = new Node();
+                nextNode.setData(parent);
+                curNode.addChild(nextNode);
             }
-
-            //get the child node and follow it down
-            Node nextNode = curNode.getChildren().get(index);
 
             //update the timestamp in order to get the most recent update time
             nextNode.getData().setUpdatedTimestamp(insertNode.getData().getUpdatedTimestamp());
@@ -94,19 +86,17 @@ public class NaryTree {
 
         if(curDepth == depth) {
             //remove node
-            int index = curNode.indexOf(removeIssue.getId());
+            Node index = curNode.getChild(removeIssue.getId());
 
-            if(index != -1) {
-                Node nodeToBeRemoved = curNode.getChildren().get(index);
-
+            if(index != null) {
                 //update timestamp to let others know this issue has been set to be removed
-                nodeToBeRemoved.getData().setUpdatedTimestamp(removeIssue.getUpdatedTimestamp());
-                nodeToBeRemoved.getData().remove();
+                index.getData().setUpdatedTimestamp(removeIssue.getUpdatedTimestamp());
+                index.getData().remove();
 
                 if(curNode == root)
                     return false;
 
-                for(Node n : curNode.getChildren()) {
+                for(Node n : curNode.getChildren().values()) {
                     if(n.getData().getDisplayTimestamp() > -1) {
                         return false;
                     }
@@ -121,22 +111,20 @@ public class NaryTree {
             //continue
             IJiraData parent = getParent(curDepth, removeIssue);
 
-            int index = curNode.indexOf(parent.getId());
+            Node index = curNode.getChild(parent.getId());
 
-            if(index != -1) {
-                Node nextNode = curNode.getChildren().get(index);
-
+            if(index != null) {
                 //update timestamp to let others know this parent had one of its children change
-                nextNode.getData().setUpdatedTimestamp(removeIssue.getUpdatedTimestamp());
+                index.getData().setUpdatedTimestamp(removeIssue.getUpdatedTimestamp());
 
-                boolean delete = remove(removeIssue, nextNode, curDepth+1);
+                boolean delete = remove(removeIssue, index, curDepth+1);
 
                 //if this node and all sub children have been deleted
                 if(delete) {
                     if(curNode == root)
                         return false;
 
-                    for(Node n : curNode.getChildren()) {
+                    for(Node n : curNode.getChildren().values()) {
                         if(n.getData().getDisplayTimestamp() > -1) {
                             return false;
                         }
@@ -190,8 +178,9 @@ public class NaryTree {
 
     private void getPreOrder(Node node, List<IJiraData> preOrder) {
         preOrder.add(node.getData());
-        List<Node> children = node.getChildren();
-        if(children != null) {
+        Map<Long, Node> map = node.getChildren();
+        if(map != null) {
+            Collection<Node> children = map.values();
             for(Node child : children) {
                 getPreOrder(child, preOrder);
             }
@@ -208,28 +197,25 @@ public class NaryTree {
 
     private void pruneOldData(Node curNode, long timestamp) {
         //for each child node
-        List<Node> children = curNode.getChildren();
+        Map<Long, Node> children = curNode.getChildren();
         if(children == null) {
             return;
         }
 
-        Iterator<Node> iter = curNode.getChildren().iterator();
+        for(Map.Entry<Long, Node> entry : children.entrySet()) {
 
-        while(iter.hasNext()) {
-            Node node = iter.next();
-
-            long displayTime = node.getData().getDisplayTimestamp();
+            long displayTime = entry.getValue().getData().getDisplayTimestamp();
 
             if(displayTime == -1l){
-                displayTime = node.getData().getUpdatedTimestamp();
+                displayTime = entry.getValue().getData().getUpdatedTimestamp();
             }
 
             //if the timestamp is too old remove it from the tree
             if(displayTime < timestamp) {
-                iter.remove();
+                children.remove(entry.getKey());
             }
             else {
-                pruneOldData(node, timestamp);
+                pruneOldData(entry.getValue(), timestamp);
             }
         }
     }

@@ -1,7 +1,6 @@
 package com.cobalt.jira.plugin.epic.data;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -9,7 +8,7 @@ import java.util.List;
  */
 public class Node {
     private IJiraData data;
-    private List<Node> children;
+    private Map<Long, Node> children;
 
     /**
      * Initializes an empty Node
@@ -42,29 +41,21 @@ public class Node {
     public void addChild(Node node) {
         //lazy initialization of children so that we don't create unneeded empty lists
         if(children == null) {
-            children = new LinkedList<Node>();
+            children = new HashMap<Long, Node>();
         }
 
-        children.add(node);
+        children.put(node.getData().getId(), node);
     }
 
     /**
      * Retrieve the children of this node
      * @return
      */
-    public List<Node> getChildren() {
+    public Map<Long, Node> getChildren() {
         return children;
     }
 
-    public int indexOf(long id) {
-        if(children != null) {
-            for(int i = 0; i < children.size(); i++) {
-                if(id == children.get(i).data.getId()) {
-                    return i;
-                }
-            }
-        }
-
-        return -1;
+    public Node getChild(long id) {
+        return children == null ? null : children.get(id);
     }
 }

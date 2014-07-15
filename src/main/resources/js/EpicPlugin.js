@@ -136,16 +136,19 @@ function ProjectController($scope, $http, $cookieStore) {
     	//update the list held in the current element, if it has one
     	if (elementType == "project") {
     		// this is a project
+    		element.epics.sort(function(a, b){return b.timestamp - a.timestamp});
     		angular.forEach(element.epics, function(epic) {
     			getContributorsHelper(result, epic, "epic");
     		});
     	} else if (elementType == "epic") {
     		// this is an epic
+    		element.stories.sort(function(a, b){return b.timestamp - a.timestamp});
     		angular.forEach(element.stories, function(story) {
     			getContributorsHelper(result, story, "story");
     		});
     	} else if (elementType == "story") {
     		// this is a story
+    		element.subtasks.sort(function(a, b){return b.timestamp - a.timestamp});
     		angular.forEach(element.subtasks, function(subtask) {
     			getContributorsHelper(result, subtask, "subtask");
     		});

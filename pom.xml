@@ -193,11 +193,6 @@
                         <phase>compile</phase>
                         <configuration>
                             <target>
-                                <echo>NPM Install</echo>
-                                <exec executable="npm" dir="${project.basedir}" osfamily="unix" resultproperty="">
-                                    <env key="PATH" value="/usr/local/bin:/usr/bin:/bin:${node.anthill.home}"/>
-                                    <arg line="config set registry http://artifactory.cobalt.com/artifactory/api/npm/npm-repo"/>
-                                </exec>
                                 <echo>${node.anthill.home}</echo>
                                 <exec executable="ls" dir="${project.basedir}" osfamily="unix" resultproperty="" output="files">
                                     <arg line="-la ${node.anthill.home}"/>
@@ -205,6 +200,13 @@
                                 <loadfile property="files" srcFile="files"/>
                                 <echo>AntHill dir: ${files}</echo>
                                 <delete file="files" quieet="true"/>
+
+                                <echo>NPM Install</echo>
+                                <exec executable="npm" dir="${project.basedir}" osfamily="unix" resultproperty="">
+                                    <env key="PATH" value="/usr/local/bin:/usr/bin:/bin:${node.anthill.home}"/>
+                                    <arg line="config set registry http://artifactory.cobalt.com/artifactory/api/npm/npm-repo"/>
+                                </exec>
+
                                 <echo>Pulling down node modules...</echo>
                                 <exec executable="npm" dir="${project.basedir}" osfamily="unix" resultproperty="npmresult" output="npm.status">
                                     <env key="PATH" value="/usr/local/bin:/usr/bin:/bin:${node.anthill.home}"/>

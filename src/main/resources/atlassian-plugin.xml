@@ -38,7 +38,7 @@
     <description key="rest-project-resource.description">The Rest Project Resource Plugin</description>
   </rest>
   <component-import key="eventPublisher" interface="com.atlassian.event.api.EventPublisher" filter=""/>
-  <component key="eventListener" class="com.cobalt.jira.plugin.epic.rest.RestResource">
+  <!--<component key="eventListener" class="com.cobalt.jira.plugin.epic.rest.RestResource">
     <description>Class that processes the incoming JIRA issue events.</description>
-  </component>
+  </component>-->
 </atlassian-plugin>

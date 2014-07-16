@@ -185,7 +185,7 @@
                     <target>1.6</target>
                 </configuration>
             </plugin>
-            <plugin>
+            <!--<plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <version>1.7</version>
                 <executions>
@@ -209,7 +209,7 @@
                                 <echo>Running GRUNT.....</echo>
                                 <exec executable="node_modules/grunt-cli/bin/grunt" dir="${project.basedir}" osfamily="unix" resultproperty="cmdresult" output="grunt.status">
                                     <env key="PATH" value="/usr/local/bin:/usr/bin:/bin:./node_modules/.bin:${node.anthill.home}"/>
-                                    <arg line="ut --no-color"/>
+                                    <arg line="ut"/>
                                 </exec>
                                 <loadfile property="grunt.status" srcFile="grunt.status"/>
                                 <echo>${grunt.status}</echo>
@@ -226,7 +226,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>-->
         </plugins>
     </build>
     <properties>

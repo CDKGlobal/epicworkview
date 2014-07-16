@@ -125,12 +125,12 @@ input {
 }
 
 .story {
-	margin: 10px
+	margin: 10px;
 }
 
 .story p {
 	font-family: "Reenie Beanie", arial, sans-serif;
-	font-size: 180%;
+	font-size: 150%;
 }
 
 .story > a {

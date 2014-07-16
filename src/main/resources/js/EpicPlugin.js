@@ -49,12 +49,14 @@ function ProjectController($scope, $http, $cookieStore) {
     	angular.forEach(newList, function(element, index) {
     		//find index of the element in the current list
     		var elementIndex = indexOf(currentList, element);
+    		var savedElement = currentList[elementIndex];
     		//if the element isn't there, add it
     		if (elementIndex == -1) {
     			// if it is not a deleted element
     			if (element.timestamp != -1) {
 	    			//add to front of list
 	    			currentList.unshift(element);
+	    			savedElement = currentList[0];
 	    			// set its state to true if it is a project and not in the list of unchecked projects
 	    			if (elementType == "project" && !contains($scope.uncheckedProjectIds, element.id)) {
 	    				element.state = true;
@@ -62,7 +64,6 @@ function ProjectController($scope, $http, $cookieStore) {
     			}	
     		} else {
     			//element is in the current list, so update it
-    			var savedElement = currentList[elementIndex];
     			if (element.timestamp == -1) {
     				// this element is marked for deletion, remove it
     				currentList.splice(elementIndex, 1);
@@ -76,23 +77,25 @@ function ProjectController($scope, $http, $cookieStore) {
     				if (elementType == "story") {
     					savedElement.completed = element.completed;
     				}
-  	              	//update the list held in the current element, if it has one
-  	              	if (elementType == "project") {
-  	              		// this is a project
-  	              		updateElementList(savedElement.epics, element.epics, "epic");
-  	              	} else if (elementType == "epic") {
-  	              		// this is an epic
-  	              		updateElementList(savedElement.stories, element.stories, "story");
-  	              	} else if (elementType == "story") {
-  	              		// this is a story
-  	              		updateElementList(savedElement.subtasks, element.subtasks, "subtask");
-  	              	}
     			}
+    		}
+    		//update the list held in the current element, if it has one
+    		if (elementType == "project") {
+    			// this is a project
+    			updateElementList(savedElement.epics, element.epics, "epic");
+    		} else if (elementType == "epic") {
+    			// this is an epic
+    			updateElementList(savedElement.stories, element.stories, "story");
+    		} else if (elementType == "story") {
+    			// this is a story
+    			updateElementList(savedElement.subtasks, element.subtasks, "subtask");
     		}
     	});
     	// sort the list and remove all old elements
-    	currentList.sort(function(a, b){return b.timestamp - a.timestamp});
-    	removeOldElements(currentList, $scope.filterDays);
+    	if (currentList != null) {
+    		currentList.sort(function(a, b){return b.timestamp - a.timestamp});
+    		removeOldElements(currentList, $scope.filterDays);
+    	}
     }
     
     /*

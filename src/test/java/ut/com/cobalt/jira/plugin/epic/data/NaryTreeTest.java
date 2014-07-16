@@ -30,7 +30,7 @@ public class NaryTreeTest {
         }
 
         public void remove() {
-
+        	this.timestamp = -1l;
         }
 
         public void setUpdatedTimestamp(long timestamp) {
@@ -168,5 +168,87 @@ public class NaryTreeTest {
         data.remove(0);
         assertEquals(JiraDataType.SUBTASK, data.get(0).getType());
         assertEquals(10l, data.get(0).getDisplayTimestamp());
+    }
+    
+    @Test
+    public void testRemoveOneStory() {
+    	// Project -> Epic -> [Story, Story]
+    	MockIJiraData story1 = new MockIJiraData(JiraDataType.STORY, JIRA_DATA_ID);
+    	MockIJiraData story2 = new MockIJiraData(JiraDataType.STORY, JIRA_DATA_ID - 1);
+        story1.setProject(new MockIJiraData(JiraDataType.PROJECT, JIRA_DATA_ID - 2));
+        story1.setEpic(new MockIJiraData(JiraDataType.EPIC, JIRA_DATA_ID - 3));
+        story2.setProject(new MockIJiraData(JiraDataType.PROJECT, JIRA_DATA_ID - 2));
+        story2.setEpic(new MockIJiraData(JiraDataType.EPIC, JIRA_DATA_ID - 3));
+        
+        NaryTree naryTree = new NaryTree();
+        naryTree.insert(story1);
+        naryTree.insert(story2);
+        
+        story1.setDisplayTimestamp(10l);
+        story1.getEpic().setDisplayTimestamp(10l);
+        story1.getProject().setDisplayTimestamp(10l);
+        assertEquals("story has incorrect timestamp", 10l, story1.getDisplayTimestamp());
+        assertEquals("epic has incorrect timestamp", 10l, story1.getEpic().getDisplayTimestamp());
+        
+        naryTree.remove(story1);
+        
+        assertEquals("story's timestamp has not been set to -1", -1l, story1.getDisplayTimestamp());
+        assertEquals("epic deleted while still has a story", 10l, story1.getEpic().getDisplayTimestamp());
+        assertEquals("project deleted while still has an epic", 10l, story1.getProject().getDisplayTimestamp());    
+    }
+    
+    @Test
+    public void testRemoveLastStoryFromEpic() {
+    	// Project -> Epic -> Story
+    	MockIJiraData story = new MockIJiraData(JiraDataType.STORY, JIRA_DATA_ID);
+    	MockIJiraData epic = new MockIJiraData(JiraDataType.PROJECT, JIRA_DATA_ID - 2);
+    	MockIJiraData project = new MockIJiraData(JiraDataType.EPIC, JIRA_DATA_ID - 3);
+        story.setProject(project);
+        story.setEpic(epic);
+        
+        NaryTree naryTree = new NaryTree();
+        naryTree.insert(story);
+        
+        story.setDisplayTimestamp(10l);
+        epic.setDisplayTimestamp(10l);
+        project.setDisplayTimestamp(10l);
+        
+        naryTree.remove(story);
+        
+        assertEquals("story's timestamp not set to -1", -1l, story.getDisplayTimestamp());
+        assertEquals("epic's timestamp not set to -1", -1l, epic.getDisplayTimestamp());
+        assertEquals("project's timestamp not set to -1", -1l, project.getDisplayTimestamp());
+    }
+    
+    @Test
+    public void testRemoveLastTwoSubtasksFromStory() {
+    	// Project -> Epic -> Story -> [Subtask, Subtask]
+    	MockIJiraData subtask1 = new MockIJiraData(JiraDataType.SUBTASK, JIRA_DATA_ID);
+    	MockIJiraData subtask2 = new MockIJiraData(JiraDataType.SUBTASK, JIRA_DATA_ID - 2);
+    	MockIJiraData story = new MockIJiraData(JiraDataType.STORY, JIRA_DATA_ID - 3);
+    	MockIJiraData epic = new MockIJiraData(JiraDataType.EPIC, JIRA_DATA_ID - 4);
+    	MockIJiraData project = new MockIJiraData(JiraDataType.PROJECT, JIRA_DATA_ID - 5);
+        subtask1.setStory(story);
+        subtask2.setStory(story);
+        subtask1.setEpic(epic);
+        subtask2.setEpic(epic);
+        subtask1.setProject(project);
+        subtask2.setProject(project);
+        
+        NaryTree naryTree = new NaryTree();
+        naryTree.insert(subtask1);
+        naryTree.insert(subtask2);
+        
+        subtask1.setDisplayTimestamp(10l);
+        subtask2.setDisplayTimestamp(10l);
+        story.setDisplayTimestamp(10l);
+        
+        naryTree.remove(subtask1);
+        
+        assertEquals("story removed while still has child", 10l, story.getDisplayTimestamp());
+        
+        naryTree.remove(subtask2);
+        
+        assertEquals("story with no children not removed", -1l, story.getDisplayTimestamp());
     }
 }

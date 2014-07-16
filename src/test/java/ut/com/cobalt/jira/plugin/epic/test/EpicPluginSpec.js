@@ -108,14 +108,14 @@ describe('ProjectController', function(){
    });
    
         
-   xit('should have a project with epic, story and contributor', function(){
+   it('should have a project with epic, story and contributor', function(){
    		httpBackend.flush();
         project1 = scope.projects[1];
         expect(project1.name).toEqual("Scrum1");
         expect(project1.key).toEqual("TESTSCRUM");
         expect(project1.id).toEqual(10101);
         expect(project1.timestamp).toEqual(1405431614000);
-        var epic1 = project1.epics[1];
+        var epic1 = project1.epics[0];
         expect(epic1.name).toEqual("Epic1");
         expect(epic1.key).toEqual("TESTSCRUM-1");
         expect(epic1.id).toEqual(10000);
@@ -130,6 +130,34 @@ describe('ProjectController', function(){
         expect(story1.contributor.id).toEqual("admin");
         expect(story1.contributor.name).toEqual("admin");
         expect(story1.contributor.avatar).toEqual("/jira/secure/useravatar?avatarId=10122");
+    });
+    
+    it('should have epics time ordered', function(){
+   		httpBackend.flush();
+        project1 = scope.projects[1];
+        var epic1 = project1.epics[0];
+        expect(epic1.name).toEqual("Epic1");
+        expect(epic1.timestamp).toEqual(1405431614000);
+        epic1 = project1.epics[1];
+        expect(epic1.name).toEqual("Other Stories");
+        expect(epic1.timestamp).toEqual(1405430232445);
+        
+    });
+    
+    it('should have stories time ordered', function(){
+   		httpBackend.flush();
+        project1 = scope.projects[0];
+        var epic1 = project1.epics[0];
+        var story1 = epic1.stories[0];
+        expect(story1.name).toEqual("story3");
+        expect(story1.timestamp).toEqual(1405458785061);
+        story1 = epic1.stories[1];
+        expect(story1.name).toEqual("story1");
+        expect(story1.timestamp).toEqual(1405457509149);
+        story1 = epic1.stories[2];
+        expect(story1.name).toEqual("story2");
+        expect(story1.timestamp).toEqual(1405438117393);
+        
     });
     
     // test "Project4" has 2 completed stories

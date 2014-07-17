@@ -162,7 +162,7 @@ public class RestResourceTest
         RestResource restResource = new RestResource(searchService, userManager, jiraUserManager, eventPublisher, userUtil, projectService);
 
         DataManager dataManager = mock(DataManager.class);
-        when(dataManager.getProjects(null, 7)).thenReturn(new ArrayList<IJiraData>());
+        when(dataManager.getProjects(null, 7l)).thenReturn(new ArrayList<IJiraData>());
         restResource.setDataManager(dataManager);
 
         try {

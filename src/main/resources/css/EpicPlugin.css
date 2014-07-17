@@ -46,8 +46,49 @@ table.aui > tbody > tr > td {
 
 ul.inline > li {
 	display: inline-block;
-	margin-top: 8px;
-	margin-bottom: 8px;
+	margin-top: 16px;
+	margin-bottom: 16px;
+}
+
+.epic-container {
+	position: relative;
+	margin-right: 24px;
+	cursor: pointer;
+}
+
+.post-it {
+    position: absolute;
+    text-decoration: none;
+	color: #000;
+	background: #ffc;
+    border: 1px solid grey;
+	height: 3em;
+	width: 3em;
+	bottom: -1em;
+    
+    -webkit-transform:rotate(-6deg);
+  	-o-transform:rotate(-6deg);
+  	-moz-transform:rotate(-6deg);
+}
+
+/* "Random" tilting of stories */
+
+.post-it:nth-child(even) {
+  	-o-transform:rotate(4deg);
+  	-webkit-transform:rotate(4deg);
+  	-moz-transform:rotate(4deg);
+}
+
+.post-it:nth-child(3n) {
+  	-o-transform:rotate(-3deg);
+  	-webkit-transform:rotate(-3deg);
+  	-moz-transform:rotate(-3deg);
+}
+
+.post-it:nth-child(5n) {
+  	-o-transform:rotate(5deg);
+  	-webkit-transform:rotate(5deg);
+  	-moz-transform:rotate(5deg);
 }
 
 .list {
@@ -57,16 +98,20 @@ ul.inline > li {
 }
 
 .epic {
-	border: 1px solid #ddd;
-	padding: 7px 10px;
-	background-color: #F0F0F0;
+	position: relative;
+	background-color: #ffc;
 	color: #000000;
 	text-decoration: none;
-	cursor: pointer;
+	z-index: 10;
+	margin-left: 5px;
+	margin-right: 5px;
 }
 
 .clicked-epic {
-	background-color: #ddd;
+	-webkit-transform: scale(1.25);
+  	-moz-transform: scale(1.25);
+  	-o-transform: scale(1.25);
+  	z-index: 20;
 }
 
 .epic:hover {

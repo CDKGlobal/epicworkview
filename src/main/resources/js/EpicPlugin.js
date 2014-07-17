@@ -61,7 +61,9 @@ function ProjectController($scope, $http, $cookieStore) {
 	    			if (elementType == "project" && !contains($scope.uncheckedProjectIds, element.id)) {
 	    				element.state = true;
 	    			}
-    			}	
+	    			//update the list held in the current element, if it has one
+	        		updateChildList(elementType, savedElement, element);
+    			}
     		} else {
     			//element is in the current list, so update it
     			if (element.timestamp == -1) {
@@ -77,18 +79,9 @@ function ProjectController($scope, $http, $cookieStore) {
     				if (elementType == "story") {
     					savedElement.completed = element.completed;
     				}
+    				//update the list held in the current element, if it has one
+    	    		updateChildList(elementType, savedElement, element);
     			}
-    		}
-    		//update the list held in the current element, if it has one
-    		if (elementType == "project") {
-    			// this is a project
-    			updateElementList(savedElement.epics, element.epics, "epic");
-    		} else if (elementType == "epic") {
-    			// this is an epic
-    			updateElementList(savedElement.stories, element.stories, "story");
-    		} else if (elementType == "story") {
-    			// this is a story
-    			updateElementList(savedElement.subtasks, element.subtasks, "subtask");
     		}
     	});
     	// sort the list and remove all old elements
@@ -96,6 +89,20 @@ function ProjectController($scope, $http, $cookieStore) {
     		currentList.sort(function(a, b){return b.timestamp - a.timestamp});
     		removeOldElements(currentList, $scope.filterDays);
     	}
+    }
+    
+    // update the child list of savedElement with the child list of element
+    function updateChildList(elementType, savedElement, element) {
+    	if (elementType == "project") {
+			// this is a project
+			updateElementList(savedElement.epics, element.epics, "epic");
+		} else if (elementType == "epic") {
+			// this is an epic
+			updateElementList(savedElement.stories, element.stories, "story");
+		} else if (elementType == "story") {
+			// this is a story
+			updateElementList(savedElement.subtasks, element.subtasks, "subtask");
+		}
     }
     
     /*
@@ -384,5 +391,13 @@ function EpicController($scope) {
     		epic.id = uniqueEpicId;
     		uniqueEpicId--;
     	}
+    }
+    
+    $scope.getPostItOffsets = function(epicName, e) {
+    	var list = [];
+    	for (var i = 0; i < epicName.length / 5; i++) {    		
+    		list[i] = i * 22;
+    	}
+    	return list;
     }
 }

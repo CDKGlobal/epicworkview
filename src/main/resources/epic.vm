@@ -73,10 +73,12 @@
 	      		<li class="last-update-column">{{millisecondToString(project.timestamp)}} ago</li>
 	      		<li class="epic-column">
 	      			<ul class="list inline" ng-controller="EpicController">
-	      				<li ng-repeat="epic in project.epics" ng-init="setUniqueId(epic)">
-	      					<a ng-class="{'clicked-epic': isClicked(epic.id)}" class="epic" ng-click="toggleEpic($event, epic.id)">
+	      				<li class="epic-container" ng-repeat="epic in project.epics" ng-init="setUniqueId(epic)" ng-class="{'clicked-epic': isClicked(epic.id)}" ng-click="toggleEpic($event, epic.id)">
+	      					<div class="post-it" ng-repeat="padding in getPostItOffsets(epic.name)" ng-style="{'left': '{{padding}}px'}"></div>
+	      					<div class="post-it" ng-repeat="padding in getPostItOffsets(epic.name)" ng-style="{'right': '{{padding}}px'}"></div>
+	      					<span class="epic">
 	      						{{epic.name}}
-	      					</a>
+	      					</span>
 	      				</li>
 	      			</ul>
 	      		</li>

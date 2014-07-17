@@ -46,8 +46,8 @@ table.aui > tbody > tr > td {
 
 ul.inline > li {
 	display: inline-block;
-	margin-top: 8px;
-	margin-bottom: 8px;
+	margin-top: 6px;
+	margin-bottom: 3px;
 }
 
 ul.inline > .epic-container {

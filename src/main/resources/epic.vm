@@ -12,7 +12,7 @@
     </script>
   </head>
   <body>
-    <div ng-app="myApp" ng-controller="ProjectController" ng-click="hideEpicInfo()" class="content-container content-body">
+    <div ng-app="myApp" ng-controller="ProjectController" ng-click="hideEpicInfo()" class="content-container content-body unselectable">
     	<button id="Full button" ng-click="toggleFullScreen()" class="fullscreen-button">
     		Full
     	</button>

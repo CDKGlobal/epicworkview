@@ -90,6 +90,7 @@
 	      			<li class="story" ng-repeat="story in getClickedEpicStories(project)">
 	      				<a>
 	      					<p>{{story.name}}</p>
+	      					<span class="checkmark" ng-show="story.completed">&#x2713;</span>
 	      				</a>
 	      			</li>
 	      		</ul>

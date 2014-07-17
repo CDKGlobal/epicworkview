@@ -13,6 +13,27 @@
 
 .table-header {
 	font-weight: bold;
+	padding-left: 60px;
+	padding-right: 20px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.table-body {
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+.fixed-header {
+	position: fixed;
+	background: white;
+	width: 95.25%;
+	z-index: 10;
+	top: 0;
+}
+
+.fixed-body {
+	padding-top: 70px;
 }
 
 .table-header > li,
@@ -194,6 +215,7 @@ input {
 	position: absolute;
 	right: 30px;
 	top: 20px;
+	z-index: 11;
 }
 
 .story {

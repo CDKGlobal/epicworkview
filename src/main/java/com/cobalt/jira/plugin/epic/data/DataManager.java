@@ -98,7 +98,7 @@ public class DataManager {
      * @requires all issues have projects, all subtasks have stories
      * @return a list of projects, an empty list if there are none
      */
-    public List<IJiraData> getProjects(User user, int seconds) {
+    public List<IJiraData> getProjects(User user, long seconds) {
         //if datamanager has yet to be initialized return an empty list
         if(tree == null)
             return new ArrayList<IJiraData>();
@@ -115,7 +115,7 @@ public class DataManager {
         }
 
         boolean remove = false;
-        long time = System.currentTimeMillis() - seconds * 1000;
+        long time = System.currentTimeMillis() - (seconds * 1000l);
 
         //for each issue
         Iterator<IJiraData> iter = issues.iterator();

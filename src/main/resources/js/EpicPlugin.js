@@ -198,7 +198,7 @@ function ProjectController($scope, $http, $cookieStore) {
     
     // clear all checkboxes and update projects accordingly
     $scope.clearchkbox = function() {
-        angular.forEach($scope.projects, function (project) {
+        angular.forEach($scope.filteredProjects, function (project) {
             project.included = false;
             // set the state to true, then check the project, which flips the state to false
             project.state = true;
@@ -208,7 +208,7 @@ function ProjectController($scope, $http, $cookieStore) {
     
     // check all checkboxes and update projects accordingly
     $scope.checkchkbox = function() {
-        angular.forEach($scope.projects, function (project) {
+        angular.forEach($scope.filteredProjects, function (project) {
             project.included = true;
             // set the state to false, then check the project, which flips the state to true
             project.state = false;

@@ -54,6 +54,10 @@ ul.inline > li {
 	position: relative;
 	margin-right: 24px;
 	cursor: pointer;
+	
+	-moz-transition:-moz-transform .1s linear;
+  	-o-transition:-o-transform .1s linear;
+  	-webkit-transition:-webkit-transform .1s linear;
 }
 
 .post-it {

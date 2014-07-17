@@ -21,7 +21,7 @@
 	        <ul class="inline table-header">
 	          <li class="project-column">
 	          	<span class="fieldLabel">Projects</span>
-	          	<span id='Filter button' ng-click="toggleFilter($event)" class="criteria-selector aui-button aui-button-subtle drop-arrow">
+	          	<span id='Filter button' ng-show="!isFullScreen" ng-click="toggleFilter($event)" class="criteria-selector aui-button aui-button-subtle drop-arrow">
 	          		filter
 	          	</span>
 	          	<div ng-show="filter" ng-click="$event.stopPropagation()" class="project-filter pop-up">
@@ -48,7 +48,7 @@
 	          <li class="contributor-column">Contributors</li>
 	          <li class="completed-story-column">Stories Completed</li>
 	          <li class="last-update-column">Last Update 
-	          	<select ng-model='filterDays' ng-change='getProjects(filterDays * 24 * 60 * 60)'>
+	          	<select ng-show="!isFullScreen" ng-model='filterDays' ng-change='getProjects(filterDays * 24 * 60 * 60)'>
   					<option value="1">1 day</option>
  				 	<option value="2">2 days</option>
   					<option value="7">7 days</option>
@@ -66,7 +66,7 @@
 	      		<li class="contributor-column">
 	      			<ul class="list inline">
 	      				<li class="contributor" ng-repeat="contributor in getContributors(project)">
-	      					<img src="{{contributor.avatar}}" title="{{contributor.name}}" height="32" width="32">
+	      					<img class="contributor-image" src="{{contributor.avatar}}" title="{{contributor.name}}" height="32" width="32">
 	      				</li>
 	      			</ul>
 	      		</li>
@@ -91,6 +91,7 @@
 	      				<a>
 	      					<p>{{story.name}}</p>
 	      					<span class="checkmark" ng-show="story.completed">&#x2713;</span>
+	      					<img class="bottom-left contributor-image" src="{{story.contributor.avatar}}" title="{{story.contributor.name}}" height="24" width="24">
 	      				</a>
 	      			</li>
 	      		</ul>

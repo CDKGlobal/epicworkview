@@ -25,6 +25,7 @@ function ProjectController($scope, $http, $cookieStore) {
 	$scope.filterDays = 14;
 	$scope.filter = false;
 	$scope.projects = [];
+	$scope.isFullScreen = false;
 
 	$scope.toggleFilter = function(e) {
 		e.stopPropagation();
@@ -241,6 +242,10 @@ function ProjectController($scope, $http, $cookieStore) {
     $scope.toggleFullScreen = function() {
     	jQuery("header").slideToggle();
     	jQuery("footer").fadeToggle();
+    	$scope.isFullScreen = !$scope.isFullScreen;
+    	if ($scope.isFullScreen) {
+    		$scope.filter = false;
+    	}
     }
 
     $scope.getBaseURL = function() {

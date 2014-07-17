@@ -261,8 +261,14 @@ story:nth-child(5n) a {
 	margin-right: 5px;
 }
 
-.contributor > img {
+.contributor-image {
 	border-radius: 5px;
+}
+
+.bottom-left {
+	position: absolute;
+	bottom: 5px;
+	left: 5px;
 }
 
 /* Filter box animations */

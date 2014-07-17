@@ -33,7 +33,7 @@
 			    		</p>
 			    		<div class="aui-list-scroll">
 			    			<ul class="aui-list-section">
-			    				<li ng-repeat="project in alphabeticalProjects() | filter:searchText" class="check-list-item repeat-item">
+			    				<li ng-repeat="project in (filteredProjects = (alphabeticalProjects() | filter:searchText))" class="check-list-item repeat-item">
 			    					<label class="item-label" title="{{project.name}}">
 			    						<span id="mycheckboxState" hidden="true">{{project.included}}</span>
 			    						<input id="mycheckbox" type="checkbox" ng-click="checkProject(project)" ng-init="project.included=project.state" ng-model='project.included'>

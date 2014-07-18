@@ -57,11 +57,11 @@
 	          <li class="epic-column">Epics</li>
 	          <button id="Full button" ng-click="toggleFullScreen()" class="fullscreen-button">
     			Full
-    		</button>
+    		  </button>
 	        </ul>
 	      </li>
-	      	<div class="table-body" ng-class="{'fixed-body': isFullScreen}">
-		      <li class="project-row table-row" ng-repeat="project in timeOrderedProjects() | filter: {included:true}">
+	      	<li class="table-body" ng-class="{'fixed-body': isFullScreen}">
+		      <div class="project-row table-row" ng-repeat="project in timeOrderedProjects() | filter: {included:true}">
 		      	<ul class="inline">
 		      		<li class="project-name project-column"><span>{{project.name}}</span></li>
 		      		<li class="contributor-column">
@@ -96,8 +96,8 @@
 		      			</li>
 		      		</ul>
 		      	</div>
-		      </li>
-		 	</div>
+		      </div>
+		 	</li>
     	</ul>
     </div>
   </body>

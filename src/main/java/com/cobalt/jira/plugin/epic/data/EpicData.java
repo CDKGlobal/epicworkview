@@ -50,15 +50,11 @@ public class EpicData extends IssueData {
      * @return the color of the epic
      */
     public String getColor() {
-        CustomFieldManager manager = ComponentAccessor.getCustomFieldManager();
+        return "#fdf4bb";
+        //CustomFieldManager manager = ComponentAccessor.getCustomFieldManager();
 
-        if(manager == null)
-            return "#fdf4bc";
-        else if(issue == null)
-            return "#fdf4bd";
+        //Object epicColor = issue.getCustomFieldValue(manager.getCustomFieldObjectByName("Epic Color"));
 
-        Object epicColor = issue.getCustomFieldValue(manager.getCustomFieldObjectByName("Epic Color"));
-
-        return epicColor instanceof String ? (String)epicColor : "#fdf4bb";
+        //return epicColor instanceof String ? (String)epicColor : "#fdf4bb";
     }
 }

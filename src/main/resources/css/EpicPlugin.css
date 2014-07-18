@@ -99,7 +99,7 @@ ul.inline > .epic-container {
     position: absolute;
     text-decoration: none;
 	color: #000;
-	background: #ffc;
+	background: #fdf4bb;
     border: 1px solid grey;
 	height: 3em;
 	width: 3em;
@@ -147,7 +147,7 @@ ul.inline > .epic-container {
 
 .epic {
 	position: relative;
-	background-color: #ffc;
+	background-color: #fdf4bb;
 	color: #000000;
 	text-decoration: none;
 	z-index: 3;
@@ -230,7 +230,7 @@ input {
 .story > a {
 	text-decoration: none;
 	color: #000;
-	background: #ffc;
+	background: #fdf4bb;
 	display: inline-flex;
 	height: 10em;
 	width: 10em;

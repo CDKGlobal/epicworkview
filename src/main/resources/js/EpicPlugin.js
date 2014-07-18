@@ -319,6 +319,12 @@ function ProjectController($scope, $http, $cookieStore) {
     	if (epic == null) return null;
     	return epic.description;
     }
+
+    $scope.getClickedEpicColor = function(project) {
+        var epic = getClickedEpic(project);
+        if(epic == null) return '#fdf4bb';
+        return epic.color;
+    }
     
     $scope.getClickedEpicStories = function(project) {
     	var epic = getClickedEpic(project);

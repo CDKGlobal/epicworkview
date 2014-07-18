@@ -26,13 +26,22 @@ public class JaxbFactory {
     }
 
     public static JaxbEpic newJaxbEpic(IJiraData e, List<JaxbStory> stories) {
-        return newJaxbEpic(e.getName(), e.getKey(), e.getId(), e.getDescription(), e.getDisplayTimestamp(), newJaxbUser(e.getAssignee()), stories);
+        String color = "#fdf4bb";
+        if(e instanceof EpicData) {
+            color = ((EpicData)e).getColor();
+        }
+        else if(e instanceof NullEpicData) {
+            color = ((NullEpicData)e).getColor();
+        }
+
+        return newJaxbEpic(e.getName(), e.getKey(), e.getId(), e.getDescription(), e.getDisplayTimestamp(), newJaxbUser(e.getAssignee()), color, stories);
     }
 
-    public static JaxbEpic newJaxbEpic(String name, String key, long id, String description, long timestamp, JaxbUser assignee, List<JaxbStory> stories) {
+    public static JaxbEpic newJaxbEpic(String name, String key, long id, String description, long timestamp, JaxbUser assignee, String color, List<JaxbStory> stories) {
         JaxbEpic jaxbEpic = new JaxbEpic();
         setData(jaxbEpic, name, key, id, description, timestamp, assignee);
         jaxbEpic.stories = stories;
+        jaxbEpic.color = color;
         return jaxbEpic;
     }
 

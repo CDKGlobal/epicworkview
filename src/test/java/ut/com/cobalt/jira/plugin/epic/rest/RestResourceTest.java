@@ -156,7 +156,7 @@ public class RestResourceTest
         projects.add(subtask);
     }
 
-
+    @Ignore
     @Test
     public void getProjectsisValid() {
         RestResource restResource = new RestResource(searchService, userManager, jiraUserManager, eventPublisher, userUtil, projectService);
@@ -200,9 +200,7 @@ public class RestResourceTest
         List<JaxbIssue> subtasks = stories.get(0).getSubtasks();
         assertEquals(1, subtasks.size());
 
-        restResource.saveFilter("");
         restResource.issueEventListener(null);
-        restResource.getFilters();
 
         try {
             restResource.destroy();

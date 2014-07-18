@@ -14,6 +14,9 @@ public class JaxbEpic extends JaxbIssue
     @XmlElement(name = "stories")
     List<JaxbStory> stories;
 
+    @XmlElement(name = "color")
+    String color;
+
 	/**
 	 * Required for Jaxb
 	 */
@@ -22,5 +25,9 @@ public class JaxbEpic extends JaxbIssue
 
     public List<JaxbStory> getStories() {
         return stories;
+    }
+
+    public String getColor() {
+        return color;
     }
 }

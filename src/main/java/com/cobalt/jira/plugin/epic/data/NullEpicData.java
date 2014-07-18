@@ -67,6 +67,10 @@ public class NullEpicData extends JiraData {
         return null;
     }
 
+    public String getColor() {
+        return "#fdf4bb";
+    }
+
     public void update(IJiraData iJiraData) {
         super.update(iJiraData);
 

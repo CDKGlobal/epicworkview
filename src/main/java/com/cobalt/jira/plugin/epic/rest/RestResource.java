@@ -10,6 +10,8 @@ import com.atlassian.jira.bc.project.ProjectService;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.event.ProjectUpdatedEvent;
 import com.atlassian.jira.event.issue.IssueEvent;
+import com.atlassian.jira.issue.changehistory.ChangeHistory;
+import com.atlassian.jira.issue.history.ChangeItemBean;
 import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.jira.user.util.UserUtil;
 import com.atlassian.plugins.rest.common.security.AnonymousAllowed;
@@ -201,33 +203,6 @@ public class RestResource implements InitializingBean, DisposableBean {
                 return;//should never get here
             }
         }
-    }
-
-    /**
-     * Called by the client to get all saved filters
-     *
-     * @return all of the saved filter for current user
-     */
-    @Path("/filter")
-    @GET
-    @AnonymousAllowed
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getFilters() {
-        return Response.ok().build();
-    }
-
-    /**
-     * Called by the client to save the query filter
-     *
-     * @param query - the filter to save
-     * @return the filter that was saved
-     */
-    @Path("/filter/{query}")
-    @GET
-    @AnonymousAllowed
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response saveFilter(@PathParam("query") String query) {
-        return Response.ok().build();
     }
 
     /**

@@ -45,7 +45,7 @@ public class JaxbIssuesTest
 
 	@Test
 	public void jaxbEpicIsValid() {
-		JaxbEpic jaxbEpic = JaxbFactory.newJaxbEpic(ISSUE_NAME, ISSUE_KEY, ISSUE_ID, ISSUE_DESCRIPTION, ISSUE_TIMESTAMP, new JaxbUser(), new ArrayList<JaxbStory>());
+		JaxbEpic jaxbEpic = JaxbFactory.newJaxbEpic(ISSUE_NAME, ISSUE_KEY, ISSUE_ID, ISSUE_DESCRIPTION, ISSUE_TIMESTAMP, new JaxbUser(), "#ccf", new ArrayList<JaxbStory>());
 
         assertEquals(0, jaxbEpic.getStories().size());
 	}

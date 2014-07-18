@@ -10,7 +10,10 @@ import com.atlassian.jira.bc.project.ProjectService;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.event.ProjectUpdatedEvent;
 import com.atlassian.jira.event.issue.IssueEvent;
+import com.atlassian.jira.issue.CustomFieldManager;
+import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.changehistory.ChangeHistory;
+import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.issue.history.ChangeItemBean;
 import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.jira.user.util.UserUtil;
@@ -205,6 +208,31 @@ public class RestResource implements InitializingBean, DisposableBean {
         }
     }
 
+    @Path("/debug")
+    @GET
+    @AnonymousAllowed
+    @Produces(MediaType.TEXT_PLAIN)
+    public String debugging() {
+        StringBuilder sb = new StringBuilder();
+        CustomFieldManager manager = ComponentAccessor.getCustomFieldManager();
+
+        if(issue != null) {
+            List<CustomField> fields = manager.getCustomFieldObjects(issue);
+
+            for(CustomField customField : fields) {
+                sb.append(customField.getFieldName());
+                sb.append("\r\n");
+                sb.append(customField.getName());
+                sb.append("\r\n");
+                sb.append(customField.getDescription());
+                sb.append("\r\n");
+            }
+        }
+        return sb.toString();
+    }
+
+    Issue issue;
+
     /**
      * event listener that passes changes for issues to the data manager
      *
@@ -212,6 +240,7 @@ public class RestResource implements InitializingBean, DisposableBean {
      */
     @EventListener
     public void issueEventListener(IssueEvent issueEvent) {
+        issue = issueEvent.getIssue();
         dataManager.newIssueEvent(issueEvent);
     }
 

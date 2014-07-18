@@ -50,11 +50,26 @@ public class EpicData extends IssueData {
      * @return the color of the epic
      */
     public String getColor() {
+        //return "#fdf4bb";
+        CustomFieldManager manager = ComponentAccessor.getCustomFieldManager();
+
+        try {
+            Object epicColor = issue.getCustomFieldValue(manager.getCustomFieldObjectByName("Epic Color"));
+            if(epicColor instanceof  String)
+                return (String)epicColor;
+        }
+        catch(NullPointerException e) {
+
+        }
+
+        try {
+            Object epicColor = issue.getCustomFieldValue(manager.getCustomFieldObjectByName("Epic Colour"));
+            if(epicColor instanceof  String)
+                return (String)epicColor;
+        }
+        catch(NullPointerException e) {
+            
+        }
         return "#fdf4bb";
-        //CustomFieldManager manager = ComponentAccessor.getCustomFieldManager();
-
-        //Object epicColor = issue.getCustomFieldValue(manager.getCustomFieldObjectByName("Epic Color"));
-
-        //return epicColor instanceof String ? (String)epicColor : "#fdf4bb";
     }
 }

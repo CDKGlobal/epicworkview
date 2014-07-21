@@ -1,7 +1,10 @@
 package com.cobalt.jira.plugin.epic.data;
 
 import com.atlassian.crowd.embedded.api.User;
+import com.atlassian.jira.avatar.Avatar;
+import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.project.Project;
+import com.atlassian.jira.project.ProjectCategory;
 
 
 /**
@@ -79,6 +82,15 @@ public class ProjectData extends JiraData {
      */
     public IJiraData getStory() {
         return null;
+    }
+
+    public String getGroup() {
+        ProjectCategory projectCategory = project.getProjectCategoryObject();
+        return projectCategory != null ? projectCategory.getName() : "No Category";
+    }
+
+    public String getProjectIcon() {
+        return ComponentAccessor.getAvatarService().getProjectAvatarURL(project, Avatar.Size.LARGE).toString();
     }
 
     public void update(IJiraData updatedIssue) {

@@ -14,6 +14,12 @@ public class JaxbProject extends JaxbIssue
 	@XmlElement(name = "epics")
 	List<JaxbEpic> epics;
 
+    @XmlElement(name = "group")
+    String group;
+
+    @XmlElement(name = "icon")
+    String icon;
+
 	/**
 	 * required for JAXB
 	 */
@@ -24,4 +30,12 @@ public class JaxbProject extends JaxbIssue
 	{
 		return epics;
 	}
+
+    public String getGroup() {
+        return group;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
 }

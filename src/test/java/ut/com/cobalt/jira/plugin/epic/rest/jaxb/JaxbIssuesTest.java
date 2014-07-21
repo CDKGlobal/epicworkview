@@ -52,7 +52,7 @@ public class JaxbIssuesTest
 
     @Test
     public void jaxbProjectIsValid() {
-        JaxbProject jaxbProject = JaxbFactory.newJaxbProject(ISSUE_NAME, ISSUE_KEY, ISSUE_ID, ISSUE_DESCRIPTION, ISSUE_TIMESTAMP, new JaxbUser(), new ArrayList<JaxbEpic>());
+        JaxbProject jaxbProject = JaxbFactory.newJaxbProject(ISSUE_NAME, ISSUE_KEY, ISSUE_ID, ISSUE_DESCRIPTION, ISSUE_TIMESTAMP, new JaxbUser(), "category", "url", new ArrayList<JaxbEpic>());
 
         assertEquals(0, jaxbProject.getEpics().size());
     }

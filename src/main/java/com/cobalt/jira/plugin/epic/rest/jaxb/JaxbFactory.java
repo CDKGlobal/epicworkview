@@ -15,13 +15,21 @@ public class JaxbFactory {
     }
 
     public static JaxbProject newJaxbProject(IJiraData p, List<JaxbEpic> epics) {
-        return newJaxbProject(p.getName(), p.getKey(), p.getId(), p.getDescription(), p.getDisplayTimestamp(), newJaxbUser(p.getAssignee()), epics);
+        String category = "No Category";
+        String icon = "";
+        if(p instanceof ProjectData) {
+            category = ((ProjectData)p).getGroup();
+            icon = ((ProjectData)p).getProjectIcon();
+        }
+        return newJaxbProject(p.getName(), p.getKey(), p.getId(), p.getDescription(), p.getDisplayTimestamp(), newJaxbUser(p.getAssignee()), category, icon, epics);
     }
 
-    public static JaxbProject newJaxbProject(String name, String key, long id, String description, long timestamp, JaxbUser assignee, List<JaxbEpic> epics) {
+    public static JaxbProject newJaxbProject(String name, String key, long id, String description, long timestamp, JaxbUser assignee, String category, String icon, List<JaxbEpic> epics) {
         JaxbProject jaxbProject = new JaxbProject();
         setData(jaxbProject, name, key, id, description, timestamp, assignee);
         jaxbProject.epics = epics;
+        jaxbProject.group = category;
+        jaxbProject.icon = icon;
         return jaxbProject;
     }
 

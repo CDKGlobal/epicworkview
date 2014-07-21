@@ -217,6 +217,15 @@ function ProjectController($scope, $http, $cookieStore) {
         });
     };
     
+    
+    $scope.search = function (item){
+    if (item.name.toLowerCase().indexOf($scope.query.toLowerCase())!=-1 || item.group.toLowerCase().indexOf($scope.query.toLowerCase())!=-1) {
+            return true;
+        }
+        return false;
+    };
+    
+    
     // sort the projects alphabetically by name
     $scope.alphabeticalProjects = function() {
     	$scope.projects.sort(function(a, b){

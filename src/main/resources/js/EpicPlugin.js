@@ -345,6 +345,9 @@ function ProjectController($scope, $http, $cookieStore) {
     
     // Update projects every 5 seconds
     setInterval(function(){if (refresh) updateProjects();}, 5000);
+    
+    // Refresh all projects every 5 minutes
+    setInterval(function(){if (refresh) $scope.getProjects($scope.filterDays * 24 * 60 * 60);}, 1000 * 60 * 5);
 
     /*
      * Finds if the element is already in the list and returns the index, based on the element ids

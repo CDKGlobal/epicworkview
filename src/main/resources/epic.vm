@@ -89,9 +89,10 @@
 		      		<p>{{getClickedEpicDescription(project)}}</p>
 		      		<ul class="aui-list-section inline">
 		      			<li class="story" ng-repeat="story in getClickedEpicStories(project)">
-		      				<a ng-style="{'background': '{{getClickedEpicColor(project)}}'}" ng-class="getClickedEpicColor(project)">
-		      					<p>{{story.name}}</p>
+		      				<a ng-style="{'background': '{{getClickedEpicColor(project)}}'}" ng-class="getClickedEpicColor(project)">		      					
+		      					<p>&emsp;&emsp;{{story.name}}</p>
 		      					<span class="checkmark" ng-show="story.completed">&#x2713;</span>
+		      					<img class="contributor-image upper-left" src="{{story.contributor.avatar}}" title="{{story.contributor.name}}" height="32" width="32">
 		      				</a>
 		      			</li>
 		      		</ul>

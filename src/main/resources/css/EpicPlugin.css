@@ -130,6 +130,13 @@ ul.inline > .epic-container {
   	-moz-transform:rotate(5deg);
 }
 
+.upper-left {
+	position: absolute;
+	left: 10px;
+	top: 10px;
+	z-index: 4;
+}
+
 .checkmark {
 	position: absolute;
 	right: 10px;
@@ -294,12 +301,6 @@ story:nth-child(5n) a {
 
 .contributor-image {
 	border-radius: 5px;
-}
-
-.bottom-left {
-	position: absolute;
-	bottom: 5px;
-	left: 5px;
 }
 
 /* Filter box animations */

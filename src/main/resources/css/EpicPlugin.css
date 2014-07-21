@@ -1,3 +1,7 @@
+.body-container {
+	background-color: #f5f5f5;
+}
+
 .unselectable {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -7,8 +11,16 @@
     user-select: none;
 }
 
-.table-row, .table-header {
-	border-bottom: 1px solid #ccc;
+.table-row {
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	margin: 1px;
+	float: left;
+	width: 100%
+}
+
+.table-header, .table-row {
+	background: #fff;
 }
 
 .table-header {
@@ -17,6 +29,7 @@
 	padding-right: 20px;
 	padding-top: 10px;
 	padding-bottom: 10px;
+	border-bottom: 1px solid #ccc;
 }
 
 .table-body {
@@ -61,17 +74,13 @@
 }
 
 .last-update-column {
-	width: 8%;
+	width: 7%;
 	margin-right: 1%;
 }
 
 .epic-column {
 	margin-right: 1%;
-	width: 53%;
-}
-
-table.aui > tbody > tr > td {
-	vertical-align: middle;
+	width: 54%;
 }
 
 .project-info {
@@ -99,7 +108,7 @@ ul.inline > li {
 
 ul.inline > .epic-container {
 	margin-top: 16px;
-	margin-bottom: 16px;
+	margin-bottom: 20px;
 }
 
 .epic-container {

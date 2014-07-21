@@ -46,7 +46,7 @@
 }
 
 .project-column {
-	width: 12%;
+	width: 14%;
 	margin-right: 1%;
 }
 
@@ -67,11 +67,28 @@
 
 .epic-column {
 	margin-right: 1%;
-	width: 55%;
+	width: 53%;
 }
 
 table.aui > tbody > tr > td {
 	vertical-align: middle;
+}
+
+.project-info {
+	margin-left: 45px;
+}
+
+.project-group {
+	display: block;
+}
+
+.project-name {
+	font-size: 18px;
+}
+
+.project-icon {
+	float: left;
+	margin-right: 10px;
 }
 
 ul.inline > li {

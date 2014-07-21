@@ -63,7 +63,13 @@
 	      	<li class="table-body" ng-class="{'fixed-body': isFullScreen}">
 		      <div class="project-row table-row" ng-repeat="project in timeOrderedProjects() | filter: {included:true}">
 		      	<ul class="inline">
-		      		<li class="project-name project-column"><span>{{project.name}}</span></li>
+		      		<li class="project-column">
+		      			<img class="project-icon" src="{{project.icon}}" height="32" width="32">
+		      			<div class="project-info">
+			      			<span class="project-group">{{project.group}}</span>
+			      			<span class="project-name">{{project.name}}</span>
+			      		</div>
+		      		</li>
 		      		<li class="contributor-column">
 		      			<ul class="list inline">
 		      				<li class="contributor" ng-repeat="contributor in getContributors(project)">

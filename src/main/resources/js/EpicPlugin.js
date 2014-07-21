@@ -382,7 +382,7 @@ function ProjectController($scope, $http, $cookieStore) {
  */
 function EpicController($scope) {
 
-    // Set the clicked epic to be name or null if it is already name
+    // Set the clicked epic to be id or null if it is already id
     $scope.toggleEpic = function(e, id) {
     	e.stopPropagation();
     	if (clickedEpic == id) {
@@ -407,7 +407,8 @@ function EpicController($scope) {
     	}
     }
     
-    // Returns how many post-its are needed for the background of this name
+    // Returns a list of post it positions to use for the background of the
+    // given name. 
     $scope.getPostItOffsets = function(epicName) {
     	var list = [];
     	for (var i = 0; i < epicName.length / 5; i++) {    		

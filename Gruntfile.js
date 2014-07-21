@@ -2,7 +2,11 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    
+
+    jshint: {
+        all: ['src/main/resources/js/*.js']
+    },
+
     //Interface with the Karma test runner
     //See: https://github.com/karma-runner/grunt-karma
     karma: {
@@ -29,6 +33,7 @@ module.exports = function(grunt) {
   
   });
 
+  grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-protractor-runner');
 

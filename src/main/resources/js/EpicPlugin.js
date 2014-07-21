@@ -30,7 +30,7 @@ function ProjectController($scope, $http, $cookieStore) {
 	$scope.toggleFilter = function(e) {
 		e.stopPropagation();
 		$scope.filter = !$scope.filter;
-	}
+	};
 	
     // Get all the projects in the last amount of seconds and set them in a local variable (projects)
     $scope.getProjects = function(seconds) {
@@ -43,7 +43,7 @@ function ProjectController($scope, $http, $cookieStore) {
 	    error(function(data, status, headers, config) {
 	      // log error
 	    });
-    }
+    };
     
     // Updates the current list with any changes from the new list of elements
     function updateElementList(currentList, newList, elementType) {
@@ -87,7 +87,7 @@ function ProjectController($scope, $http, $cookieStore) {
     	});
     	// sort the list and remove all old elements
     	if (currentList != null) {
-    		currentList.sort(function(a, b){return b.timestamp - a.timestamp});
+    		currentList.sort(function(a, b){return b.timestamp - a.timestamp;});
     		removeOldElements(currentList, $scope.filterDays);
     	}
     }
@@ -125,7 +125,7 @@ function ProjectController($scope, $http, $cookieStore) {
     updateProjects = function() {
     	var secsSinceUpdate = (new Date().getTime() - lastUpdateTime) / 1000;
     	$scope.getProjects(Math.ceil(secsSinceUpdate));
-    }
+    };
     
     $scope.getCompletedStories = function(project) {
     	var res = 0;
@@ -135,7 +135,7 @@ function ProjectController($scope, $http, $cookieStore) {
     		});
     	});
     	return res;
-    }
+    };
     
     // returns all contributors for this project in order of time worked on project
     $scope.getContributors = function(project) {
@@ -148,7 +148,7 @@ function ProjectController($scope, $http, $cookieStore) {
     		timestamps.push(key);
     	}
     	// sort timestamps
-    	timestamps.sort(function(a, b){return b - a});
+    	timestamps.sort(function(a, b){return b - a;});
     	// add contributors for each timestamp to result
     	var result = [];
     	angular.forEach(timestamps, function(timestamp) {
@@ -161,7 +161,7 @@ function ProjectController($scope, $http, $cookieStore) {
     		});
 		});
     	return result;
-    }
+    };
     
     // helper to get list of key value pairs from timestamp to contributor
     function getContributorsHelper(result, element, elementType) {
@@ -225,19 +225,19 @@ function ProjectController($scope, $http, $cookieStore) {
     	    return 0;
     	});
     	return $scope.projects;
-    }
+    };
     
     // sort the projects by last updated time
     $scope.timeOrderedProjects = function() {
-    	$scope.projects.sort(function(a, b){return b.timestamp - a.timestamp});
+    	$scope.projects.sort(function(a, b){return b.timestamp - a.timestamp;});
     	return $scope.projects;
-    }
+    };
     
     $scope.hideEpicInfo = function() {
     	refresh = true;
     	clickedEpic = null;
     	$scope.filter = false;
-    }
+    };
     
     $scope.toggleFullScreen = function() {
     	jQuery("header").slideToggle();
@@ -246,11 +246,11 @@ function ProjectController($scope, $http, $cookieStore) {
     	if ($scope.isFullScreen) {
     		$scope.filter = false;
     	}
-    }
+    };
 
     $scope.getBaseURL = function() {
         return baseURL;
-    }
+    };
     
     // Return the difference between the current time and the given time, as a string
     $scope.millisecondToString = function(milli) {
@@ -270,7 +270,7 @@ function ProjectController($scope, $http, $cookieStore) {
     	}
     	days = Math.round(hours / 24);
     	return pluralize(days, "day");
-    }
+    };
     
     // appends an "s" to the unit if the number is greater than one
     function pluralize(num, unit) {
@@ -297,7 +297,7 @@ function ProjectController($scope, $http, $cookieStore) {
     	// update the cookie
     	$cookieStore.remove('projectIds');
 		$cookieStore.put('projectIds', $scope.uncheckedProjectIds);
-    }
+    };
     
     // return the clicked epic from the given project, or none if none are clicked
     getClickedEpic = function(project) {
@@ -307,30 +307,30 @@ function ProjectController($scope, $http, $cookieStore) {
     		}
     	}
     	return null;
-    }
+    };
     
     $scope.showEpicWindow = function(project) {
     	var epic = getClickedEpic(project);
     	return (epic != null);
-    }
+    };
     
     $scope.getClickedEpicDescription = function(project) {
     	var epic = getClickedEpic(project);
     	if (epic == null) return null;
     	return epic.description;
-    }
+    };
 
     $scope.getClickedEpicColor = function(project) {
         var epic = getClickedEpic(project);
         if(epic == null) return '#fdf4bb';
         return epic.color;
-    }
+    };
     
     $scope.getClickedEpicStories = function(project) {
     	var epic = getClickedEpic(project);
     	if (epic == null) return null;
     	return epic.stories;
-    }
+    };
     
     // get the projects which are unchecked by this user
     $scope.uncheckedProjectIds = $cookieStore.get('projectIds');
@@ -392,12 +392,12 @@ function EpicController($scope) {
     		clickedEpic = id;
     		refresh = false; // halt project refresh if epic info is open
     	}
-    }
+    };
     
     // Return whether the clicked epic is this epic
     $scope.isClicked = function(id) {
     	return clickedEpic == id;
-    }
+    };
     
     // Set a unique id for the epic
     $scope.setUniqueId = function(epic) {
@@ -405,7 +405,7 @@ function EpicController($scope) {
     		epic.id = uniqueEpicId;
     		uniqueEpicId--;
     	}
-    }
+    };
     
     // Returns a list of post it positions to use for the background of the
     // given name. 
@@ -415,7 +415,7 @@ function EpicController($scope) {
     		list[i] = i * 22;
     	}
     	return list;
-    }
+    };
     
     // returns a shortened version of the given sentence
     $scope.shorten = function(sentence) {
@@ -424,5 +424,5 @@ function EpicController($scope) {
     		return res + "...";
     	}
     	return sentence;
-    }
+    };
 }

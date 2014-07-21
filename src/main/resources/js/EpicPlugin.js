@@ -407,11 +407,21 @@ function EpicController($scope) {
     	}
     }
     
-    $scope.getPostItOffsets = function(epicName, e) {
+    // Returns how many post-its are needed for the background of this name
+    $scope.getPostItOffsets = function(epicName) {
     	var list = [];
     	for (var i = 0; i < epicName.length / 5; i++) {    		
     		list[i] = i * 22;
     	}
     	return list;
+    }
+    
+    // returns a shortened version of the given sentence
+    $scope.shorten = function(sentence) {
+    	if (sentence.length > 40) {
+    		var res = sentence.substring(0, 40);
+    		return res + "...";
+    	}
+    	return sentence;
     }
 }

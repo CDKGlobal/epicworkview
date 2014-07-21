@@ -76,9 +76,9 @@
 		      		<li class="epic-column">
 		      			<ul class="list inline" ng-controller="EpicController">
 		      				<li class="epic-container" ng-repeat="epic in project.epics" ng-init="setUniqueId(epic)" ng-class="{'clicked-epic': isClicked(epic.id)}" ng-click="toggleEpic($event, epic.id)">
-		      					<div class="post-it" ng-repeat="padding in getPostItOffsets(epic.name)" ng-style="{'left': '{{padding}}px', 'background': '{{epic.color}}'}" ng-class="{{epic.color}}"></div>
-		      					<div class="post-it" ng-repeat="padding in getPostItOffsets(epic.name)" ng-style="{'right': '{{padding}}px', 'background': '{{epic.color}}'}" ng-class="{{epic.color}}"></div>
-		      					<span class="epic" ng-style="{'background-color': '{{epic.color}}'}" ng-class="{{epic.color}}">
+		      					<div class="post-it" ng-repeat="padding in getPostItOffsets(epic.name)" ng-style="{'left': '{{padding}}px', 'background': '{{epic.color}}'}" ng-class="epic.color"></div>
+		      					<div class="post-it" ng-repeat="padding in getPostItOffsets(epic.name)" ng-style="{'right': '{{padding}}px', 'background': '{{epic.color}}'}" ng-class="epic.color"></div>
+		      					<span class="epic" ng-style="{'background-color': '{{epic.color}}'}" ng-class="epic.color">
 		      						{{epic.name}}
 		      					</span>
 		      				</li>
@@ -89,7 +89,7 @@
 		      		<p>{{getClickedEpicDescription(project)}}</p>
 		      		<ul class="aui-list-section inline">
 		      			<li class="story" ng-repeat="story in getClickedEpicStories(project)">
-		      				<a ng-style="{'background': '{{getClickedEpicColor(project)}}'}" ng-class="{{epic.color}}">
+		      				<a ng-style="{'background': '{{getClickedEpicColor(project)}}'}" ng-class="getClickedEpicColor(project)">
 		      					<p>{{story.name}}</p>
 		      					<span class="checkmark" ng-show="story.completed">&#x2713;</span>
 		      				</a>

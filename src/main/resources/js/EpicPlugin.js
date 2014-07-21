@@ -26,6 +26,7 @@ function ProjectController($scope, $http, $cookieStore) {
 	$scope.filter = false;
 	$scope.projects = [];
 	$scope.isFullScreen = false;
+	$scope.query = "";
 
 	$scope.toggleFilter = function(e) {
 		e.stopPropagation();
@@ -219,7 +220,7 @@ function ProjectController($scope, $http, $cookieStore) {
     
     
     $scope.search = function (item){
-    if (item.name.toLowerCase().indexOf($scope.query.toLowerCase())!=-1 || item.group.toLowerCase().indexOf($scope.query.toLowerCase())!=-1) {
+    	if (item.name.toLowerCase().indexOf($scope.query.toLowerCase())!=-1 || item.group.toLowerCase().indexOf($scope.query.toLowerCase())!=-1) {
             return true;
         }
         return false;

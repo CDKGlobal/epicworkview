@@ -26,13 +26,16 @@ public class JaxbIssuesTest
 
 	@Test
 	public void jaxbIssueIsValid() {
-		JaxbIssue jaxbIssue = JaxbFactory.newJaxbIssue(ISSUE_NAME, ISSUE_KEY, ISSUE_ID, ISSUE_DESCRIPTION, ISSUE_TIMESTAMP, new JaxbUser());
+        JaxbUser user = new JaxbUser();
+
+		JaxbIssue jaxbIssue = JaxbFactory.newJaxbIssue(ISSUE_NAME, ISSUE_KEY, ISSUE_ID, ISSUE_DESCRIPTION, ISSUE_TIMESTAMP, user);
 
         assertEquals(ISSUE_NAME, jaxbIssue.getName());
         assertEquals(ISSUE_KEY, jaxbIssue.getKey());
         assertEquals(ISSUE_ID, jaxbIssue.getId());
         assertEquals(ISSUE_DESCRIPTION, jaxbIssue.getDescription());
         assertEquals(ISSUE_TIMESTAMP, jaxbIssue.getTimestamp());
+        assertEquals(user, jaxbIssue.getContributor());
 	}
 
     @Test
@@ -48,6 +51,7 @@ public class JaxbIssuesTest
 		JaxbEpic jaxbEpic = JaxbFactory.newJaxbEpic(ISSUE_NAME, ISSUE_KEY, ISSUE_ID, ISSUE_DESCRIPTION, ISSUE_TIMESTAMP, new JaxbUser(), "#ccf", new ArrayList<JaxbStory>());
 
         assertEquals(0, jaxbEpic.getStories().size());
+        assertEquals("#ccf", jaxbEpic.getColor());
 	}
 
     @Test
@@ -55,6 +59,8 @@ public class JaxbIssuesTest
         JaxbProject jaxbProject = JaxbFactory.newJaxbProject(ISSUE_NAME, ISSUE_KEY, ISSUE_ID, ISSUE_DESCRIPTION, ISSUE_TIMESTAMP, new JaxbUser(), "category", "url", new ArrayList<JaxbEpic>());
 
         assertEquals(0, jaxbProject.getEpics().size());
+        assertEquals("category", jaxbProject.getGroup());
+        assertEquals("url", jaxbProject.getIcon());
     }
 
     @Test

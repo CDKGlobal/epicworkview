@@ -156,7 +156,6 @@ public class RestResourceTest
         projects.add(subtask);
     }
 
-    @Ignore
     @Test
     public void getProjectsisValid() {
         RestResource restResource = new RestResource(searchService, userManager, jiraUserManager, eventPublisher, userUtil, projectService);

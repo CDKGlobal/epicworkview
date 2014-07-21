@@ -3,6 +3,8 @@ package com.cobalt.jira.plugin.epic.data;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.Issue;
+import com.atlassian.jira.issue.customfields.view.CustomFieldParamsImpl;
+import com.atlassian.jira.issue.fields.CustomField;
 
 
 /**
@@ -50,7 +52,6 @@ public class EpicData extends IssueData {
      * @return the color of the epic
      */
     public String getColor() {
-        //return "#fdf4bb";
         CustomFieldManager manager = ComponentAccessor.getCustomFieldManager();
 
         try {

@@ -6,7 +6,7 @@ import com.atlassian.crowd.embedded.api.User;
 /**
  * A NullEpicData represents a fake Jira Epic
  */
-public class NullEpicData extends JiraData {
+public class NullEpicData extends JiraData implements IEpicData {
     private String name;
     private String description;
 

@@ -10,7 +10,7 @@ import com.atlassian.jira.project.ProjectCategory;
 /**
  * A ProjectData represents and manages a Jira Project
  */
-public class ProjectData extends JiraData {
+public class ProjectData extends JiraData implements IProjectData {
     private Project project;
 
     /**

@@ -17,9 +17,9 @@ public class JaxbFactory {
     public static JaxbProject newJaxbProject(IJiraData p, List<JaxbEpic> epics) {
         String category = "No Category";
         String icon = "";
-        if(p instanceof ProjectData) {
-            category = ((ProjectData)p).getGroup();
-            icon = ((ProjectData)p).getProjectIcon();
+        if(p instanceof IProjectData) {
+            category = ((IProjectData)p).getGroup();
+            icon = ((IProjectData)p).getProjectIcon();
         }
         return newJaxbProject(p.getName(), p.getKey(), p.getId(), p.getDescription(), p.getDisplayTimestamp(), newJaxbUser(p.getAssignee()), category, icon, epics);
     }
@@ -35,11 +35,8 @@ public class JaxbFactory {
 
     public static JaxbEpic newJaxbEpic(IJiraData e, List<JaxbStory> stories) {
         String color = "#fdf4bb";
-        if(e instanceof EpicData) {
-            color = ((EpicData)e).getColor();
-        }
-        else if(e instanceof NullEpicData) {
-            color = ((NullEpicData)e).getColor();
+        if(e instanceof IEpicData) {
+            color = ((IEpicData)e).getColor();
         }
 
         return newJaxbEpic(e.getName(), e.getKey(), e.getId(), e.getDescription(), e.getDisplayTimestamp(), newJaxbUser(e.getAssignee()), color, stories);

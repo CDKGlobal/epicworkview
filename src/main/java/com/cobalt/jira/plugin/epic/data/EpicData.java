@@ -10,7 +10,7 @@ import com.atlassian.jira.issue.fields.CustomField;
 /**
  * An EpicData represents a Jira Epic
  */
-public class EpicData extends IssueData {
+public class EpicData extends IssueData implements IEpicData {
 	/**
 	 * Creates a new EpicData
 	 * 

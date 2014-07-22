@@ -30,7 +30,7 @@
     		<ul id="search-tab">
     			<li>
     				<div>
-    					<input type="text"/>
+    					<input type="text" ng-model="query" autocomplete="off" placeholder="Find Projects..." wrap="off"/>
     					<i class="fa fa-search fa-2x"></i>
     				</div>
     			</li>

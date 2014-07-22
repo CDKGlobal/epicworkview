@@ -15,7 +15,7 @@
 
     <scm>
         <connection>scm:perforce:perforce-pri.cobaltgroup.com:1667://ReleaseEngineering/EpicPlugin/trunk/</connection>
-        <developerConnection>scm:perforce:perforce.cobaltgroup.com:1667://ReleaseEngineering/EpicPlugin/trunk/
+        <developerConnection>scm:perforce:perforce-pri.cobaltgroup.com:1667://ReleaseEngineering/EpicPlugin/trunk/
         </developerConnection>
         <url>http://perforce.cobaltgroup.com/ReleaseEngineering/EpicPlugin/trunk/</url>
     </scm>

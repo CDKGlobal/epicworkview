@@ -1,6 +1,11 @@
 
+const TIMEOUT = 10;
+
 // Time of most recent update
 var lastUpdateTime = 0;
+
+// Timeout to determine when to close open windows
+var windowTimeout = TIMEOUT;
 
 // Whether to continuously refresh projects
 var refresh = true;
@@ -218,7 +223,6 @@ function ProjectController($scope, $http, $cookieStore) {
         });
     };
     
-    
     $scope.search = function (item){
     	if (item.name.toLowerCase().indexOf($scope.query.toLowerCase())!=-1 || 
     			item.group.toLowerCase().indexOf($scope.query.toLowerCase())!=-1) {
@@ -226,7 +230,6 @@ function ProjectController($scope, $http, $cookieStore) {
         }
         return false;
     };
-    
     
     // sort the projects alphabetically by name
     $scope.alphabeticalProjects = function() {
@@ -248,6 +251,11 @@ function ProjectController($scope, $http, $cookieStore) {
     	refresh = true;
     	clickedEpic = null;
     	$scope.filter = false;
+    	$scope.resetWindowTimeout();
+    };
+    
+    $scope.resetWindowTimeout = function() {
+    	windowTimeout = TIMEOUT;
     };
     
     $scope.toggleFullScreen = function() {
@@ -343,6 +351,7 @@ function ProjectController($scope, $http, $cookieStore) {
     	return epic.stories;
     };
     
+    
     // get the projects which are unchecked by this user
     $scope.uncheckedProjectIds = $cookieStore.get('projectIds');
     // if the user does not have checked preferences, create one for them
@@ -405,8 +414,10 @@ function EpicController($scope) {
     		refresh = true;
     	} else {
     		clickedEpic = id;
+    		startWindowTimeout();
     		refresh = false; // halt project refresh if epic info is open
     	}
+    	windowTimeout = TIMEOUT;
     };
     
     // Return whether the clicked epic is this epic
@@ -440,4 +451,19 @@ function EpicController($scope) {
     	}
     	return sentence;
     };
+    
+    // start a timeout for closing open windows
+    function startWindowTimeout() {
+    	if ($scope.isFullScreen && windowTimeout == TIMEOUT) {
+	    	var intervalId = setInterval(function(){
+	    		windowTimeout--;
+	    		if (windowTimeout <= 0) {
+	    			clickedEpic = null;
+	    			refresh = true;
+	    			clearInterval(intervalId);
+	    			windowTimeout = TIMEOUT;
+	    		}
+	    	}, 1000);
+    	}
+    }
 }

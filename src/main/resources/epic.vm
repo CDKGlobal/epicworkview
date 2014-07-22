@@ -112,7 +112,7 @@
 		      			</ul>
 		      		</li>
 		      	</ul>
-		      	<div class="epic-info" ng-show="showEpicWindow(project)" ng-click="$event.stopPropagation()">
+		      	<div class="epic-info" ng-show="showEpicWindow(project)" ng-click="$event.stopPropagation(); resetWindowTimeout()">
 		      		<p>{{getClickedEpicDescription(project)}}</p>
 		      		<ul class="list-section inline">
 		      			<li class="story" ng-repeat="story in getClickedEpicStories(project)">

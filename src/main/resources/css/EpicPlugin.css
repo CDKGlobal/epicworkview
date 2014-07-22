@@ -1,3 +1,99 @@
+#nav-bar {
+	position: fixed;
+	top: 150px;
+	left: 0px;
+
+	z-index: 10;
+
+	cursor: pointer;
+}
+
+#nav-bar ul {
+	width: 55px;
+	padding: 0px;
+	list-style-type: none;
+
+	border-width: 1px 1px 1px 0px;
+	border-color: #CCC;
+	border-style: solid;
+	//border-radius: 0px 5px 5px 0px;
+}
+
+/* corner elements need to round the corner for highlight on hover */
+#nav-bar ul li:first-child {
+	border-radius: 0px 4px 0px 0px;
+}
+
+#nav-bar div {
+	transition: background 0.2s ease-in-out;
+	-webkit-transition: background 0.2s ease-in-out;
+	-moz-transition: background 0.2s ease-in-out;
+	-o-transition: background 0.2s ease-in-out;
+	-ms-transition: background 0.2s ease-in-out;
+
+	transition: width 1s ease-in-out;
+	-webkit-transition: width 1s ease-in-out;
+	-moz-transition: width 1s ease-in-out;
+	-o-transition: width 1s ease-in-out;
+	-ms-transition: width 1s ease-in-out;
+
+	background-color: #ebf2f9;
+
+	width: 55px;
+	height: 55px;
+
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+}
+
+#nav-bar div:hover {
+	background-color: #47A3DA;
+}
+
+/* add top border to all but the first element*/
+#nav-bar ul li:not(:first-child) {
+	border-top: 1px solid #CCC;
+}
+
+#search-tab {
+	margin-top: 0px;
+
+	position: relative;
+	top: -1px;
+
+	transition: width 1s ease-in-out;
+	-webkit-transition: width 1s ease-in-out;
+	-moz-transition: width 1s ease-in-out;
+	-o-transition: width 1s ease-in-out;
+	-ms-transition: width 1s ease-in-out;
+
+}
+
+#search-tab input {
+	width: 0px;
+	padding: 0px;
+	margin: 0px;
+	position: relative;
+	left: -15px;
+
+	transition: width 1s ease-in-out;
+	-webkit-transition: width 1s ease-in-out;
+	-moz-transition: width 1s ease-in-out;
+	-o-transition: width 1s ease-in-out;
+	-ms-transition: width 1s ease-in-out;
+}
+
+#search-tab:hover, #search-tab div:hover {	
+	width: 250px;
+}
+
+#search-tab:hover input {
+	width: 170px;
+	left: 0px;
+	display: inline !important;
+}
+
 .body-container {
 	background-color: #f5f5f5;
 	margin: 20px;

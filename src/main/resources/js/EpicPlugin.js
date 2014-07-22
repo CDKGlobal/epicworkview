@@ -385,6 +385,10 @@ function ProjectController($scope, $http, $cookieStore) {
         }
         return false;
     }
+
+    $scope.scrollToTop = function() {
+        jQuery(window).scrollTop(0);
+    };
 }
 
 /*

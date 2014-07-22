@@ -6,6 +6,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular-animate.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular-cookies.js"></script>
     $webResourceManager.requireResource("com.cobalt.jira.plugin.epic.EpicPlugin:EpicPlugin-resources")
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link  href="https://fonts.googleapis.com/css?family=Reenie+Beanie:regular" rel="stylesheet" type="text/css">
     <script type="text/javascript">
       var myApp = angular.module('myApp', ['ngAnimate', 'ngCookies']);
@@ -13,6 +14,28 @@
   </head>
   <body>
     <div ng-app="myApp" ng-controller="ProjectController" ng-click="hideEpicInfo()" class="body-container unselectable">
+    	<div id="nav-bar">
+    		<ul>
+    			<li>
+    				<div ng-click="toggleFullScreen()">
+						<i class="fa fa-expand fa-2x" ng-class="{'fa-compress': isFullScreen}"></i>
+					</div>
+    			</li>
+    			<li>
+    				<div ng-click="scrollToTop()">
+    					<i class="fa fa-arrow-up fa-2x"></i>
+    				</div>
+    			</li>
+    		</ul>
+    		<ul id="search-tab">
+    			<li>
+    				<div>
+    					<input type="text"/>
+    					<i class="fa fa-search fa-2x"></i>
+    				</div>
+    			</li>
+    		</ul>
+    	</div>
     	<div id="top-bar" ng-show="isFullScreen"></div>
 	    <ul id="projects" class="list-section">
 	      <li>
@@ -56,11 +79,6 @@
 				</select>
 	           </li>
 	          <li class="epic-column">Epics</li>
-	          <li>
-		          <button id="Full button" ng-click="toggleFullScreen()" class="fullscreen-button">
-	    			Full
-	    		  </button>
-	    	  </li>
 	        </ul>
 	      </li>
 	      	<li class="table-body" ng-class="{'fixed-body': isFullScreen}">

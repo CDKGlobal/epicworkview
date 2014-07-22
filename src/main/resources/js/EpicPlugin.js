@@ -422,7 +422,7 @@ function EpicController($scope) {
     // given name. 
     $scope.getPostItOffsets = function(epicName) {
     	var list = [];
-    	for (var i = 0; i < epicName.length / 5; i++) {    		
+    	for (var i = 0; i < epicName.length / 6; i++) {    		
     		list[i] = i * 22;
     	}
     	return list;

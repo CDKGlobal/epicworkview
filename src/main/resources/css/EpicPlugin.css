@@ -60,10 +60,11 @@
 	z-index: 10;
 	top: 18px;
 	width: 90.5%;
+	box-shadow: 3px 3px 5px #888888;
 }
 
 .fixed-body {
-	padding-top: 74px;
+	padding-top: 76px;
 }
 
 .table-header > li,
@@ -228,6 +229,10 @@ ul.inline > .epic-container {
 .epic-info {
 	margin-top: 7px;
 	padding: 7px 10px;
+}
+
+.epic-info > p {
+	text-align: center;
 }
 
 .epic-info > ul {

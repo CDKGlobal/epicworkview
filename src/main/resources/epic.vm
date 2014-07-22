@@ -13,6 +13,7 @@
   </head>
   <body>
     <div ng-app="myApp" ng-controller="ProjectController" ng-click="hideEpicInfo()" class="body-container unselectable">
+    	<div id="top-bar" ng-show="isFullScreen"></div>
 	    <ul id="projects" class="list-section">
 	      <li>
 	        <ul class="inline table-header" ng-class="{'fixed-header': isFullScreen}">
@@ -55,9 +56,11 @@
 				</select>
 	           </li>
 	          <li class="epic-column">Epics</li>
-	          <button id="Full button" ng-click="toggleFullScreen()" class="fullscreen-button">
-    			Full
-    		  </button>
+	          <li>
+		          <button id="Full button" ng-click="toggleFullScreen()" class="fullscreen-button">
+	    			Full
+	    		  </button>
+	    	  </li>
 	        </ul>
 	      </li>
 	      	<li class="table-body" ng-class="{'fixed-body': isFullScreen}">

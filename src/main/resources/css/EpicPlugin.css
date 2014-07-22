@@ -1,5 +1,16 @@
 .body-container {
 	background-color: #f5f5f5;
+	margin: 20px;
+}
+
+#top-bar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 20px;
+	width: 100%;
+	z-index: 9;
+	background: #f5f5f5;
 }
 
 .unselectable {
@@ -35,7 +46,8 @@
 	padding-top: 10px;
 	padding-bottom: 10px;
 	margin-bottom: 1px;
-	border-bottom: 1px solid #ccc;
+	border: 1px solid #ccc;
+	border-radius: 5px;
 	width: 93%;
 }
 
@@ -43,7 +55,8 @@
 	position: fixed;
 	background: white;
 	z-index: 10;
-	top: 0;
+	top: 18px;
+	width: 90.5%;
 }
 
 .fixed-body {
@@ -220,8 +233,8 @@ ul.inline > .epic-container {
 
 .project-filter {
 	width: auto;
-	left: 120px;
-	top: 48px;
+	left: 147px;
+	top: 68px;
 	display: block;
 	padding: 5px;
 }
@@ -248,9 +261,6 @@ input {
 
 .fullscreen-button {
 	position: absolute;
-	right: 30px;
-	top: 20px;
-	z-index: 11;
 }
 
 .story {

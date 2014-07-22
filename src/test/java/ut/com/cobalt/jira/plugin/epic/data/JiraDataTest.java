@@ -2,6 +2,8 @@ package ut.com.cobalt.jira.plugin.epic.data;
 
 import com.atlassian.crowd.embedded.api.User;
 import com.atlassian.jira.action.issue.customfields.MockCustomFieldType;
+import com.atlassian.jira.avatar.Avatar;
+import com.atlassian.jira.avatar.AvatarService;
 import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.changehistory.ChangeHistory;
@@ -12,12 +14,14 @@ import com.atlassian.jira.issue.status.MockStatus;
 import com.atlassian.jira.mock.component.MockComponentWorker;
 import com.atlassian.jira.mock.issue.MockIssue;
 import com.atlassian.jira.project.MockProject;
+import com.atlassian.jira.project.ProjectCategory;
 import com.atlassian.jira.user.MockUser;
 import com.cobalt.jira.plugin.epic.data.*;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -86,6 +90,12 @@ public class JiraDataTest {
         }
     }
 
+    public class MockProjectWithProjectCategory extends MockProject {
+        public ProjectCategory getProjectCategoryObject() {
+            return null;
+        }
+    }
+
     @Before
     public void setup() {
         ChangeHistoryManager changeHistoryManager = mock(ChangeHistoryManager.class);
@@ -129,13 +139,13 @@ public class JiraDataTest {
 
         when(changeHistoryManager.getChangeHistories(any(Issue.class))).thenReturn(changeHistories);
 
-        project = spy(new MockProject());
+        project = spy(new MockProjectWithProjectCategory());
         project.setName(PROJECT_NAME);
         project.setKey(PROJECT_KEY);
         project.setId(PROJECT_ID);
         project.setDescription(PROJECT_DESCRIPTION);
 
-        project2 = spy(new MockProject());
+        project2 = spy(new MockProjectWithProjectCategory());
         project2.setName(PROJECT_NAME + 1);
         project2.setKey(PROJECT_KEY + 1);
         project2.setId(PROJECT_ID + 1);
@@ -155,10 +165,19 @@ public class JiraDataTest {
         doReturn(new MockStatus("6", "Done")).when(issue).getStatusObject();
         issue.setAssignee(new MockUser(USERNAME));
 
+        AvatarService avatarService = mock(AvatarService.class);
+        try {
+            when(avatarService.getProjectAvatarURL(project, Avatar.Size.LARGE)).thenReturn(new URI("Test"));
+        }
+        catch(URISyntaxException e) {
+            e.printStackTrace();
+        }
+
         MockComponentWorker worker = new MockComponentWorker();
         mockCustomFieldManager = mock(CustomFieldManager.class);
         worker.addMock(CustomFieldManager.class, mockCustomFieldManager);
         worker.addMock(ChangeHistoryManager.class, changeHistoryManager);
+        worker.addMock(AvatarService.class, avatarService);
         worker.init();
     }
 
@@ -269,6 +288,7 @@ public class JiraDataTest {
         //test with Epic Name custom field
         assertEquals(ISSUE_NAME, epicData.getName());
         assertEquals(ISSUE_NAME, epicData.getDescription());
+        assertEquals("#fdf4bb", epicData.getColor());
     }
 
     @Test
@@ -285,6 +305,7 @@ public class JiraDataTest {
         assertNull(nullEpicData.getProject());
         assertEquals(nullEpicData.getEpic(), nullEpicData);
         assertNull(nullEpicData.getStory());
+        assertEquals("#fdf4bb", nullEpicData.getColor());
 
         NullEpicData nullEpicData2 = new NullEpicData(ISSUE_NAME + 1, ISSUE_DESCRIPTION + 1);
         nullEpicData.update(nullEpicData2);
@@ -307,6 +328,8 @@ public class JiraDataTest {
         assertEquals(projectData, projectData.getProject());
         assertNull(projectData.getEpic());
         assertNull(projectData.getStory());
+        assertEquals("No Category", projectData.getGroup());
+        assertEquals("Test", projectData.getProjectIcon());
 
         ProjectData projectData2 = new ProjectData(project2);
         projectData.update(projectData2);

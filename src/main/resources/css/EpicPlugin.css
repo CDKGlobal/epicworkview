@@ -1,6 +1,7 @@
 .body-container {
 	background-color: #f5f5f5;
 	margin: 20px;
+	font-size: 12pt;
 }
 
 #top-bar {
@@ -60,7 +61,7 @@
 }
 
 .fixed-body {
-	padding-top: 70px;
+	padding-top: 74px;
 }
 
 .table-header > li,
@@ -88,13 +89,13 @@
 }
 
 .last-update-column {
-	width: 7%;
+	width: 8%;
 	margin-right: 1%;
 }
 
 .epic-column {
 	margin-right: 1%;
-	width: 54%;
+	width: 53%;
 }
 
 .project-info {

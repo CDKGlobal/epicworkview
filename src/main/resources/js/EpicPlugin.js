@@ -1,5 +1,5 @@
 
-const TIMEOUT = 10;
+var TIMEOUT = 10;
 
 // Time of most recent update
 var lastUpdateTime = 0;

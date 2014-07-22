@@ -98,7 +98,7 @@
 		      				<a ng-style="{'background': '{{getClickedEpicColor(project)}}'}" ng-class="getClickedEpicColor(project)">		      					
 		      					<p>&emsp;&emsp;{{story.name}}</p>
 		      					<span class="checkmark" ng-show="story.completed">&#x2713;</span>
-		      					<img class="contributor-image upper-left" src="{{story.contributor.avatar}}" title="{{story.contributor.name}}" height="32" width="32">
+		      					<img class="contributor-image upper-left" ng-show="story.contributor" src="{{story.contributor.avatar}}" title="{{story.contributor.name}}" height="32" width="32">
 		      				</a>
 		      			</li>
 		      		</ul>

@@ -16,7 +16,12 @@
 	border-radius: 5px;
 	margin: 1px;
 	float: left;
-	width: 100%
+	width: 93%;
+	margin-left: 3.5%;
+}
+
+.table-row > ul {
+	padding-left: 10px;
 }
 
 .table-header, .table-row {
@@ -25,22 +30,18 @@
 
 .table-header {
 	font-weight: bold;
-	padding-left: 60px;
-	padding-right: 20px;
+	padding-left: 4%;
+	padding-right: 3%;
 	padding-top: 10px;
 	padding-bottom: 10px;
+	margin-bottom: 1px;
 	border-bottom: 1px solid #ccc;
-}
-
-.table-body {
-	padding-left: 20px;
-	padding-right: 20px;
+	width: 93%;
 }
 
 .fixed-header {
 	position: fixed;
 	background: white;
-	width: 95.25%;
 	z-index: 10;
 	top: 0;
 }
@@ -59,7 +60,7 @@
 }
 
 .project-column {
-	width: 14%;
+	width: 15%;
 	margin-right: 1%;
 }
 
@@ -69,7 +70,7 @@
 }
 
 .completed-story-column {
-	width: 7%;
+	width: 6%;
 	margin-right: 1%;
 }
 
@@ -88,11 +89,12 @@
 }
 
 .project-group {
+	font-size: 10pt;
 	display: block;
 }
 
 .project-name {
-	font-size: 18px;
+	font-size: 14pt;
 }
 
 .project-icon {
@@ -235,7 +237,7 @@ ul.inline > .epic-container {
 	font-weight: normal;
 }
 
-.aui-list-section {
+.list-section {
 	padding-left: 0px;
 	list-style-type: none;
 }

@@ -13,11 +13,11 @@
   </head>
   <body>
     <div ng-app="myApp" ng-controller="ProjectController" ng-click="hideEpicInfo()" class="body-container unselectable">
-	    <ul id="projects" class="aui-list-section">
+	    <ul id="projects" class="list-section">
 	      <li>
 	        <ul class="inline table-header" ng-class="{'fixed-header': isFullScreen}">
 	          <li class="project-column">
-	          	<span class="fieldLabel">Projects</span>
+	          	<span>Projects</span>
 	          	<span id='Filter button' ng-show="!isFullScreen" ng-click="toggleFilter($event)" class="criteria-selector aui-button aui-button-subtle drop-arrow">
 	          		filter
 	          	</span>
@@ -29,7 +29,7 @@
 			    			<button id="Checkall button" ng-click="checkchkbox()">Check All</button>
 			    		</p>
 			    		<div class="aui-list-scroll">
-			    			<ul class="aui-list-section">
+			    			<ul class="list-section">
 			    				<li ng-repeat="project in (filteredProjects = (alphabeticalProjects() | filter:search))" class="check-list-item repeat-item">
 			    					<label class="item-label" title="{{project.name}}">
 			    						<span id="mycheckboxState" hidden="true">{{project.included}}</span>
@@ -63,8 +63,8 @@
 	      	<li class="table-body" ng-class="{'fixed-body': isFullScreen}">
 		      <div class="project-row table-row" ng-repeat="project in timeOrderedProjects() | filter: {included:true}">
 		      	<ul class="inline">
-		      		<li class="project-column">
-		      			<img class="project-icon" src="{{project.icon}}" height="32" width="32">
+		      		<li class="project-column">	
+		      			<img class="project-icon" src="{{project.icon}}" height="40" width="40">	      					      			
 		      			<div class="project-info">
 			      			<span class="project-group">{{project.group}}</span>
 			      			<span class="project-name">{{project.name}}</span>
@@ -93,7 +93,7 @@
 		      	</ul>
 		      	<div class="epic-info" ng-show="showEpicWindow(project)" ng-click="$event.stopPropagation()">
 		      		<p>{{getClickedEpicDescription(project)}}</p>
-		      		<ul class="aui-list-section inline">
+		      		<ul class="list-section inline">
 		      			<li class="story" ng-repeat="story in getClickedEpicStories(project)">
 		      				<a ng-style="{'background': '{{getClickedEpicColor(project)}}'}" ng-class="getClickedEpicColor(project)">		      					
 		      					<p>&emsp;&emsp;{{story.name}}</p>

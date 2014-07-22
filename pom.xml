@@ -14,7 +14,7 @@
     <packaging>atlassian-plugin</packaging>
 
     <scm>
-        <connection>scm:perforce:perforce.cobaltgroup.com:1667://ReleaseEngineering/EpicPlugin/trunk/</connection>
+        <connection>scm:perforce:perforce-pri.cobaltgroup.com:1667://ReleaseEngineering/EpicPlugin/trunk/</connection>
         <developerConnection>scm:perforce:perforce.cobaltgroup.com:1667://ReleaseEngineering/EpicPlugin/trunk/
         </developerConnection>
         <url>http://perforce.cobaltgroup.com/ReleaseEngineering/EpicPlugin/trunk/</url>

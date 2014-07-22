@@ -87,7 +87,7 @@ function ProjectController($scope, $http, $cookieStore) {
     		}
     	});
     	// sort the list and remove all old elements
-    	if (currentList != null) {
+    	if (currentList !== undefined && currentList !== null) {
     		currentList.sort(function(a, b){return b.timestamp - a.timestamp;});
     		removeOldElements(currentList, $scope.filterDays);
     	}
@@ -187,7 +187,7 @@ function ProjectController($scope, $http, $cookieStore) {
     	var contributor = element.contributor;
     	var timestamp = element.timestamp;
     	// make sure there is a contributor
-    	if (contributor != null) {
+    	if (contributor !== undefined && contributor !== null) {
     		// if this timestamp is already in the list, add another contributor to it
     		if (timestamp in result) {
     			result[timestamp].push(contributor);
@@ -295,7 +295,7 @@ function ProjectController($scope, $http, $cookieStore) {
     $scope.checkProject = function(project) {
     	// flip the projects state
     	project.state = !project.state;
-    	if (project.state == true) {
+    	if (project.state === true) {
     		// remove project from unchecked projects list
     		var projIndex = $scope.uncheckedProjectIds.indexOf(project.id);
     		if (projIndex != -1) {
@@ -322,24 +322,24 @@ function ProjectController($scope, $http, $cookieStore) {
     
     $scope.showEpicWindow = function(project) {
     	var epic = getClickedEpic(project);
-    	return (epic != null);
+    	return (epic !== null);
     };
     
     $scope.getClickedEpicDescription = function(project) {
     	var epic = getClickedEpic(project);
-    	if (epic == null) return null;
+    	if (epic === null) return null;
     	return epic.description;
     };
 
     $scope.getClickedEpicColor = function(project) {
         var epic = getClickedEpic(project);
-        if(epic == null) return '#fdf4bb';
+        if(epic === null) return '#fdf4bb';
         return epic.color;
     };
     
     $scope.getClickedEpicStories = function(project) {
     	var epic = getClickedEpic(project);
-    	if (epic == null) return null;
+    	if (epic === null) return null;
     	return epic.stories;
     };
     

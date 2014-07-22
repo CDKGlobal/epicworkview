@@ -72,10 +72,14 @@
 
 #search-tab input {
 	width: 0px;
+	height: 30px;
 	padding: 0px;
 	margin: 0px;
-	position: relative;
-	left: -15px;
+	border: 0px;
+
+	text-indent: 5px;
+	font-size: 14pt;
+	border-radius: 5px;
 
 	transition: width 1s ease-in-out;
 	-webkit-transition: width 1s ease-in-out;
@@ -89,8 +93,7 @@
 }
 
 #search-tab:hover input {
-	width: 170px;
-	left: 0px;
+	width: 190px;
 	display: inline !important;
 }
 

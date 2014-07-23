@@ -159,6 +159,14 @@
 	background: #f5f5f5;
 }
 
+
+.popup-window {
+	height: 1000px;
+	width: 110%;
+	display: block;
+	margin: 0 auto;
+}
+
 .unselectable {
     -webkit-touch-callout: none;
     -webkit-user-select: none;

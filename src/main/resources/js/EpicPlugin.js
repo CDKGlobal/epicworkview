@@ -370,6 +370,17 @@ function ProjectController($scope, $http, $cookieStore) {
     	return epic.stories;
     };
     
+    $scope.getCompletedEpicStories = function(project, completed) {
+    	var epic = getClickedEpic(project);
+    	if (epic === null) return null;
+    	var result = [];
+    	for (var i = 0; i < epic.stories.length; i++) {
+    		if (epic.stories[i].completed == completed) {
+    			result.push(epic.stories[i]);
+    		}
+    	}
+    	return result;
+    };
     
     // get the projects which are unchecked by this user
     $scope.uncheckedProjectIds = $cookieStore.get('projectIds');

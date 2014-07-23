@@ -410,6 +410,12 @@ ul.inline > .epic-container {
 	margin-bottom: 24px;
 }
 
+.completed-stories,
+.in-progress-stories {
+	width: 50%;
+	float: left;
+}
+
 .project-filter {
 	width: auto;
 	left: 147px;

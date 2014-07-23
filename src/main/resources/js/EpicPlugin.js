@@ -113,14 +113,14 @@ function ProjectController($scope, $http, $cookieStore) {
     }
     
     
-    $scope.setActiveProject = function(project){
-    $scope.activeProject = project;
-    }
+    $scope.setActiveProject = function(project) {
+    	$scope.activeProject = project;
+    };
     
-    $scope.projectURL = function(project){
+    $scope.projectURL = function(project) {
     	url = baseURL + "/browse/" + project.key;
     	return url;
-    }
+    };
     
     
     /*

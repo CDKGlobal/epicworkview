@@ -9,7 +9,6 @@
     $webResourceManager.requireResource("com.cobalt.jira.plugin.epic.EpicPlugin:EpicPlugin-resources")
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link  href="https://fonts.googleapis.com/css?family=Reenie+Beanie:regular" rel="stylesheet" type="text/css">
-    <link  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
     <script type="text/javascript">
       var myApp = angular.module('myApp', ['ngAnimate', 'ngCookies']);
     </script>
@@ -70,8 +69,6 @@
  				 	<option value="2">2 days</option>
   					<option value="7">7 days</option>
   					<option value="14">14 days</option>
-                    <option value="21">21 days</option>
-                    <option value="28">28 days</option>
 				</select>
 	           </li>
 	          <li class="epic-column">Epics</li>
@@ -85,7 +82,7 @@
 		      			<div class="project-info">
 			      			<span class="project-group">{{project.group}}</span>
 			      			<span>
-			      			<a class="project-name" data-toggle="modal" data-target="#myModal" ng-click="setActiveProject(project)">{{project.name}}</a>
+			      				<a class="project-name" ng-click="setActiveProject(project)">{{project.name}}</a>
 			      			</span>   					     						      			
 			      		</div>
 		      		</li>
@@ -96,13 +93,6 @@
 		      				</li>
 		      			</ul>
 		      		</li>
-		      		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModal" aria-hidden="true">
-    						<div class="modal-dialog modal-lg">
-        						<div class="modal-content">
-            						    <iframe src="{{projectURL(activeProject)}}" class = popup-window></iframe>            						    
-    							</div>
-  							</div>
-					</div>		      		
 		      		<li class="completed-story-column">{{getCompletedStories(project)}}</li>
 		      		<li class="last-update-column">{{millisecondToString(project.timestamp)}} ago</li>
 		      		<li class="epic-column">
@@ -120,7 +110,7 @@
 		      	<div class="epic-info" ng-show="showEpicWindow(project)" ng-click="$event.stopPropagation(); resetWindowTimeout()">		      		
 		      		<ul class="list-section inline">
 		      			<li class="story" ng-repeat="story in getClickedEpicStories(project)">
-		      				<a ng-style="{'background': '{{getClickedEpicColor(project)}}'}" ng-class="getClickedEpicColor(project)">		      					
+		      				<a ng-style="{'background': '{{getClickedEpicColor(project)}}'}" ng-class="getClickedEpicColor(project)">
 		      					<p>&emsp;&emsp;{{story.name}}</p>
 		      					<span class="checkmark" ng-show="story.completed">&#x2713;</span>
 		      					<img class="contributor-image upper-left" ng-show="story.contributor" src="{{story.contributor.avatar}}" title="{{story.contributor.name}}" height="32" width="32">
@@ -131,6 +121,12 @@
 		      </div>
 		 	</li>
     	</ul>
+    	<div ng-show="showWindow" ng-click="showWindow = false;">
+    		<div class="windowView" id="windowBackground"></div>
+			<div class="windowView">
+				<iframe src="{{projectURL(activeProject)}}"></iframe>
+  			</div>
+  		</div>
     </div>
   </body>
 </html>

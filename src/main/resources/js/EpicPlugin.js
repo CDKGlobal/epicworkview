@@ -32,6 +32,8 @@ function ProjectController($scope, $http, $cookieStore) {
 	$scope.projects = [];
 	$scope.isFullScreen = false;
 	$scope.query = "";
+    $scope.activeProject = null;
+    $scope.showWindow = false;
 
 	$scope.toggleFilter = function(e) {
 		e.stopPropagation();
@@ -115,11 +117,17 @@ function ProjectController($scope, $http, $cookieStore) {
     
     $scope.setActiveProject = function(project) {
     	$scope.activeProject = project;
+        $scope.showWindow = true;
     };
     
     $scope.projectURL = function(project) {
-    	url = baseURL + "/browse/" + project.key;
-    	return url;
+        if(!$scope.showWindow || project === null) {
+            return '';
+        }
+        else {
+    	   url = baseURL + "/browse/" + project.key;
+    	   return url;
+        }
     };
     
     

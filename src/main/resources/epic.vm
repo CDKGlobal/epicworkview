@@ -5,9 +5,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular-animate.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular-cookies.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     $webResourceManager.requireResource("com.cobalt.jira.plugin.epic.EpicPlugin:EpicPlugin-resources")
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link  href="https://fonts.googleapis.com/css?family=Reenie+Beanie:regular" rel="stylesheet" type="text/css">
+    <link  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
     <script type="text/javascript">
       var myApp = angular.module('myApp', ['ngAnimate', 'ngCookies']);
     </script>
@@ -82,7 +84,9 @@
 		      			<img class="project-icon" src="{{project.icon}}" height="40" width="40">	      					      			
 		      			<div class="project-info">
 			      			<span class="project-group">{{project.group}}</span>
-			      			<span class="project-name">{{project.name}}</span>
+			      			<span>
+			      			<a class="project-name" data-toggle="modal" data-target="#myModal" ng-click="setActiveProject(project)">{{project.name}}</a>
+			      			</span>   					     						      			
 			      		</div>
 		      		</li>
 		      		<li class="contributor-column">
@@ -92,6 +96,13 @@
 		      				</li>
 		      			</ul>
 		      		</li>
+		      		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModal" aria-hidden="true">
+    						<div class="modal-dialog modal-lg">
+        						<div class="modal-content">
+            						    <iframe src="{{projectURL(activeProject)}}" class = popup-window></iframe>            						    
+    							</div>
+  							</div>
+					</div>		      		
 		      		<li class="completed-story-column">{{getCompletedStories(project)}}</li>
 		      		<li class="last-update-column">{{millisecondToString(project.timestamp)}} ago</li>
 		      		<li class="epic-column">

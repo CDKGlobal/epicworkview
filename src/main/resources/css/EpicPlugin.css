@@ -35,8 +35,12 @@
 	text-align: center;
 }
 
-#nav-bar > ul > li > div:hover {
+#nav-bar > ul > li > div:not(#search-slideout):hover {
 	background-color: #47A3DA;
+}
+
+#search-slideout {
+	background-color: #ebf2f9;
 }
 
 /* add top border to all but the first element*/

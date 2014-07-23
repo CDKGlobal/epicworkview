@@ -35,7 +35,7 @@
     				<div id="search-slideout">
     					<input type="text" ng-model="query" autocomplete="off" placeholder="Find Projects..." wrap="off"/>
     					<i class="fa fa-search fa-2x"></i>
-    					<div id="search-dropdown" style="background-color: #47A3DA;">
+    					<div id="search-dropdown" style="background-color: #ebf2f9;">
     						<div style="text-align: center; padding-top: 5px;">
     							<button id="Clear button" ng-click="clearchkbox()">Clear</button>
 				    			<button id="Checkall button" ng-click="checkchkbox()">Check All</button>

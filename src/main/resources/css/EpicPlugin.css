@@ -1,6 +1,6 @@
 #nav-bar {
 	position: fixed;
-	top: 20%;
+	top: 170px;
 	left: 0px;
 
 	z-index: 10;
@@ -8,7 +8,7 @@
 	cursor: pointer;
 }
 
-#nav-bar ul {
+#nav-bar > ul {
 	width: 55px;
 	padding: 0px;
 	list-style-type: none;
@@ -16,26 +16,14 @@
 	border-width: 1px 1px 1px 0px;
 	border-color: #CCC;
 	border-style: solid;
-	//border-radius: 0px 5px 5px 0px;
 }
 
-/* corner elements need to round the corner for highlight on hover */
-#nav-bar ul li:first-child {
-	border-radius: 0px 4px 0px 0px;
-}
-
-#nav-bar div {
-	transition: background 0.2s ease-in-out;
-	-webkit-transition: background 0.2s ease-in-out;
-	-moz-transition: background 0.2s ease-in-out;
-	-o-transition: background 0.2s ease-in-out;
-	-ms-transition: background 0.2s ease-in-out;
-
-	transition: width 1s ease-in-out;
-	-webkit-transition: width 1s ease-in-out;
-	-moz-transition: width 1s ease-in-out;
-	-o-transition: width 1s ease-in-out;
-	-ms-transition: width 1s ease-in-out;
+#nav-bar > ul > li > div {
+	transition: width 1s ease-in-out, background 0.2s ease-in-out;
+	-webkit-transition: width 1s ease-in-out, background 0.2s ease-in-out;
+	-moz-transition: width 1s ease-in-out, background 0.2s ease-in-out;
+	-o-transition: width 1s ease-in-out, background 0.2s ease-in-out;
+	-ms-transition: width 1s ease-in-out, background 0.2s ease-in-out;
 
 	background-color: #ebf2f9;
 
@@ -47,12 +35,12 @@
 	text-align: center;
 }
 
-#nav-bar div:hover {
+#nav-bar > ul > li > div:hover {
 	background-color: #47A3DA;
 }
 
 /* add top border to all but the first element*/
-#nav-bar ul li:not(:first-child) {
+#nav-bar > ul > li:not(:first-child) {
 	border-top: 1px solid #CCC;
 }
 
@@ -68,9 +56,16 @@
 	-o-transition: width 1s ease-in-out;
 	-ms-transition: width 1s ease-in-out;
 
+	-webkit-transition-delay: 1s; /* Safari */
+    transition-delay: 1s;
 }
 
-#search-tab input {
+#search-slideout {
+	-webkit-transition-delay: 1s; /* Safari */
+    transition-delay: 1s;
+}
+
+#search-slideout > input {
 	width: 0px;
 	height: 30px;
 	padding: 0px;
@@ -86,15 +81,66 @@
 	-moz-transition: width 1s ease-in-out;
 	-o-transition: width 1s ease-in-out;
 	-ms-transition: width 1s ease-in-out;
+
+	-webkit-transition-delay: 1s; /* Safari */
+    transition-delay: 1s;
 }
 
-#search-tab:hover, #search-tab div:hover {	
+#search-tab:hover, #search-tab:hover li > div:hover {	
 	width: 250px;
+
+	-webkit-transition-delay: 0s; /* Safari */
+    transition-delay: 0s;
 }
 
-#search-tab:hover input {
+#search-slideout:hover > input {
 	width: 190px;
 	display: inline !important;
+
+	-webkit-transition-delay: 0s; /* Safari */
+    transition-delay: 0s;
+}
+
+#search-slideout > div {
+	text-align: left;
+	position: absolute;
+	left: 18px;
+	top: 45px;
+	max-height: 0px;
+	width: 180px;
+	overflow: hidden;
+	background-color: #ebf2f9;
+
+	transition: max-height 1s ease-in-out;
+	-webkit-transition: max-height 1s ease-in-out;
+	-moz-transition: max-height 1s ease-in-out;
+	-o-transition: max-height 1s ease-in-out;
+	-ms-transition: max-height 1s ease-in-out;
+
+	-webkit-transition-delay: 0s; /* Safari */
+    transition-delay: 0s;
+}
+
+#search-slideout:hover > div {
+	display: inline;
+	max-height: 330px;
+
+	-webkit-transition-delay: 1s; /* Safari */
+    transition-delay: 1s;
+}
+
+#search-slideout {
+	-webkit-transition-delay: 1s !important; /* Safari */
+    transition-delay: 1s !important;
+}
+
+#search-slideout:hover {
+	-webkit-transition-delay: 0s !important; /* Safari */
+    transition-delay: 0s !important;
+}
+
+#search-dropdown {
+	box-shadow: 0px 3px 3px #555 ;
 }
 
 .body-container {

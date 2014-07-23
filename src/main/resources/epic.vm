@@ -29,9 +29,26 @@
     		</ul>
     		<ul id="search-tab">
     			<li>
-    				<div>
+    				<div id="search-slideout">
     					<input type="text" ng-model="query" autocomplete="off" placeholder="Find Projects..." wrap="off"/>
     					<i class="fa fa-search fa-2x"></i>
+    					<div id="search-dropdown" style="background-color: #47A3DA;">
+    						<div style="text-align: center; padding-top: 5px;">
+    							<button id="Clear button" ng-click="clearchkbox()">Clear</button>
+				    			<button id="Checkall button" ng-click="checkchkbox()">Check All</button>
+				    		</div>
+				    		<div class="aui-list-scroll" style="display: block; width: 180px;">
+				    			<ul class="list-section">
+				    				<li ng-repeat="project in (filteredProjects = (alphabeticalProjects() | filter:search))" class="check-list-item repeat-item">
+				    					<label class="item-label" title="{{project.name}}">
+				    						<span id="mycheckboxState" hidden="true">{{project.included}}</span>
+				    						<input id="mycheckbox" type="checkbox" ng-click="checkProject(project)" ng-init="project.included=project.state" ng-model='project.included'/>
+				    						{{project.name}}
+				    					</label>
+				    				</li>
+				    			</ul>
+				    		</div>
+			    		</div>
     				</div>
     			</li>
     		</ul>
@@ -42,29 +59,6 @@
 	        <ul class="inline table-header" ng-class="{'fixed-header': isFullScreen}">
 	          <li class="project-column">
 	          	<span>Projects</span>
-	          	<span id='Filter button' ng-show="!isFullScreen" ng-click="toggleFilter($event)" class="criteria-selector aui-button aui-button-subtle drop-arrow">
-	          		filter
-	          	</span>
-	          	<div ng-show="filter" ng-click="$event.stopPropagation()" class="project-filter pop-up">
-			    	<form action="#" class="searchfilter aui top-label aui-popup-content project-criteria">
-			    		<input type='text' id='filter input' ng-model='query' autocomplete="off" placeholder="Find Projects..." class="aui-field" wrap="off">
-			    		<p>
-			    			<button id="Clear button" ng-click="clearchkbox()">Clear</button>
-			    			<button id="Checkall button" ng-click="checkchkbox()">Check All</button>
-			    		</p>
-			    		<div class="aui-list-scroll">
-			    			<ul class="list-section">
-			    				<li ng-repeat="project in (filteredProjects = (alphabeticalProjects() | filter:search))" class="check-list-item repeat-item">
-			    					<label class="item-label" title="{{project.name}}">
-			    						<span id="mycheckboxState" hidden="true">{{project.included}}</span>
-			    						<input id="mycheckbox" type="checkbox" ng-click="checkProject(project)" ng-init="project.included=project.state" ng-model='project.included'>
-			    						{{project.name}}
-			    					</label>
-			    				</li>
-			    			</ul>
-			    		</div>
-			    	</form>
-			    </div>
 	          </li>
 	          <li class="contributor-column">Contributors</li>
 	          <li class="completed-story-column">Stories Completed</li>

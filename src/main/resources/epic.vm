@@ -11,6 +11,8 @@
     <link  href="https://fonts.googleapis.com/css?family=Reenie+Beanie:regular" rel="stylesheet" type="text/css">
     <script type="text/javascript">
       var myApp = angular.module('myApp', ['ngAnimate', 'ngCookies']);
+
+      jQuery('#announcement-banner').hide();
     </script>
   </head>
   <body>

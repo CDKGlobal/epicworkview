@@ -56,8 +56,8 @@
     	</div>
     	<div id="top-bar" ng-show="isFullScreen"></div>
 	    <ul id="projects" class="list-section">
-	      <li>
-	        <ul class="inline table-header" ng-class="{'fixed-header': isFullScreen}">
+	      <li class=table-header ng-class="{'fixed-header': isFullScreen}">
+	        <ul class="inline">
 	          <li class="project-column">
 	          	<span>Projects</span>
 	          </li>
@@ -70,9 +70,9 @@
   					<option value="7">7 days</option>
   					<option value="14">14 days</option>
 				</select>
-	           </li>
-	          <li class="epic-column">Epics</li>
-	        </ul>
+	          </li>
+	        <li class="epic-column">Epics</li>
+	      </ul>
 	      </li>
 	      	<li class="table-body" ng-class="{'fixed-body': isFullScreen}">
 		      <div class="project-row table-row" ng-repeat="project in timeOrderedProjects() | filter: {included:true}">

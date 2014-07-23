@@ -267,7 +267,7 @@
 }
 
 .project-info {
-	margin-left: 45px;
+	margin-left: 50px;
 }
 
 .project-group {
@@ -288,7 +288,6 @@
 
 .project-icon {
 	float: left;
-	margin-right: 10px;
 }
 
 ul.inline > li {
@@ -449,7 +448,7 @@ input {
 
 .story p {
 	font-family: "Reenie Beanie", arial, sans-serif;
-	font-size: 150%;
+	font-size: 155%;
 }
 
 .story > a {

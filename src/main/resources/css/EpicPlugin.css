@@ -353,6 +353,13 @@ ul.inline > .epic-container {
 	z-index: 4;
 }
 
+.upper-right {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	z-index: 4;
+}
+
 .checkmark {
 	position: absolute;
 	right: 10px;

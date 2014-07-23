@@ -112,6 +112,17 @@ function ProjectController($scope, $http, $cookieStore) {
 		}
     }
     
+    
+    $scope.setActiveProject = function(project){
+    $scope.activeProject = project;
+    }
+    
+    $scope.projectURL = function(project){
+    	url = baseURL + "/browse/" + project.key;
+    	return url;
+    }
+    
+    
     /*
      * Remove elements from the list that are older than days old
      * (elements should be in time order)

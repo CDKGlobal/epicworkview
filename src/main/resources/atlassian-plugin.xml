@@ -29,16 +29,19 @@
   <component-import key="loginUriProvider" interface="com.atlassian.sal.api.auth.LoginUriProvider" filter=""/>
   <component-import key="pluginSettingsFactory" interface="com.atlassian.sal.api.pluginsettings.PluginSettingsFactory" filter=""/>
   <component-import key="projectManager" interface="com.atlassian.sal.api.project.ProjectManager" filter=""/>
-  <web-item name="Epic Plugin" i18n-name-key="epic-plugin.name" key="epic-plugin" section="system.top.navigation.bar" weight="1000">
+  <component-import key="eventPublisher" interface="com.atlassian.event.api.EventPublisher" filter=""/>
+
+  <component key="jiraDataManager" class="com.cobalt.jira.plugin.epic.data.DataManager">
+    <interface>com.cobalt.jira.plugin.epic.data.DataManager</interface>
+  </component>
+
+  <web-item name="Epic" i18n-name-key="epic-plugin.name" key="epic-plugin" section="system.top.navigation.bar" weight="1000">
     <description key="epic-plugin.description">The Epic Plugin Plugin</description>
     <label key="epic-plugin.label"/>
     <link linkId="epic-plugin-link">/plugins/servlet/epic</link>
   </web-item>
+
   <rest name="Rest Resource" i18n-name-key="rest-project-resource.name" key="rest-project-resource" path="/epic" version="1">
     <description key="rest-project-resource.description">The Rest Project Resource Plugin</description>
   </rest>
-  <component-import key="eventPublisher" interface="com.atlassian.event.api.EventPublisher" filter=""/>
-  <!--<component key="eventListener" class="com.cobalt.jira.plugin.epic.rest.RestResource">
-    <description>Class that processes the incoming JIRA issue events.</description>
-  </component>-->
 </atlassian-plugin>

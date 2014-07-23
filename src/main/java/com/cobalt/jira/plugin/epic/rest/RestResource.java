@@ -5,98 +5,48 @@ import com.atlassian.event.api.EventListener;
 import com.atlassian.event.api.EventPublisher;
 import com.atlassian.jira.bc.issue.search.SearchService;
 import com.atlassian.jira.bc.project.ProjectService;
-import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.event.ProjectUpdatedEvent;
 import com.atlassian.jira.event.issue.IssueEvent;
-import com.atlassian.jira.issue.CustomFieldManager;
-import com.atlassian.jira.issue.Issue;
-import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.jira.user.util.UserUtil;
 import com.atlassian.plugins.rest.common.security.AnonymousAllowed;
 import com.atlassian.sal.api.user.UserManager;
 import com.atlassian.sal.api.user.UserProfile;
-import com.cobalt.jira.plugin.epic.data.*;
+import com.cobalt.jira.plugin.epic.data.DataManager;
+import com.cobalt.jira.plugin.epic.data.IJiraData;
+import com.cobalt.jira.plugin.epic.data.JiraDataType;
 import com.cobalt.jira.plugin.epic.rest.jaxb.*;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 
+import javax.annotation.PreDestroy;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
  * Entry point for REST calls for projects
  */
 @Path("/")
-public class RestResource implements InitializingBean, DisposableBean {
-    private SearchService searchService;
+public class RestResource {
     private UserManager userManager;
     private com.atlassian.jira.user.util.UserManager jiraUserManager;
-    private EventPublisher eventPublisher;
     private DataManager dataManager;
-    private UserUtil userUtil;
-
-    private boolean enabled = false;
 
     /**
      * Rest resource that use dependency injection to get necessary components
      *
-     * @param searchService   - used to search for issue in jira
      * @param userManager     - used to get the current user from the browser session
      * @param jiraUserManager - used to get the user in jira from the remote user
-     * @param eventPublisher  - used to register listeners to jira's notification system
      */
-    public RestResource(SearchService searchService, UserManager userManager,
+    public RestResource(UserManager userManager,
                         com.atlassian.jira.user.util.UserManager jiraUserManager,
-                        EventPublisher eventPublisher, UserUtil userUtil,
-                        ProjectService projectService) {
-        this.searchService = searchService;
+                        DataManager dataManager) {
         this.userManager = userManager;
         this.jiraUserManager = jiraUserManager;
-        this.eventPublisher = eventPublisher;
-        this.userUtil = userUtil;
-
-        dataManager = new DataManager(projectService);
-    }
-
-    /**
-     * Called when the plugin has been enabled.
-     *
-     * @throws Exception
-     */
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        //if our plugin is not already enabled
-        if(!enabled) {
-            // register ourselves with the EventPublisher
-            eventPublisher.register(this);//add this object to listen for events
-
-            // have datamanager initialize its resources
-            dataManager.init(searchService, userUtil);
-
-            enabled = true;
-        }
-    }
-
-    /**
-     * Called when the plugin is being disabled or removed.
-     *
-     * @throws Exception
-     */
-    @Override
-    public void destroy() throws Exception {
-        //if our plugin is enabled
-        if(enabled) {
-            // unregister ourselves with the EventPublisher
-            eventPublisher.unregister(this);
-
-            // have datamanager clean up its resources
-            dataManager.destroy();
-
-            enabled = false;
-        }
+        this.dataManager = dataManager;
     }
 
     /**
@@ -135,13 +85,11 @@ public class RestResource implements InitializingBean, DisposableBean {
     public List<JaxbProject> getProjects(@DefaultValue("5") @QueryParam("seconds") int seconds) {
         List<JaxbProject> projects = new ArrayList<JaxbProject>();
 
-        if(enabled) {
-            //get all project with epics
-            List<IJiraData> preOrder = dataManager.getProjects(getCurrentUser(), seconds);
+        //get all project with epics
+        List<IJiraData> preOrder = dataManager.getProjects(getCurrentUser(), seconds);
 
-            while(preOrder.size() > 0) {
-                buildJaxb(preOrder, projects);
-            }
+        while(preOrder.size() > 0) {
+            buildJaxb(preOrder, projects);
         }
 
         return projects;
@@ -149,21 +97,24 @@ public class RestResource implements InitializingBean, DisposableBean {
 
     /**
      * Recursively builds up the jaxb data to send to the client
-     * @param input list of issue to turn into jaxb
+     *
+     * @param input  list of issue to turn into jaxb
      * @param output list holding the output jaxb objects
      */
     @SuppressWarnings("unchecked")
     private <T extends JaxbIssue> void buildJaxb(List<IJiraData> input, List<T> output) {
         //if there are no more issues to convert
-        if(input.size() == 0)
+        if(input.size() == 0) {
             return;
+        }
 
         IJiraData data = input.get(0);
         input.remove(0);
 
         //if were down to subtasks build the jaxb and return it
-        if(data.getType() == JiraDataType.SUBTASK)
-            output.add((T)JaxbFactory.newJaxbIssue(data));
+        if(data.getType() == JiraDataType.SUBTASK) {
+            output.add((T) JaxbFactory.newJaxbIssue(data));
+        }
         else {
             //make a new list to build up based on our current data type
             List temp;
@@ -189,45 +140,17 @@ public class RestResource implements InitializingBean, DisposableBean {
             //after build up all the sub types into a list create a new jaxb object of the current type
             switch(data.getType()) {
             case PROJECT:
-                output.add((T)JaxbFactory.newJaxbProject(data, temp));
+                output.add((T) JaxbFactory.newJaxbProject(data, temp));
                 break;
             case EPIC:
-                output.add((T)JaxbFactory.newJaxbEpic(data, temp));
+                output.add((T) JaxbFactory.newJaxbEpic(data, temp));
                 break;
             case STORY:
-                output.add((T)JaxbFactory.newJaxbStory(data, temp));
+                output.add((T) JaxbFactory.newJaxbStory(data, temp));
                 break;
             default:
                 return;//should never get here
             }
         }
-    }
-
-    /**
-     * event listener that passes changes for issues to the data manager
-     *
-     * @param issueEvent - the event containing the issue
-     */
-    @EventListener
-    public void issueEventListener(IssueEvent issueEvent) {
-        dataManager.newIssueEvent(issueEvent);
-    }
-
-    /**
-     * event listener that passes changes for projects to the data manager
-     *
-     * @param projectUpdatedEvent - the update event for a project
-     */
-    @EventListener
-    public void projectEventListener(ProjectUpdatedEvent projectUpdatedEvent) {
-        dataManager.newProjectUpdatedEvent(projectUpdatedEvent);
-    }
-
-    /**
-     * Used for unit testing only
-     * @param dataManager - the dataManager the rest resource will use
-     */
-    public void setDataManager(DataManager dataManager) {
-        this.dataManager = dataManager;
     }
 }

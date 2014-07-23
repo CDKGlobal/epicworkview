@@ -1,5 +1,6 @@
 package ut.com.cobalt.jira.plugin.epic.data;
 
+import com.atlassian.event.api.EventPublisher;
 import com.atlassian.jira.action.issue.customfields.MockCustomFieldType;
 import com.atlassian.jira.bc.ServiceOutcome;
 import com.atlassian.jira.bc.ServiceOutcomeImpl;
@@ -38,6 +39,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.*;
 
 
@@ -183,7 +185,7 @@ public class DataManagerTest {
 
     @Test
     public void dataManagerIsValidWithNoInit() {
-        DataManager dataManager = new DataManager(projectService);
+        DataManager dataManager = new DataManager(projectService, searchService, userUtil, mock(EventPublisher.class));
 
         List<IJiraData> projects = dataManager.getProjects(mockUser);
         assertEquals(0, projects.size());
@@ -191,8 +193,8 @@ public class DataManagerTest {
 
     @Test
     public void dataManagerIsValidWithDestory() {
-        DataManager dataManager = new DataManager(projectService);
-        dataManager.init(searchService, userUtil);
+        DataManager dataManager = new DataManager(projectService, searchService, userUtil, mock(EventPublisher.class));
+        dataManager.afterPropertiesSet();
 
         List<IJiraData> projects = dataManager.getProjects(mockUser);
         assertEquals(4, projects.size());
@@ -205,8 +207,8 @@ public class DataManagerTest {
 
     @Test
     public void dataManagerIsValidWithNullUser() {
-        DataManager dataManager = new DataManager(projectService);
-        dataManager.init(searchService, userUtil);
+        DataManager dataManager = new DataManager(projectService, searchService, userUtil, mock(EventPublisher.class));
+        dataManager.afterPropertiesSet();
 
         List<IJiraData> projects = dataManager.getProjects(null);
 
@@ -215,8 +217,8 @@ public class DataManagerTest {
 
     @Test
     public void dataManagerIsValidWithUser() {
-        DataManager dataManager = new DataManager(projectService);
-        dataManager.init(searchService, userUtil);
+        DataManager dataManager = new DataManager(projectService, searchService, userUtil, mock(EventPublisher.class));
+        dataManager.afterPropertiesSet();
 
         List<IJiraData> projects = dataManager.getProjects(mockUser);
 

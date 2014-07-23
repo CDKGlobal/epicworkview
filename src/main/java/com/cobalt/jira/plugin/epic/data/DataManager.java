@@ -1,6 +1,8 @@
 package com.cobalt.jira.plugin.epic.data;
 
 import com.atlassian.crowd.embedded.api.User;
+import com.atlassian.event.api.*;
+import com.atlassian.event.api.EventListener;
 import com.atlassian.jira.bc.issue.search.SearchService;
 import com.atlassian.jira.bc.project.ProjectService;
 import com.atlassian.jira.component.ComponentAccessor;
@@ -17,14 +19,17 @@ import com.atlassian.jira.user.util.UserUtil;
 import com.atlassian.jira.web.bean.PagerFilter;
 import com.atlassian.query.Query;
 import com.cobalt.jira.plugin.epic.data.util.StatusUtil;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 
 
 /**
  * A DataManager manages getting data out of the Jira database
  */
-public class DataManager {
+public class DataManager implements InitializingBean, DisposableBean {
     //issues that has changed in the given time span excluding a list of given issues
     private static final String QUERY = "(status CHANGED FROM (%s) AFTER %s OR status CHANGED TO (%s) AFTER %s) AND issuetype not in (%s) ORDER BY updated DESC";
     private static final long MAX_DAYS = 7;
@@ -32,21 +37,26 @@ public class DataManager {
 
     private NaryTree tree;
     private ProjectService projectService;
+    private SearchService searchService;
+    private UserUtil userUtil;
+    private EventPublisher eventPublisher;
 
     /**
      * Constructs a new DataManager
      * 
      */
-    public DataManager(ProjectService projectService) {
+    public DataManager(ProjectService projectService, SearchService searchService, UserUtil userUtil, EventPublisher eventPublisher) {
         this.projectService = projectService;
+        this.searchService = searchService;
+        this.userUtil = userUtil;
+        this.eventPublisher = eventPublisher;
     }
 
-    /**
-     * initialize the data manager
-     * @param searchService - service to search jiras database
-     * @param userUtil - utility to find users in jira
-     */
-    public void init(SearchService searchService, UserUtil userUtil) {
+
+    @Override
+    public void afterPropertiesSet() {
+        System.out.println("DataManager afterPropertiesSet");
+        eventPublisher.register(this);
         //build the tree with what a user with full access would see
 
         //get an admin in jira
@@ -76,7 +86,9 @@ public class DataManager {
     /**
      * free up memory used by the DataManager
      */
+    @Override
     public void destroy() {
+        eventPublisher.unregister(this);
         tree = null;
     }
 
@@ -140,6 +152,7 @@ public class DataManager {
      * Event listener for when changes occur to the tree
      * @param issueEvent
      */
+    @EventListener
     public void newIssueEvent(IssueEvent issueEvent) {
         long eventId = issueEvent.getEventTypeId();
         Issue issue = issueEvent.getIssue();
@@ -176,6 +189,7 @@ public class DataManager {
      * update a project in the tree if it is currently being stored otherwise it will do nothing
      * @param event - update event for the project
      */
+    @EventListener
     public void newProjectUpdatedEvent(ProjectUpdatedEvent event) {
         if(tree != null) {
             tree.insert(new ProjectData(event.getProject(), event.getTime().getTime()));

@@ -109,17 +109,7 @@
 		      			</ul>
 		      		</li>
 		      	</ul>
-		      	<div class="epic-info" ng-show="showEpicWindow(project)" ng-click="$event.stopPropagation(); resetWindowTimeout()">		      		
-		      		<ul class="completed-stories list-section inline">
-		      			<li class="story" ng-repeat="story in getCompletedEpicStories(project, true)">
-		      				<a ng-style="{'background': '{{getClickedEpicColor(project)}}'}" ng-class="getClickedEpicColor(project)">
-		      					<p>&emsp;&emsp;{{story.name}}</p>
-		      					<i class="fa fa-info-circle upper-right" ng-click="setActiveProject(story)"></i>
-		      					<span class="checkmark" ng-show="story.completed">&#x2713;</span>
-		      					<img class="contributor-image upper-left" ng-show="story.contributor" src="{{story.contributor.avatar}}" title="{{story.contributor.name}}" height="32" width="32">
-		      				</a>
-		      			</li>
-		      		</ul>
+		      	<div class="epic-info" ng-show="showEpicWindow(project)" ng-click="$event.stopPropagation(); resetWindowTimeout()">
 		      		<ul class="in-progress-stories list-section inline">
 		      			<li class="story" ng-repeat="story in getCompletedEpicStories(project, false)">
 		      				<a ng-style="{'background': '{{getClickedEpicColor(project)}}'}" ng-class="getClickedEpicColor(project)">
@@ -130,6 +120,16 @@
 		      				</a>
 		      			</li>
 		      		</ul>
+		      		<ul class="completed-stories list-section inline">
+		      			<li class="story" ng-repeat="story in getCompletedEpicStories(project, true)">
+		      				<a ng-style="{'background': '{{getClickedEpicColor(project)}}'}" ng-class="getClickedEpicColor(project)">
+		      					<p>&emsp;&emsp;{{story.name}}</p>
+		      					<i class="fa fa-info-circle upper-right" ng-click="setActiveProject(story)"></i>
+		      					<span class="checkmark" ng-show="story.completed">&#x2713;</span>
+		      					<img class="contributor-image upper-left" ng-show="story.contributor" src="{{story.contributor.avatar}}" title="{{story.contributor.name}}" height="32" width="32">
+		      				</a>
+		      			</li>
+		      		</ul>		      	
 		      	</div>
 		      </div>
 		 	</li>

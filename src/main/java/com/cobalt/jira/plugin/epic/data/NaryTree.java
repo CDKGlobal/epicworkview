@@ -96,6 +96,7 @@ public class NaryTree {
 
             if(index != null) {
                 //update timestamp to let others know this issue has been set to be removed
+                removeIssue.setUpdatedTimestamp(System.currentTimeMillis());
                 index.getData().setUpdatedTimestamp(removeIssue.getUpdatedTimestamp());
                 index.getData().remove();
 
@@ -120,10 +121,9 @@ public class NaryTree {
             Node index = curNode.getChild(parent.getId());
 
             if(index != null) {
-                //update timestamp to let others know this parent had one of its children change
-                index.getData().setUpdatedTimestamp(removeIssue.getUpdatedTimestamp());
-
                 boolean delete = remove(removeIssue, index, curDepth+1);
+
+                index.getData().setUpdatedTimestamp(removeIssue.getUpdatedTimestamp());
 
                 //if this node and all sub children have been deleted
                 if(delete) {

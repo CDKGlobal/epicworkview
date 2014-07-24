@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>My Epic</title>
+    <title>Epic</title>
     <meta name="decorator" content="atl.general">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular-animate.js"></script>
@@ -11,8 +11,6 @@
     <link  href="https://fonts.googleapis.com/css?family=Reenie+Beanie:regular" rel="stylesheet" type="text/css">
     <script type="text/javascript">
       var myApp = angular.module('myApp', ['ngAnimate', 'ngCookies']);
-
-      jQuery('#announcement-banner').hide();
     </script>
   </head>
   <body>

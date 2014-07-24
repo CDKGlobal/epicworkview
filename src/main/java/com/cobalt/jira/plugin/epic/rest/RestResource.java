@@ -31,7 +31,7 @@ import java.util.List;
  * Entry point for REST calls for projects
  */
 @Path("/")
-public class RestResource {
+public class RestResource implements InitializingBean {
     private UserManager userManager;
     private com.atlassian.jira.user.util.UserManager jiraUserManager;
     private DataManager dataManager;
@@ -48,6 +48,11 @@ public class RestResource {
         this.userManager = userManager;
         this.jiraUserManager = jiraUserManager;
         this.dataManager = dataManager;
+    }
+
+    @Override
+    public void afterPropertiesSet() {
+        dataManager.afterPropertiesSet();
     }
 
     /**

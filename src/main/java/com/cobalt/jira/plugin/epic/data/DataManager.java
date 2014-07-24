@@ -17,8 +17,9 @@ import com.atlassian.jira.user.util.UserUtil;
 import com.atlassian.jira.web.bean.PagerFilter;
 import com.atlassian.query.Query;
 import com.cobalt.jira.plugin.epic.data.util.StatusUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.InitializingBean;
 
 import java.util.*;
 
@@ -26,7 +27,9 @@ import java.util.*;
 /**
  * A DataManager manages getting data out of the Jira database
  */
-public class DataManager implements InitializingBean, DisposableBean {
+public class DataManager implements DisposableBean {
+    private static final Logger logger = LoggerFactory.getLogger(DataManager.class);
+
     //issues that has changed in the given time span excluding a list of given issues
     private static final String QUERY = "(status CHANGED FROM (%s) AFTER %s OR status CHANGED TO (%s) AFTER %s) AND issuetype not in (%s) ORDER BY updated DESC";
     private static final long MAX_DAYS = 14;
@@ -47,36 +50,51 @@ public class DataManager implements InitializingBean, DisposableBean {
         this.searchService = searchService;
         this.userUtil = userUtil;
         this.eventPublisher = eventPublisher;
+
+        logger.warn("*******************************************");
+        logger.warn("Epic DataManager has finished constructing");
+        logger.warn("*******************************************");
     }
 
-
-    @Override
     public void afterPropertiesSet() {
-        System.out.println("DataManager afterPropertiesSet");
-        eventPublisher.register(this);
-        //build the tree with what a user with full access would see
+        if(tree == null) {
+            logger.warn("*******************************************");
+            logger.warn("Epic is currently initializing");
+            logger.warn("*******************************************");
+            eventPublisher.register(this);
+            //build the tree with what a user with full access would see
 
-        //get an admin in jira
-        User admin = null;
-        Collection<User> admins = userUtil.getJiraSystemAdministrators();
-        Iterator<User> iter = admins.iterator();
-        if(iter.hasNext()) {
-            admin = iter.next();
-        }
 
-        tree = new NaryTree();
-
-        try {
-            //search the database for issues to build up the initial tree
-            Query q = searchService.parseQuery(admin, DEFAULT_QUERY).getQuery();
-            List<Issue> issues = searchService.search(admin, q, PagerFilter.getUnlimitedFilter()).getIssues();
-
-            for(Issue i : issues) {
-                tree.insert(getJiraDataIssue(i));
+            //get an admin in jira
+            User admin = null;
+            Collection<User> admins = userUtil.getJiraSystemAdministrators();
+            Iterator<User> iter = admins.iterator();
+            if(iter.hasNext()) {
+                admin = iter.next();
             }
+
+            tree = new NaryTree();
+
+            try {
+                //search the database for issues to build up the initial tree
+                Query q = searchService.parseQuery(admin, DEFAULT_QUERY).getQuery();
+                List<Issue> issues = searchService.search(admin, q, PagerFilter.getUnlimitedFilter()).getIssues();
+
+                for(Issue i : issues) {
+                    tree.insert(getJiraDataIssue(i));
+                }
+            }
+            catch(SearchException e) {
+                e.printStackTrace();
+            }
+            logger.warn("*******************************************");
+            logger.warn("Epic is done initializing");
+            logger.warn("*******************************************");
         }
-        catch(SearchException e) {
-            e.printStackTrace();
+        else {
+            logger.warn("*******************************************");
+            logger.warn("Epic has already been initialized");
+            logger.warn("*******************************************");
         }
     }
 
@@ -85,8 +103,16 @@ public class DataManager implements InitializingBean, DisposableBean {
      */
     @Override
     public void destroy() {
+        logger.warn("*******************************************");
+        logger.warn("Epic is shutting down");
+        logger.warn("*******************************************");
+
         eventPublisher.unregister(this);
         tree = null;
+
+        logger.warn("*******************************************");
+        logger.warn("Epic is shutdown");
+        logger.warn("*******************************************");
     }
 
     /**

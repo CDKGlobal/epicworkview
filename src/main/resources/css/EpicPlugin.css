@@ -468,6 +468,8 @@ input {
 	text-decoration: none;
 	color: #000;
 	background: #fdf4bb;
+	display: -webkit-inline-flex;
+	display: -webkit-inline-box;
 	display: inline-flex;
 	height: 10em;
 	width: 10em;

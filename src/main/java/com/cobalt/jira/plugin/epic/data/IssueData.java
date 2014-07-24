@@ -5,12 +5,14 @@ import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.Issue;
 import com.cobalt.jira.plugin.epic.data.util.StatusUtil;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 
 /**
  * An IssueData represents a Jira Issue, which can be an epic, story, or subtask
  */
 public class IssueData extends JiraData {
+    @JsonIgnore
     Issue issue;
 
     /**

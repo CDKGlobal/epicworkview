@@ -1,13 +1,17 @@
 package com.cobalt.jira.plugin.epic.data;
 
+import org.codehaus.jackson.annotate.JsonAutoDetect;
+
 import java.util.*;
 
 
 /**
  * Simple class for our NaryTree to store data and keep track of its children
  */
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY, getterVisibility = JsonAutoDetect.Visibility.NONE)
 public class Node {
     private IJiraData data;
+
     private Map<Long, Node> children;
 
     /**

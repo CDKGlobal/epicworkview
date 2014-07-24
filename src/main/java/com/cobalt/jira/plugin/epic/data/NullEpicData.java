@@ -1,13 +1,16 @@
 package com.cobalt.jira.plugin.epic.data;
 
 import com.atlassian.crowd.embedded.api.User;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 
 /**
  * A NullEpicData represents a fake Jira Epic
  */
 public class NullEpicData extends JiraData implements IEpicData {
+    @JsonIgnore
     private String name;
+    @JsonIgnore
     private String description;
 
     /**

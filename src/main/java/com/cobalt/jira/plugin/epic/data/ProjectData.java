@@ -5,12 +5,14 @@ import com.atlassian.jira.avatar.Avatar;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.project.Project;
 import com.atlassian.jira.project.ProjectCategory;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 
 /**
  * A ProjectData represents and manages a Jira Project
  */
 public class ProjectData extends JiraData implements IProjectData {
+    @JsonIgnore
     private Project project;
 
     /**

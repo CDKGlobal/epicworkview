@@ -1,8 +1,11 @@
 package com.cobalt.jira.plugin.epic.data;
 
 import com.atlassian.crowd.embedded.api.User;
+import org.codehaus.jackson.annotate.JsonAutoDetect;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NONE)
 public interface IJiraData {
 
 
@@ -80,6 +83,7 @@ public interface IJiraData {
      *
      * @return the ProjectData for this issue
      */
+    @JsonIgnore
     public IJiraData getProject();
 
     /**
@@ -87,6 +91,7 @@ public interface IJiraData {
      *
      * @return the EpicData for this issue
      */
+    @JsonIgnore
     public IJiraData getEpic();
 
     /**
@@ -94,6 +99,7 @@ public interface IJiraData {
      *
      * @return the StoryData for this issue
      */
+    @JsonIgnore
     public IJiraData getStory();
 
     /**

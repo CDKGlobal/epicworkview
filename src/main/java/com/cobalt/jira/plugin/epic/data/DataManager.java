@@ -11,8 +11,6 @@ import com.atlassian.jira.event.issue.IssueEvent;
 import com.atlassian.jira.event.type.EventType;
 import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.Issue;
-import com.atlassian.jira.issue.changehistory.ChangeHistory;
-import com.atlassian.jira.issue.history.ChangeItemBean;
 import com.atlassian.jira.issue.search.SearchException;
 import com.atlassian.jira.project.Project;
 import com.atlassian.jira.user.util.UserUtil;
@@ -22,7 +20,6 @@ import com.cobalt.jira.plugin.epic.data.util.StatusUtil;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 
-import javax.annotation.PostConstruct;
 import java.util.*;
 
 
@@ -32,7 +29,7 @@ import java.util.*;
 public class DataManager implements InitializingBean, DisposableBean {
     //issues that has changed in the given time span excluding a list of given issues
     private static final String QUERY = "(status CHANGED FROM (%s) AFTER %s OR status CHANGED TO (%s) AFTER %s) AND issuetype not in (%s) ORDER BY updated DESC";
-    private static final long MAX_DAYS = 7;
+    private static final long MAX_DAYS = 14;
     private static final String DEFAULT_QUERY = String.format(QUERY, StatusUtil.getInitialStates(), "-" + MAX_DAYS + "d", StatusUtil.getEndStates(), "-" + MAX_DAYS + "d", "Epic");
 
     private NaryTree tree;
@@ -194,5 +191,9 @@ public class DataManager implements InitializingBean, DisposableBean {
         if(tree != null) {
             tree.insert(new ProjectData(event.getProject(), event.getTime().getTime()));
         }
+    }
+
+    public NaryTree getTree() {
+        return tree;
     }
 }

@@ -1,11 +1,15 @@
 package com.cobalt.jira.plugin.epic.data;
 
+import org.codehaus.jackson.annotate.JsonAutoDetect;
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import java.util.*;
 
 
 /**
  * A tree that for each node can have any number of children
  */
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class NaryTree {
     private Node root;
 
@@ -171,6 +175,7 @@ public class NaryTree {
      * Get the tree in pre-order representation
      * @return list of the data stored in pre-order notation
      */
+    @JsonIgnore
     public List<IJiraData> getPreOrder() {
         List<IJiraData> preOrder = new LinkedList<IJiraData>();
         getPreOrder(root, preOrder);

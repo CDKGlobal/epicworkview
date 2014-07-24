@@ -15,6 +15,7 @@ import com.atlassian.sal.api.user.UserProfile;
 import com.cobalt.jira.plugin.epic.data.DataManager;
 import com.cobalt.jira.plugin.epic.data.IJiraData;
 import com.cobalt.jira.plugin.epic.data.JiraDataType;
+import com.cobalt.jira.plugin.epic.data.NaryTree;
 import com.cobalt.jira.plugin.epic.rest.jaxb.*;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
@@ -152,5 +153,13 @@ public class RestResource {
                 return;//should never get here
             }
         }
+    }
+
+    @GET
+    @AnonymousAllowed
+    @Path("/tree")
+    @Produces(MediaType.APPLICATION_JSON)
+    public NaryTree getTree() {
+        return dataManager.getTree();
     }
 }

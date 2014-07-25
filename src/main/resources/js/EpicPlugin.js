@@ -17,15 +17,11 @@ var uniqueEpicId = -1;
 // Each epic is a queue with an epic followed by stories to animate
 var epicAnimationQueue = [];
 
-
-
 var baseURL;
 
 jQuery(document).ready(function() {
     baseURL = jQuery('input[title="baseURL"]').val();
 });
-
-
 
 
 /*
@@ -543,8 +539,8 @@ function EpicController($scope) {
     
     // returns a shortened version of the given sentence
     $scope.shorten = function(sentence) {
-    	if (sentence.length > 40) {
-    		var res = sentence.substring(0, 40);
+    	if (sentence.length > 32) {
+    		var res = sentence.substring(0, 32);
     		return res + "...";
     	}
     	return sentence;

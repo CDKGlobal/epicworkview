@@ -16,7 +16,7 @@ describe('ProjectController', function(){
         http = $http;
         cookieStore = $cookieStore;
 
-		httpBackend.when("GET", "undefined/rest/epic/1/projects.json?seconds=1209600").respond([
+		httpBackend.when("GET", scope.getBaseURL+"/rest/epic/1/projects.json?seconds=1209600").respond([
         {"name":"Project1","key":"PROJ","id":10000,"description":"","timestamp":1402410614000,"epics":[
         {"description":"To test project without change","key":"TESTPRO-1","id":10000,"name":"Myepic",
         "timestamp":1402410614000,"contributor":{"id":"admin","name":"admin",

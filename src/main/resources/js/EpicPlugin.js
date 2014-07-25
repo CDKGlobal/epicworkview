@@ -1,11 +1,6 @@
 
-var TIMEOUT = 10;
-
 // Time of most recent update
 var lastUpdateTime = 0;
-
-// Timeout to determine when to close open windows
-var windowTimeout = TIMEOUT;
 
 // Whether to continuously refresh projects
 var refresh = true;
@@ -30,16 +25,16 @@ jQuery(document).ready(function() {
     baseURL = jQuery('input[title="baseURL"]').val();
 });
 
+
+// set timer for closing windows after inactivity
 var inactivityTimer;
 jQuery(window).mousemove(function() {
     clearTimeout(inactivityTimer);
-    console.log("reset timer");
     inactivityTimer = setTimeout(function() {
         jQuery(window).scrollTop(0);
         clickedEpic = null;
         refresh = true;
         showWindow = false;
-        console.log("inactive");
     }, 30000);
 });
 
@@ -333,11 +328,6 @@ function ProjectController($scope, $http, $cookieStore) {
     	refresh = true;
     	clickedEpic = null;
     	$scope.filter = false;
-    	$scope.resetWindowTimeout();
-    };
-    
-    $scope.resetWindowTimeout = function() {
-    	windowTimeout = TIMEOUT;
     };
     
     $scope.toggleFullScreen = function() {
@@ -515,10 +505,8 @@ function EpicController($scope) {
     		refresh = true;
     	} else {
     		clickedEpic = id;
-    		startWindowTimeout();
     		refresh = false; // halt project refresh if epic info is open
     	}
-    	windowTimeout = TIMEOUT;
     };
     
     // Return whether the clicked epic is this epic
@@ -552,19 +540,4 @@ function EpicController($scope) {
     	}
     	return sentence;
     };
-    
-    // start a timeout for closing open windows
-    function startWindowTimeout() {
-    	if ($scope.isFullScreen && windowTimeout == TIMEOUT) {
-	    	var intervalId = setInterval(function(){
-	    		windowTimeout--;
-	    		if (windowTimeout <= 0) {
-	    			clickedEpic = null;
-	    			refresh = true;
-	    			clearInterval(intervalId);
-	    			windowTimeout = TIMEOUT;
-	    		}
-	    	}, 1000);
-    	}
-    }
 }

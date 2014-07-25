@@ -1,3 +1,7 @@
+#annoucement-banner {
+	display: none;
+}
+
 #nav-bar {
 	position: fixed;
 	top: 170px;

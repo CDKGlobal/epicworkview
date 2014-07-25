@@ -17,7 +17,7 @@ var uniqueEpicId = -1;
 // Each epic is a queue with an epic followed by stories to animate
 var epicAnimationQueue = [];
 
-var showWindow = false;
+
 
 var baseURL;
 
@@ -26,17 +26,7 @@ jQuery(document).ready(function() {
 });
 
 
-// set timer for closing windows after inactivity
-var inactivityTimer;
-jQuery(window).mousemove(function() {
-    clearTimeout(inactivityTimer);
-    inactivityTimer = setTimeout(function() {
-        jQuery(window).scrollTop(0);
-        clickedEpic = null;
-        refresh = true;
-        showWindow = false;
-    }, 30000);
-});
+
 
 /*
  * Controller to manage table of projects
@@ -49,6 +39,25 @@ function ProjectController($scope, $http, $cookieStore) {
 	$scope.isFullScreen = false;
 	$scope.query = "";
     $scope.activeProject = null;
+
+    var showWindow = false;
+
+    // set timer for closing windows after inactivity
+    var inactivityTimer;
+    jQuery(window).mousemove(inactivityReset);
+    jQuery(window).scroll(inactivityReset);
+
+    function inactivityReset() {
+        clearTimeout(inactivityTimer);
+        inactivityTimer = setTimeout(function() {
+            if($scope.isFullScreen) {
+                jQuery(window).scrollTop(0);
+                clickedEpic = null;
+                refresh = true;
+                showWindow = false;
+            }
+        }, 30000);
+    }
 
 	$scope.toggleFilter = function(e) {
 		e.stopPropagation();

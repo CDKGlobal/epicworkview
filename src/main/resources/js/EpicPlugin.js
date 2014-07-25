@@ -27,7 +27,7 @@ jQuery(document).ready(function() {
 /*
  * Controller to manage table of projects
  */
-function ProjectController($scope, $http, $cookieStore) {
+function ProjectController($scope, $http, $cookieStore, $window) {
 	
 	$scope.filterDays = 14;
 	$scope.filter = false;
@@ -180,7 +180,12 @@ function ProjectController($scope, $http, $cookieStore) {
     
     $scope.setActiveProject = function(project) {
     	$scope.activeProject = project;
-        $scope.setShowWindow(true);
+        if($scope.isFullScreen) {
+            $scope.setShowWindow(true);
+        }
+        else {
+            $window.location.assign(baseURL + "/browse/" + project.key);
+        }
     };
     
     $scope.projectURL = function(project) {

@@ -188,6 +188,7 @@
 	margin: 1px;
 	float: left;
 	width: 100%;
+	overflow: hidden;
 }
 
 .table-row > ul {

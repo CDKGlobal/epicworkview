@@ -13,8 +13,14 @@ var refresh = true;
 // The currently clicked epic, or null if none clicked
 var clickedEpic = null;
 
+var animatedStoryId = null;
+
 // Unique epic id to use for fake epics
 var uniqueEpicId = -1;
+
+// Queue holding epics to animate. 
+// Each epic is a queue with an epic followed by stories to animate
+var epicAnimationQueue = [];
 
 var baseURL;
 
@@ -47,6 +53,7 @@ function ProjectController($scope, $http, $cookieStore) {
 	      lastUpdateTime = new Date().getTime();
 	      //add the new projects to the projects array
 	      updateElementList($scope.projects, data, "project");
+	      animateEpics();
 	    }).
 	    error(function(data, status, headers, config) {
 	      // log error
@@ -66,6 +73,12 @@ function ProjectController($scope, $http, $cookieStore) {
 	    			//add to front of list
 	    			currentList.unshift(element);
 	    			savedElement = currentList[0];
+	    			// animate if it is an epic
+	    			if (elementType == "epic") {
+						epicAnimationQueue.push([savedElement]);
+					} else if (elementType == "story") {
+						epicAnimationQueue[epicAnimationQueue.length - 1].push(savedElement);
+					}	
 	    			// set its state to true if it is a project and not in the list of unchecked projects
 	    			if (elementType == "project" && !contains($scope.uncheckedProjectIds, element.id)) {
 	    				element.state = true;
@@ -79,6 +92,14 @@ function ProjectController($scope, $http, $cookieStore) {
     				// this element is marked for deletion, remove it
     				currentList.splice(elementIndex, 1);
     			} else {
+    				// animate any updated epics
+    				if (savedElement.timestamp != element.timestamp) {
+    					if (elementType == "epic") {
+    						epicAnimationQueue.push([savedElement]);
+    					} else if (elementType == "story") {
+    						epicAnimationQueue[epicAnimationQueue.length - 1].push(savedElement);
+    					}	
+    				}
     				savedElement.timestamp = element.timestamp;
     				savedElement.name = element.name;
 	  	            savedElement.key = element.key;
@@ -87,7 +108,7 @@ function ProjectController($scope, $http, $cookieStore) {
     				// set completed field if a story
     				if (elementType == "story") {
     					savedElement.completed = element.completed;
-    				}
+    				}    				
     				//update the list held in the current element, if it has one
     	    		updateChildList(elementType, savedElement, element);
     			}
@@ -114,6 +135,34 @@ function ProjectController($scope, $http, $cookieStore) {
 		}
     }
     
+    // Animate each epic in the queue of epics to animate
+    function animateEpics() {
+    	var resetEpic = function(){
+    		clickedEpic = null;
+    	};
+    	
+    	while (epicAnimationQueue.length > 0) {
+    		epicData = epicAnimationQueue.shift();
+    		epic = epicData.shift();
+	    	clickedEpic = epic.id;
+	    	setTimeout(resetEpic, 4000);
+	    	for (var i = 0; i < epicData.length; i++) {
+	    		animateStory(epicData[i]);
+	    	}
+    	}
+    }
+    
+    // Animate the given story
+    function animateStory(story) {
+    	animatedStoryId = story.id;
+    	setTimeout(function() {
+    		animatedStoryId = null;
+    	}, 3000);
+    }
+    
+    $scope.storyIsAnimated = function(id) {
+    	return id == animatedStoryId;
+    };
     
     $scope.setActiveProject = function(project) {
     	$scope.activeProject = project;

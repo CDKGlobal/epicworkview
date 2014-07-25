@@ -175,7 +175,7 @@ function ProjectController($scope, $http, $cookieStore) {
     
     $scope.setActiveProject = function(project) {
     	$scope.activeProject = project;
-        setShowWindow(true);
+        $scope.setShowWindow(true);
     };
     
     $scope.projectURL = function(project) {

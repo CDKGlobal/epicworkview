@@ -23,7 +23,7 @@
 					</div>
     			</li>
     			<li>
-    				<div ng-click="scrollToTop()">
+    				<div ng-click="scrollshowToTop()">
     					<i class="fa fa-arrow-up fa-2x"></i>
     				</div>
     			</li>
@@ -132,7 +132,7 @@
 		      </div>
 		 	</li>
     	</ul>
-    	<div ng-show="showWindow" ng-click="showWindow = false;">
+    	<div ng-show="getShowWindow()" ng-click="setShowWindow(false)">
     		<div class="windowView" id="windowBackground"></div>
 			<div class="windowView">
 				<iframe src="{{projectURL(activeProject)}}"></iframe>

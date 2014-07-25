@@ -22,10 +22,25 @@ var uniqueEpicId = -1;
 // Each epic is a queue with an epic followed by stories to animate
 var epicAnimationQueue = [];
 
+var showWindow = false;
+
 var baseURL;
 
 jQuery(document).ready(function() {
     baseURL = jQuery('input[title="baseURL"]').val();
+});
+
+var inactivityTimer;
+jQuery(window).mousemove(function() {
+    clearTimeout(inactivityTimer);
+    console.log("reset timer");
+    inactivityTimer = setTimeout(function() {
+        jQuery(window).scrollTop(0);
+        clickedEpic = null;
+        refresh = true;
+        showWindow = false;
+        console.log("inactive");
+    }, 30000);
 });
 
 /*
@@ -39,7 +54,6 @@ function ProjectController($scope, $http, $cookieStore) {
 	$scope.isFullScreen = false;
 	$scope.query = "";
     $scope.activeProject = null;
-    $scope.showWindow = false;
 
 	$scope.toggleFilter = function(e) {
 		e.stopPropagation();
@@ -166,11 +180,11 @@ function ProjectController($scope, $http, $cookieStore) {
     
     $scope.setActiveProject = function(project) {
     	$scope.activeProject = project;
-        $scope.showWindow = true;
+        setShowWindow(true);
     };
     
     $scope.projectURL = function(project) {
-        if(!$scope.showWindow || project === null) {
+        if(!$scope.getShowWindow() || project === null) {
             return '';
         }
         else {
@@ -476,6 +490,14 @@ function ProjectController($scope, $http, $cookieStore) {
 
     $scope.scrollToTop = function() {
         jQuery(window).scrollTop(0);
+    };
+
+    $scope.setShowWindow = function(val) {
+        showWindow = val;
+    };
+
+    $scope.getShowWindow = function() {
+        return showWindow;
     };
 }
 

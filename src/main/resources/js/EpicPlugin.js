@@ -30,27 +30,43 @@ jQuery(document).ready(function() {
 function ProjectController($scope, $http, $cookieStore, $window) {
 	
 	$scope.filterDays = 7;
-	$scope.projects = [];
-	$scope.isFullScreen = false;
-	$scope.query = "";
 
-    // set timer for closing windows after inactivity
-    var inactivityTimer;
-    jQuery(window).mousemove(inactivityReset);
-    jQuery(window).scroll(inactivityReset);
+    $scope.getBaseURL = function() {
+        return baseURL;
+    };
 
-    function inactivityReset() {
-        clearTimeout(inactivityTimer);
-        inactivityTimer = setTimeout(function() {
-            if($scope.isFullScreen) {
-                jQuery(window).scrollTop(0);
-                clickedEpic = null;
-                refresh = true;
-                showWindow = false;
-            }
-        }, 30000);
+    /*
+     * Finds if the element is already in the list and returns the index, based on the element ids
+     * returns -1 if not found
+     */
+    function indexOf(list, elem) {
+      var where = -1;
+      angular.forEach(list, function(e, i) {
+    	//if element ids are equal or both negative
+        if(e.id == elem.id || (typeof e.id === 'number' && e.id < 0) && (typeof elem.id === 'number' && elem.id < 0)) {
+        	where = i;
+        }
+      });
+      return where;
     }
-	
+
+    // returns whether the given object is contained in the given list
+    function contains(a, obj) {
+        var i = a.length;
+        while (i--) {
+           if (a[i] === obj) {
+               return true;
+           }
+        }
+        return false;
+    }
+    
+    /* --------------------------------------------------------------------------------------- */
+    /* ---------------------------------- Project List --------------------------------------- */
+    /* --------------------------------------------------------------------------------------- */
+    
+	$scope.projects = [];
+    
     // Get all the projects in the last amount of seconds and set them in a local variable (projects)
     $scope.getProjects = function(seconds) {
     	$http.get(baseURL+'/rest/epic/1/projects.json?seconds='+seconds).
@@ -161,17 +177,33 @@ function ProjectController($scope, $http, $cookieStore, $window) {
     	$scope.getProjects(Math.ceil(secsSinceUpdate));
     };
     
-    $scope.getCompletedStories = function(project) {
-    	var res = 0;
-    	angular.forEach(project.epics, function(epic) {
-    		angular.forEach(epic.stories, function(story) {
-    			if (story.completed) res++;
-    		});
-    	});
-    	return res;
+    // sort the projects by last updated time
+    $scope.timeOrderedProjects = function() {
+    	$scope.projects.sort(function(a, b){return b.timestamp - a.timestamp;});
+    	return $scope.projects;
     };
     
-    // returns all contributors for this project in order of time worked on project
+    /* --------------------------------------------------------------------------------------- */
+    /* -------------------------------- Screen Navigation ------------------------------------ */
+    /* --------------------------------------------------------------------------------------- */
+    
+    $scope.isFullScreen = false;
+    
+    $scope.toggleFullScreen = function() {
+    	jQuery("header").slideToggle();
+    	jQuery("footer").fadeToggle();
+    	$scope.isFullScreen = !$scope.isFullScreen;
+    };
+    
+    $scope.scrollToTop = function() {
+        jQuery(window).scrollTop(0);
+    };
+    
+    /* --------------------------------------------------------------------------------------- */
+    /* -------------------------------- Contributor List ------------------------------------- */
+    /* --------------------------------------------------------------------------------------- */
+    
+ // returns all contributors for this project in order of time worked on project
     $scope.getContributors = function(project) {
     	// get map of timestamps to lists of contributors
     	var contributorTimestamps = {};
@@ -215,7 +247,6 @@ function ProjectController($scope, $http, $cookieStore, $window) {
     			getContributorsHelper(result, subtask, "subtask");
     		});
     	}
-    	
     	// add contributor to the result with the key as the element's timestamp
     	var contributor = element.contributor;
     	var timestamp = element.timestamp;
@@ -231,25 +262,19 @@ function ProjectController($scope, $http, $cookieStore, $window) {
     	}
     }
     
-    // sort the projects by last updated time
-    $scope.timeOrderedProjects = function() {
-    	$scope.projects.sort(function(a, b){return b.timestamp - a.timestamp;});
-    	return $scope.projects;
-    };
+    /* --------------------------------------------------------------------------------------- */
+    /* ------------------------------ Other Table Columns ------------------------------------ */
+    /* --------------------------------------------------------------------------------------- */
     
-    $scope.hideEpicInfo = function() {
-    	refresh = true;
-    	clickedEpic = null;
-    };
-    
-    $scope.toggleFullScreen = function() {
-    	jQuery("header").slideToggle();
-    	jQuery("footer").fadeToggle();
-    	$scope.isFullScreen = !$scope.isFullScreen;
-    };
-
-    $scope.getBaseURL = function() {
-        return baseURL;
+    // Returns the number of completed stories for the project
+    $scope.getCompletedStories = function(project) {
+    	var res = 0;
+    	angular.forEach(project.epics, function(epic) {
+    		angular.forEach(epic.stories, function(story) {
+    			if (story.completed) res++;
+    		});
+    	});
+    	return res;
     };
     
     // Return the difference between the current time and the given time, as a string
@@ -280,38 +305,12 @@ function ProjectController($scope, $http, $cookieStore, $window) {
     	}
     	return num + " " + unit + "s";
     }
-
-    /*
-     * Finds if the element is already in the list and returns the index, based on the element ids
-     * returns -1 if not found
-     */
-    function indexOf(list, elem) {
-      var where = -1;
-      angular.forEach(list, function(e, i) {
-    	//if element ids are equal or both negative
-        if(e.id == elem.id || (typeof e.id === 'number' && e.id < 0) && (typeof elem.id === 'number' && elem.id < 0)) {
-        	where = i;
-        }
-      });
-      return where;
-    }
-
-    // returns whether the given object is contained in the given list
-    function contains(a, obj) {
-        var i = a.length;
-        while (i--) {
-           if (a[i] === obj) {
-               return true;
-           }
-        }
-        return false;
-    }
-
-    $scope.scrollToTop = function() {
-        jQuery(window).scrollTop(0);
-    };
     
-    /* ------------ Project Filter ----------------- */
+    /* --------------------------------------------------------------------------------------- */
+    /* --------------------------------- Project Filter -------------------------------------- */
+    /* --------------------------------------------------------------------------------------- */
+    
+    $scope.query = "";
     
     // clear all checkboxes and update projects accordingly
     $scope.clearchkbox = function() {
@@ -370,7 +369,9 @@ function ProjectController($scope, $http, $cookieStore, $window) {
     	return $scope.projects;
     };
     
-    /* -------------- Show Window ------------------ */
+    /* --------------------------------------------------------------------------------------- */
+    /* ----------------------------------- Show Window --------------------------------------- */
+    /* --------------------------------------------------------------------------------------- */
     
     $scope.url = '';
     var showWindow = false;
@@ -407,7 +408,34 @@ function ProjectController($scope, $http, $cookieStore, $window) {
         }
     }
     
-    /* --------------- Epic Animation -------------- */
+    /* --------------------------------------------------------------------------------------- */
+    /* ------------------------------------ Timeout ------------------------------------------ */
+    /* --------------------------------------------------------------------------------------- */
+    
+    // set timer for closing windows after inactivity
+    var inactivityTimer;
+    jQuery(window).mousemove(inactivityReset);
+    jQuery(window).scroll(inactivityReset);
+
+    function inactivityReset() {
+        clearTimeout(inactivityTimer);
+        inactivityTimer = setTimeout(function() {
+            if($scope.isFullScreen) {
+                jQuery(window).scrollTop(0);
+                $scope.hideEpicInfo();
+                showWindow = false;
+            }
+        }, 30000);
+    }
+    
+    $scope.hideEpicInfo = function() {
+    	refresh = true;
+    	clickedEpic = null;
+    };
+    
+    /* --------------------------------------------------------------------------------------- */
+    /* --------------------------------- Epic Animation -------------------------------------- */
+    /* --------------------------------------------------------------------------------------- */
     
     // Animate each epic in the queue of epics to animate
     function animateEpics() {
@@ -438,7 +466,9 @@ function ProjectController($scope, $http, $cookieStore, $window) {
     	return id == animatedStoryId;
     };
     
-    /* ------------------ Main --------------------- */
+    /* --------------------------------------------------------------------------------------- */
+    /* -------------------------------------- Main ------------------------------------------- */
+    /* --------------------------------------------------------------------------------------- */
     
     // get the projects which are unchecked by this user
     $scope.uncheckedProjectIds = $cookieStore.get('projectIds');

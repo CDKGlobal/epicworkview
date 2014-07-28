@@ -52,5 +52,6 @@ module.exports = function(grunt) {
   grunt.registerTask('ut', [/*'karma:unit',*/ 'jshint', 'autoprefixer']);
   grunt.registerTask('it', ['protractor']);
   grunt.registerTask('autoprefix', ['autoprefixer']);
+  grunt.registerTask('lint', ['jshint']);
 
 };

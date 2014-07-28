@@ -20,3 +20,6 @@ node_modules/
 .classpath
 .settings
 .project
+
+# Prefixed files
+*.prefixed.css

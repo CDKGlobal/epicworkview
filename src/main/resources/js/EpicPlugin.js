@@ -194,7 +194,7 @@ function ProjectController($scope, $http, $cookieStore, $window) {
         else {
             $window.location.assign($scope.url);
         }
-    }
+    };
     
     $scope.projectURL = function(project) {
         return $scope.url;

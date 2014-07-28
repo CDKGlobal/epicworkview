@@ -94,7 +94,7 @@
 		      			</ul>
 		      		</li>
 		      		<li class="completed-story-column">{{getCompletedStories(project)}}</li>
-		      		<li class="last-update-column">{{millisecondToString(project.timestamp)}} ago</li>
+		      		<li class="last-update-column">{{millisecondToString(project.timestamp, false)}} ago</li>
 		      		<li class="epic-column">
 		      			<ul class="list inline" ng-controller="EpicController">
 		      				<li class="epic-container" ng-repeat="epic in project.epics" ng-init="setUniqueId(epic)" ng-class="{'clicked-epic': isClicked(epic.id)}" ng-click="toggleEpic($event, epic.id)">
@@ -107,14 +107,14 @@
 		      			</ul>
 		      		</li>
 		      	</ul>
-		      	<div class="epic-info" ng-show="showEpicWindow(project)" ng-click="$event.stopPropagation(); resetWindowTimeout()">
+		      	<div class="epic-info" ng-controller="EpicController" ng-show="showEpicWindow(project)" ng-click="$event.stopPropagation()">
 		      		<ul class="in-progress-stories list-section inline">
-		      			<li class="story" ng-repeat="story in getCompletedEpicStories(project, false)">
+		      			<li class="story" ng-repeat="story in getEpicStories(project, false)">
 		      				<div>
 			      				<ul class="story-header list-section">
 			      					<li><img class="contributor-image" ng-show="story.contributor" src="{{story.contributor.avatar}}" 
 			      							 title="{{story.contributor.name}}" height="24" width="24"></li>
-			      					<li>{{millisecondToStringShort(story.timestamp)}}</li>
+			      					<li>{{millisecondToString(story.timestamp, true)}}</li>
 			      					<li><i class="fa fa-info-circle info-button" ng-click="setActiveProject(story)"></i></li>
 			      					<li><span class="checkmark" ng-show="story.completed">&#x2713;</span></li>			
 			      				</ul>
@@ -123,12 +123,12 @@
 		      			</li>
 		      		</ul>
 		      		<ul class="in-progress-stories list-section inline">
-		      			<li class="story" ng-repeat="story in getCompletedEpicStories(project, true)">
+		      			<li class="story" ng-repeat="story in getEpicStories(project, true)">
 		      				<div>
 			      				<ul class="story-header list-section">
 			      					<li><img class="contributor-image" ng-show="story.contributor" src="{{story.contributor.avatar}}" 
 			      							 title="{{story.contributor.name}}" height="24" width="24"></li>
-			      					<li>{{millisecondToStringShort(story.timestamp)}}</li>
+			      					<li>{{millisecondToString(story.timestamp, true)}}</li>
 			      					<li><i class="fa fa-info-circle info-button" ng-click="setActiveProject(story)"></i></li>
 			      					<li><span class="checkmark" ng-show="story.completed">&#x2713;</span></li>			
 			      				</ul>

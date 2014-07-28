@@ -355,23 +355,24 @@ function ProjectController($scope, $http, $cookieStore, $window) {
     };
     
     // Return the difference between the current time and the given time, as a string
-    $scope.millisecondToString = function(milli) {
+    // returns a shorter string if short is true
+    $scope.millisecondToString = function(milli, short) {
     	currentTime = new Date().getTime();
     	lastUpdated = currentTime - milli;
     	seconds = Math.round(lastUpdated / 1000);
     	if (seconds < 60) {
-    		return pluralize(seconds, "second");
+    		return short ? seconds + "S" : pluralize(seconds, "second");
     	}
     	minutes = Math.round(seconds / 60);
     	if (minutes < 60) {
-    		return pluralize(minutes, "minute");
+    		return short ? minutes + "M" : pluralize(minutes, "minute");
     	}
     	hours = Math.round(minutes / 60);
     	if (hours < 24) {
-    		return pluralize(hours, "hour");
+    		return short ? hours + "H" : pluralize(hours, "hour");
     	}
     	days = Math.round(hours / 24);
-    	return pluralize(days, "day");
+    	return short ? days + "D" : pluralize(days, "day");
     };
     
     // appends an "s" to the unit if the number is greater than one
@@ -381,26 +382,6 @@ function ProjectController($scope, $http, $cookieStore, $window) {
     	}
     	return num + " " + unit + "s";
     }
-    
-    // Return the difference between the current time and the given time, as a short string
-    $scope.millisecondToStringShort = function(milli) {
-    	currentTime = new Date().getTime();
-    	lastUpdated = currentTime - milli;
-    	seconds = Math.round(lastUpdated / 1000);
-    	if (seconds < 60) {
-    		return seconds + "S";
-    	}
-    	minutes = Math.round(seconds / 60);
-    	if (minutes < 60) {
-    		return minutes + "M";
-    	}
-    	hours = Math.round(minutes / 60);
-    	if (hours < 24) {
-    		return hours + "H";
-    	}
-    	days = Math.round(hours / 24);
-    	return days + "D";
-    };
     
     // toggle the projects state and update the cookie for the users checked projects
     $scope.checkProject = function(project) {
@@ -420,68 +401,6 @@ function ProjectController($scope, $http, $cookieStore, $window) {
     	$cookieStore.remove('projectIds');
 		$cookieStore.put('projectIds', $scope.uncheckedProjectIds);
     };
-    
-    // return the clicked epic from the given project, or none if none are clicked
-    getClickedEpic = function(project) {
-    	for (var i = 0; i < project.epics.length; i++) {
-    		if (project.epics[i].id == clickedEpic) {
-    			return project.epics[i];
-    		}
-    	}
-    	return null;
-    };
-    
-    $scope.showEpicWindow = function(project) {
-    	var epic = getClickedEpic(project);
-    	return (epic !== null);
-    };
-    
-    $scope.getClickedEpicDescription = function(project) {
-    	var epic = getClickedEpic(project);
-    	if (epic === null) return null;
-    	return epic.description;
-    };
-
-    $scope.getClickedEpicColor = function(project) {
-        var epic = getClickedEpic(project);
-        if(epic === null) return '#fdf4bb';
-        return epic.color;
-    };
-    
-    $scope.getClickedEpicStories = function(project) {
-    	var epic = getClickedEpic(project);
-    	if (epic === null) return null;
-    	return epic.stories;
-    };
-    
-    $scope.getCompletedEpicStories = function(project, completed) {
-    	var epic = getClickedEpic(project);
-    	if (epic === null) return null;
-    	var result = [];
-    	for (var i = 0; i < epic.stories.length; i++) {
-    		if (epic.stories[i].completed == completed) {
-    			result.push(epic.stories[i]);
-    		}
-    	}
-    	return result;
-    };
-    
-    // get the projects which are unchecked by this user
-    $scope.uncheckedProjectIds = $cookieStore.get('projectIds');
-    // if the user does not have checked preferences, create one for them
-    if (typeof $scope.uncheckedProjectIds === 'undefined') {
-    	$scope.uncheckedProjectIds = [];
-    	$cookieStore.put('projectIds', $scope.uncheckedProjectIds);
-    }   
-    
-    // Get the projects now
-    $scope.getProjects($scope.filterDays * 24 * 60 * 60);
-    
-    // Update projects every 5 seconds
-    setInterval(function(){if (refresh) updateProjects();}, 5000);
-    
-    // Refresh all projects every 5 minutes
-    setInterval(function(){if (refresh) $scope.getProjects($scope.filterDays * 24 * 60 * 60);}, 1000 * 60 * 5);
 
     /*
      * Finds if the element is already in the list and returns the index, based on the element ids
@@ -512,14 +431,35 @@ function ProjectController($scope, $http, $cookieStore, $window) {
     $scope.scrollToTop = function() {
         jQuery(window).scrollTop(0);
     };
-
+    
+    // Sets whether to show the window
     $scope.setShowWindow = function(val) {
         showWindow = val;
     };
 
+    // Returns whether to show the window
     $scope.getShowWindow = function() {
         return showWindow;
     };
+    
+    /* ------------------ Main --------------------- */
+    
+    // get the projects which are unchecked by this user
+    $scope.uncheckedProjectIds = $cookieStore.get('projectIds');
+    // if the user does not have checked preferences, create one for them
+    if (typeof $scope.uncheckedProjectIds === 'undefined') {
+    	$scope.uncheckedProjectIds = [];
+    	$cookieStore.put('projectIds', $scope.uncheckedProjectIds);
+    }   
+    
+    // Get the projects now
+    $scope.getProjects($scope.filterDays * 24 * 60 * 60);
+    
+    // Update projects every 5 seconds
+    setInterval(function(){if (refresh) updateProjects();}, 5000);
+    
+    // Refresh all projects every 5 minutes
+    setInterval(function(){if (refresh) $scope.getProjects($scope.filterDays * 24 * 60 * 60);}, 1000 * 60 * 5);
 }
 
 /*
@@ -538,6 +478,36 @@ function EpicController($scope) {
     		clickedEpic = id;
     		refresh = false; // halt project refresh if epic info is open
     	}
+    };
+    
+    // Returns true if the given project contains a clicked epic, false otherwise
+    $scope.showEpicWindow = function(project) {
+    	var epic = getClickedEpic(project);
+    	return (epic !== null);
+    };
+    
+    // Returns a list of the stories in the clicked epic of the given project. 
+    // Returns completed stories if completed is true, incomplete stories otherwise
+    $scope.getEpicStories = function(project, completed) {
+    	var epic = getClickedEpic(project);
+    	if (epic === null) return null;
+    	var result = [];
+    	for (var i = 0; i < epic.stories.length; i++) {
+    		if (epic.stories[i].completed == completed) {
+    			result.push(epic.stories[i]);
+    		}
+    	}
+    	return result;
+    };
+    
+    // Return the clicked epic from the given project, or none if none are clicked
+    getClickedEpic = function(project) {
+    	for (var i = 0; i < project.epics.length; i++) {
+    		if (project.epics[i].id == clickedEpic) {
+    			return project.epics[i];
+    		}
+    	}
+    	return null;
     };
     
     // Return whether the clicked epic is this epic
@@ -572,3 +542,4 @@ function EpicController($scope) {
     	return sentence;
     };
 }
+

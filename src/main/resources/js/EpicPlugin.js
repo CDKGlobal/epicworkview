@@ -29,7 +29,7 @@ jQuery(document).ready(function() {
  */
 function ProjectController($scope, $http, $cookieStore, $window) {
 	
-	$scope.filterDays = 14;
+	$scope.filterDays = 7;
 	$scope.filter = false;
 	$scope.projects = [];
 	$scope.isFullScreen = false;

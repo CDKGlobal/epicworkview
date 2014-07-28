@@ -82,14 +82,14 @@
 		      			<div class="project-info">
 			      			<span class="project-group">{{project.group}}</span>
 			      			<span>
-			      				<a class="project-name" ng-click="setActiveProject(project)">{{project.name}}</a>
+			      				<a class="project-name" ng-click="setActivePage(project)">{{project.name}}</a>
 			      			</span>   					     						      			
 			      		</div>
 		      		</li>
 		      		<li class="contributor-column">
 		      			<ul class="list inline">
 		      				<li class="contributor" ng-repeat="contributor in getContributors(project)">
-		      					<img class="contributor-image" src="{{contributor.avatar}}" title="{{contributor.name}}" ng-click="goToUser(contributor.id)" height="32" width="32">
+		      					<img class="contributor-image" src="{{contributor.avatar}}" title="{{contributor.name}}" ng-click="setActiveUser(contributor.id)" height="32" width="32">
 		      				</li>
 		      			</ul>
 		      		</li>
@@ -115,7 +115,7 @@
 			      					<li><img class="contributor-image" ng-show="story.contributor" src="{{story.contributor.avatar}}" 
 			      							 title="{{story.contributor.name}}" height="24" width="24"></li>
 			      					<li>{{millisecondToString(story.timestamp, true)}}</li>
-			      					<li><i class="fa fa-info-circle info-button" ng-click="setActiveProject(story)"></i></li>
+			      					<li><i class="fa fa-info-circle info-button" ng-click="setActivePage(story)"></i></li>
 			      					<li><span class="checkmark" ng-show="story.completed">&#x2713;</span></li>			
 			      				</ul>
 			      				<p>{{story.name}}</p>
@@ -129,7 +129,7 @@
 			      					<li><img class="contributor-image" ng-show="story.contributor" src="{{story.contributor.avatar}}" 
 			      							 title="{{story.contributor.name}}" height="24" width="24"></li>
 			      					<li>{{millisecondToString(story.timestamp, true)}}</li>
-			      					<li><i class="fa fa-info-circle info-button" ng-click="setActiveProject(story)"></i></li>
+			      					<li><i class="fa fa-info-circle info-button" ng-click="setActivePage(story)"></i></li>
 			      					<li><span class="checkmark" ng-show="story.completed">&#x2713;</span></li>			
 			      				</ul>
 			      				<p>{{story.name}}</p>
@@ -143,7 +143,7 @@
     	<div ng-show="getShowWindow()" ng-click="setShowWindow(false)">
     		<div class="windowView" id="windowBackground"></div>
 			<div class="windowView">
-				<iframe src="{{projectURL(activeProject)}}"></iframe>
+				<iframe src="{{url}}"></iframe>
   			</div>
   		</div>
     </div>

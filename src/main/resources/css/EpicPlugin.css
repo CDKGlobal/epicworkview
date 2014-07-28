@@ -23,11 +23,11 @@
 }
 
 #nav-bar > ul > li > div {
-	transition: width 1s ease-in-out, background 0.2s ease-in-out;
-	-webkit-transition: width 1s ease-in-out, background 0.2s ease-in-out;
-	-moz-transition: width 1s ease-in-out, background 0.2s ease-in-out;
-	-o-transition: width 1s ease-in-out, background 0.2s ease-in-out;
-	-ms-transition: width 1s ease-in-out, background 0.2s ease-in-out;
+	transition: width 0.4s ease-in-out, background 0.2s ease-in-out;
+	-webkit-transition: width 0.4s ease-in-out, background 0.2s ease-in-out;
+	-moz-transition: width 0.4s ease-in-out, background 0.2s ease-in-out;
+	-o-transition: width 0.4s ease-in-out, background 0.2s ease-in-out;
+	-ms-transition: width 0.4s ease-in-out, background 0.2s ease-in-out;
 
 	background-color: #ebf2f9;
 
@@ -58,19 +58,19 @@
 	position: relative;
 	top: -1px;
 
-	transition: width 1s ease-in-out;
-	-webkit-transition: width 1s ease-in-out;
-	-moz-transition: width 1s ease-in-out;
-	-o-transition: width 1s ease-in-out;
-	-ms-transition: width 1s ease-in-out;
+	transition: width 0.4s ease-in-out;
+	-webkit-transition: width 0.4s ease-in-out;
+	-moz-transition: width 0.4s ease-in-out;
+	-o-transition: width 0.4s ease-in-out;
+	-ms-transition: width 0.4s ease-in-out;
 
-	-webkit-transition-delay: 1s; /* Safari */
-    transition-delay: 1s;
+	-webkit-transition-delay: 0.4s; /* Safari */
+    transition-delay: 0.4s;
 }
 
 #search-slideout {
-	-webkit-transition-delay: 1s; /* Safari */
-    transition-delay: 1s;
+	-webkit-transition-delay: 0.4s; /* Safari */
+    transition-delay: 0.4s;
 }
 
 #search-slideout > input {
@@ -84,14 +84,14 @@
 	font-size: 14pt;
 	border-radius: 5px;
 
-	transition: width 1s ease-in-out;
-	-webkit-transition: width 1s ease-in-out;
-	-moz-transition: width 1s ease-in-out;
-	-o-transition: width 1s ease-in-out;
-	-ms-transition: width 1s ease-in-out;
+	transition: width 0.4s ease-in-out;
+	-webkit-transition: width 0.4s ease-in-out;
+	-moz-transition: width 0.4s ease-in-out;
+	-o-transition: width 0.4s ease-in-out;
+	-ms-transition: width 0.4s ease-in-out;
 
-	-webkit-transition-delay: 1s; /* Safari */
-    transition-delay: 1s;
+	-webkit-transition-delay: 0.4s; /* Safari */
+    transition-delay: 0.4s;
 }
 
 #search-tab:hover, #search-tab:hover li > div:hover {	
@@ -119,11 +119,11 @@
 	overflow: hidden;
 	background-color: #ebf2f9;
 
-	transition: max-height 1s ease-in-out;
-	-webkit-transition: max-height 1s ease-in-out;
-	-moz-transition: max-height 1s ease-in-out;
-	-o-transition: max-height 1s ease-in-out;
-	-ms-transition: max-height 1s ease-in-out;
+	transition: max-height 0.4s ease-in-out;
+	-webkit-transition: max-height 0.4s ease-in-out;
+	-moz-transition: max-height 0.4s ease-in-out;
+	-o-transition: max-height 0.4s ease-in-out;
+	-ms-transition: max-height 0.4s ease-in-out;
 
 	-webkit-transition-delay: 0s; /* Safari */
     transition-delay: 0s;
@@ -133,13 +133,13 @@
 	display: inline;
 	max-height: 330px;
 
-	-webkit-transition-delay: 1s; /* Safari */
-    transition-delay: 1s;
+	-webkit-transition-delay: 0.4s; /* Safari */
+    transition-delay: 0.4s;
 }
 
 #search-slideout {
-	-webkit-transition-delay: 1s !important; /* Safari */
-    transition-delay: 1s !important;
+	-webkit-transition-delay: 0.4s !important; /* Safari */
+    transition-delay: 0.4s !important;
 }
 
 #search-slideout:hover {
@@ -537,6 +537,7 @@ story:nth-child(5n) div {
 
 .contributor-image {
 	border-radius: 5px;
+	cursor: pointer;
 }
 
 /* Filter box animations */
@@ -575,10 +576,9 @@ story:nth-child(5n) div {
     -o-transition: all 2s linear;
     transition: all 2s linear;
     opacity: 0;
-    background-color: #00FF00;
+    background-color: #6C3;
     position: relative;
     max-height: 0px;
-    //display: block;
 } 
 
 .project-row.ng-move.ng-move-active {

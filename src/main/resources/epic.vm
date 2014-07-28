@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>Epic</title>
+    <title>Epics</title>
     <meta name="decorator" content="atl.general">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular-animate.js"></script>
@@ -89,7 +89,7 @@
 		      		<li class="contributor-column">
 		      			<ul class="list inline">
 		      				<li class="contributor" ng-repeat="contributor in getContributors(project)">
-		      					<img class="contributor-image" src="{{contributor.avatar}}" title="{{contributor.name}}" height="32" width="32">
+		      					<img class="contributor-image" src="{{contributor.avatar}}" title="{{contributor.name}}" ng-click="goToUser(contributor.id)" height="32" width="32">
 		      				</li>
 		      			</ul>
 		      		</li>

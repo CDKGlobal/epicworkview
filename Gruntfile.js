@@ -38,7 +38,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-protractor-runner');
 
   grunt.registerTask('default', []);
-  grunt.registerTask('ut', ['karma:unit', 'jshint']);
+  grunt.registerTask('ut', [/*'karma:unit',*/ 'jshint']);
   grunt.registerTask('it', ['protractor']);
 
 };

@@ -381,6 +381,26 @@ function ProjectController($scope, $http, $cookieStore, $window) {
     	return num + " " + unit + "s";
     }
     
+    // Return the difference between the current time and the given time, as a short string
+    $scope.millisecondToStringShort = function(milli) {
+    	currentTime = new Date().getTime();
+    	lastUpdated = currentTime - milli;
+    	seconds = Math.round(lastUpdated / 1000);
+    	if (seconds < 60) {
+    		return seconds + "S";
+    	}
+    	minutes = Math.round(seconds / 60);
+    	if (minutes < 60) {
+    		return minutes + "M";
+    	}
+    	hours = Math.round(minutes / 60);
+    	if (hours < 24) {
+    		return hours + "H";
+    	}
+    	days = Math.round(hours / 24);
+    	return days + "D";
+    };
+    
     // toggle the projects state and update the cookie for the users checked projects
     $scope.checkProject = function(project) {
     	// flip the projects state

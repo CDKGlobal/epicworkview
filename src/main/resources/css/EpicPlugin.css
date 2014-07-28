@@ -352,30 +352,6 @@ ul.inline > .epic-container {
   	-moz-transform:rotate(5deg);
 }
 
-.upper-left {
-	position: absolute;
-	left: 10px;
-	top: 10px;
-	z-index: 4;
-}
-
-.upper-right {
-	position: absolute;
-	right: 10px;
-	top: 10px;
-	z-index: 4;
-	cursor: pointer;
-}
-
-.checkmark {
-	position: absolute;
-	right: 10px;
-	bottom: 0px;
-	font-size: 35px;
-	z-index: 4;
-	
-}
-
 .list {
 	padding-left: 0px;
 	display: flex;
@@ -462,16 +438,37 @@ input {
 	position: absolute;
 }
 
-.story {
-	margin: 10px;
+.story-header {
+	position: absolute;
+	border-bottom: 1px solid #000;
+}
+
+.story-header > li {
+	display: inline-block;
+	margin-right: 22px;
+	vertical-align: middle;
+}
+
+.checkmark {
+	font-size: 35px;
+	z-index: 4;	
+	position: absolute;
+	top: -13px;
+	right: -8px;
+}
+
+.info-button {
+	cursor: pointer;
 }
 
 .story p {
+	margin-top: 32px;
 	font-family: "Reenie Beanie", arial, sans-serif;
 	font-size: 155%;
 }
 
-.story > a {
+.story > div {
+	margin: 10px;
 	text-decoration: none;
 	color: #000;
 	background: #fdf4bb;
@@ -498,7 +495,7 @@ input {
 
 /* "Random" tilting of stories */
 
-.story:nth-child(even) a {
+.story:nth-child(even) div {
   	-o-transform:rotate(4deg);
   	-webkit-transform:rotate(4deg);
   	-moz-transform:rotate(4deg);
@@ -506,7 +503,7 @@ input {
   	top:5px;
 }
 
-.story:nth-child(3n) a {
+.story:nth-child(3n) div {
   	-o-transform:rotate(-3deg);
   	-webkit-transform:rotate(-3deg);
   	-moz-transform:rotate(-3deg);
@@ -514,7 +511,7 @@ input {
   	top:-5px;
 }
 
-story:nth-child(5n) a {
+story:nth-child(5n) div {
   	-o-transform:rotate(5deg);
   	-webkit-transform:rotate(5deg);
   	-moz-transform:rotate(5deg);
@@ -523,7 +520,7 @@ story:nth-child(5n) a {
 }
 
 /* Zooming in on stories */
-.story > a:hover, .story > a:focus {
+.story:hover div, .story:focus div {
   	-moz-box-shadow:10px 10px 7px rgba(0,0,0,.7);
   	-webkit-box-shadow: 10px 10px 7px rgba(0,0,0,.7);
   	box-shadow:10px 10px 7px rgba(0,0,0,.7);

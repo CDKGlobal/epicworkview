@@ -24,10 +24,6 @@
 
 #nav-bar > ul > li > div {
 	transition: width 0.4s ease-in-out, background 0.2s ease-in-out;
-	-webkit-transition: width 0.4s ease-in-out, background 0.2s ease-in-out;
-	-moz-transition: width 0.4s ease-in-out, background 0.2s ease-in-out;
-	-o-transition: width 0.4s ease-in-out, background 0.2s ease-in-out;
-	-ms-transition: width 0.4s ease-in-out, background 0.2s ease-in-out;
 
 	background-color: #ebf2f9;
 
@@ -59,17 +55,11 @@
 	top: -1px;
 
 	transition: width 0.4s ease-in-out;
-	-webkit-transition: width 0.4s ease-in-out;
-	-moz-transition: width 0.4s ease-in-out;
-	-o-transition: width 0.4s ease-in-out;
-	-ms-transition: width 0.4s ease-in-out;
 
-	-webkit-transition-delay: 0.4s; /* Safari */
     transition-delay: 0.4s;
 }
 
 #search-slideout {
-	-webkit-transition-delay: 0.4s; /* Safari */
     transition-delay: 0.4s;
 }
 
@@ -85,19 +75,13 @@
 	border-radius: 5px;
 
 	transition: width 0.4s ease-in-out;
-	-webkit-transition: width 0.4s ease-in-out;
-	-moz-transition: width 0.4s ease-in-out;
-	-o-transition: width 0.4s ease-in-out;
-	-ms-transition: width 0.4s ease-in-out;
 
-	-webkit-transition-delay: 0.4s; /* Safari */
     transition-delay: 0.4s;
 }
 
 #search-tab:hover, #search-tab:hover li > div:hover {	
 	width: 250px;
 
-	-webkit-transition-delay: 0s; /* Safari */
     transition-delay: 0s;
 }
 
@@ -105,7 +89,6 @@
 	width: 190px;
 	display: inline !important;
 
-	-webkit-transition-delay: 0s; /* Safari */
     transition-delay: 0s;
 }
 
@@ -120,12 +103,7 @@
 	background-color: #ebf2f9;
 
 	transition: max-height 0.4s ease-in-out;
-	-webkit-transition: max-height 0.4s ease-in-out;
-	-moz-transition: max-height 0.4s ease-in-out;
-	-o-transition: max-height 0.4s ease-in-out;
-	-ms-transition: max-height 0.4s ease-in-out;
 
-	-webkit-transition-delay: 0s; /* Safari */
     transition-delay: 0s;
 }
 
@@ -133,17 +111,14 @@
 	display: inline;
 	max-height: 330px;
 
-	-webkit-transition-delay: 0.4s; /* Safari */
     transition-delay: 0.4s;
 }
 
 #search-slideout {
-	-webkit-transition-delay: 0.4s !important; /* Safari */
     transition-delay: 0.4s !important;
 }
 
 #search-slideout:hover {
-	-webkit-transition-delay: 0s !important; /* Safari */
     transition-delay: 0s !important;
 }
 
@@ -169,20 +144,7 @@
 	background: #f5f5f5;
 }
 
-
-/*.popup-window {
-	height: 1000px;
-	width: 110%;
-	display: block;
-	margin: 0 auto;
-}*/
-
 .unselectable {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
     user-select: none;
 }
 
@@ -312,9 +274,6 @@ ul.inline > .epic-container {
 	margin-right: 24px;
 	cursor: pointer;
 	
-	-moz-transition:-moz-transform .1s linear;
-  	-o-transition:-o-transform .1s linear;
-  	-webkit-transition:-webkit-transform .1s linear;
 }
 
 .post-it {
@@ -326,30 +285,22 @@ ul.inline > .epic-container {
 	height: 3em;
 	width: 3em;
 	bottom: -1em;
-    
-    -webkit-transform:rotate(-6deg);
-  	-o-transform:rotate(-6deg);
-  	-moz-transform:rotate(-6deg);
+
+    transform: rotate(-6deg);
 }
 
 /* "Random" tilting of stories */
 
 .post-it:nth-child(even) {
-  	-o-transform:rotate(4deg);
-  	-webkit-transform:rotate(4deg);
-  	-moz-transform:rotate(4deg);
+    transform: rotate(4deg);
 }
 
 .post-it:nth-child(3n) {
-  	-o-transform:rotate(-3deg);
-  	-webkit-transform:rotate(-3deg);
-  	-moz-transform:rotate(-3deg);
+    transform: rotate(-3deg);
 }
 
 .post-it:nth-child(5n) {
-  	-o-transform:rotate(5deg);
-  	-webkit-transform:rotate(5deg);
-  	-moz-transform:rotate(5deg);
+    transform: rotate(5deg);
 }
 
 .list {
@@ -369,9 +320,7 @@ ul.inline > .epic-container {
 }
 
 .clicked-epic {
-	-webkit-transform: scale(1.25);
-  	-moz-transform: scale(1.25);
-  	-o-transform: scale(1.25);
+    transform: scale(1.25);
   	z-index: 4;
 }
 
@@ -472,61 +421,43 @@ input {
 	text-decoration: none;
 	color: #000;
 	background: #fdf4bb;
-	display: -webkit-inline-flex;
-	display: -webkit-inline-box;
 	display: inline-flex;
 	height: 10em;
 	width: 10em;
 	padding: 1em;
 	overflow: hidden;
 
-  	-moz-box-shadow: 5px 5px 7px rgba(33, 33, 33, 1);
-	-webkit-box-shadow: 5px 5px 7px rgba(33, 33, 33, .7);
 	box-shadow: 5px 5px 7px rgba(33, 33, 33, .7);
-	
-	-webkit-transform:rotate(-6deg);
-  	-o-transform:rotate(-6deg);
-  	-moz-transform:rotate(-6deg);
-  	
-  	-moz-transition:-moz-transform .15s linear;
-  	-o-transition:-o-transform .15s linear;
-  	-webkit-transition:-webkit-transform .15s linear;
+
+	transform: rotate(-6deg);
+
+  	transition: transform .15s linear;
 }
 
 /* "Random" tilting of stories */
 
 .story:nth-child(even) div {
-  	-o-transform:rotate(4deg);
-  	-webkit-transform:rotate(4deg);
-  	-moz-transform:rotate(4deg);
+    transform: rotate(4deg);
   	position:relative;
   	top:5px;
 }
 
 .story:nth-child(3n) div {
-  	-o-transform:rotate(-3deg);
-  	-webkit-transform:rotate(-3deg);
-  	-moz-transform:rotate(-3deg);
+    transform: rotate(-3deg);
   	position:relative;
   	top:-5px;
 }
 
 story:nth-child(5n) div {
-  	-o-transform:rotate(5deg);
-  	-webkit-transform:rotate(5deg);
-  	-moz-transform:rotate(5deg);
+    transform: rotate(5deg);
   	position:relative;
   	top:-10px;
 }
 
 /* Zooming in on stories */
 .story:hover div, .story:focus div {
-  	-moz-box-shadow:10px 10px 7px rgba(0,0,0,.7);
-  	-webkit-box-shadow: 10px 10px 7px rgba(0,0,0,.7);
   	box-shadow:10px 10px 7px rgba(0,0,0,.7);
-  	-webkit-transform: scale(1.25);
-  	-moz-transform: scale(1.25);
-  	-o-transform: scale(1.25);
+  	transform: scale(1.25);
   	position:relative;
   	z-index:2;
 }
@@ -544,10 +475,6 @@ story:nth-child(5n) div {
 
 .repeat-item.ng-enter,
 .repeat-item.ng-leave { 
-    -webkit-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
-    -moz-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
-    -ms-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
-    -o-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
     transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
     position: relative;
     display: block;
@@ -570,10 +497,6 @@ story:nth-child(5n) div {
 /* Project row animations */
 
 .project-row.ng-move { 
-	-webkit-transition: all 2s linear;
-    -moz-transition: all 2s linear;
-    -ms-transition: all 2s linear;
-    -o-transition: all 2s linear;
     transition: all 2s linear;
     opacity: 0;
     background-color: #6C3;

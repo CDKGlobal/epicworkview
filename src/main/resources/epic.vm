@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>Epic</title>
+    <title>Epics</title>
     <meta name="decorator" content="atl.general">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular-animate.js"></script>

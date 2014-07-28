@@ -11,6 +11,8 @@
     "grunt-protractor-runner": "^1.0.1",
     "grunt-shell": "0.7.x",
     "grunt-contrib-jshint": "0.10.x",
+    "caniuse-db": "1.0.x",
+    "grunt-autoprefixer": "0.8.2",
     "jasmine-reporters": "0.4.x",
     "karma": "0.12.x",
     "karma-chrome-launcher": "0.1.x",

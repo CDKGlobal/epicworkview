@@ -29,16 +29,28 @@ module.exports = function(grunt) {
     			// Arguments passed to the command
     		}
     	}
-    }
-  
+    },
+
+    autoprefixer: {
+        options: {
+          browsers: ['> 1%', 'last 2 versions', 'Firefox ESR', 'Opera 12.1', 'ie >= 9']
+        },
+        prefix: {
+          src: 'src/main/resources/css/EpicPlugin.css',
+          dest: 'src/main/resources/css/EpicPlugin.prefixed.css'
+        },
+      }
   });
 
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-protractor-runner');
+  grunt.loadNpmTasks('grunt-autoprefixer');
+
 
   grunt.registerTask('default', []);
-  grunt.registerTask('ut', [/*'karma:unit',*/ 'jshint']);
+  grunt.registerTask('ut', [/*'karma:unit',*/ 'jshint', 'autoprefixer']);
   grunt.registerTask('it', ['protractor']);
+  grunt.registerTask('autoprefix', ['autoprefixer']);
 
 };

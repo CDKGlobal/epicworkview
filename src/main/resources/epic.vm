@@ -89,7 +89,7 @@
 		      		<li class="contributor-column">
 		      			<ul class="list inline">
 		      				<li class="contributor" ng-repeat="contributor in getContributors(project)">
-		      					<img class="contributor-image" src="{{contributor.avatar}}" title="{{contributor.name}}" height="32" width="32">
+		      					<img class="contributor-image" src="{{contributor.avatar}}" title="{{contributor.name}}" ng-click="goToUser(contributor.id)" height="32" width="32">
 		      				</li>
 		      			</ul>
 		      		</li>

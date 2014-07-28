@@ -34,7 +34,7 @@ function ProjectController($scope, $http, $cookieStore, $window) {
 	$scope.projects = [];
 	$scope.isFullScreen = false;
 	$scope.query = "";
-    $scope.activeProject = null;
+    $scope.url = '';
 
     var showWindow = false;
 
@@ -177,27 +177,28 @@ function ProjectController($scope, $http, $cookieStore, $window) {
     $scope.storyIsAnimated = function(id) {
     	return id == animatedStoryId;
     };
+
+    $scope.goToUser = function(id) {
+        $scope.setupModal(baseURL + "/secure/ViewProfile.jspa?name=" + id);
+    };
     
     $scope.setActiveProject = function(project) {
-    	$scope.activeProject = project;
+        $scope.setupModal(baseURL + "/browse/" + project.key);
+    };
+
+    $scope.setupModal = function(url) {
+        $scope.url = url;
         if($scope.isFullScreen) {
             $scope.setShowWindow(true);
         }
         else {
-            $window.location.assign(baseURL + "/browse/" + project.key);
+            $window.location.assign($scope.url);
         }
-    };
+    }
     
     $scope.projectURL = function(project) {
-        if(!$scope.getShowWindow() || project === null) {
-            return '';
-        }
-        else {
-    	   url = baseURL + "/browse/" + project.key;
-    	   return url;
-        }
+        return $scope.url;
     };
-    
     
     /*
      * Remove elements from the list that are older than days old

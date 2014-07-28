@@ -540,6 +540,7 @@ story:nth-child(5n) a {
 
 .contributor-image {
 	border-radius: 5px;
+	cursor: pointer;
 }
 
 /* Filter box animations */

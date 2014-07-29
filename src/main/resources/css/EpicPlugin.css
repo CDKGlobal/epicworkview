@@ -404,6 +404,7 @@ input {
 	position: absolute;
 	margin-top: -2px;
 	border-bottom: 1px solid #000;
+	width: 85%;
 }
 
 .story-header > li {
@@ -416,8 +417,8 @@ input {
 	font-size: 35px;
 	z-index: 4;	
 	position: absolute;
-	top: -13px;
-	right: -8px;
+	top: 0px;
+	right: 5px;
 }
 
 .info-button {

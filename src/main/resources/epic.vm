@@ -114,9 +114,9 @@
 			      					<li><img class="contributor-image" ng-show="story.contributor" src="{{story.contributor.avatar}}" 
 			      							 title="{{story.contributor.name}}" height="24" width="24"></li>
 			      					<li>{{millisecondToString(story.timestamp, true)}}</li>
-			      					<li><i class="fa fa-info-circle info-button" ng-click="setActivePage(story)"></i></li>
-			      					<li><span class="checkmark" ng-show="story.completed">&#x2713;</span></li>			
+			      					<li><i class="fa fa-info-circle info-button" ng-click="setActivePage(story)"></i></li>			      							
 			      				</ul>
+			      				<span class="checkmark" ng-show="story.completed">&#x2713;</span>
 			      				<p>{{story.name}}</p>
 			      			</div>
 		      			</li>
@@ -128,9 +128,9 @@
 			      					<li><img class="contributor-image" ng-show="story.contributor" src="{{story.contributor.avatar}}" 
 			      							 title="{{story.contributor.name}}" height="24" width="24"></li>
 			      					<li>{{millisecondToString(story.timestamp, true)}}</li>
-			      					<li><i class="fa fa-info-circle info-button" ng-click="setActivePage(story)"></i></li>
-			      					<li><span class="checkmark" ng-show="story.completed">&#x2713;</span></li>			
+			      					<li><i class="fa fa-info-circle info-button" ng-click="setActivePage(story)"></i></li>			      							
 			      				</ul>
+			      				<span class="checkmark" ng-show="story.completed">&#x2713;</span>
 			      				<p>{{story.name}}</p>
 			      			</div>
 		      			</li>

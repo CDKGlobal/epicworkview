@@ -556,7 +556,7 @@ function EpicController($scope) {
     	var epic = getClickedEpic(project);
     	if (epic === null) return null;
     	return $scope.getEpicColor(epic);
-    }
+    };
     
     // Return the epic's color, and set whether the new colors are being used
     $scope.getEpicColor = function(epic) {

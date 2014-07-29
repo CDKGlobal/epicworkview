@@ -13,7 +13,7 @@
   <!-- add our web resources -->
   <web-resource key="EpicPlugin-resources" name="EpicPlugin Web Resources">
     <dependency>com.atlassian.auiplugin:ajs</dependency>
-    <resource type="download" name="EpicPlugin.css" location="/css/EpicPlugin.prefixed.css"/>
+    <resource type="download" name="EpicPlugin.prefixed.css" location="/css/EpicPlugin.prefixed.css"/>
     <resource type="download" name="EpicPlugin.js" location="/js/EpicPlugin.js"/>
     <resource type="download" name="images/" location="/images"/>
     <context>EpicPlugin</context>

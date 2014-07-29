@@ -22,11 +22,6 @@
 						<i class="fa fa-expand fa-2x" ng-class="{'fa-compress': isFullScreen}"></i>
 					</div>
     			</li>
-    			<li>
-    				<div ng-click="scrollToTop()">
-    					<i class="fa fa-arrow-up fa-2x"></i>
-    				</div>
-    			</li>
     		</ul>
     		<ul id="search-tab">
     			<li>
@@ -54,6 +49,10 @@
     			</li>
     		</ul>
     	</div>
+
+    	<!-- scroll-to-top button --> 
+		<a href="#" id="scroll-to-top"><i class="fa fa-angle-up fa-2x"></i></a>
+
     	<div id="top-bar" ng-show="isFullScreen"></div>
 	    <ul id="projects" class="list-section">
 	      <li class=table-header ng-class="{'fixed-header': isFullScreen}">

@@ -45,14 +45,6 @@ jQuery(document).ready(function() {
  * Controller to manage table of projects
  */
 function ProjectController($scope, $http, $cookieStore, $window, $location) {
-    $scope.embeddedUrl = "";
-
-    $scope.cookieState = function() {
-        var location = $window.location;
-        $scope.embeddedUrl = [location.protocol, '//', location.host, location.pathname, '?ids=', $scope.uncheckedProjectIds.join()].join('');
-    };
-
-    
 
 	$scope.filterDays = 7;
 
@@ -360,6 +352,8 @@ function ProjectController($scope, $http, $cookieStore, $window, $location) {
     
     $scope.query = "";
     
+    $scope.embeddedUrl = "";
+    
     // clear all checkboxes and update projects accordingly
     $scope.clearchkbox = function() {
         angular.forEach($scope.filteredProjects, function (project) {
@@ -396,6 +390,12 @@ function ProjectController($scope, $http, $cookieStore, $window, $location) {
     	$cookieStore.remove('projectIds');
 		$cookieStore.put('projectIds', $scope.uncheckedProjectIds);
         $scope.cookieState();
+    };
+    
+    // Sets embedded url
+    $scope.cookieState = function() {
+        var location = $window.location;
+        $scope.embeddedUrl = [location.protocol, '//', location.host, location.pathname, '?ids=', $scope.uncheckedProjectIds.join()].join('');
     };
     
     $scope.search = function (item){

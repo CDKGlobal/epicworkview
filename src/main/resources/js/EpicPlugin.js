@@ -493,6 +493,8 @@ function ProjectController($scope, $http, $cookieStore, $window) {
  * Determines which epic information to display
  */
 function EpicController($scope) {
+	
+	var usingNewColors = false;
 
     // Set the clicked epic to be id or null if it is already id
     $scope.toggleEpic = function(e, id) {
@@ -547,6 +549,21 @@ function EpicController($scope) {
     		epic.id = uniqueEpicId;
     		uniqueEpicId--;
     	}
+    };
+    
+    // Return the epic's color, and set whether the new colors are being used
+    $scope.getEpicColor = function(epic) {
+    	if (epic.id < 0) {
+    		if (!usingNewColors) {
+    			return ".ghx-label-3";    			
+    		}
+    		return epic.color;
+    	} else if (epic.color[0] == '#') {
+    		usingNewColors = false;
+    	} else {
+    		usingNewColors = true;
+    	}
+    	return epic.color;
     };
     
     // Returns a list of post it positions to use for the background of the

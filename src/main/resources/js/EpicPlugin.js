@@ -41,12 +41,19 @@ jQuery(document).ready(function() {
     });
 });
 
-
 /*
  * Controller to manage table of projects
  */
-function ProjectController($scope, $http, $cookieStore, $window) {
-	
+function ProjectController($scope, $http, $cookieStore, $window, $location) {
+    $scope.embeddedUrl = "";
+
+    $scope.cookieState = function() {
+        var location = $window.location;
+        $scope.embeddedUrl = [location.protocol, '//', location.host, location.pathname, '?ids=', $scope.uncheckedProjectIds.join()].join('');
+    };
+
+    
+
 	$scope.filterDays = 7;
 
     $scope.getBaseURL = function() {
@@ -377,19 +384,18 @@ function ProjectController($scope, $http, $cookieStore, $window) {
     $scope.checkProject = function(project) {
     	// flip the projects state
     	project.state = !project.state;
-    	if (project.state === true) {
+        var projIndex = $scope.uncheckedProjectIds.indexOf(project.id);
+    	if (project.state && projIndex != -1) {
     		// remove project from unchecked projects list
-    		var projIndex = $scope.uncheckedProjectIds.indexOf(project.id);
-    		if (projIndex != -1) {
-    			$scope.uncheckedProjectIds.splice(projIndex, 1);
-    		}
-    	} else {
+    		$scope.uncheckedProjectIds.splice(projIndex, 1);
+    	} else if(projIndex == -1) {
     		// add project to unchecked projects list
     		$scope.uncheckedProjectIds.push(project.id);
     	}
     	// update the cookie
     	$cookieStore.remove('projectIds');
 		$cookieStore.put('projectIds', $scope.uncheckedProjectIds);
+        $scope.cookieState();
     };
     
     $scope.search = function (item){
@@ -517,7 +523,34 @@ function ProjectController($scope, $http, $cookieStore, $window) {
     if (typeof $scope.uncheckedProjectIds === 'undefined') {
     	$scope.uncheckedProjectIds = [];
     	$cookieStore.put('projectIds', $scope.uncheckedProjectIds);
-    }   
+    }
+
+    var stuff = $window.location.search;
+    stuff = stuff.slice(1);//remove ?
+    stuff = stuff.split('&');
+
+    var key = 'ids';
+
+    angular.forEach(stuff, function(e, i) {
+        if(e.slice(0, key.length) == key) {
+            var values = e.split('=')[1];
+            if(values.length > 0) {
+                values = values.split(',');
+            
+                $scope.uncheckedProjectIds = [];
+
+                angular.forEach(values, function(element, index) {
+                    $scope.uncheckedProjectIds.push(parseInt(element));
+                });
+
+                $cookieStore.remove('projectIds');
+                $cookieStore.put('projectIds', $scope.uncheckedProjectIds);
+            }
+        }
+    });
+
+    console.log($cookieStore.get('projectIds'));
+    $scope.cookieState();
     
     // Get the projects now
     $scope.getProjects($scope.filterDays * 24 * 60 * 60);

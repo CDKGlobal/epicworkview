@@ -10,7 +10,16 @@
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link  href="https://fonts.googleapis.com/css?family=Reenie+Beanie:regular" rel="stylesheet" type="text/css">
     <script type="text/javascript">
-      var myApp = angular.module('myApp', ['ngAnimate', 'ngCookies']);
+		var myApp = angular.module('myApp', ['ngAnimate', 'ngCookies']).directive('selectonclick', function () {
+    		return {
+        	restrict: 'A',
+        		link: function (scope, element, attrs) {
+            		element.on('click', function () {
+                		this.select();
+            		});
+        		}
+    		};
+		});
     </script>
   </head>
   <body>
@@ -21,6 +30,14 @@
     				<div ng-click="toggleFullScreen()">
 						<i class="fa fa-expand fa-2x" ng-class="{'fa-compress': isFullScreen}"></i>
 					</div>
+    			</li>
+    		</ul>
+    		<ul id="search-tab">
+    			<li>
+    				<div id="search-slideout" ng-click="cookieState()">
+    					<input type="text" ng-model="embeddedUrl" autocomplete="off" wrap="off" readonly selectonclick/>
+    					<i class="fa fa-link fa-2x"></i>
+    				</div>
     			</li>
     		</ul>
     		<ul id="search-tab">

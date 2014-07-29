@@ -73,7 +73,10 @@
 	        <li class="epic-column">Epics</li>
 	      </ul>
 	      </li>
-	      	<li class="table-body" ng-class="{'fixed-body': isFullScreen}">
+	      	<li class="loading-bar" ng-show="loading">
+	      		<i class="fa fa-spinner fa-spin fa-4x"></i>
+	      	</li>
+	      	<li class="table-body" ng-hide="loading" ng-class="{'fixed-body': isFullScreen}">
 		      <div class="project-row table-row" ng-repeat="project in timeOrderedProjects() | filter: {included:true}">
 		      	<ul class="inline">
 		      		<li class="project-column">	

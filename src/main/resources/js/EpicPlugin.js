@@ -84,6 +84,8 @@ function ProjectController($scope, $http, $cookieStore, $window) {
     /* --------------------------------------------------------------------------------------- */
     
 	$scope.projects = [];
+	
+	$scope.loading = true;
     
     // Get all the projects in the last amount of seconds and set them in a local variable (projects)
     $scope.getProjects = function(seconds) {
@@ -97,6 +99,7 @@ function ProjectController($scope, $http, $cookieStore, $window) {
 	    	//add the new projects to the projects array
 	    	updateElementList($scope.projects, data, "project");
 	    	animateEpics();
+	    	$scope.loading = false;
 	    }).
 	    error(function(data, status, headers, config) {
 	      // log error

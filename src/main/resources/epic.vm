@@ -110,7 +110,7 @@
 		      	<div class="epic-info" ng-controller="EpicController" ng-show="showEpicWindow(project)" ng-click="$event.stopPropagation()">
 		      		<ul class="in-progress-stories list-section inline">
 		      			<li class="story" ng-repeat="story in getEpicStories(project, false)">
-		      				<div>
+		      				<div ng-style="{'background': '{{getClickedEpicColor(project)}}'}" ng-class="getClickedEpicColor(project)">
 			      				<ul class="story-header list-section">
 			      					<li><img class="contributor-image" ng-show="story.contributor" src="{{story.contributor.avatar}}" 
 			      							 title="{{story.contributor.name}}" height="24" width="24"></li>
@@ -124,7 +124,7 @@
 		      		</ul>
 		      		<ul class="in-progress-stories list-section inline">
 		      			<li class="story" ng-repeat="story in getEpicStories(project, true)">
-		      				<div>
+		      				<div ng-style="{'background': '{{getClickedEpicColor(project)}}'}" ng-class="getClickedEpicColor(project)">
 			      				<ul class="story-header list-section">
 			      					<li><img class="contributor-image" ng-show="story.contributor" src="{{story.contributor.avatar}}" 
 			      							 title="{{story.contributor.name}}" height="24" width="24"></li>

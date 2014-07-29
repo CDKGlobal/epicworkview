@@ -551,11 +551,17 @@ function EpicController($scope) {
     	}
     };
     
+    $scope.getClickedEpicColor = function(project) {
+    	var epic = getClickedEpic(project);
+    	if (epic === null) return null;
+    	return $scope.getEpicColor(epic);
+    }
+    
     // Return the epic's color, and set whether the new colors are being used
     $scope.getEpicColor = function(epic) {
     	if (epic.id < 0) {
-    		if (!usingNewColors) {
-    			return ".ghx-label-3";    			
+    		if (usingNewColors) {
+    			return "ghx-label-3";    			
     		}
     		return epic.color;
     	} else if (epic.color[0] == '#') {

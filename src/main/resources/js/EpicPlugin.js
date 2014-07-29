@@ -89,10 +89,14 @@ function ProjectController($scope, $http, $cookieStore, $window) {
     $scope.getProjects = function(seconds) {
     	$http.get(baseURL+'/rest/epic/1/projects.json?seconds='+seconds).
 	    success(function(data, status, headers, config) {
-	      lastUpdateTime = new Date().getTime();
-	      //add the new projects to the projects array
-	      updateElementList($scope.projects, data, "project");
-	      animateEpics();
+	    	// check if using new colors
+	    	if (!usingNewColors) {
+	    		setColor(data);
+	    	}	
+	    	lastUpdateTime = new Date().getTime();
+	    	//add the new projects to the projects array
+	    	updateElementList($scope.projects, data, "project");
+	    	animateEpics();
 	    }).
 	    error(function(data, status, headers, config) {
 	      // log error
@@ -194,6 +198,26 @@ function ProjectController($scope, $http, $cookieStore, $window) {
     	var secsSinceUpdate = (new Date().getTime() - lastUpdateTime) / 1000;
     	$scope.getProjects(Math.ceil(secsSinceUpdate));
     };
+    
+    // Loop through epics to find a non-null epic and set whether it is using new colors
+    function setColor(projects) {
+    	for (var i = 0; i < projects.length; i++) {
+    		var j = 0;
+    		var epic = projects[i].epics[0];
+    		while (epic !== undefined && epic !== null) {
+    			if (epic.id >= 0) {
+    				if (epic.color[0] == '#') {
+    					usingNewColors = false;
+    				} else {
+    					usingNewColors = true;
+    				}
+    				return;
+    			}
+    			j++;
+    			epic = projects[i].epics[j];
+    		}
+    	}
+    }
     
     // sort the projects by last updated time
     $scope.timeOrderedProjects = function() {

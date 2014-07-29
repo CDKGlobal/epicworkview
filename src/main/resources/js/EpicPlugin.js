@@ -17,6 +17,9 @@ var uniqueEpicId = -1;
 // Each epic is a queue with an epic followed by stories to animate
 var epicAnimationQueue = [];
 
+// Whether Jira is using the new colors
+var usingNewColors = false;
+
 var baseURL;
 
 jQuery(document).ready(function() {
@@ -493,8 +496,6 @@ function ProjectController($scope, $http, $cookieStore, $window) {
  * Determines which epic information to display
  */
 function EpicController($scope) {
-	
-	var usingNewColors = false;
 
     // Set the clicked epic to be id or null if it is already id
     $scope.toggleEpic = function(e, id) {

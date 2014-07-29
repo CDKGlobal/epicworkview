@@ -98,8 +98,8 @@
 		      		<li class="epic-column">
 		      			<ul class="list inline" ng-controller="EpicController">
 		      				<li class="epic-container" ng-repeat="epic in project.epics" ng-init="setUniqueId(epic)" ng-class="{'clicked-epic': isClicked(epic.id)}" ng-click="toggleEpic($event, epic.id)">
-		      					<div class="post-it" ng-repeat="padding in getPostItOffsets(shorten(epic.name))" ng-style="{'left': '{{padding}}px', 'background': '{{epic.color}}'}" ng-class="epic.color"></div>
-		      					<div class="post-it" ng-repeat="padding in getPostItOffsets(shorten(epic.name))" ng-style="{'right': '{{padding}}px', 'background': '{{epic.color}}'}" ng-class="epic.color"></div>
+		      					<div class="post-it" ng-repeat="padding in getPostItOffsets(shorten(epic.name))" ng-style="{'left': '{{padding}}px', 'background': '{{getEpicColor(epic)}}'}" ng-class="getEpicColor(epic)"></div>
+		      					<div class="post-it" ng-repeat="padding in getPostItOffsets(shorten(epic.name))" ng-style="{'right': '{{padding}}px', 'background': '{{getEpicColor(epic)}}'}" ng-class="getEpicColor(epic)"></div>
 		      					<span class="epic" ng-style="{'background-color': '{{getEpicColor(epic)}}'}" ng-class="getEpicColor(epic)">
 		      						{{shorten(epic.name)}}
 		      					</span>

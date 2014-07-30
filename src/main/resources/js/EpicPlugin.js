@@ -122,7 +122,9 @@ function ProjectController($scope, $http, $cookieStore, $window, $location) {
 	    			if (elementType == "epic") {
 						epicAnimationQueue.push([savedElement]);
 					} else if (elementType == "story") {
-						epicAnimationQueue[epicAnimationQueue.length - 1].push(savedElement);
+						if (epicAnimationQueue.length > 0) {
+							epicAnimationQueue[epicAnimationQueue.length - 1].push(savedElement);
+						}	
 					}	
 	    			// set its state to true if it is a project and not in the list of unchecked projects
 	    			if (elementType == "project" && !contains($scope.uncheckedProjectIds, element.id)) {

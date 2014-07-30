@@ -80,7 +80,7 @@
 	          <li class="contributor-column">Contributors</li>
 	          <li class="completed-story-column">Stories Completed</li>
 	          <li class="last-update-column">Last Update 
-	          	<select ng-show="!isFullScreen" ng-model='filterDays' ng-change='getProjects(filterDays * 24 * 60 * 60)'>
+	          	<select ng-show="!isFullScreen" ng-model='filterDays' ng-change='loading=true; getProjects(filterDays * 24 * 60 * 60)'>
   					<option value="1">1 day</option>
  				 	<option value="2">2 days</option>
   					<option value="7">7 days</option>

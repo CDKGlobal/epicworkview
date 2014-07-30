@@ -660,10 +660,6 @@ story:nth-child(5n) div {
   border-color: #202020 !important;
 }
 
-.white-border {
-	border-color: #fff !important;
-}
-
 .windowView {
 	display: block;
 
@@ -718,4 +714,8 @@ iframe {
 .info-window h1 {
 	text-align: center;
 	border-bottom: 1px solid black;
+}
+
+#announcement-banner {
+	display: none !important;
 }

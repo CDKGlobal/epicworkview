@@ -243,8 +243,12 @@ function ProjectController($scope, $http, $cookieStore, $window, $location) {
     /* -------------------------------- Contributor List ------------------------------------- */
     /* --------------------------------------------------------------------------------------- */
     
- // returns all contributors for this project in order of time worked on project
+    // The max number of contributors to display
+    var maxContributors = 20;
+    
+    // returns all contributors for this project in order of time worked on project
     $scope.getContributors = function(project) {
+    	project.contributorCount = 0;
     	// get map of timestamps to lists of contributors
     	var contributorTimestamps = {};
     	getContributorsHelper(contributorTimestamps, project, "project");
@@ -260,12 +264,16 @@ function ProjectController($scope, $http, $cookieStore, $window, $location) {
     	angular.forEach(timestamps, function(timestamp) {
 			var contributors = contributorTimestamps[timestamp];
 			angular.forEach(contributors, function(c) {
-				// add to result if not a duplicate
+				// add to result if not a duplicate and not above max contributors
 				if (indexOf(result, c) == -1) {
-					result.push(c);
+					result.push(c);					
+					project.contributorCount++;
 				}
     		});
 		});
+    	if (result.length > maxContributors) {
+    		return result.slice(0, maxContributors - 1);
+    	}
     	return result;
     };
     
@@ -301,6 +309,15 @@ function ProjectController($scope, $http, $cookieStore, $window, $location) {
     		}
     	}
     }
+    
+    // Return how many extra contributors there are for the project after
+    // the max contributor count
+    $scope.extraContributorCount = function(project) {
+    	if (project.contributorCount === undefined) {
+    		return 0;
+    	}
+    	return project.contributorCount - maxContributors + 1;
+    };
     
     /* --------------------------------------------------------------------------------------- */
     /* ------------------------------ Other Table Columns ------------------------------------ */

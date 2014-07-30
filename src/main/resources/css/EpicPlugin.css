@@ -481,6 +481,15 @@ story:nth-child(5n) div {
 	cursor: pointer;
 }
 
+.extra-contributors {
+	height: 32px;
+	width: 32px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	text-align: center;
+	font-size: 14pt;
+}
+
 /* Filter box animations */
 
 .repeat-item.ng-enter,

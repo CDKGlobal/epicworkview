@@ -648,10 +648,8 @@ function EpicController($scope) {
     
     // Return the epic's color
     $scope.getEpicColor = function(epic) {
-    	if (epic.id < 0) {
-    		if (usingNewColors) {
-    			return "ghx-label-3";    			
-    		}
+    	if (epic.color[0] == '#' && usingNewColors) {
+    		return "ghx-label-3";
     	} 
     	return epic.color;
     };

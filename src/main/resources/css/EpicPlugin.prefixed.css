@@ -699,7 +699,7 @@ iframe {
 	top:25%;
 	width:50%;
 	height:50%;
-	overflow-y: scroll;
+	overflow-y: auto;
 
 	border: 5px solid #CCC;
 	border-radius: 5px;

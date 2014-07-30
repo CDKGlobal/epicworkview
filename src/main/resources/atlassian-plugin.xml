@@ -38,6 +38,7 @@
   <web-item name="Epic" i18n-name-key="epic-plugin.name" key="epic-plugin" section="system.top.navigation.bar" weight="1000">
     <description key="epic-plugin.description">The Epic Plugin Plugin</description>
     <label key="epic-plugin.label"/>
+    <tooltip key="epic-plugin.tip"/>
     <link linkId="epic-plugin-link">/plugins/servlet/epic</link>
   </web-item>
 

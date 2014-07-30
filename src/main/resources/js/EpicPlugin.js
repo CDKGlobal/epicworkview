@@ -672,6 +672,13 @@ function EpicController($scope) {
     	}
     	return sentence;
     };
+    
+    $scope.getFontColor = function() {
+    	if (usingNewColors) {
+    		return "#fff";
+    	}
+    	return "#000";
+    };
 }
 
 //object that holds all of the custom directives for angularjs

@@ -660,6 +660,10 @@ story:nth-child(5n) div {
   border-color: #202020 !important;
 }
 
+.white-border {
+	border-color: #fff !important;
+}
+
 .windowView {
 	display: block;
 

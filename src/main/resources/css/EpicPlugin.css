@@ -487,7 +487,12 @@ story:nth-child(5n) div {
 	border: 1px solid #ccc;
 	border-radius: 5px;
 	text-align: center;
-	font-size: 14pt;
+	font-size: 12pt;
+}
+
+.extra-contributors span {
+	display: block;
+	margin-top: 5px;
 }
 
 /* Filter box animations */

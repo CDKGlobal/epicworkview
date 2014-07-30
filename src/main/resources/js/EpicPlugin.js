@@ -549,8 +549,7 @@ function ProjectController($scope, $http, $cookieStore, $window, $location) {
             }
         }
     });
-
-    console.log($cookieStore.get('projectIds'));
+    
     $scope.cookieState();
     
     // Get the projects now

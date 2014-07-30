@@ -681,3 +681,26 @@ function EpicController($scope) {
     };
 }
 
+//object that holds all of the custom directives for angularjs
+var directives = {};
+
+//attribute that make all the text be selected on click
+directives.selectOnClick = function () {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            element.on('click', function () {
+                this.select();
+            });
+        }
+    };
+};
+
+//element that creates a popup window in the view
+directives.modal = function() {
+    return {
+        restrict: 'E',
+        transclude: true,
+        template: '<div class="windowView" id="windowBackground"></div><div ng-transclude class="windowView"></div>'
+    };
+};

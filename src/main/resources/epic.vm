@@ -10,16 +10,7 @@
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link  href="https://fonts.googleapis.com/css?family=Reenie+Beanie:regular" rel="stylesheet" type="text/css">
     <script type="text/javascript">
-		var myApp = angular.module('myApp', ['ngAnimate', 'ngCookies']).directive('selectonclick', function () {
-    		return {
-        	restrict: 'A',
-        		link: function (scope, element, attrs) {
-            		element.on('click', function () {
-                		this.select();
-            		});
-        		}
-    		};
-		});
+		var myApp = angular.module('myApp', ['ngAnimate', 'ngCookies']).directive('selectonclick', directives.selectOnClick).directive('modal', directives.modal);
     </script>
   </head>
   <body>
@@ -167,31 +158,25 @@
 		      </div>
 		 	</li>
     	</ul>
-    	<div ng-show="getShowWindow()" ng-click="setShowWindow(false)">
-    		<div class="windowView" id="windowBackground"></div>
-			<div class="windowView">
-				<iframe src="{{url}}"></iframe>
-  			</div>
-  		</div>
-  		<div ng-show="showInfoWindow" ng-click="showInfoWindow=false">
-    		<div class="windowView" id="windowBackground"></div>
-			<div class="windowView">
-				<div class="info-window" ng-click="$event.stopPropagation()">
-					<h1>Epic Work View for JIRA</h1>
-					<h2>Overview</h2>
-					<p>Epic Work View displays information about the work in progress on projects, epics and stories. </p>
-					<h2>Live Updates</h2>
-					<p>Live updates occur when work is started or completed on any issue. All fields in the table
-					are sorted in order of last update time and will update along with any change in progress. </p>
-					<h2>Fullscreen Mode</h2>
-					<p>Epic Work View comes with a fullscreen mode for display on wallboards. The plugin is highly interactive
-					and while in fullscreen mode, will open all windows within the display instead of navigating away from the page. </p>
-					<h2>Project Filtering</h2>
-					<p>Projects can be filtered by name or project group. Project filters are remembered across sessions on a 
-					user's computer. To share a link with a given filter, copy the text from the link button in the navigation bar. </p>
-				</div>
-  			</div>
-  		</div>
+    	<modal ng-show="getShowWindow()" ng-click="setShowWindow(false)">
+			<iframe src="{{url}}"></iframe>
+  		</modal>
+  		<modal ng-show="showInfoWindow" ng-click="showInfoWindow=false">
+			<div class="info-window" ng-click="$event.stopPropagation()">
+				<h1>Epic Work View for JIRA</h1>
+				<h2>Overview</h2>
+				<p>Epic Work View displays information about the work in progress on projects, epics and stories. </p>
+				<h2>Live Updates</h2>
+				<p>Live updates occur when work is started or completed on any issue. All fields in the table
+				are sorted in order of last update time and will update along with any change in progress. </p>
+				<h2>Fullscreen Mode</h2>
+				<p>Epic Work View comes with a fullscreen mode for display on wallboards. The plugin is highly interactive
+				and while in fullscreen mode, will open all windows within the display instead of navigating away from the page. </p>
+				<h2>Project Filtering</h2>
+				<p>Projects can be filtered by name or project group. Project filters are remembered across sessions on a 
+				user's computer. To share a link with a given filter, copy the text from the link button in the navigation bar. </p>
+			</div>
+  		</modal>
     </div>
   </body>
 </html>

@@ -682,3 +682,27 @@ iframe {
 
 	background-color: white;
 }
+
+.info-window {
+	padding: 10px;
+	position: absolute;
+	left:25%;
+	top:25%;
+	width:50%;
+	height:50%;
+	overflow-y: scroll;
+
+	border: 5px solid #CCC;
+	border-radius: 5px;
+
+	background-color: white;
+}
+
+.info-window h1, h2 {
+	font-weight: bold;
+}
+
+.info-window h1 {
+	text-align: center;
+	border-bottom: 1px solid black;
+}

@@ -421,6 +421,7 @@ function ProjectController($scope, $http, $cookieStore, $window, $location) {
     /* --------------------------------------------------------------------------------------- */
     
     $scope.url = '';
+    $scope.showInfoWindow = false;
     var showWindow = false;
     
     // Sets whether to show the window

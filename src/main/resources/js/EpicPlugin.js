@@ -488,7 +488,7 @@ function ProjectController($scope, $http, $cookieStore, $window, $location) {
         clearTimeout(inactivityTimer);
         inactivityTimer = setTimeout(function() {
             if($scope.isFullScreen) {
-                jQuery(window).scrollTop(0);
+                jQuery('#scroll-to-top').click();
                 $scope.hideEpicInfo();
                 showWindow = false;
             }

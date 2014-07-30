@@ -336,11 +336,6 @@ ul.inline > .epic-container {
   	z-index: 4;
 }
 
-.epic:hover {
-	text-decoration: none;
-	color: #000000;
-}
-
 .pop-up {
 	position: absolute;
 	border: 1px solid #ddd;

@@ -1,10 +1,43 @@
 <html>
 <head>
 	<title>Epic Details</title>
-	<meta name="decorator" content="atl.general">
+
+	<meta name="decorator" content="atl.popup">
+	<!--script tags-->
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
+	<script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.min.js"></script>
+
+	<!--style tags-->
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+
 	$webResourceManager.requireResource("com.cobalt.jira.plugin.epic.EpicPlugin:EpicDetails-resources")
+
+	<script type="text/javascript">
+		var epicDetails = angular.module('EpicDetails', ['ui.bootstrap']);
+		epicDetails.config(function($locationProvider) {
+			$locationProvider.html5Mode(true);
+		});
+		epicDetails.controller('EpicDetailsController', ['$scope', '$http', '$q', '$location', epicDetailsController]);
+	</script>
 </head>
 <body>
-	<h1>Hello World!</h1>
+	<div ng-app="EpicDetails" ng-controller="EpicDetailsController" class="body-container">
+		<div class="btn-group">
+			<label class="btn btn-primary" ng-model="workType" btn-radio="1">Stories</label>
+			<label class="btn btn-primary" ng-model="workType" btn-radio="2">Story Points</label>
+			<label class="btn btn-primary" ng-model="workType" btn-radio="3">Work Hours</label>
+		</div>
+
+		<h1>{{epicName}}</h1>
+		<div>
+			<ul>
+				<li ng-repeat="story in stories">
+					{{story.fields.summary}}
+				</li>
+			</ul>
+		</div>
+
+	</div>
 </body>
 </html>

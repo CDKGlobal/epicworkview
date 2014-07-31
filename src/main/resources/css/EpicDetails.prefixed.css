@@ -1,0 +1,9 @@
+/* hack to fix what bootstrap.css breaks for JIRA */
+#jira {
+    background-color: #F5F5F5;
+}
+
+.body-container {
+    margin: 20px 4.5% 0px;
+    font-size: 12pt;
+}

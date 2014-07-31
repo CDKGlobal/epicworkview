@@ -35,10 +35,14 @@ module.exports = function(grunt) {
         options: {
           browsers: ['> 1%', 'last 2 versions', 'Firefox ESR', 'Opera 12.1', 'ie >= 9']
         },
-        prefix: {
+        epic_plugin: {
           src: 'src/main/resources/css/EpicPlugin.css',
           dest: 'src/main/resources/css/EpicPlugin.prefixed.css'
         },
+        epic_details: {
+          src: 'src/main/resources/css/EpicDetails.css',
+          dest: 'src/main/resources/css/EpicDetails.prefixed.css'
+        }
       }
   });
 

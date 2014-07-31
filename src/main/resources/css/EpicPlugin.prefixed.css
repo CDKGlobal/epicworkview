@@ -450,6 +450,11 @@ input {
 	display: inline-block;
 	margin-right: 22px;
 	vertical-align: middle;
+	width: 24px;
+}
+
+.contributor-holder {
+	height: 30px;
 }
 
 .checkmark {

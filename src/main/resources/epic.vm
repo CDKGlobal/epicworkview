@@ -130,7 +130,7 @@
 		      			<li class="story" ng-repeat="story in getEpicStories(project, false)">
 		      				<div ng-style="{'background': '{{getClickedEpicColor(project)}}'}" ng-class="getClickedEpicColor(project)">
 			      				<ul ng-style="{'border-bottom-color': '{{getFontColor()}}'}" class="story-header list-section">
-			      					<li><img class="contributor-image" ng-show="story.contributor" src="{{story.contributor.avatar}}" 
+			      					<li class="contributor-holder"><img class="contributor-image" ng-show="story.contributor" src="{{story.contributor.avatar}}" 
 			      							 title="{{story.contributor.name}}" height="24" width="24"></li>
 			      					<li>{{millisecondToString(story.timestamp, true)}}</li>
 			      					<li><i class="fa fa-info-circle info-button" ng-click="setActivePage(story)"></i></li>			      							

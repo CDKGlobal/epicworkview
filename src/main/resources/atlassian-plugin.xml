@@ -22,6 +22,9 @@
   <servlet name="EpicPlugin" class="com.cobalt.jira.plugin.epic.EpicRadiator" key="epic">
     <url-pattern>/epic</url-pattern>
   </servlet>
+  <servlet name="DetailedEpicView" class="com.cobalt.jira.plugin.epic.details.EpicDetails" key="epicDetails">
+    <url-pattern>/epicDetails</url-pattern>
+  </servlet>
   <!-- import from the product container -->
   <component-import key="applicationProperties" interface="com.atlassian.sal.api.ApplicationProperties"/>
   <component-import key="templateRenderer" interface="com.atlassian.templaterenderer.TemplateRenderer" filter=""/>

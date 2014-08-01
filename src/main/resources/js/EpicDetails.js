@@ -18,8 +18,8 @@ function epicDetailsController ($scope, $http, $q, $location) {
 
     //map from constant name to custom field name
     var fieldMap = {
-        'Epic Name': null
-
+        'Epic Name': null,
+        'Story Points': null
     };
 
     $q.all([
@@ -53,6 +53,10 @@ function epicDetailsController ($scope, $http, $q, $location) {
     
     // count the number of not started, in progress, and done stories
     function countStories(stories) {
+        $scope.notStarted = 0;
+        $scope.inProgress = 0;
+        $scope.done = 0;
+
     	angular.forEach(stories, function(story, index) {
     		if (jQuery.inArray(story.fields.status.name, notStartedNames) != -1) {
     			$scope.notStarted += getValue(story);
@@ -87,7 +91,15 @@ function epicDetailsController ($scope, $http, $q, $location) {
     }
 
     function getValue(story) {
-        return 1;
+        switch($scope.workType) {
+        case 1:
+            return 1;
+        case 2:
+            var points = getField(story.fields, 'Story Points');
+            return (points !== undefined && points !== null) ? points : 0;
+        case 3:
+            return 10;
+        }
     }
     
     function refresh() {

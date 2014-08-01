@@ -40,9 +40,9 @@
 		
 		<div>
 			<progress>
-				<bar value="notStarted * 100 / stories.length" type="info" ng-hide="notStarted <= 0"><span>{{notStarted}}</span></bar>
-				<bar value="inProgress * 100 / stories.length" type="warning" ng-hide="inProgress <= 0"><span>{{inProgress}}</span></bar>
-				<bar value="done * 100 / stories.length" type="success" ng-hide="done <= 0"><span>{{done}}</span></bar>
+				<bar value="notStarted * 100 / (notStarted + inProgress + done)" type="info" ng-hide="notStarted <= 0"><span>{{notStarted}}</span></bar>
+				<bar value="inProgress * 100 / (notStarted + inProgress + done)" type="warning" ng-hide="inProgress <= 0"><span>{{inProgress}}</span></bar>
+				<bar value="done * 100 / (notStarted + inProgress + done)" type="success" ng-hide="done <= 0"><span>{{done}}</span></bar>
 			</progress>
 			<div class="progress-bar-key">
 				<div class="col-sm-4"><progressBar value="100" type="info">Not Started</progressBar></div>

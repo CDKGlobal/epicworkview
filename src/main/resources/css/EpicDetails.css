@@ -7,3 +7,13 @@
     margin: 20px 4.5% 0px;
     font-size: 12pt;
 }
+
+chart {
+    display: none;
+    width: 400px;
+    height: 200px;
+}
+
+.clear {
+    clear: both;
+}

@@ -12,6 +12,8 @@ function epicDetailsController ($scope, $http, $q, $location) {
 
     $scope.workType = 1;
 
+    $scope.points = [[]];
+
     //map from constant name to custom field name
     var fieldMap = {
         'Epic Name': null
@@ -39,6 +41,23 @@ function epicDetailsController ($scope, $http, $q, $location) {
 
         $scope.stories = stories.issues;
         countStories($scope.stories);
+        var points = getProgressList($scope.stories);
+
+        points.sort(function(a, b) {
+            return a.date - b.date;
+        });
+
+        console.log(points);
+
+        $scope.points = [[]];
+        var runningTotal = 0;
+        angular.forEach(points, function(elem, index) {
+            runningTotal += elem.number;
+            $scope.points[0].push([elem.date, runningTotal]);
+        });
+
+        console.log($scope.points);
+
     });
 
     function getField(data, field) {
@@ -57,5 +76,51 @@ function epicDetailsController ($scope, $http, $q, $location) {
     		}
     	});
     }
+
+    // creates a list of (date, number) pairs
+    function getProgressList(stories) {
+        var list = [];
+
+        angular.forEach(stories, function(story, index) {
+            var value = getValue(story);
+            list.push({
+                date: Date.parse(story.fields.created),
+                number: value
+            });
+
+            if(story.fields.resolutiondate !== null) {
+                list.push({
+                    date: Date.parse(story.fields.resolutiondate),
+                    number: -value
+                });
+            }
+        });
+
+        return list;
+    }
+
+    function getValue(story) {
+        return 1;
+    }
+}
+
+function chartDirective() {
+    return {
+        restrict: 'E',
+        link: function(scope, elem, attrs) {
+            var chart = null, opts = {};
+            scope.$watch(attrs.ngModel, function(v) {
+                if(!chart) {
+                    chart = jQuery.plot(elem, v, opts);
+                    elem.show();
+                }
+                else {
+                    chart.setData(v);
+                    chart.setupGrid();
+                    chart.draw();
+                }
+            });
+        }
+    };
 }
 

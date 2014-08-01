@@ -19,6 +19,7 @@
 			$locationProvider.html5Mode(true);
 		});
 		epicDetails.controller('EpicDetailsController', ['$scope', '$http', '$q', '$location', epicDetailsController]);
+		epicDetails.directive('chart', chartDirective);
 	</script>
 </head>
 <body>
@@ -49,6 +50,10 @@
 				<div class="col-sm-4"><progressBar value="100" type="warning">In Progress</progressBar></div>
 				<div class="col-sm-4"><progressBar value="100" type="success">Done</progressBar></div>
 			</div>
+		</div>
+
+		<div class="clear">
+			<chart ng-model="points"></chart>
 		</div>
 
 	</div>

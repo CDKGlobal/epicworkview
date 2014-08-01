@@ -68,11 +68,11 @@ function epicDetailsController ($scope, $http, $q, $location) {
     function countStories(stories) {
     	angular.forEach(stories, function(story, index) {
     		if (jQuery.inArray(story.fields.status.name, notStartedNames) != -1) {
-    			$scope.notStarted++;
+    			$scope.notStarted += getValue(story);
     		} else if (jQuery.inArray(story.fields.status.name, doneNames) != -1) {
-    			$scope.done++;
+    			$scope.done += getValue(story);
     		} else {
-    			$scope.inProgress++;
+    			$scope.inProgress += getValue(story);
     		}
     	});
     }

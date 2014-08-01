@@ -17,3 +17,13 @@ chart {
 .clear {
     clear: both;
 }
+
+.progress-bar-key .progress {
+	width: 50px;
+	display: inline-block;
+}
+
+.progress-bar-key span {
+	vertical-align: top;
+	margin-left: 20px
+}

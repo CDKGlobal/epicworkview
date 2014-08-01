@@ -39,9 +39,9 @@
 				<bar value="done * 100 / (notStarted + inProgress + done)" type="success" ng-hide="done <= 0"><span>{{done}}</span></bar>
 			</progress>
 			<div class="progress-bar-key">
-				<div class="col-sm-4"><progressBar value="100" type="info">Not Started</progressBar></div>
-				<div class="col-sm-4"><progressBar value="100" type="warning">In Progress</progressBar></div>
-				<div class="col-sm-4"><progressBar value="100" type="success">Done</progressBar></div>
+				<div class="col-sm-4"><progressBar value="100" type="info"></progressBar><span>Not Started</span></div>
+				<div class="col-sm-4"><progressBar value="100" type="warning"></progressBar><span>In Progress</span></div>
+				<div class="col-sm-4"><progressBar value="100" type="success"></progressBar><span>Done</span></div>
 			</div>
 		</div>
 

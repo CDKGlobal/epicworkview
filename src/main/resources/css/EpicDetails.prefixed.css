@@ -18,12 +18,30 @@ chart {
     clear: both;
 }
 
+.progress-bar-key {
+	padding: 10px;
+	border: 1px solid black;
+	border-radius: 5px;
+	width: 33%;
+}
+
 .progress-bar-key .progress {
 	width: 50px;
 	display: inline-block;
+	margin-bottom: 0;
 }
 
 .progress-bar-key span {
 	vertical-align: top;
-	margin-left: 20px
+	margin-left: 10px
+}
+
+.key-element {
+	display: inline-block;
+	margin-left: 20px;
+}
+
+.story-list {
+	float: right;
+	margin-left: 10px;
 }

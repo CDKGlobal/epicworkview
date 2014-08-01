@@ -3,7 +3,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
 	var doneNames = ["Closed", "Resolved", "Done"];
 	
     $scope.contextPath = jQuery('meta[name="ajs-context-path"]').attr('content');
-    $scope.epicKey = $location.search().epic;
+    $scope.key = $location.search().epic;
     $scope.epicName = '';
     $scope.stories = [];
     $scope.notStarted = 0;
@@ -22,9 +22,23 @@ function epicDetailsController ($scope, $http, $q, $location) {
         'Story Points': null
     };
 
+    var epicQuery = $scope.contextPath + '/rest/api/2/';
+    var storiesQuery = $scope.contextPath + '/rest/api/2/search?jql=';
+
+    if($scope.key.indexOf('-') != -1) {
+        epicQuery += 'issue';
+        storiesQuery += '"Epic Link"=' + $scope.key;
+    }
+    else {
+        epicQuery += 'project';
+        storiesQuery += 'project=' + $scope.key + ' and "Epic Link" is empty and issuetype not in (Epic, Sub-task)';
+    }
+
+    epicQuery += '/' + $scope.key;
+
     $q.all([
-        $http.get($scope.contextPath + '/rest/api/2/issue/' + $scope.epicKey + '?expand=names'),
-        $http.get($scope.contextPath + '/rest/api/2/search?jql="Epic Link"=' + $scope.epicKey)
+        $http.get(epicQuery),
+        $http.get(storiesQuery + '&expand=names')
     ]).then(function(results) {
         var epic = results[0].data;
         var stories = results[1].data;
@@ -32,14 +46,19 @@ function epicDetailsController ($scope, $http, $q, $location) {
 
         //setup field map
         angular.forEach(fieldMap, function(value, key) {
-            angular.forEach(epic.names, function(dataValue, dataKey) {
+            angular.forEach(stories.names, function(dataValue, dataKey) {
                 if(key === dataValue) {
                     fieldMap[key] = dataKey;
                 }
             });
         });
 
-        $scope.epicName = getField(epic.fields, 'Epic Name');
+        if($scope.key.indexOf('-') != -1) {
+            $scope.epicName = getField(epic.fields, 'Epic Name');
+        }
+        else {
+            $scope.epicName = 'Other stories (' + epic.name + ')';
+        }
 
         $scope.stories = stories.issues;
 
@@ -87,6 +106,11 @@ function epicDetailsController ($scope, $http, $q, $location) {
             }
         });
 
+        list.push({
+            date: new Date().getTime(),
+            number: 0
+        })
+
         return list;
     }
 
@@ -123,7 +147,21 @@ function chartDirective() {
     return {
         restrict: 'E',
         link: function(scope, elem, attrs) {
-            var chart = null, opts = {};
+            var chart = null;
+            var opts = {
+                xaxis: {
+                    ticks: 4,
+                    tickFormatter: function(val, axis) {
+                        return new Date(val).toLocaleDateString();
+                    }
+                },
+                yaxis: {
+                    minTickSize: 1,
+                    tickFormatter: function(val, axis) {
+                        return Math.floor(parseFloat(val));
+                    }
+                }
+            };
             scope.$watch(attrs.ngModel, function(v) {
                 if(!chart) {
                     chart = jQuery.plot(elem, v, opts);

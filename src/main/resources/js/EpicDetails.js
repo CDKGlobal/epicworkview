@@ -109,7 +109,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
         list.push({
             date: new Date().getTime(),
             number: 0
-        })
+        });
 
         return list;
     }

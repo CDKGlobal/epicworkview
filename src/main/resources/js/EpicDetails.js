@@ -11,6 +11,8 @@ function epicDetailsController ($scope, $http, $q, $location) {
     $scope.done = 0;
 
     $scope.workType = 1;
+    
+    $scope.$watch('workType', refresh);
 
     $scope.points = [[]];
 
@@ -40,23 +42,8 @@ function epicDetailsController ($scope, $http, $q, $location) {
         $scope.epicName = getField(epic.fields, 'Epic Name');
 
         $scope.stories = stories.issues;
-        countStories($scope.stories);
-        var points = getProgressList($scope.stories);
 
-        points.sort(function(a, b) {
-            return a.date - b.date;
-        });
-
-        console.log(points);
-
-        $scope.points = [[]];
-        var runningTotal = 0;
-        angular.forEach(points, function(elem, index) {
-            runningTotal += elem.number;
-            $scope.points[0].push([elem.date, runningTotal]);
-        });
-
-        console.log($scope.points);
+        refresh();
 
     });
 
@@ -101,6 +88,22 @@ function epicDetailsController ($scope, $http, $q, $location) {
 
     function getValue(story) {
         return 1;
+    }
+    
+    function refresh() {
+    	countStories($scope.stories);
+        var points = getProgressList($scope.stories);
+
+        points.sort(function(a, b) {
+            return a.date - b.date;
+        });
+
+        $scope.points = [[]];
+        var runningTotal = 0;
+        angular.forEach(points, function(elem, index) {
+            runningTotal += elem.number;
+            $scope.points[0].push([elem.date, runningTotal]);
+        });
     }
 }
 

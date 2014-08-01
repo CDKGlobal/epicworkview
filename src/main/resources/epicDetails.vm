@@ -31,14 +31,7 @@
 		</div>
 
 		<h1>{{epicName}}</h1>
-		<div>
-			<ul>
-				<li ng-repeat="story in stories">
-					{{story.fields.summary}}
-				</li>
-			</ul>
-		</div>
-		
+
 		<div>
 			<progress>
 				<bar value="notStarted * 100 / (notStarted + inProgress + done)" type="info" ng-hide="notStarted <= 0"><span>{{notStarted}}</span></bar>
@@ -52,9 +45,19 @@
 			</div>
 		</div>
 
-		<div class="clear">
+		<div class="clear" style="display: block; width: 450px; height: 250px">
 			<chart ng-model="points"></chart>
 		</div>
+
+		<div>
+			<ul>
+				<li ng-repeat="story in stories">
+					{{story.fields.summary}}
+				</li>
+			</ul>
+		</div>
+		
+
 
 	</div>
 </body>

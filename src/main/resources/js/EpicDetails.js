@@ -148,7 +148,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
             var resolution = story.fields.resolutiondate;
             var time = story.fields.aggregateprogress.total;
 
-            if(resolution !== undefinded && resolution !== null) {
+            if(resolution !== undefined && resolution !== null) {
                 time = story.fields.aggregateprogress.progress;
             }
 

@@ -22,7 +22,9 @@
     <dependency>com.atlassian.auiplugin:ajs</dependency>
     <resource type="download" name="EpicDetails.prefixed.css" location="/css/EpicDetails.prefixed.css"/>
     <resource type="download" name="EpicDetails.js" location="/js/EpicDetails.js"/>
-      <resource type="download" name="jquery.flot.min.js" location="/js/jquery.flot.min.js"/>
+    <resource type="download" name="jquery.flot.min.js" location="/js/jquery.flot.min.js"/>
+    <resource type="download" name="jquery.flot.selection.min.js" location="/js/jquery.flot.selection.min.js"/>
+    <resource type="download" name="jquery.flot.time.min.js" location="/js/jquery.flot.time.min.js"/>
     <resource type="download" name="images/" location="/images"/>
     <context>EpicDetails</context>
   </web-resource>

@@ -145,7 +145,14 @@ function epicDetailsController ($scope, $http, $q, $location) {
             var points = getField(story.fields, 'Story Points');
             return (points !== undefined && points !== null) ? points : 0;
         case 3:
-            return 10;
+            var resolution = story.fields.resolutiondate;
+            var time = story.fields.aggregateprogress.total;
+
+            if(resolution !== undefinded && resolution !== null) {
+                time = story.fields.aggregateprogress.progress;
+            }
+
+            return time / 3600;
         }
     }
     

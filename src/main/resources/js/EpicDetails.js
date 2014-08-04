@@ -39,10 +39,12 @@ function epicDetailsController ($scope, $http, $q, $location) {
 
     $q.all([
         $http.get(epicQuery),
-        $http.get(storiesQuery + '&expand=names')
+        $http.get(storiesQuery),
+        $http.get($scope.contextPath + '/rest/api/2/field')
     ]).then(function(results) {
         var epic = results[0].data;
         var stories = results[1].data;
+        var fields = results[2].data;
 
         //get the rest of the stories if there are more
         var maxResults = stories.maxResults;
@@ -67,9 +69,9 @@ function epicDetailsController ($scope, $http, $q, $location) {
 
         //setup field map
         angular.forEach(fieldMap, function(value, key) {
-            angular.forEach(stories.names, function(dataValue, dataKey) {
-                if(key === dataValue) {
-                    fieldMap[key] = dataKey;
+            angular.forEach(fields, function(elem, index) {
+                if(key === elem.name) {
+                    fieldMap[key] = elem.id;
                 }
             });
         });

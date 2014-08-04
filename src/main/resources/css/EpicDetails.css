@@ -8,6 +8,18 @@
     font-size: 12pt;
 }
 
+.column1, .column2 {
+	width: 50%;
+}
+
+.column1 {
+	float: left;
+}
+
+.column2 {
+	float: right;
+}
+
 chart {
     display: none;
     width: 400px;
@@ -22,7 +34,7 @@ chart {
 	padding: 10px;
 	border: 1px solid black;
 	border-radius: 5px;
-	width: 33%;
+	width: 100%;
 }
 
 .progress-bar-key .progress {
@@ -38,10 +50,5 @@ chart {
 
 .key-element {
 	display: inline-block;
-	margin-left: 20px;
-}
-
-.story-list {
-	float: right;
-	margin-left: 10px;
+	width: 32%;
 }

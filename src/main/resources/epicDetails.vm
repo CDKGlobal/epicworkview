@@ -32,33 +32,34 @@
 
 		<h1>{{epicName}}</h1>
 
-		<div class="story-list">
-			<ul>
-				<li ng-repeat="story in stories">
-					{{story.fields.summary}} {{story.fields.assignee.displayName}} {{doneDate(story.fields.resolutiondate)}}
-				</li>
-			</ul>
-		</div>
-
-		<div>
-			<progress>
-				<bar value="notStarted * 100 / (notStarted + inProgress + done)" type="info" ng-hide="notStarted <= 0"><span>{{notStarted}}</span></bar>
-				<bar value="inProgress * 100 / (notStarted + inProgress + done)" type="warning" ng-hide="inProgress <= 0"><span>{{inProgress}}</span></bar>
-				<bar value="done * 100 / (notStarted + inProgress + done)" type="success" ng-hide="done <= 0"><span>{{done}}</span></bar>
-			</progress>
-			<div class="progress-bar-key">
-				<div class="key-element"><progressBar value="100" type="info"></progressBar><span>Not Started</span></div>
-				<div class="key-element"><progressBar value="100" type="warning"></progressBar><span>In Progress</span></div>
-				<div class="key-element"><progressBar value="100" type="success"></progressBar><span>Done</span></div>
+		<div class="column1">
+			<div>
+				<progress>
+					<bar value="notStarted * 100 / (notStarted + inProgress + done)" type="info" ng-hide="notStarted <= 0"><span>{{notStarted}}</span></bar>
+					<bar value="inProgress * 100 / (notStarted + inProgress + done)" type="warning" ng-hide="inProgress <= 0"><span>{{inProgress}}</span></bar>
+					<bar value="done * 100 / (notStarted + inProgress + done)" type="success" ng-hide="done <= 0"><span>{{done}}</span></bar>
+				</progress>
+				<div class="progress-bar-key">
+					<div class="key-element"><progressBar value="100" type="info"></progressBar><span>Not Started</span></div>
+					<div class="key-element"><progressBar value="100" type="warning"></progressBar><span>In Progress</span></div>
+					<div class="key-element"><progressBar value="100" type="success"></progressBar><span>Done</span></div>
+				</div>
+			</div>
+	
+			<div class="clear" style="display: block; width: 450px; height: 250px">
+				<chart ng-model="points"></chart>
 			</div>
 		</div>
-
-		<div class="clear" style="display: block; width: 450px; height: 250px">
-			<chart ng-model="points"></chart>
-		</div>
-
 		
-
+		<div class="column2">
+			<div class="story-list">
+				<ul>
+					<li ng-repeat="story in stories">
+						{{story.fields.summary}} {{story.fields.assignee.displayName}} {{doneDate(story.fields.resolutiondate)}}
+					</li>
+				</ul>
+			</div>
+		</div>	
 
 	</div>
 </body>

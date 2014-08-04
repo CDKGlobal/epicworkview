@@ -42,7 +42,29 @@ function epicDetailsController ($scope, $http, $q, $location) {
     ]).then(function(results) {
         var epic = results[0].data;
         var stories = results[1].data;
-        //todo deal with epic with more than 50 stories
+
+        //get the rest of the stories if there are more
+        var maxResults = stories.maxResults;
+        var total = stories.total;
+
+        if(maxResults < total) {
+            var requests = [];
+            for(var i = maxResults; i < total; i += maxResults) {
+                queries.push($http.get(storiesQuery + '&startAt=' + i));
+            }
+
+            $q.all(requests).then(function(results) {
+                //add the new stories to the list
+                angular.forEach(results, function(e, i) {
+                    $scope.stories = $scope.stories.concat(e.data.issues);
+                });
+
+                //refresh the display
+                refresh();
+            });
+        }
+
+
 
         //setup field map
         angular.forEach(fieldMap, function(value, key) {
@@ -142,6 +164,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
         });
     }
 
+    //nicely format the date string
     $scope.doneDate = function(date) {
         return new Date(Date.parse(date)).toLocaleString();
     };

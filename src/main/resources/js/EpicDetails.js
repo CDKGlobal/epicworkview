@@ -35,6 +35,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
     }
 
     epicQuery += '/' + $scope.key;
+    storiesQuery += ' order by resolutiondate desc';
 
     $q.all([
         $http.get(epicQuery),
@@ -63,8 +64,6 @@ function epicDetailsController ($scope, $http, $q, $location) {
                 refresh();
             });
         }
-
-
 
         //setup field map
         angular.forEach(fieldMap, function(value, key) {
@@ -166,7 +165,12 @@ function epicDetailsController ($scope, $http, $q, $location) {
 
     //nicely format the date string
     $scope.doneDate = function(date) {
-        return new Date(Date.parse(date)).toLocaleString();
+        if(date !== undefined && date !== null) {
+            return new Date(Date.parse(date)).toLocaleString();
+        }
+        else {
+            return 'unresolved';
+        }
     };
 }
 

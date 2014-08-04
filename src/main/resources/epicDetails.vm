@@ -53,9 +53,22 @@
 		
 		<div class="column2">
 			<div class="story-list">
+				<div class="header">
+					<div class="first-column inline">Story Name</div>
+					<div class="second-column inline">Assignee</div>
+					<div class="third-column inline">Resolution Date</div>
+				</div>
 				<ul>
 					<li ng-repeat="story in stories">
-						{{story.fields.summary}} {{story.fields.assignee.displayName}} {{doneDate(story.fields.resolutiondate)}}
+						<div class="first-column inline">
+							{{story.fields.summary}}
+						</div>
+						<div class="second-column inline">
+							{{story.fields.assignee.displayName}}
+						</div>
+						<div class="third-column inline">
+							{{doneDate(story.fields.resolutiondate)}}
+						</div>	
 					</li>
 				</ul>
 			</div>

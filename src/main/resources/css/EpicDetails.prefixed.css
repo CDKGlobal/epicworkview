@@ -20,6 +20,8 @@
 	float: right;
 }
 
+/* Graph */
+
 chart {
     display: none;
     width: 400px;
@@ -29,6 +31,8 @@ chart {
 .clear {
     clear: both;
 }
+
+/* Progress Bar */
 
 .progress-bar-key {
 	padding: 10px;
@@ -51,4 +55,44 @@ chart {
 .key-element {
 	display: inline-block;
 	width: 32%;
+}
+
+/* Story List */
+
+.inline {
+	display: inline-block;
+}
+
+.first-column {
+	width: 50%;
+}
+
+.second-column {
+	width: 24%;
+}
+
+.third-column {
+	width: 24%;
+}
+
+.story-list {
+	margin-left: 25px;
+}
+
+.story-list > ul,
+.story-list > .header {
+	padding: 1%;
+}
+
+.story-list > ul {
+	list-style-type: none;
+	border: 1px solid black;
+	border-radius: 10px;
+	background: #fff;
+	overflow-x: auto;
+	max-height: 500px;
+}
+
+.story-list > ul > li:not(:last-child) {
+	margin-bottom: 10px;
 }

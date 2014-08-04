@@ -35,7 +35,7 @@
 		<div class="story-list">
 			<ul>
 				<li ng-repeat="story in stories">
-					{{story.fields.summary}}
+					{{story.fields.summary}} {{story.fields.assignee.displayName}} {{doneDate(story.fields.resolutiondate)}}
 				</li>
 			</ul>
 		</div>

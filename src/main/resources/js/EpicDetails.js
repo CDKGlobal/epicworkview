@@ -141,6 +141,10 @@ function epicDetailsController ($scope, $http, $q, $location) {
             $scope.points[0].push([elem.date, runningTotal]);
         });
     }
+
+    $scope.doneDate = function(date) {
+        return new Date(Date.parse(date)).toLocaleString();
+    };
 }
 
 function chartDirective() {

@@ -50,7 +50,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
         if(maxResults < total) {
             var requests = [];
             for(var i = maxResults; i < total; i += maxResults) {
-                queries.push($http.get(storiesQuery + '&startAt=' + i));
+                requests.push($http.get(storiesQuery + '&startAt=' + i));
             }
 
             $q.all(requests).then(function(results) {

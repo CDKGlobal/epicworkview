@@ -46,7 +46,7 @@
 				</div>
 			</div>
 	
-			<div class="clear" style="display: block; width: 450px; height: 250px">
+			<div class="charts-container">
 				<chart ng-model="points"></chart>
 			</div>
 		</div>

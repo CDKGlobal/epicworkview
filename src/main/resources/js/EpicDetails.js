@@ -186,10 +186,14 @@ function epicDetailsController ($scope, $http, $q, $location) {
 function chartDirective() {
     return {
         restrict: 'E',
+        template: "<div class='chart-container'><div id='chart'></div></div>" +
+        		  "<div class='overview-container'><div id='overview'></div></div>",
         link: function(scope, elem, attrs) {
             var chart = null;
+            var overview = null;
             var opts = {
                 xaxis: {
+                	mode: "time",
                     ticks: 4,
                     tickFormatter: function(val, axis) {
                         return new Date(val).toLocaleDateString();
@@ -200,19 +204,70 @@ function chartDirective() {
                     tickFormatter: function(val, axis) {
                         return Math.floor(parseFloat(val));
                     }
-                }
+                },
+                selection: {
+    				mode: "x"
+    			}
+            };
+            var overviewOpts = {
+            	series: {
+        			lines: {
+        				show: true,
+        				lineWidth: 1
+        			},
+        			shadowSize: 0
+       			},
+       			xaxis: {
+       				ticks: [],
+       				mode: "time"
+        		},
+        		yaxis: {
+        			ticks: [],
+       				min: 0,
+       				autoscaleMargin: 0.1
+       			},
+        		selection: {
+        			mode: "x"
+       			}
             };
             scope.$watch(attrs.ngModel, function(v) {
                 if(!chart) {
-                    chart = jQuery.plot(elem, v, opts);
+                	var chartElem = jQuery('#chart');
+                	var overviewElem = jQuery('#overview');
+                    chart = jQuery.plot(chartElem, v, opts);
+                    overview = jQuery.plot(overviewElem, v, overviewOpts);
+                    chartElem.show();
+                    overviewElem.show();
                     elem.show();
                 }
                 else {
                     chart.setData(v);
                     chart.setupGrid();
                     chart.draw();
+                    overview.setData(v);
+                    overview.setupGrid();
+                    overview.draw();
                 }
             });
+            jQuery("#chart").bind("plotselected", function (event, ranges) {
+
+    			// do the zooming
+    			jQuery.each(chart.getXAxes(), function(_, axis) {
+    				var opts = axis.options;
+    				opts.min = ranges.xaxis.from;
+    				opts.max = ranges.xaxis.to;
+    			});
+    			chart.setupGrid();
+    			chart.draw();
+    			chart.clearSelection();
+
+    			// don't fire event on the overview to prevent eternal loop
+
+    			overview.setSelection(ranges, true);
+    		});
+    		jQuery("#overview").bind("plotselected", function (event, ranges) {
+    			chart.setSelection(ranges);
+    		});
         }
     };
 }

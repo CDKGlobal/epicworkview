@@ -61,7 +61,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
             $q.all(requests).then(function(results) {
                 //add the new stories to the list
                 angular.forEach(results, function(e, i) {
-                    $scope.fullStories = $scope.fullsStories.concat(e.data.issues);
+                    $scope.fullStories = $scope.fullStories.concat(e.data.issues);
                     $scope.stories = $scope.stories.concat(e.data.issues);
                 });
 
@@ -113,12 +113,6 @@ function epicDetailsController ($scope, $http, $q, $location) {
     			$scope.inProgress += getValue(story);
     		}
     	});
-    	
-    	if ($scope.workType == 3) {
-    		$scope.notStarted = $scope.notStarted.toFixed(2);
-    		$scope.inProgress = $scope.inProgress.toFixed(2);
-    		$scope.done = $scope.done.toFixed(2);
-    	}
     }
 
     // creates a list of (date, number) pairs
@@ -167,6 +161,14 @@ function epicDetailsController ($scope, $http, $q, $location) {
 
             return (time / 3600);
         }
+    }
+    
+    // format the given number for display
+    $scope.format = function(number) {
+    	if ($scope.workType == 3) {
+    		return number.toFixed(2);
+    	}
+    	return number;
     }
     
     // update the story counts and chart points

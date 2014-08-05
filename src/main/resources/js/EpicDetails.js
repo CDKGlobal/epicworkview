@@ -1,6 +1,5 @@
 function epicDetailsController ($scope, $http, $q, $location) {
 	var notStartedNames = ["To Do", "Open"];
-	var doneNames = ["Closed", "Resolved", "Done"];
 	
     $scope.contextPath = jQuery('meta[name="ajs-context-path"]').attr('content');
     $scope.key = $location.search().epic;
@@ -105,10 +104,11 @@ function epicDetailsController ($scope, $http, $q, $location) {
         $scope.done = 0;
 
     	angular.forEach(stories, function(story, index) {
-    		if (jQuery.inArray(story.fields.status.name, notStartedNames) != -1) {
-    			$scope.notStarted += getValue(story);
-    		} else if (jQuery.inArray(story.fields.status.name, doneNames) != -1) {
+    		var resolution = story.fields.resolutiondate;
+    		if (resolution !== undefined && resolution !== null) {
     			$scope.done += getValue(story);
+    		} else if (jQuery.inArray(story.fields.status.name, notStartedNames) != -1) {
+    			$scope.notStarted += getValue(story);
     		} else {
     			$scope.inProgress += getValue(story);
     		}
@@ -125,8 +125,9 @@ function epicDetailsController ($scope, $http, $q, $location) {
                 date: Date.parse(story.fields.created),
                 number: value
             });
-
-            if(story.fields.resolutiondate !== null) {
+            
+            var resolution = story.fields.resolutiondate;
+            if(resolution !== undefined && resolution !== null) {
                 list.push({
                     date: Date.parse(story.fields.resolutiondate),
                     number: -value

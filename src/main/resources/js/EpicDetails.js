@@ -198,12 +198,20 @@ function chartDirective() {
         link: function(scope, elem, attrs) {
             var chart = null;
             var overview = null;
+
             var opts = {
                 xaxis: {
-                	mode: "time",
-                    ticks: 4,
-                    tickFormatter: function(val, axis) {
-                        return new Date(val).toLocaleDateString();
+                    ticks: function(axis) {
+                        var min = axis.min;
+                        var step = Math.floor((axis.max - axis.min) / 4);
+
+                        var ticks = [];
+
+                        for(var i = 0; i < 5; i++) {
+                            ticks.push([min, new Date(min).toLocaleDateString()]);
+                            min += step;
+                        }
+                        return ticks;
                     }
                 },
                 yaxis: {
@@ -214,11 +222,18 @@ function chartDirective() {
                 },
                 selection: {
     				mode: "x"
-    			}
+    			},
+                series: {
+                    lines: {
+                        steps: true
+                    }
+                }
             };
+
             var overviewOpts = {
             	series: {
         			lines: {
+                        steps: true,
         				show: true,
         				lineWidth: 1
         			},
@@ -237,10 +252,12 @@ function chartDirective() {
         			mode: "x"
        			}
             };
+            
             scope.$watch(attrs.ngModel, function(v) {
                 if(!chart) {
                 	var chartElem = jQuery('#chart');
                 	var overviewElem = jQuery('#overview');
+
                     chart = jQuery.plot(chartElem, v, opts);
                     overview = jQuery.plot(overviewElem, v, overviewOpts);
                     chartElem.show();
@@ -248,6 +265,7 @@ function chartDirective() {
                     elem.show();
                 }
                 else {
+
                     chart.setData(v);
                     chart.setupGrid();
                     chart.draw();

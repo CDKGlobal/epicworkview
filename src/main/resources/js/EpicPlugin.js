@@ -46,7 +46,7 @@ jQuery(document).ready(function() {
  */
 function ProjectController($scope, $http, $cookieStore, $window, $location) {
 
-	$scope.filterDays = 7;
+    $scope.filterDays = 7;
 
     $scope.getBaseURL = function() {
         return baseURL;
@@ -59,9 +59,9 @@ function ProjectController($scope, $http, $cookieStore, $window, $location) {
     function indexOf(list, elem) {
       var where = -1;
       angular.forEach(list, function(e, i) {
-    	//if element ids are equal or both negative
+        //if element ids are equal or both negative
         if(e.id == elem.id || (typeof e.id === 'number' && e.id < 0) && (typeof elem.id === 'number' && elem.id < 0)) {
-        	where = i;
+            where = i;
         }
       });
       return where;
@@ -82,104 +82,103 @@ function ProjectController($scope, $http, $cookieStore, $window, $location) {
     /* ---------------------------------- Project List --------------------------------------- */
     /* --------------------------------------------------------------------------------------- */
     
-	$scope.projects = [];
-	
-	$scope.loading = true;
+    $scope.projects = [];
+    
+    $scope.loading = true;
     
     // Get all the projects in the last amount of seconds and set them in a local variable (projects)
     $scope.getProjects = function(seconds) {
-    	$http.get(baseURL+'/rest/epic/1/projects.json?seconds='+seconds).
-	    success(function(data, status, headers, config) {
-	    	// check if using new colors
-	    	if (!usingNewColors) {
-	    		setColor(data);
-	    	}	
-	    	lastUpdateTime = new Date().getTime();
-	    	//add the new projects to the projects array
-	    	updateElementList($scope.projects, data, "project");
-	    	animateEpics();
-	    	$scope.loading = false;
-	    }).
-	    error(function(data, status, headers, config) {
-	      // log error
-	    });
+        $http.get(baseURL+'/rest/epic/1/projects.json?seconds='+seconds).
+        success(function(data, status, headers, config) {
+            // check if using new colors
+            if (!usingNewColors) {
+                setColor(data);
+            }    
+            lastUpdateTime = new Date().getTime();
+            //add the new projects to the projects array
+            updateElementList($scope.projects, data, "project");
+            animateEpics();
+            $scope.loading = false;
+        }).
+        error(function(data, status, headers, config) {
+          // log error
+        });
     };
     
     // Updates the current list with any changes from the new list of elements
     function updateElementList(currentList, newList, elementType) {
-    	angular.forEach(newList, function(element, index) {
-    		//find index of the element in the current list
-    		var elementIndex = indexOf(currentList, element);
-    		var savedElement = currentList[elementIndex];
-    		//if the element isn't there, add it
-    		if (elementIndex == -1) {
-    			// if it is not a deleted element
-    			if (element.timestamp != -1) {
-	    			//add to front of list
-	    			currentList.unshift(element);
-	    			savedElement = currentList[0];
-	    			// animate if it is an epic
-	    			if (elementType == "epic") {
-						epicAnimationQueue.push([savedElement]);
-					} else if (elementType == "story") {
-						if (epicAnimationQueue.length > 0) {
-							epicAnimationQueue[epicAnimationQueue.length - 1].push(savedElement);
-						}	
-					}	
-	    			// set its state to true if it is a project and not in the list of unchecked projects
-	    			if (elementType == "project" && !contains($scope.uncheckedProjectIds, element.id)) {
-	    				element.state = true;
-	    			}
-	    			//update the list held in the current element, if it has one
-	        		updateChildList(elementType, savedElement, element);
-    			}
-    		} else {
-    			//element is in the current list, so update it
-    			if (element.timestamp == -1) {
-    				// this element is marked for deletion, remove it
-    				currentList.splice(elementIndex, 1);
-    			} else {
-    				// animate any updated epics
-    				if (savedElement.timestamp != element.timestamp) {
-    					if (elementType == "epic") {
-    						epicAnimationQueue.push([savedElement]);
-    					} else if (elementType == "story") {
-    						epicAnimationQueue[epicAnimationQueue.length - 1].push(savedElement);
-    					}	
-    				}
-    				savedElement.timestamp = element.timestamp;
-    				savedElement.name = element.name;
-	  	            savedElement.key = element.key;
-	  	            savedElement.description = element.description;
-	  	            savedElement.contributor = element.contributor;
-    				// set completed field if a story
-    				if (elementType == "story") {
-    					savedElement.completed = element.completed;
-    				}    				
-    				//update the list held in the current element, if it has one
-    	    		updateChildList(elementType, savedElement, element);
-    			}
-    		}
-    	});
-    	// sort the list and remove all old elements
-    	if (currentList !== undefined && currentList !== null) {
-    		currentList.sort(function(a, b){return b.timestamp - a.timestamp;});
-    		removeOldElements(currentList, $scope.filterDays);
-    	}
+        angular.forEach(newList, function(element, index) {
+            //find index of the element in the current list
+            var elementIndex = indexOf(currentList, element);
+            var savedElement = currentList[elementIndex];
+            //if the element isn't there, add it
+            if (elementIndex == -1) {
+                // if it is not a deleted element
+                if (element.timestamp != -1) {
+                    //add to front of list
+                    currentList.unshift(element);
+                    savedElement = currentList[0];
+                    // animate if it is an epic
+                    if (elementType == "epic") {
+                        epicAnimationQueue.push([savedElement]);
+                    } else if (elementType == "story") {
+                        if (epicAnimationQueue.length > 0) {
+                            epicAnimationQueue[epicAnimationQueue.length - 1].push(savedElement);
+                        }    
+                    }    
+                    // set its state to true if it is a project and not in the list of unchecked projects
+                    element.included = elementType == "project" && !contains($scope.uncheckedProjectIds, element.id);
+
+                    //update the list held in the current element, if it has one
+                    updateChildList(elementType, savedElement, element);
+                }
+            } else {
+                //element is in the current list, so update it
+                if (element.timestamp == -1) {
+                    // this element is marked for deletion, remove it
+                    currentList.splice(elementIndex, 1);
+                } else {
+                    // animate any updated epics
+                    if (savedElement.timestamp != element.timestamp) {
+                        if (elementType == "epic") {
+                            epicAnimationQueue.push([savedElement]);
+                        } else if (elementType == "story") {
+                            epicAnimationQueue[epicAnimationQueue.length - 1].push(savedElement);
+                        }    
+                    }
+                    savedElement.timestamp = element.timestamp;
+                    savedElement.name = element.name;
+                      savedElement.key = element.key;
+                      savedElement.description = element.description;
+                      savedElement.contributor = element.contributor;
+                    // set completed field if a story
+                    if (elementType == "story") {
+                        savedElement.completed = element.completed;
+                    }                    
+                    //update the list held in the current element, if it has one
+                    updateChildList(elementType, savedElement, element);
+                }
+            }
+        });
+        // sort the list and remove all old elements
+        if (currentList !== undefined && currentList !== null) {
+            currentList.sort(function(a, b){return b.timestamp - a.timestamp;});
+            removeOldElements(currentList, $scope.filterDays);
+        }
     }
     
     // update the child list of savedElement with the child list of element
     function updateChildList(elementType, savedElement, element) {
-    	if (elementType == "project") {
-			// this is a project
-			updateElementList(savedElement.epics, element.epics, "epic");
-		} else if (elementType == "epic") {
-			// this is an epic
-			updateElementList(savedElement.stories, element.stories, "story");
-		} else if (elementType == "story") {
-			// this is a story
-			updateElementList(savedElement.subtasks, element.subtasks, "subtask");
-		}
+        if (elementType == "project") {
+            // this is a project
+            updateElementList(savedElement.epics, element.epics, "epic");
+        } else if (elementType == "epic") {
+            // this is an epic
+            updateElementList(savedElement.stories, element.stories, "story");
+        } else if (elementType == "story") {
+            // this is a story
+            updateElementList(savedElement.subtasks, element.subtasks, "subtask");
+        }
     }
     
     /*
@@ -187,46 +186,46 @@ function ProjectController($scope, $http, $cookieStore, $window, $location) {
      * (elements should be in time order)
      */
     function removeOldElements(elements, days) {
-    	var time = new Date().getTime();
-    	var i = elements.length - 1;
-    	var element = elements[i];
-    	while (i >= 0 && ((time - element.timestamp) / (1000 * 60 * 60 * 24)) > days) {
-    		elements.pop();
-    		i--;
-    		element = elements[i];
-    	}
+        var time = new Date().getTime();
+        var i = elements.length - 1;
+        var element = elements[i];
+        while (i >= 0 && ((time - element.timestamp) / (1000 * 60 * 60 * 24)) > days) {
+            elements.pop();
+            i--;
+            element = elements[i];
+        }
     }
     
     // Get all recently changed projects and update or add them to the local projects variable
     updateProjects = function() {
-    	var secsSinceUpdate = (new Date().getTime() - lastUpdateTime) / 1000;
-    	$scope.getProjects(Math.ceil(secsSinceUpdate));
+        var secsSinceUpdate = (new Date().getTime() - lastUpdateTime) / 1000;
+        $scope.getProjects(Math.ceil(secsSinceUpdate));
     };
     
     // Loop through epics to find a non-null epic and set whether it is using new colors
     function setColor(projects) {
-    	for (var i = 0; i < projects.length; i++) {
-    		var j = 0;
-    		var epic = projects[i].epics[0];
-    		while (epic !== undefined && epic !== null) {
-    			if (epic.id >= 0) {
-    				if (epic.color[0] == '#') {
-    					usingNewColors = false;
-    				} else {
-    					usingNewColors = true;
-    				}
-    				return;
-    			}
-    			j++;
-    			epic = projects[i].epics[j];
-    		}
-    	}
+        for (var i = 0; i < projects.length; i++) {
+            var j = 0;
+            var epic = projects[i].epics[0];
+            while (epic !== undefined && epic !== null) {
+                if (epic.id >= 0) {
+                    if (epic.color[0] == '#') {
+                        usingNewColors = false;
+                    } else {
+                        usingNewColors = true;
+                    }
+                    return;
+                }
+                j++;
+                epic = projects[i].epics[j];
+            }
+        }
     }
     
     // sort the projects by last updated time
     $scope.timeOrderedProjects = function() {
-    	$scope.projects.sort(function(a, b){return b.timestamp - a.timestamp;});
-    	return $scope.projects;
+        $scope.projects.sort(function(a, b){return b.timestamp - a.timestamp;});
+        return $scope.projects;
     };
     
     /* --------------------------------------------------------------------------------------- */
@@ -236,9 +235,9 @@ function ProjectController($scope, $http, $cookieStore, $window, $location) {
     $scope.isFullScreen = false;
     
     $scope.toggleFullScreen = function() {
-    	jQuery("header").slideToggle();
-    	jQuery("footer").fadeToggle();
-    	$scope.isFullScreen = !$scope.isFullScreen;
+        jQuery("header").slideToggle();
+        jQuery("footer").fadeToggle();
+        $scope.isFullScreen = !$scope.isFullScreen;
     };
     
     /* --------------------------------------------------------------------------------------- */
@@ -250,75 +249,75 @@ function ProjectController($scope, $http, $cookieStore, $window, $location) {
     
     // returns all contributors for this project in order of time worked on project
     $scope.getContributors = function(project) {
-    	project.contributorCount = 0;
-    	// get map of timestamps to lists of contributors
-    	var contributorTimestamps = {};
-    	getContributorsHelper(contributorTimestamps, project, "project");
-    	// get list of all timestamps
-    	var timestamps = [];
-    	for (var key in contributorTimestamps) {
-    		timestamps.push(key);
-    	}
-    	// sort timestamps
-    	timestamps.sort(function(a, b){return b - a;});
-    	// add contributors for each timestamp to result
-    	var result = [];
-    	angular.forEach(timestamps, function(timestamp) {
-			var contributors = contributorTimestamps[timestamp];
-			angular.forEach(contributors, function(c) {
-				// add to result if not a duplicate and not above max contributors
-				if (indexOf(result, c) == -1) {
-					result.push(c);					
-					project.contributorCount++;
-				}
-    		});
-		});
-    	if (result.length > maxContributors) {
-    		return result.slice(0, maxContributors - 1);
-    	}
-    	return result;
+        project.contributorCount = 0;
+        // get map of timestamps to lists of contributors
+        var contributorTimestamps = {};
+        getContributorsHelper(contributorTimestamps, project, "project");
+        // get list of all timestamps
+        var timestamps = [];
+        for (var key in contributorTimestamps) {
+            timestamps.push(key);
+        }
+        // sort timestamps
+        timestamps.sort(function(a, b){return b - a;});
+        // add contributors for each timestamp to result
+        var result = [];
+        angular.forEach(timestamps, function(timestamp) {
+            var contributors = contributorTimestamps[timestamp];
+            angular.forEach(contributors, function(c) {
+                // add to result if not a duplicate and not above max contributors
+                if (indexOf(result, c) == -1) {
+                    result.push(c);                    
+                    project.contributorCount++;
+                }
+            });
+        });
+        if (result.length > maxContributors) {
+            return result.slice(0, maxContributors - 1);
+        }
+        return result;
     };
     
     // helper to get list of key value pairs from timestamp to contributor
     function getContributorsHelper(result, element, elementType) {
-    	if (elementType == "project") {
-    		// this is a project
-    		angular.forEach(element.epics, function(epic) {
-    			getContributorsHelper(result, epic, "epic");
-    		});
-    	} else if (elementType == "epic") {
-    		// this is an epic
-    		angular.forEach(element.stories, function(story) {
-    			getContributorsHelper(result, story, "story");
-    		});
-    	} else if (elementType == "story") {
-    		// this is a story
-    		angular.forEach(element.subtasks, function(subtask) {
-    			getContributorsHelper(result, subtask, "subtask");
-    		});
-    	}
-    	// add contributor to the result with the key as the element's timestamp
-    	var contributor = element.contributor;
-    	var timestamp = element.timestamp;
-    	// make sure there is a contributor
-    	if (contributor !== undefined && contributor !== null) {
-    		// if this timestamp is already in the list, add another contributor to it
-    		if (timestamp in result) {
-    			result[timestamp].push(contributor);
-    		} else {
-    			// if it is not in the list, add it with the contributor
-    			result[timestamp] = [contributor];
-    		}
-    	}
+        if (elementType == "project") {
+            // this is a project
+            angular.forEach(element.epics, function(epic) {
+                getContributorsHelper(result, epic, "epic");
+            });
+        } else if (elementType == "epic") {
+            // this is an epic
+            angular.forEach(element.stories, function(story) {
+                getContributorsHelper(result, story, "story");
+            });
+        } else if (elementType == "story") {
+            // this is a story
+            angular.forEach(element.subtasks, function(subtask) {
+                getContributorsHelper(result, subtask, "subtask");
+            });
+        }
+        // add contributor to the result with the key as the element's timestamp
+        var contributor = element.contributor;
+        var timestamp = element.timestamp;
+        // make sure there is a contributor
+        if (contributor !== undefined && contributor !== null) {
+            // if this timestamp is already in the list, add another contributor to it
+            if (timestamp in result) {
+                result[timestamp].push(contributor);
+            } else {
+                // if it is not in the list, add it with the contributor
+                result[timestamp] = [contributor];
+            }
+        }
     }
     
     // Return how many extra contributors there are for the project after
     // the max contributor count
     $scope.extraContributorCount = function(project) {
-    	if (project.contributorCount === undefined) {
-    		return 0;
-    	}
-    	return project.contributorCount - maxContributors + 1;
+        if (project.contributorCount === undefined) {
+            return 0;
+        }
+        return project.contributorCount - maxContributors + 1;
     };
     
     /* --------------------------------------------------------------------------------------- */
@@ -327,42 +326,42 @@ function ProjectController($scope, $http, $cookieStore, $window, $location) {
     
     // Returns the number of completed stories for the project
     $scope.getCompletedStories = function(project) {
-    	var res = 0;
-    	angular.forEach(project.epics, function(epic) {
-    		angular.forEach(epic.stories, function(story) {
-    			if (story.completed) res++;
-    		});
-    	});
-    	return res;
+        var res = 0;
+        angular.forEach(project.epics, function(epic) {
+            angular.forEach(epic.stories, function(story) {
+                if (story.completed) res++;
+            });
+        });
+        return res;
     };
     
     // Return the difference between the current time and the given time, as a string
     // returns a shorter string if short is true
     $scope.millisecondToString = function(milli, short) {
-    	currentTime = new Date().getTime();
-    	lastUpdated = currentTime - milli;
-    	seconds = Math.round(lastUpdated / 1000);
-    	if (seconds < 60) {
-    		return short ? seconds + "S" : pluralize(seconds, "second");
-    	}
-    	minutes = Math.round(seconds / 60);
-    	if (minutes < 60) {
-    		return short ? minutes + "M" : pluralize(minutes, "minute");
-    	}
-    	hours = Math.round(minutes / 60);
-    	if (hours < 24) {
-    		return short ? hours + "H" : pluralize(hours, "hour");
-    	}
-    	days = Math.round(hours / 24);
-    	return short ? days + "D" : pluralize(days, "day");
+        currentTime = new Date().getTime();
+        lastUpdated = currentTime - milli;
+        seconds = Math.round(lastUpdated / 1000);
+        if (seconds < 60) {
+            return short ? seconds + "S" : pluralize(seconds, "second");
+        }
+        minutes = Math.round(seconds / 60);
+        if (minutes < 60) {
+            return short ? minutes + "M" : pluralize(minutes, "minute");
+        }
+        hours = Math.round(minutes / 60);
+        if (hours < 24) {
+            return short ? hours + "H" : pluralize(hours, "hour");
+        }
+        days = Math.round(hours / 24);
+        return short ? days + "D" : pluralize(days, "day");
     };
     
     // appends an "s" to the unit if the number is greater than one
     function pluralize(num, unit) {
-    	if (num == 1) {
-    		return num + " " + unit;
-    	}
-    	return num + " " + unit + "s";
+        if (num == 1) {
+            return num + " " + unit;
+        }
+        return num + " " + unit + "s";
     }
     
     /* --------------------------------------------------------------------------------------- */
@@ -376,38 +375,37 @@ function ProjectController($scope, $http, $cookieStore, $window, $location) {
     // clear all checkboxes and update projects accordingly
     $scope.clearchkbox = function() {
         angular.forEach($scope.filteredProjects, function (project) {
-            project.included = false;
-            // set the state to true, then check the project, which flips the state to false
-            project.state = true;
-            $scope.checkProject(project);
+            if(project.included) {
+                $scope.checkProject(project);
+            }
         });
     };
     
     // check all checkboxes and update projects accordingly
     $scope.checkchkbox = function() {
         angular.forEach($scope.filteredProjects, function (project) {
-            project.included = true;
-            // set the state to false, then check the project, which flips the state to true
-            project.state = false;
-            $scope.checkProject(project);
+            if(!project.included) {
+                $scope.checkProject(project);
+            }
         });
     };
     
     // toggle the projects state and update the cookie for the users checked projects
     $scope.checkProject = function(project) {
-    	// flip the projects state
-    	project.state = !project.state;
+        // flip the projects state
+        project.included = !project.included;
         var projIndex = $scope.uncheckedProjectIds.indexOf(project.id);
-    	if (project.state && projIndex != -1) {
-    		// remove project from unchecked projects list
-    		$scope.uncheckedProjectIds.splice(projIndex, 1);
-    	} else if(projIndex == -1) {
-    		// add project to unchecked projects list
-    		$scope.uncheckedProjectIds.push(project.id);
-    	}
-    	// update the cookie
-    	$cookieStore.remove('projectIds');
-		$cookieStore.put('projectIds', $scope.uncheckedProjectIds);
+        
+        if (project.included && projIndex != -1) {
+            // remove project from unchecked projects list
+            $scope.uncheckedProjectIds.splice(projIndex, 1);
+        } else if(!project.included && projIndex == -1) {
+            // add project to unchecked projects list
+            $scope.uncheckedProjectIds.push(project.id);
+        }
+        // update the cookie
+        $cookieStore.remove('projectIds');
+        $cookieStore.put('projectIds', $scope.uncheckedProjectIds);
         $scope.cookieState();
     };
     
@@ -418,8 +416,8 @@ function ProjectController($scope, $http, $cookieStore, $window, $location) {
     };
     
     $scope.search = function (item){
-    	if (item.name.toLowerCase().indexOf($scope.query.toLowerCase())!=-1 || 
-    			item.group.toLowerCase().indexOf($scope.query.toLowerCase())!=-1) {
+        if (item.name.toLowerCase().indexOf($scope.query.toLowerCase())!=-1 || 
+                item.group.toLowerCase().indexOf($scope.query.toLowerCase())!=-1) {
             return true;
         }
         return false;
@@ -427,12 +425,12 @@ function ProjectController($scope, $http, $cookieStore, $window, $location) {
     
     // sort the projects alphabetically by name
     $scope.alphabeticalProjects = function() {
-    	$scope.projects.sort(function(a, b){
-    		if(a.name < b.name) return -1;
-    	    if(a.name > b.name) return 1;
-    	    return 0;
-    	});
-    	return $scope.projects;
+        $scope.projects.sort(function(a, b){
+            if(a.name < b.name) return -1;
+            if(a.name > b.name) return 1;
+            return 0;
+        });
+        return $scope.projects;
     };
     
     /* --------------------------------------------------------------------------------------- */
@@ -531,31 +529,31 @@ function ProjectController($scope, $http, $cookieStore, $window, $location) {
     
     // Animate each epic in the queue of epics to animate
     function animateEpics() {
-    	var resetEpic = function(){
-    		clickedEpic = null;
-    	};
-    	
-    	while (epicAnimationQueue.length > 0) {
-    		epicData = epicAnimationQueue.shift();
-    		epic = epicData.shift();
-	    	clickedEpic = epic.id;
-	    	setTimeout(resetEpic, 4000);
-	    	for (var i = 0; i < epicData.length; i++) {
-	    		animateStory(epicData[i]);
-	    	}
-    	}
+        var resetEpic = function(){
+            clickedEpic = null;
+        };
+        
+        while (epicAnimationQueue.length > 0) {
+            epicData = epicAnimationQueue.shift();
+            epic = epicData.shift();
+            clickedEpic = epic.id;
+            setTimeout(resetEpic, 4000);
+            for (var i = 0; i < epicData.length; i++) {
+                animateStory(epicData[i]);
+            }
+        }
     }
     
     // Animate the given story
     function animateStory(story) {
-    	animatedStoryId = story.id;
-    	setTimeout(function() {
-    		animatedStoryId = null;
-    	}, 3000);
+        animatedStoryId = story.id;
+        setTimeout(function() {
+            animatedStoryId = null;
+        }, 3000);
     }
     
     $scope.storyIsAnimated = function(id) {
-    	return id == animatedStoryId;
+        return id == animatedStoryId;
     };
     
     /* --------------------------------------------------------------------------------------- */
@@ -566,8 +564,8 @@ function ProjectController($scope, $http, $cookieStore, $window, $location) {
     $scope.uncheckedProjectIds = $cookieStore.get('projectIds');
     // if the user does not have checked preferences, create one for them
     if (typeof $scope.uncheckedProjectIds === 'undefined') {
-    	$scope.uncheckedProjectIds = [];
-    	$cookieStore.put('projectIds', $scope.uncheckedProjectIds);
+        $scope.uncheckedProjectIds = [];
+        $cookieStore.put('projectIds', $scope.uncheckedProjectIds);
     }
 
     var stuff = $window.location.search;
@@ -614,97 +612,97 @@ function EpicController($scope) {
 
     // Set the clicked epic to be id or null if it is already id
     $scope.toggleEpic = function(e, id) {
-    	e.stopPropagation();
-    	if (clickedEpic == id) {
-    		clickedEpic = null;
-    		refresh = true;
-    	} else {
-    		clickedEpic = id;
-    		refresh = false; // halt project refresh if epic info is open
-    	}
+        e.stopPropagation();
+        if (clickedEpic == id) {
+            clickedEpic = null;
+            refresh = true;
+        } else {
+            clickedEpic = id;
+            refresh = false; // halt project refresh if epic info is open
+        }
     };
     
     // Returns true if the given project contains a clicked epic, false otherwise
     $scope.showEpicWindow = function(project) {
-    	var epic = getClickedEpic(project);
-    	return (epic !== null);
+        var epic = getClickedEpic(project);
+        return (epic !== null);
     };
     
     // Returns a list of the stories in the clicked epic of the given project. 
     // Returns completed stories if completed is true, incomplete stories otherwise
     $scope.getEpicStories = function(project, completed) {
-    	var epic = getClickedEpic(project);
-    	if (epic === null) return null;
-    	var result = [];
-    	for (var i = 0; i < epic.stories.length; i++) {
-    		if (epic.stories[i].completed == completed) {
-    			result.push(epic.stories[i]);
-    		}
-    	}
-    	return result;
+        var epic = getClickedEpic(project);
+        if (epic === null) return null;
+        var result = [];
+        for (var i = 0; i < epic.stories.length; i++) {
+            if (epic.stories[i].completed == completed) {
+                result.push(epic.stories[i]);
+            }
+        }
+        return result;
     };
     
     // Return the clicked epic from the given project, or none if none are clicked
     getClickedEpic = function(project) {
-    	for (var i = 0; i < project.epics.length; i++) {
-    		if (project.epics[i].id == clickedEpic) {
-    			return project.epics[i];
-    		}
-    	}
-    	return null;
+        for (var i = 0; i < project.epics.length; i++) {
+            if (project.epics[i].id == clickedEpic) {
+                return project.epics[i];
+            }
+        }
+        return null;
     };
     
     // Return whether the clicked epic is this epic
     $scope.isClicked = function(id) {
-    	return clickedEpic == id;
+        return clickedEpic == id;
     };
     
     // Set a unique id for the epic
     $scope.setUniqueId = function(epic) {
-    	if (epic.id == -1) {
-    		epic.id = uniqueEpicId;
-    		uniqueEpicId--;
-    	}
+        if (epic.id == -1) {
+            epic.id = uniqueEpicId;
+            uniqueEpicId--;
+        }
     };
     
     $scope.getClickedEpicColor = function(project) {
-    	var epic = getClickedEpic(project);
-    	if (epic === null) return null;
-    	return $scope.getEpicColor(epic);
+        var epic = getClickedEpic(project);
+        if (epic === null) return null;
+        return $scope.getEpicColor(epic);
     };
     
     // Return the epic's color
     $scope.getEpicColor = function(epic) {
-    	if (epic.color[0] == '#' && usingNewColors) {
-    		return "ghx-label-3";
-    	} 
-    	return epic.color;
+        if (epic.color[0] == '#' && usingNewColors) {
+            return "ghx-label-3";
+        } 
+        return epic.color;
     };
     
     // Returns a list of post it positions to use for the background of the
     // given name. 
     $scope.getPostItOffsets = function(epicName) {
-    	var list = [];
-    	for (var i = 0; i < epicName.length / 6; i++) {    		
-    		list[i] = i * 22;
-    	}
-    	return list;
+        var list = [];
+        for (var i = 0; i < epicName.length / 6; i++) {            
+            list[i] = i * 22;
+        }
+        return list;
     };
     
     // returns a shortened version of the given sentence
     $scope.shorten = function(sentence) {
-    	if (sentence.length > 32) {
-    		var res = sentence.substring(0, 32);
-    		return res + "...";
-    	}
-    	return sentence;
+        if (sentence.length > 32) {
+            var res = sentence.substring(0, 32);
+            return res + "...";
+        }
+        return sentence;
     };
     
     $scope.getFontColor = function() {
-    	if (usingNewColors) {
-    		return "#fff";
-    	}
-    	return "#000";
+        if (usingNewColors) {
+            return "#fff";
+        }
+        return "#000";
     };
 }
 

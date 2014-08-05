@@ -10,14 +10,16 @@
 
 .column1, .column2 {
 	width: 50%;
+	min-width: 550px;
 }
 
 .column1 {
 	float: left;
+	min-height: 560px;
 }
 
 .column2 {
-	float: right;
+	float: left;
 }
 
 /* Graph */

@@ -113,6 +113,12 @@ function epicDetailsController ($scope, $http, $q, $location) {
     			$scope.inProgress += getValue(story);
     		}
     	});
+    	
+    	if ($scope.workType == 3) {
+    		$scope.notStarted = $scope.notStarted.toFixed(2);
+    		$scope.inProgress = $scope.inProgress.toFixed(2);
+    		$scope.done = $scope.done.toFixed(2);
+    	}
     }
 
     // creates a list of (date, number) pairs
@@ -159,7 +165,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
                 time = story.fields.aggregateprogress.progress;
             }
 
-            return (time / 3600).toFixed(2);
+            return (time / 3600);
         }
     }
     

@@ -92,7 +92,7 @@
 	      		<i class="fa fa-circle-o-notch fa-spin fa-4x"></i>
 	      	</li>
 	      	<li class="table-body" ng-hide="loading" ng-class="{'fixed-body': isFullScreen}">
-		      <div class="project-row table-row" ng-repeat="project in timeOrderedProjects() | filter: {included:true}">
+		      <div class="project-row table-row" ng-class="{'show-overflow' : showOverflow()}" ng-repeat="project in timeOrderedProjects() | filter: {included:true}">
 		      	<ul class="inline">
 		      		<li class="project-column">	
 		      			<img class="project-icon" src="{{project.icon}}" height="40" width="40">	      					      			
@@ -115,13 +115,18 @@
 		      		<li class="last-update-column">{{millisecondToString(project.timestamp, false)}} ago</li>
 		      		<li class="epic-column">
 		      			<ul class="list inline" ng-controller="EpicController">
-		      				<li class="epic-container" ng-repeat="epic in project.epics" ng-init="setUniqueId(epic)" ng-class="{'clicked-epic': isClicked(epic.id)}" ng-click="toggleEpic($event, epic.id)">
-		      					<div class="post-it" ng-repeat="padding in getPostItOffsets(shorten(epic.name))" ng-style="{'left': '{{padding}}px', 'background': '{{getEpicColor(epic)}}'}" ng-class="getEpicColor(epic)"></div>
-		      					<div class="post-it" ng-repeat="padding in getPostItOffsets(shorten(epic.name))" ng-style="{'right': '{{padding}}px', 'background': '{{getEpicColor(epic)}}'}" ng-class="getEpicColor(epic)"></div>
-		      					<span class="epic" ng-style="{'background-color': '{{getEpicColor(epic)}}'}" ng-class="getEpicColor(epic)">
-		      						{{shorten(epic.name)}}
-		      					</span>
-		      				</li>
+		      				<li class="epic-holder" ng-repeat="epic in project.epics" ng-init="setUniqueId(epic)">
+		      					<div class="epic-info-button" ng-show="isClicked(epic.id)" ng-click="$event.stopPropagation(); setActiveEpic(epic, project)">
+			      					<i class="fa fa-info fa-2x"></i>
+			      				</div>
+		      					<div class="epic-container" ng-class="{'clicked-epic': isClicked(epic.id)}" ng-click="toggleEpic($event, epic.id); toggleOverflow()">
+			      					<div class="post-it" ng-repeat="padding in getPostItOffsets(shorten(epic.name))" ng-style="{'left': '{{padding}}px', 'background': '{{getEpicColor(epic)}}'}" ng-class="getEpicColor(epic)"></div>
+			      					<div class="post-it" ng-repeat="padding in getPostItOffsets(shorten(epic.name))" ng-style="{'right': '{{padding}}px', 'background': '{{getEpicColor(epic)}}'}" ng-class="getEpicColor(epic)"></div>
+			      					<span class="epic" ng-style="{'background-color': '{{getEpicColor(epic)}}'}" ng-class="getEpicColor(epic)">
+			      						{{shorten(epic.name)}}
+			      					</span>
+		      					</div>
+		      				</li>	
 		      			</ul>
 		      		</li>
 		      	</ul>

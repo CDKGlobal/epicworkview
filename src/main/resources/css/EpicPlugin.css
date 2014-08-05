@@ -281,11 +281,38 @@ ul.inline > .epic-container {
 	margin-bottom: 20px;
 }
 
+.epic-holder {
+	position: relative;
+}
+
 .epic-container {
 	position: relative;
 	margin-right: 24px;
 	cursor: pointer;
-	
+}
+
+.epic-info-button {
+	border: 1px solid black;
+	border-radius: 5px;
+	position: absolute;
+	height: 40px;
+	width: 40px;
+	background: #f5f5f5;
+	top: -65px;
+	left: calc(50% - 35px);
+	text-align: center;
+	box-shadow: 3px 3px 5px #888888;
+	z-index: 11;
+	cursor: pointer;
+}
+
+.epic-info-button > i {
+	margin-top: 5px;
+}
+
+.show-overflow {
+	overflow: visible !important;
+	position: relative;
 }
 
 .post-it {

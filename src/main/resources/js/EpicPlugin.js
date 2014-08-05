@@ -462,6 +462,14 @@ function ProjectController($scope, $http, $cookieStore, $window, $location) {
     $scope.setActivePage = function(issue) {
         setupModal(baseURL + "/browse/" + issue.key);
     };
+    
+    $scope.setActiveEpic = function(epic, project) {
+    	if (epic.id < 0) {
+    		setupModal(baseURL + "/plugins/servlet/epicDetails?epic=" + project.key);
+    	} else {
+    		setupModal(baseURL + "/plugins/servlet/epicDetails?epic=" + epic.key);
+    	}
+    };
 
     // Sets the current url to be the given one. 
     // Sets a new window to open on full screen
@@ -478,6 +486,22 @@ function ProjectController($scope, $http, $cookieStore, $window, $location) {
     /* --------------------------------------------------------------------------------------- */
     /* ------------------------------------ Timeout ------------------------------------------ */
     /* --------------------------------------------------------------------------------------- */
+    
+    $scope.overflow = false;
+    
+    $scope.showOverflow = function() {
+    	console.log("overflow is " + $scope.overflow);
+    	return $scope.overflow;
+    };
+    
+    $scope.toggleOverflow = function() {
+    	console.log("toggling overflow");
+    	if (clickedEpic === null) {
+    		$scope.overflow = false;
+    	} else {
+    		$scope.overflow = true;
+    	}
+    };
     
     // set timer for closing windows after inactivity
     var inactivityTimer;
@@ -498,6 +522,7 @@ function ProjectController($scope, $http, $cookieStore, $window, $location) {
     $scope.hideEpicInfo = function() {
     	refresh = true;
     	clickedEpic = null;
+    	$scope.overflow = false;
     };
     
     /* --------------------------------------------------------------------------------------- */

@@ -13,7 +13,9 @@ function epicDetailsController ($scope, $http, $q, $location) {
 
     $scope.workType = 1;
     
-    $scope.$watch('workType', $scope.refresh);
+    $scope.$watch('workType', function() {
+    	$scope.refresh();
+    });
 
     $scope.points = [[]];
 

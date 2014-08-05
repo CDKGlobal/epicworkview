@@ -152,7 +152,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
                 time = story.fields.aggregateprogress.progress;
             }
 
-            return time / 3600;
+            return (time / 3600).toFixed(2);
         }
     }
     

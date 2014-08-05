@@ -10,16 +10,17 @@
 
 .column1, .column2 {
 	width: 50%;
-	min-width: 550px;
 }
 
 .column1 {
 	float: left;
 	min-height: 560px;
+	min-width: 575px;
 }
 
 .column2 {
 	float: left;
+	min-width: 550px;
 }
 
 /* Graph */
@@ -53,6 +54,10 @@
 }
 
 /* Progress Bar */
+
+.progress-bar-container {
+	margin-right: 25px;
+}
 
 .progress-bar-key {
 	padding: 10px;
@@ -93,10 +98,6 @@
 
 .third-column {
 	width: 24%;
-}
-
-.story-list {
-	margin-left: 25px;
 }
 
 .story-list > ul,

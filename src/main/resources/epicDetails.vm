@@ -33,7 +33,7 @@
 		<h1>{{epicName}}</h1>
 
 		<div class="column1">
-			<div>
+			<div class="progress-bar-container">
 				<progress>
 					<bar value="notStarted * 100 / (notStarted + inProgress + done)" type="info" ng-hide="notStarted <= 0"><span>{{format(notStarted)}}</span></bar>
 					<bar value="inProgress * 100 / (notStarted + inProgress + done)" type="warning" ng-hide="inProgress <= 0"><span>{{format(inProgress)}}</span></bar>

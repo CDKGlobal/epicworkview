@@ -5,14 +5,15 @@ function epicDetailsController ($scope, $http, $q, $location) {
     $scope.contextPath = jQuery('meta[name="ajs-context-path"]').attr('content');
     $scope.key = $location.search().epic;
     $scope.epicName = '';
-    $scope.stories = [];
+    $scope.fullStories = []; // the full list of stories
+    $scope.stories = []; // the list of stories in the current date range
     $scope.notStarted = 0;
     $scope.inProgress = 0;
     $scope.done = 0;
 
     $scope.workType = 1;
     
-    $scope.$watch('workType', refresh);
+    $scope.$watch('workType', $scope.refresh);
 
     $scope.points = [[]];
 
@@ -59,11 +60,12 @@ function epicDetailsController ($scope, $http, $q, $location) {
             $q.all(requests).then(function(results) {
                 //add the new stories to the list
                 angular.forEach(results, function(e, i) {
+                    $scope.fullStories = $scope.fullsStories.concat(e.data.issues);
                     $scope.stories = $scope.stories.concat(e.data.issues);
                 });
 
                 //refresh the display
-                refresh();
+                $scope.refresh();
             });
         }
 
@@ -83,9 +85,10 @@ function epicDetailsController ($scope, $http, $q, $location) {
             $scope.epicName = 'Other stories (' + epic.name + ')';
         }
 
-        $scope.stories = stories.issues;
+        $scope.fullStories = stories.issues;
+        $scope.stories = $scope.fullStories;
 
-        refresh();
+        $scope.refresh();
 
     });
 
@@ -108,7 +111,8 @@ function epicDetailsController ($scope, $http, $q, $location) {
     			$scope.inProgress += getValue(story);
     		}
     	});
-    }
+    	console.log("not started: " + $scope.notStarted + ", in progress: " + $scope.inProgress + ", done: " + $scope.done);
+    };
 
     // creates a list of (date, number) pairs
     function getProgressList(stories) {
@@ -137,6 +141,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
         return list;
     }
 
+    // get the value of the story based on which work type is selected
     function getValue(story) {
         switch($scope.workType) {
         case 1:
@@ -156,14 +161,15 @@ function epicDetailsController ($scope, $http, $q, $location) {
         }
     }
     
-    function refresh() {
+    // update the story counts and chart points
+    $scope.refresh = function() {
     	countStories($scope.stories);
-        var points = getProgressList($scope.stories);
-
+    	
+    	// update points using full story list, so graph doesn't shrink
+        var points = getProgressList($scope.fullStories);
         points.sort(function(a, b) {
             return a.date - b.date;
         });
-
         $scope.points = [[]];
         var runningTotal = 0;
         angular.forEach(points, function(elem, index) {
@@ -183,6 +189,8 @@ function epicDetailsController ($scope, $http, $q, $location) {
     };
 }
 
+// Directive for creating charts
+// Creates a chart with an overview chart for selecting time ranges
 function chartDirective() {
     return {
         restrict: 'E',
@@ -249,6 +257,7 @@ function chartDirective() {
                     overview.draw();
                 }
             });
+            
             jQuery("#chart").bind("plotselected", function (event, ranges) {
 
     			// do the zooming
@@ -256,6 +265,7 @@ function chartDirective() {
     				var opts = axis.options;
     				opts.min = ranges.xaxis.from;
     				opts.max = ranges.xaxis.to;
+    				zoom(opts.min, opts.max);
     			});
     			chart.setupGrid();
     			chart.draw();
@@ -268,6 +278,23 @@ function chartDirective() {
     		jQuery("#overview").bind("plotselected", function (event, ranges) {
     			chart.setSelection(ranges);
     		});
+    		
+    		// zoom to the given minimum and maximum millisecond values
+    		// update the current data to be a subset between the values
+    		function zoom(min, max) {
+    			scope.stories = [];
+    			angular.forEach(scope.fullStories, function(story, index) {
+    				var created = Date.parse(story.fields.created);
+    				var resolved = story.fields.resolutiondate !== null ? Date.parse(story.fields.resolutiondate) : null;
+    				if (created <= max && (resolved === null || resolved >= min)) {
+    					scope.stories.push(story);
+    				}
+    			});
+    			// refresh the page, wrap in apply so that page updates
+    			scope.$apply(function() {
+    				scope.refresh();
+    			});
+    		}
         }
     };
 }

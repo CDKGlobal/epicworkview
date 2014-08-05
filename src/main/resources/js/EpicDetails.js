@@ -111,8 +111,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
     			$scope.inProgress += getValue(story);
     		}
     	});
-    	console.log("not started: " + $scope.notStarted + ", in progress: " + $scope.inProgress + ", done: " + $scope.done);
-    };
+    }
 
     // creates a list of (date, number) pairs
     function getProgressList(stories) {
@@ -176,7 +175,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
             runningTotal += elem.number;
             $scope.points[0].push([elem.date, runningTotal]);
         });
-    }
+    };
 
     //nicely format the date string
     $scope.doneDate = function(date) {

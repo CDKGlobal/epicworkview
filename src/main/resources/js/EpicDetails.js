@@ -169,7 +169,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
     		return number.toFixed(2);
     	}
     	return number;
-    }
+    };
     
     // update the story counts and chart points
     $scope.refresh = function() {

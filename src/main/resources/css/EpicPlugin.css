@@ -653,10 +653,10 @@ story:nth-child(5n) div {
 
 iframe {
 	position: absolute;
-	left:12.5%;
-	top:12.5%;
-	width:75%;
-	height:75%;
+	left:10%;
+	top:10%;
+	width:80%;
+	height:80%;
 
 	border: 5px solid #CCC;
 	border-radius: 5px;

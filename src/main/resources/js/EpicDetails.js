@@ -217,11 +217,28 @@ function chartDirective() {
                         var ticks = [];
 
                         for(var i = 0; i < 5; i++) {
-                            ticks.push([min, new Date(min).toLocaleDateString()]);
+                            ticks.push(min);
                             min += step;
                         }
                         return ticks;
+                    },
+                    tickFormatter: function(val, axis) {
+                        var range = axis.max - axis.min;
+                        var day = 1000 * 60 * 60 * 24;
+
+                        var date = new Date(val);
+
+                        if(range >= 4 * day) {
+                            return date.toLocaleDateString() + '<br/>&nbsp;';//hack to force using up som whitespace
+                        }
+                        else if(range >= day) {
+                            return date.toLocaleDateString() + '<br/>' + date.toLocaleTimeString();
+                        }
+                        else {
+                            return date.toLocaleTimeString() + '<br/>&nbsp;';
+                        }
                     }
+
                 },
                 yaxis: {
                     minTickSize: 1,
@@ -261,7 +278,7 @@ function chartDirective() {
         			mode: "x"
        			}
             };
-            
+
             scope.$watch(attrs.ngModel, function(v) {
                 if(!chart) {
                 	var chartElem = jQuery('#chart');

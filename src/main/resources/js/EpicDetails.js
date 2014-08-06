@@ -16,6 +16,8 @@ function epicDetailsController ($scope, $http, $q, $location) {
     $scope.inProgress = 0;
     $scope.done = 0;
 	$scope.averageTime = 0;
+	$scope.chartMin = 0;
+	$scope.chartMax = 0;
 	
     $scope.workType = 1;
     
@@ -233,7 +235,35 @@ function epicDetailsController ($scope, $http, $q, $location) {
         temp *= 3;
         temp += (temp/(5 * 24)) * 48;
         $scope.points[1].data = getForecastLine($scope.points[0][$scope.points[0].length - 1], temp);
+        
+        $scope.points.push(getDataPoints(true));
+        $scope.points.push(getDataPoints(false));
     };
+    
+    // return a list of points with numbers associated with dates for either story creation
+    // or resolution numbers, depending on the given boolean
+    function getDataPoints(creation) {
+    	var points = [];
+    	var numPoints = 5;
+    	// if not zoomed in, set chart min and max
+    	if ($scope.chartMin == $scope.chartMax) {
+    		$scope.chartMin = $scope.points[0][0][0];
+    		$scope.chartMax = $scope.points[0][$scope.points[0].length - 1][0];
+    	}
+    	
+    	var range = ($scope.chartMax - $scope.chartMin) / numPoints;
+    	for (var i = 0; i < numPoints; i++) {
+    		points.push([($scope.chartMin + (i + 1) * range), 0]);
+    	}
+    	angular.forEach($scope.stories, function(story, index) {
+    		var date = Date.parse(creation ? story.fields.created : story.fields.resolutiondate);
+    		if (date > $scope.chartMin && date < $scope.chartMax) {
+    			var i = Math.floor((date - $scope.chartMin) / range);
+    			points[i][1]++;
+    		}
+    	});
+    	return points;
+    }
 
     //nicely format the date string
     $scope.doneDate = function(date) {
@@ -406,6 +436,8 @@ function chartDirective() {
     					scope.stories.push(story);
     				}
     			});
+    			scope.chartMin = min;
+    			scope.chartMax = max;
     			// refresh the page, wrap in apply so that page updates
     			scope.$apply(function() {
     				scope.refresh();

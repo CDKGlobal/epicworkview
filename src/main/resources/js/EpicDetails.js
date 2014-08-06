@@ -202,7 +202,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
         });
 
 		if(completedStories !== 0) {
-        	$scope.averageTime = (sumTime/(completedStories* 60 * 60 * 1000 * 24)).toFixed(2);
+        	$scope.averageTime = (sumTime/(completedStories* 60 * 60 * 1000)).toFixed(2);
         }
     }
     	

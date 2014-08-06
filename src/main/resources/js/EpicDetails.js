@@ -1,4 +1,10 @@
 function epicDetailsController ($scope, $http, $q, $location) {
+    var forecast = {
+        time: 28, //how many days to look back in the project
+        epics: 4,  //number of epics (1 would be all resources applied to the epic)
+        //sprintLength: 7 //number of days in a sprint
+    };
+
 	var notStartedNames = ["To Do", "Open"];
 	
     $scope.contextPath = jQuery('meta[name="ajs-context-path"]').attr('content');
@@ -17,7 +23,8 @@ function epicDetailsController ($scope, $http, $q, $location) {
     	$scope.refresh();
     });
 
-    $scope.points = [[]];
+    $scope.points = [[],{}];
+    $scope.forecastRate = 0;
 
     //map from constant name to custom field name
     var fieldMap = {
@@ -48,6 +55,8 @@ function epicDetailsController ($scope, $http, $q, $location) {
         var epic = results[0].data;
         var stories = results[1].data;
         var fields = results[2].data;
+
+        $scope.setForecastRate(epic);
 
         //get the rest of the stories if there are more
         var maxResults = stories.maxResults;
@@ -203,12 +212,19 @@ function epicDetailsController ($scope, $http, $q, $location) {
         points.sort(function(a, b) {
             return a.date - b.date;
         });
-        $scope.points = [[]];
+        $scope.points = [[],{
+            lines: { show: true, steps: false },
+            points: { show: true },
+            data: []
+        }];
         var runningTotal = 0;
         angular.forEach(points, function(elem, index) {
             runningTotal += elem.number;
             $scope.points[0].push([elem.date, runningTotal]);
         });
+
+        //set the second series data to the forecasted list
+        $scope.points[1].data = getForecastLine($scope.points[0][$scope.points[0].length - 1], $scope.forecastRate);
     };
 
     //nicely format the date string
@@ -220,6 +236,40 @@ function epicDetailsController ($scope, $http, $q, $location) {
             return 'unresolved';
         }
     };
+
+    function getForecastLine(startPoint, rate) {
+        if(rate < 0) {//the trend is that the epic is coming to an end
+            
+            var forecast = [startPoint];
+
+            //add extra points to make it look nice
+            
+
+            forecast.push([startPoint[0] + (-startPoint[1]/rate), 0]);
+            return forecast;
+        }
+
+        return [];
+    }
+
+    $scope.setForecastRate = function(epic) {
+        var projectKey = epic.key;
+        if(epic.key.indexOf('-') != -1) {
+            projectKey = epic.fields.project.key;
+        }
+
+        var restCall = $scope.contextPath + '/rest/api/2/search?jql={1}>=-' + forecast.time + 'd and project=' + projectKey + ' and status changed';
+
+        $q.all([
+            $http.get(restCall.replace('{1}', 'created')),
+            $http.get(restCall.replace('{1}', 'resolved'))
+        ]).then(function(results) {
+            console.log(results);
+
+            $scope.forecastRate = (results[0].data.total - results[1].data.total) / (forecast.epics * forecast.time);
+            $scope.refresh();
+        });
+    }
 }
 
 // Directive for creating charts

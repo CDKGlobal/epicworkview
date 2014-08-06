@@ -24,14 +24,14 @@
 </head>
 <body>
 	<div ng-app="EpicDetails" ng-controller="EpicDetailsController" class="body-container">
+	
+		<h1>{{epicName}}</h1>
+	
 		<div class="btn-group">
 			<label class="btn btn-primary" ng-model="workType" btn-radio="1">Stories</label>
 			<label class="btn btn-primary" ng-model="workType" btn-radio="2">Story Points</label>
 			<label class="btn btn-primary" ng-model="workType" btn-radio="3">Work Hours</label>
 		</div>
-
-		<h1>{{epicName}}</h1>
-		<div>Average Working Time {{averageTime}} hours.</div>
 		
 		<div class="column1">
 			<div class="progress-bar-container">
@@ -53,6 +53,7 @@
 		</div>
 		
 		<div class="column2">
+			<div>Average Working Time: {{averageTime}} hours</div>
 			<div class="story-list">
 				<div class="header">
 					<div class="first-column inline">Story Name</div>

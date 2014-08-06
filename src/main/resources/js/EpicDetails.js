@@ -9,7 +9,8 @@ function epicDetailsController ($scope, $http, $q, $location) {
     $scope.notStarted = 0;
     $scope.inProgress = 0;
     $scope.done = 0;
-
+	$scope.averageTime = 0;
+	
     $scope.workType = 1;
     
     $scope.$watch('workType', function() {
@@ -89,6 +90,35 @@ function epicDetailsController ($scope, $http, $q, $location) {
         $scope.fullStories = stories.issues;
         $scope.stories = $scope.fullStories;
 
+		var completedStories = 0;
+
+    	var sumTime = 0;
+
+    	angular.forEach($scope.stories, function(story, index) {
+
+    		if(story.fields.resolutiondate !== null) {
+
+    			completedStories++;
+
+    			completedTime = Date.parse(story.fields.resolutiondate) - Date.parse(story.fields.created);
+
+    			sumTime+= completedTime;
+
+            }
+
+        });
+
+		if(completedStories !== 0){
+
+        	$scope.averageTime = (sumTime/(completedStories*3600000)).toFixed(2);
+
+        } else{
+
+        	$scope.averageTime = 0;
+
+        }
+
+		
         $scope.refresh();
 
     });

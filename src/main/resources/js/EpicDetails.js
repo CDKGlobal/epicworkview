@@ -269,7 +269,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
             $scope.forecastRate = (results[0].data.total - results[1].data.total) / (forecast.epics * forecast.time);
             $scope.refresh();
         });
-    }
+    };
 }
 
 // Directive for creating charts

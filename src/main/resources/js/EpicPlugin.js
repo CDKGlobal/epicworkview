@@ -488,7 +488,6 @@ function ProjectController($scope, $http, $cookieStore, $window, $location) {
     $scope.overflow = false;
     
     $scope.showOverflow = function() {
-    	console.log("overflow is " + $scope.overflow);
     	return $scope.overflow;
     };
     

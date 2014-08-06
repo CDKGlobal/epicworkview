@@ -46,7 +46,7 @@ jQuery(document).ready(function() {
  */
 function ProjectController($scope, $http, $cookieStore, $window, $location) {
 
-    $scope.filterDays = 14;
+    $scope.filterDays = 7;
 
     $scope.getBaseURL = function() {
         return baseURL;

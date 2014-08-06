@@ -231,7 +231,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
         //set the second series data to the forecasted list
         var temp = getAverageTime($scope.fullStories);
         temp *= 3;
-        temp += (temp/(5 * 24 * 60 * 60 * 1000) * 2;
+        temp += (temp/(5 * 24)) * 48;
         $scope.points[1].data = getForecastLine($scope.points[0][$scope.points[0].length - 1], temp);
     };
 

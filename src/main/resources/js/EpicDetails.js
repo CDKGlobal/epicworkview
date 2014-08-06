@@ -219,11 +219,21 @@ function epicDetailsController ($scope, $http, $q, $location) {
         points.sort(function(a, b) {
             return a.date - b.date;
         });
+        
         $scope.points = [[],{
             lines: { show: true, steps: false },
             points: { show: true },
             data: []
+        },
+        {
+            lines: { steps: false },
+            data: []
+        },
+        {
+            lines: { steps: false },
+            data: []
         }];
+
         var runningTotal = 0;
         angular.forEach(points, function(elem, index) {
             runningTotal += elem.number;
@@ -236,8 +246,8 @@ function epicDetailsController ($scope, $http, $q, $location) {
         temp += (temp/(5 * 24)) * 48;
         $scope.points[1].data = getForecastLine($scope.points[0][$scope.points[0].length - 1], temp);
         
-        $scope.points.push(getDataPoints(true));
-        $scope.points.push(getDataPoints(false));
+        $scope.points[2].data = getDataPoints(true);
+        $scope.points[3].data = getDataPoints(false);
     };
     
     // return a list of points with numbers associated with dates for either story creation
@@ -252,6 +262,9 @@ function epicDetailsController ($scope, $http, $q, $location) {
     	}
     	
     	var range = ($scope.chartMax - $scope.chartMin) / numPoints;
+        
+        points.push([$scope.points[0][0][0], 0]);//adds the origin point to the line
+
     	for (var i = 0; i < numPoints; i++) {
     		points.push([($scope.chartMin + (i + 1) * range), 0]);
     	}

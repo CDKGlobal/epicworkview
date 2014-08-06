@@ -252,7 +252,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
 
     function getForecastLine(startPoint, averageTime) {
         var stories = $scope.notStarted + $scope.inProgress;
-        return averageTime > 0 && stories > 0 ? [startPoint, [startPoint[0] + (stories * averageTime), 0]] : [];
+        return averageTime > 0 && stories > 0 ? [startPoint, [startPoint[0] + (stories * averageTime * 1000 * 60 * 60), 0]] : [];
     }
 
     $scope.setForecastRate = function(epic) {

@@ -36,19 +36,16 @@
 }
 
 #chart {
-	width: 500px;
 	height: 250px;
 }
 
 #overview {
-	width: 500px;
 	height: 100px;
 }
 
 .charts-container {
 	display: block; 
-	width: 550px; 
-	height: 250px;
+	margin-right: 25px;
 }
 
 .chart-container, .overview-container {

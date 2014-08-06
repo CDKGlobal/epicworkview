@@ -186,6 +186,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
     			var completedTime = Date.parse(story.fields.resolutiondate) - Date.parse(story.fields.created);
 
                 completedTime -= (2 * day * Math.floor(completedTime / week));
+                completedTime /= 3;
 
     			sumTime+= completedTime;
             }
@@ -228,7 +229,10 @@ function epicDetailsController ($scope, $http, $q, $location) {
         });
 
         //set the second series data to the forecasted list
-        $scope.points[1].data = getForecastLine($scope.points[0][$scope.points[0].length - 1], getAverageTime($scope.fullStories));
+        var temp = getAverageTime($scope.fullStories);
+        temp *= 3;
+        temp += (temp/(5 * 24 * 60 * 60 * 1000) * 2;
+        $scope.points[1].data = getForecastLine($scope.points[0][$scope.points[0].length - 1], temp);
     };
 
     //nicely format the date string

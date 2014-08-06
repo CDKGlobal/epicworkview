@@ -174,22 +174,35 @@ function epicDetailsController ($scope, $http, $q, $location) {
     }
     
     function getAverageTime(stories) {
+        $scope.averageTime = 0;
 
     	var completedStories = 0;
     	var sumTime = 0;
 
+        var day = 1000 * 60 * 60 * 24;
+        var week = day * 7;
+
+
     	angular.forEach(stories, function(story, index) {
     		if(story.fields.resolutiondate !== null) {
     			completedStories++;
-    			completedTime = Date.parse(story.fields.resolutiondate) - Date.parse(story.fields.created);
+    			var completedTime = Date.parse(story.fields.resolutiondate) - Date.parse(story.fields.created);
+
+                var temp = completedTime;
+                var i = 0;
+                while(temp > week) {
+                    i++;
+                    temp -= week;
+                }
+
+                completedTime -= (2 * day * i);
+
     			sumTime+= completedTime;
             }
         });
 
-		if(completedStories !== 0){
-        	$scope.averageTime = (sumTime/(completedStories*3600000)).toFixed(2);
-        } else{
-        	$scope.averageTime = 0;
+		if(completedStories !== 0) {
+        	$scope.averageTime = (sumTime/(completedStories* 60 * 60 * 1000 * 24)).toFixed(2);
         }
     }
     	
@@ -224,7 +237,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
         });
 
         //set the second series data to the forecasted list
-        $scope.points[1].data = getForecastLine($scope.points[0][$scope.points[0].length - 1], $scope.forecastRate);
+        $scope.points[1].data = getForecastLine($scope.points[0][$scope.points[0].length - 1], $scope.averageTime);
     };
 
     //nicely format the date string
@@ -237,19 +250,9 @@ function epicDetailsController ($scope, $http, $q, $location) {
         }
     };
 
-    function getForecastLine(startPoint, rate) {
-        if(rate < 0) {//the trend is that the epic is coming to an end
-            
-            var forecast = [startPoint];
-
-            //add extra points to make it look nice
-            
-
-            forecast.push([startPoint[0] + (-startPoint[1]/rate), 0]);
-            return forecast;
-        }
-
-        return [];
+    function getForecastLine(startPoint, averageTime) {
+        var stories = $scope.notStarted + $scope.inProgress;
+        return averageTime > 0 && stories > 0 ? [startPoint, [startPoint[0] + (stories * averageTime), 0]] : [];
     }
 
     $scope.setForecastRate = function(epic) {

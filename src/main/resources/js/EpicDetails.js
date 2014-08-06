@@ -174,36 +174,27 @@ function epicDetailsController ($scope, $http, $q, $location) {
     }
     
     function getAverageTime(stories) {
-        $scope.averageTime = 0;
-
     	var completedStories = 0;
     	var sumTime = 0;
 
         var day = 1000 * 60 * 60 * 24;
         var week = day * 7;
 
-
     	angular.forEach(stories, function(story, index) {
     		if(story.fields.resolutiondate !== null) {
     			completedStories++;
     			var completedTime = Date.parse(story.fields.resolutiondate) - Date.parse(story.fields.created);
 
-                var temp = completedTime;
-                var i = 0;
-                while(temp > week) {
-                    i++;
-                    temp -= week;
-                }
-
-                completedTime -= (2 * day * i);
+                completedTime -= (2 * day * Math.floor(completedTime / week));
 
     			sumTime+= completedTime;
             }
         });
 
 		if(completedStories !== 0) {
-        	$scope.averageTime = (sumTime/(completedStories* 60 * 60 * 1000)).toFixed(2);
+        	return (sumTime/(completedStories* 60 * 60 * 1000));
         }
+        return 0;
     }
     	
     
@@ -218,7 +209,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
     // update the story counts and chart points
     $scope.refresh = function() {
     	countStories($scope.stories);
-    	getAverageTime($scope.stories);
+    	$scope.averageTime = getAverageTime($scope.stories).toFixed(2);
     	
     	// update points using full story list, so graph doesn't shrink
         var points = getProgressList($scope.fullStories);
@@ -237,7 +228,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
         });
 
         //set the second series data to the forecasted list
-        $scope.points[1].data = getForecastLine($scope.points[0][$scope.points[0].length - 1], $scope.averageTime);
+        $scope.points[1].data = getForecastLine($scope.points[0][$scope.points[0].length - 1], getAverageTime($scope.fullStories));
     };
 
     //nicely format the date string
@@ -267,7 +258,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
             $http.get(restCall.replace('{1}', 'created')),
             $http.get(restCall.replace('{1}', 'resolved'))
         ]).then(function(results) {
-            console.log(results);
+            //console.log(results);
 
             $scope.forecastRate = (results[0].data.total - results[1].data.total) / (forecast.epics * forecast.time);
             $scope.refresh();

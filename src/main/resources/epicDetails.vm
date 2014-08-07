@@ -72,7 +72,7 @@
 							{{story.fields.assignee.displayName}}
 						</div>
 						<div ng-hide="workType == 1" class="third-column inline">
-							{{workType == 3 ? getValue(story).toFixed(2) : getValue(story)}}
+							{{workType == 3 ? getValue(story, workType).toFixed(2) : getValue(story, workType)}}
 						</div>
 						<div class="fourth-column inline" ng-class="{'expanded-width': workType == 1}">
 							{{doneDate(story.fields.resolutiondate)}}

@@ -349,7 +349,7 @@ function chartDirective() {
             // options for the chart
             var opts = {
                 xaxis: {
-                	// set ticks so that there is one at start and end of chart
+                	// set ticks so they begin and end at chart edges
                     ticks: function(axis) {
                         var min = axis.min;
                         var step = Math.floor((axis.max - axis.min) / 4);
@@ -407,7 +407,28 @@ function chartDirective() {
         			shadowSize: 0
        			},
        			xaxis: {
-       				ticks: [],
+       				// display two ticks on selected area
+       				ticks: function(axis) {
+       					return [scope.chartMin, scope.chartMax];
+       				},
+       				// format ticks to be dates
+                    tickFormatter: function(val, axis) {
+                    	// range of zoomed chart
+                        var range = scope.chartMax - scope.chartMin;
+                        
+                        // range of total chart
+                		var totalMin = scope.points[0].data[0][0];
+                		var totalMax = scope.points[0].data[scope.points[0].data.length - 1][0];
+                		var totalRange = totalMax - totalMin;
+                        
+                		// if range is small, don't display date because it's too large
+                        if (range < (totalRange / 14)) {
+                        	return '^';
+                        }
+
+                        // return formatted date
+                        return new Date(val).toLocaleDateString();
+                    },
        				mode: "time"
         		},
         		yaxis: {

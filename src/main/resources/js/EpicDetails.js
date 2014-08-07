@@ -280,7 +280,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
     		var date = Date.parse(creation ? story.fields.created : story.fields.resolutiondate);
     		if (date > $scope.chartMin && date < $scope.chartMax) {
     			var i = Math.floor((date - $scope.chartMin) / range) + 1;
-    			points[i][1]++;
+    			points[i][1] += $scope.getValue(story, $scope.workType);
     		}
     	});
     	return points;

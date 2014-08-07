@@ -270,6 +270,8 @@
         <amps.version>5.0.3</amps.version>
         <plugin.testrunner.version>1.2.0</plugin.testrunner.version>
 
+        <sonar.sources>src/main</sonar.sources>
+
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <sonar.junit.reportsPath>target/surefire-reports</sonar.junit.reportsPath>
         <sonar.jacoco.reportPath>target/jacoco.exec</sonar.jacoco.reportPath>

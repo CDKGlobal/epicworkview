@@ -271,6 +271,7 @@
         <plugin.testrunner.version>1.2.0</plugin.testrunner.version>
 
         <sonar.sources>src/main</sonar.sources>
+        <sonar.exclusions>**/*.min.js</sonar.exclusions>
 
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <sonar.junit.reportsPath>target/surefire-reports</sonar.junit.reportsPath>

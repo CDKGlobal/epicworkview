@@ -4,8 +4,13 @@
 }
 
 .body-container {
-    margin: 20px 4.5% 0px;
+    margin: 20px;
     font-size: 12pt;
+}
+
+.title {
+	float: left;
+	margin-right: 40px;
 }
 
 .column1, .column2 {

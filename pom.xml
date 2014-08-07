@@ -271,7 +271,7 @@
         <sonar.junit.reportsPath>target/surefire-reports</sonar.junit.reportsPath>
         <sonar.jacoco.reportPath>target/jacoco.exec</sonar.jacoco.reportPath>
 
-        <sonar.language>js</sonar.language>
+        <!--<sonar.language>js</sonar.language>-->
 
         <!--<sonar.sources>src/main</sonar.sources>-->
 

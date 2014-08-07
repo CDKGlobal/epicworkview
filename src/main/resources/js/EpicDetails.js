@@ -1,30 +1,30 @@
 function epicDetailsController ($scope, $http, $q, $location) {
-	var notStartedNames = ["To Do", "Open"];
-	
+    var notStartedNames = ["To Do", "Open"];
+
     $scope.contextPath = jQuery('meta[name="ajs-context-path"]').attr('content');
     $scope.key = $location.search().epic;
     $scope.epicName = '';
     $scope.fullStories = []; // the full list of stories
     $scope.stories = []; // the list of stories in the current date range
-    
+
     // number of stories in that state
     $scope.notStarted = 0;
     $scope.inProgress = 0;
     $scope.done = 0;
-    
+
     // average time to complete a story
-	$scope.averageTime = 0;
-	
-	// the min and max time values of what is displayed in the chart
-	$scope.chartMin = 0;
-	$scope.chartMax = 0;
-	
-	// initial work type is 1, stories
+    $scope.averageTime = 0;
+
+    // the min and max time values of what is displayed in the chart
+    $scope.chartMin = 0;
+    $scope.chartMax = 0;
+
+    // initial work type is 1, stories
     $scope.workType = 1;
-    
+
     // refresh page on change in work type
     $scope.$watch('workType', function() {
-    	$scope.refresh();
+        $scope.refresh();
     });
 
     $scope.points = [[],{}];
@@ -64,7 +64,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
         var total = stories.total;
 
         if(maxResults < total) {
-        	// more stories than first request, so make more requests
+            // more stories than first request, so make more requests
             var requests = [];
             for(var i = maxResults; i < total; i += maxResults) {
                 requests.push($http.get(storiesQuery + '&startAt=' + i));
@@ -96,39 +96,39 @@ function epicDetailsController ($scope, $http, $q, $location) {
             $scope.epicName = getField(epic.fields, 'Epic Name');
         }
         else {
-        	// given key is a project key, so this is an "other stories" epic
+            // given key is a project key, so this is an "other stories" epic
             $scope.epicName = 'Other stories (' + epic.name + ')';
         }
 
         $scope.fullStories = stories.issues;
         $scope.stories = $scope.fullStories;
-				
+
         $scope.refresh();
 
     });
 
-    // return the given field for the given data. 
+    // return the given field for the given data.
     // field is a string that represents a field in data
     function getField(data, field) {
         return data[fieldMap[field]];
     }
-    
+
     // return a list containing the number of not started, in progress, and done stories
     function countStories(stories, worktype) {
         var notStarted = 0;
         var inProgress = 0;
         var done = 0;
 
-    	angular.forEach(stories, function(story, index) {
-    		var resolution = story.fields.resolutiondate;
-    		if (resolution !== undefined && resolution !== null) {
-    			done += $scope.getValue(story, worktype);
-    		} else if (jQuery.inArray(story.fields.status.name, notStartedNames) != -1) {
-    			notStarted += $scope.getValue(story, worktype);
-    		} else {
-    			inProgress += $scope.getValue(story, worktype);
-    		}
-    	});
+        angular.forEach(stories, function(story, index) {
+            var resolution = story.fields.resolutiondate;
+            if (resolution !== undefined && resolution !== null) {
+                done += $scope.getValue(story, worktype);
+            } else if (jQuery.inArray(story.fields.status.name, notStartedNames) != -1) {
+                notStarted += $scope.getValue(story, worktype);
+            } else {
+                inProgress += $scope.getValue(story, worktype);
+            }
+        });
 
         return [notStarted, inProgress, done];
     }
@@ -145,7 +145,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
                 date: Date.parse(story.fields.created),
                 number: value
             });
-            
+
             var resolution = story.fields.resolutiondate;
             if(resolution !== undefined && resolution !== null) {
                 list.push({
@@ -182,57 +182,56 @@ function epicDetailsController ($scope, $http, $q, $location) {
             return (time / 3600);
         }
     };
-    
+
     // return the average length of a story from creation to completion, in hours
     function getAverageTime(stories) {
-    	var completedStories = 0;
-    	var sumTime = 0;
+        var completedStories = 0;
+        var sumTime = 0;
 
         var day = 1000 * 60 * 60 * 24;
         var week = day * 7;
 
-    	angular.forEach(stories, function(story, index) {
-    		if(story.fields.resolutiondate !== null) {
-    			completedStories++;
-    			var completedTime = Date.parse(story.fields.resolutiondate) - Date.parse(story.fields.created);
+        angular.forEach(stories, function(story, index) {
+            if(story.fields.resolutiondate !== null) {
+                completedStories++;
+                var completedTime = Date.parse(story.fields.resolutiondate) - Date.parse(story.fields.created);
 
                 completedTime -= (2 * day * Math.floor(completedTime / week));
                 completedTime /= 3;
 
-    			sumTime+= completedTime;
+                sumTime+= completedTime;
             }
         });
 
-		if(completedStories !== 0) {
-        	return (sumTime/(completedStories* 60 * 60 * 1000));
+        if(completedStories !== 0) {
+            return (sumTime/(completedStories* 60 * 60 * 1000));
         }
         return 0;
     }
-    	
-    
+
     // format the given value for display
     $scope.format = function(number) {
-    	if ($scope.workType == 3) {
-    		return number.toFixed(2);
-    	}
-    	return number;
+        if ($scope.workType == 3) {
+            return number.toFixed(2);
+        }
+        return number;
     };
-    
+
     // update the story counts, average time and chart points
     $scope.refresh = function() {
-    	var counts = countStories($scope.stories, $scope.workType);
+        var counts = countStories($scope.stories, $scope.workType);
         $scope.notStarted = counts[0];
         $scope.inProgress = counts[1];
         $scope.done = counts[2];
 
-    	$scope.averageTime = getAverageTime($scope.stories).toFixed(2);
-    	
-    	// update points using full story list, so graph doesn't shrink
+        $scope.averageTime = getAverageTime($scope.stories).toFixed(2);
+
+        // update points using full story list, so graph doesn't shrink
         var points = getProgressList($scope.fullStories);
         points.sort(function(a, b) {
             return a.date - b.date;
         });
-        
+
         $scope.points = [
         {
             label: 'In Flight',
@@ -265,49 +264,49 @@ function epicDetailsController ($scope, $http, $q, $location) {
         temp *= 3;
         temp += (temp/(5 * 24)) * 48;
         $scope.points[1].data = getForecastLine($scope.points[0].data[$scope.points[0].data.length - 1], temp);
-        
+
         $scope.points[2].data = getDataPoints(true);
         $scope.points[3].data = getDataPoints(false);
     };
-    
+
     // return a list of points with numbers associated with dates for either story creation
     // or resolution numbers, depending on the given boolean
     function getDataPoints(creation) {
-    	var points = [];
-    	var numPoints = 5;
-    	// the largest point on the chart, excluding the forecast
-    	var dataMax = $scope.points[0].data[$scope.points[0].data.length - 1][0];
-    	// if no zoom yet, set chart min and max to be min and max points on chart
-    	if ($scope.chartMin == $scope.chartMax) {
-    		$scope.chartMin = $scope.points[0].data[0][0];
-    		var forecast = $scope.points[1].data;
-    		$scope.chartMax = forecast.length > 0 ? forecast[forecast.length - 1][0] : dataMax;
-    	}
-    	var max = $scope.chartMax;
-    	var min = $scope.chartMin;
-    	// make sure the max is no larger than the last data point (excluding the forecast)
+        var points = [];
+        var numPoints = 5;
+        // the largest point on the chart, excluding the forecast
+        var dataMax = $scope.points[0].data[$scope.points[0].data.length - 1][0];
+        // if no zoom yet, set chart min and max to be min and max points on chart
+        if ($scope.chartMin == $scope.chartMax) {
+            $scope.chartMin = $scope.points[0].data[0][0];
+            var forecast = $scope.points[1].data;
+            $scope.chartMax = forecast.length > 0 ? forecast[forecast.length - 1][0] : dataMax;
+        }
+        var max = $scope.chartMax;
+        var min = $scope.chartMin;
+        // make sure the max is no larger than the last data point (excluding the forecast)
         if(max > dataMax) {
             max = dataMax;
         }
-    	// range for one section to count creations or resolutions
-    	var range = (max - min) / numPoints;
-        
+        // range for one section to count creations or resolutions
+        var range = (max - min) / numPoints;
+
         points.push([min, 0]);//adds the origin point to the line
         // add a point for each section
-    	for (var i = 0; i < numPoints; i++) {
-    		points.push([(min + (i + 1) * range), 0]);
-    	}
-    	// add to each point for each story in that range section
-    	angular.forEach($scope.stories, function(story, index) {
-    		// if creation is true, use story's created date. Otherwise, use resolution date
-    		var date = Date.parse(creation ? story.fields.created : story.fields.resolutiondate);
-    		// add to the point
-    		if (date > min && date < max) {
-    			var i = Math.floor((date - min) / range) + 1;
-    			points[i][1] += $scope.getValue(story, $scope.workType);
-    		}
-    	});
-    	return points;
+        for (var i = 0; i < numPoints; i++) {
+            points.push([(min + (i + 1) * range), 0]);
+        }
+        // add to each point for each story in that range section
+        angular.forEach($scope.stories, function(story, index) {
+            // if creation is true, use story's created date. Otherwise, use resolution date
+            var date = Date.parse(creation ? story.fields.created : story.fields.resolutiondate);
+            // add to the point
+            if (date > min && date < max) {
+                var i = Math.floor((date - min) / range) + 1;
+                points[i][1] += $scope.getValue(story, $scope.workType);
+            }
+        });
+        return points;
     }
 
     //nicely format the date string
@@ -326,10 +325,10 @@ function epicDetailsController ($scope, $http, $q, $location) {
         var stories = counts[0] + counts[1];
         return averageTime > 0 && stories > 0 ? [startPoint, [startPoint[0] + (stories * averageTime * 1000 * 60 * 60), 0]] : [];
     }
-    
+
     // return a string representation of the work type
     $scope.workTypeToString = function() {
-    	switch($scope.workType) {
+        switch($scope.workType) {
         case 1:
             return "Stories";
         case 2:
@@ -346,7 +345,7 @@ function chartDirective() {
     return {
         restrict: 'E',
         template: "<div class='chart-container'><div id='chart'></div></div>" +
-        		  "<div class='overview-container'><div id='overview'></div></div>",
+                  "<div class='overview-container'><div id='overview'></div></div>",
         link: function(scope, elem, attrs) {
             var chart = null;
             var overview = null;
@@ -354,7 +353,7 @@ function chartDirective() {
             // options for the chart
             var opts = {
                 xaxis: {
-                	// set ticks so they begin and end at chart edges
+                    // set ticks so they begin and end at chart edges
                     ticks: function(axis) {
                         var min = axis.min;
                         var step = Math.floor((axis.max - axis.min) / 4);
@@ -395,8 +394,8 @@ function chartDirective() {
                 },
                 // selectable along x-axis
                 selection: {
-    				mode: "x"
-    			}
+                    mode: "x"
+                }
             };
 
             // options for the overview
@@ -404,54 +403,54 @@ function chartDirective() {
                 legend: {
                     show: false
                 },
-            	series: {
-        			lines: {
-        				show: true,
-        				lineWidth: 1
-        			},
-        			shadowSize: 0
-       			},
-       			xaxis: {
-       				// display two ticks on selected area
-       				ticks: function(axis) {
-       					return [scope.chartMin, scope.chartMax];
-       				},
-       				// format ticks to be dates
+                series: {
+                    lines: {
+                        show: true,
+                        lineWidth: 1
+                    },
+                    shadowSize: 0
+                   },
+                   xaxis: {
+                       // display two ticks on selected area
+                       ticks: function(axis) {
+                           return [scope.chartMin, scope.chartMax];
+                       },
+                       // format ticks to be dates
                     tickFormatter: function(val, axis) {
-                    	// range of zoomed chart
+                        // range of zoomed chart
                         var range = scope.chartMax - scope.chartMin;
-                        
+
                         // range of total chart
-                		var totalMin = scope.points[0].data[0][0];
-                		var totalMax = scope.points[0].data[scope.points[0].data.length - 1][0];
-                		var totalRange = totalMax - totalMin;
-                        
-                		// if range is small, don't display date because it's too large
+                        var totalMin = scope.points[0].data[0][0];
+                        var totalMax = scope.points[0].data[scope.points[0].data.length - 1][0];
+                        var totalRange = totalMax - totalMin;
+
+                        // if range is small, don't display date because it's too large
                         if (range < (totalRange / 12)) {
-                        	return '^';
+                            return '^';
                         }
 
                         // return formatted date
                         return new Date(val).toLocaleDateString();
                     },
-       				mode: "time"
-        		},
-        		yaxis: {
-        			ticks: [],
-       				min: 0,
-       				autoscaleMargin: 0.1
-       			},
-        		selection: {
-        			mode: "x"
-       			}
+                       mode: "time"
+                },
+                yaxis: {
+                    ticks: [],
+                       min: 0,
+                       autoscaleMargin: 0.1
+                   },
+                selection: {
+                    mode: "x"
+                   }
             };
 
             // create or update the charts
             scope.$watch(attrs.ngModel, function(v) {
                 var v2 = v.slice(0, 2);
                 if(!chart) {
-                	var chartElem = jQuery('#chart');
-                	var overviewElem = jQuery('#overview');
+                    var chartElem = jQuery('#chart');
+                    var overviewElem = jQuery('#overview');
 
                     chart = jQuery.plot(chartElem, v, opts);
                     overview = jQuery.plot(overviewElem, v2, overviewOpts);
@@ -468,48 +467,48 @@ function chartDirective() {
                     overview.draw();
                 }
             });
-            
+
             // watch for chart selection
             jQuery("#chart").bind("plotselected", function (event, ranges) {
 
-    			// do the zooming
-    			jQuery.each(chart.getXAxes(), function(_, axis) {
-    				var opts = axis.options;
-    				opts.min = ranges.xaxis.from;
-    				opts.max = ranges.xaxis.to;
-    				zoom(opts.min, opts.max);
-    			});
-    			chart.setupGrid();
-    			chart.draw();
-    			chart.clearSelection();
+                // do the zooming
+                jQuery.each(chart.getXAxes(), function(_, axis) {
+                    var opts = axis.options;
+                    opts.min = ranges.xaxis.from;
+                    opts.max = ranges.xaxis.to;
+                    zoom(opts.min, opts.max);
+                });
+                chart.setupGrid();
+                chart.draw();
+                chart.clearSelection();
 
-    			// don't fire event on the overview to prevent eternal loop
+                // don't fire event on the overview to prevent eternal loop
 
-    			overview.setSelection(ranges, true);
-    		});
+                overview.setSelection(ranges, true);
+            });
             // watch for overview chart selection
-    		jQuery("#overview").bind("plotselected", function (event, ranges) {
-    			chart.setSelection(ranges);
-    		});
-    		
-    		// zoom to the given minimum and maximum millisecond values
-    		// update the current data to be a subset between the values
-    		function zoom(min, max) {
-    			scope.stories = [];
-    			angular.forEach(scope.fullStories, function(story, index) {
-    				var created = Date.parse(story.fields.created);
-    				var resolved = story.fields.resolutiondate !== null ? Date.parse(story.fields.resolutiondate) : null;
-    				if (created <= max && (resolved === null || resolved >= min)) {
-    					scope.stories.push(story);
-    				}
-    			});
-    			scope.chartMin = min;
-    			scope.chartMax = max;
-    			// refresh the page, wrap in apply so that page updates
-    			scope.$apply(function() {
-    				scope.refresh();
-    			});
-    		}
+            jQuery("#overview").bind("plotselected", function (event, ranges) {
+                chart.setSelection(ranges);
+            });
+
+            // zoom to the given minimum and maximum millisecond values
+            // update the current data to be a subset between the values
+            function zoom(min, max) {
+                scope.stories = [];
+                angular.forEach(scope.fullStories, function(story, index) {
+                    var created = Date.parse(story.fields.created);
+                    var resolved = story.fields.resolutiondate !== null ? Date.parse(story.fields.resolutiondate) : null;
+                    if (created <= max && (resolved === null || resolved >= min)) {
+                        scope.stories.push(story);
+                    }
+                });
+                scope.chartMin = min;
+                scope.chartMax = max;
+                // refresh the page, wrap in apply so that page updates
+                scope.$apply(function() {
+                    scope.refresh();
+                });
+            }
         }
     };
 }

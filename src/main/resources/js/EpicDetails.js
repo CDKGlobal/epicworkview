@@ -223,22 +223,20 @@ function epicDetailsController ($scope, $http, $q, $location) {
         $scope.points = [
         {
             label: 'In Flight',
+            lines: { steps: true },
             data: []
         },
         {
             label: 'Forecast',
-            lines: { show: true, steps: false },
             points: { show: true },
             data: []
         },
         {
             label: 'Created',
-            lines: { steps: false },
             data: []
         },
         {
             label: 'Resolved',
-            lines: { steps: false },
             data: []
         }];
 
@@ -388,12 +386,7 @@ function chartDirective() {
                 },
                 selection: {
     				mode: "x"
-    			},
-                series: {
-                    lines: {
-                        steps: true
-                    }
-                }
+    			}
             };
 
             var overviewOpts = {
@@ -402,7 +395,6 @@ function chartDirective() {
                 },
             	series: {
         			lines: {
-                        steps: true,
         				show: true,
         				lineWidth: 1
         			},

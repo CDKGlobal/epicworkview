@@ -271,7 +271,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
     	
     	var range = ($scope.chartMax - $scope.chartMin) / numPoints;
         
-        points.push([$scope.points[0].data[0][0], 0]);//adds the origin point to the line
+        points.push([$scope.chartMin, 0]);//adds the origin point to the line
 
     	for (var i = 0; i < numPoints; i++) {
     		points.push([($scope.chartMin + (i + 1) * range), 0]);

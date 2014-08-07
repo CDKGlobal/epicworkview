@@ -75,7 +75,7 @@
 							{{workType == 3 ? getValue(story, workType).toFixed(2) : getValue(story, workType)}}
 						</div>
 						<div class="fourth-column inline" ng-class="{'expanded-width': workType == 1}">
-							{{doneDate(story.fields.resolutiondate)}}
+							{{formatResolutionDate(story.fields.resolutiondate)}}
 						</div>	
 					</li>
 				</ul>

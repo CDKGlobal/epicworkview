@@ -6,15 +6,23 @@ function epicDetailsController ($scope, $http, $q, $location) {
     $scope.epicName = '';
     $scope.fullStories = []; // the full list of stories
     $scope.stories = []; // the list of stories in the current date range
+    
+    // number of stories in that state
     $scope.notStarted = 0;
     $scope.inProgress = 0;
     $scope.done = 0;
+    
+    // average time to complete a story
 	$scope.averageTime = 0;
+	
+	// the min and max time values of what is displayed in the chart
 	$scope.chartMin = 0;
 	$scope.chartMax = 0;
 	
+	// initial work type is 1, stories
     $scope.workType = 1;
     
+    // refresh page on change in work type
     $scope.$watch('workType', function() {
     	$scope.refresh();
     });
@@ -56,6 +64,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
         var total = stories.total;
 
         if(maxResults < total) {
+        	// more stories than first request, so make more requests
             var requests = [];
             for(var i = maxResults; i < total; i += maxResults) {
                 requests.push($http.get(storiesQuery + '&startAt=' + i));
@@ -82,10 +91,12 @@ function epicDetailsController ($scope, $http, $q, $location) {
             });
         });
 
+        // set epic name
         if($scope.key.indexOf('-') != -1) {
             $scope.epicName = getField(epic.fields, 'Epic Name');
         }
         else {
+        	// given key is a project key, so this is an "other stories" epic
             $scope.epicName = 'Other stories (' + epic.name + ')';
         }
 
@@ -96,11 +107,13 @@ function epicDetailsController ($scope, $http, $q, $location) {
 
     });
 
+    // return the given field for the given data. 
+    // field is a string that represents a field in data
     function getField(data, field) {
         return data[fieldMap[field]];
     }
     
-    // count the number of not started, in progress, and done stories
+    // return a list containing the number of not started, in progress, and done stories
     function countStories(stories, worktype) {
         var notStarted = 0;
         var inProgress = 0;
@@ -121,6 +134,8 @@ function epicDetailsController ($scope, $http, $q, $location) {
     }
 
     // creates a list of (date, number) pairs
+    // where date is the date of action
+    // and number is the added value of that action (+ for creation, - for resolution)
     function getProgressList(stories) {
         var list = [];
 
@@ -168,6 +183,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
         }
     };
     
+    // return the average length of a story from creation to completion, in hours
     function getAverageTime(stories) {
     	var completedStories = 0;
     	var sumTime = 0;
@@ -194,7 +210,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
     }
     	
     
-    // format the given number for display
+    // format the given value for display
     $scope.format = function(number) {
     	if ($scope.workType == 3) {
     		return number.toFixed(2);
@@ -202,7 +218,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
     	return number;
     };
     
-    // update the story counts and chart points
+    // update the story counts, average time and chart points
     $scope.refresh = function() {
     	var counts = countStories($scope.stories, $scope.workType);
         $scope.notStarted = counts[0];
@@ -264,20 +280,23 @@ function epicDetailsController ($scope, $http, $q, $location) {
     		$scope.chartMin = $scope.points[0].data[0][0];
     		$scope.chartMax = $scope.points[0].data[$scope.points[0].data.length - 1][0];
     	}
-
+    	// make sure the max is no larger than the last data point
         if($scope.chartMax > $scope.points[0].data[$scope.points[0].data.length - 1][0]) {
             $scope.chartMax = $scope.points[0].data[$scope.points[0].data.length - 1][0];
         }
-    	
+    	// range for one section to count creations or resolutions
     	var range = ($scope.chartMax - $scope.chartMin) / numPoints;
         
         points.push([$scope.chartMin, 0]);//adds the origin point to the line
-
+        // add a point for each section
     	for (var i = 0; i < numPoints; i++) {
     		points.push([($scope.chartMin + (i + 1) * range), 0]);
     	}
+    	// add to each point for each story in that range section
     	angular.forEach($scope.stories, function(story, index) {
+    		// if creation is true, use story's created date. Otherwise, use resolution date
     		var date = Date.parse(creation ? story.fields.created : story.fields.resolutiondate);
+    		// add to the point
     		if (date > $scope.chartMin && date < $scope.chartMax) {
     			var i = Math.floor((date - $scope.chartMin) / range) + 1;
     			points[i][1] += $scope.getValue(story, $scope.workType);
@@ -287,7 +306,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
     }
 
     //nicely format the date string
-    $scope.doneDate = function(date) {
+    $scope.formatResolutionDate = function(date) {
         if(date !== undefined && date !== null) {
             return new Date(Date.parse(date)).toLocaleString();
         }
@@ -296,6 +315,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
         }
     };
 
+    // return a list of points for the forecast line
     function getForecastLine(startPoint, averageTime) {
         var counts = countStories($scope.fullStories, 1);
         var stories = counts[0] + counts[1];
@@ -326,6 +346,7 @@ function chartDirective() {
             var chart = null;
             var overview = null;
 
+            // options for the chart
             var opts = {
                 xaxis: {
                     ticks: function(axis) {
@@ -369,6 +390,7 @@ function chartDirective() {
     			}
             };
 
+            // options for the overview
             var overviewOpts = {
                 legend: {
                     show: false
@@ -394,6 +416,7 @@ function chartDirective() {
        			}
             };
 
+            // create or update the charts
             scope.$watch(attrs.ngModel, function(v) {
                 var v2 = v.slice(0, 2);
                 if(!chart) {
@@ -407,7 +430,6 @@ function chartDirective() {
                     elem.show();
                 }
                 else {
-
                     chart.setData(v);
                     chart.setupGrid();
                     chart.draw();
@@ -417,6 +439,7 @@ function chartDirective() {
                 }
             });
             
+            // watch for chart selection
             jQuery("#chart").bind("plotselected", function (event, ranges) {
 
     			// do the zooming
@@ -434,6 +457,7 @@ function chartDirective() {
 
     			overview.setSelection(ranges, true);
     		});
+            // watch for overview chart selection
     		jQuery("#overview").bind("plotselected", function (event, ranges) {
     			chart.setSelection(ranges);
     		});

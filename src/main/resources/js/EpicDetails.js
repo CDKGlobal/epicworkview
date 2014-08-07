@@ -220,16 +220,24 @@ function epicDetailsController ($scope, $http, $q, $location) {
             return a.date - b.date;
         });
         
-        $scope.points = [[],{
+        $scope.points = [
+        {
+            label: 'In Flight',
+            data: []
+        },
+        {
+            label: 'Forecast',
             lines: { show: true, steps: false },
             points: { show: true },
             data: []
         },
         {
+            label: 'Created',
             lines: { steps: false },
             data: []
         },
         {
+            label: 'Resolved',
             lines: { steps: false },
             data: []
         }];
@@ -237,14 +245,14 @@ function epicDetailsController ($scope, $http, $q, $location) {
         var runningTotal = 0;
         angular.forEach(points, function(elem, index) {
             runningTotal += elem.number;
-            $scope.points[0].push([elem.date, runningTotal]);
+            $scope.points[0].data.push([elem.date, runningTotal]);
         });
 
         //set the second series data to the forecasted list
         var temp = getAverageTime($scope.fullStories);
         temp *= 3;
         temp += (temp/(5 * 24)) * 48;
-        $scope.points[1].data = getForecastLine($scope.points[0][$scope.points[0].length - 1], temp);
+        $scope.points[1].data = getForecastLine($scope.points[0].data[$scope.points[0].data.length - 1], temp);
         
         $scope.points[2].data = getDataPoints(true);
         $scope.points[3].data = getDataPoints(false);
@@ -257,13 +265,17 @@ function epicDetailsController ($scope, $http, $q, $location) {
     	var numPoints = 5;
     	// if not zoomed in, set chart min and max
     	if ($scope.chartMin == $scope.chartMax) {
-    		$scope.chartMin = $scope.points[0][0][0];
-    		$scope.chartMax = $scope.points[0][$scope.points[0].length - 1][0];
+    		$scope.chartMin = $scope.points[0].data[0][0];
+    		$scope.chartMax = $scope.points[0].data[$scope.points[0].data.length - 1][0];
     	}
+
+        if($scope.chartMax > $scope.points[0].data[$scope.points[0].data.length - 1][0]) {
+            $scope.chartMax = $scope.points[0].data[$scope.points[0].data.length - 1][0];
+        }
     	
     	var range = ($scope.chartMax - $scope.chartMin) / numPoints;
         
-        points.push([$scope.points[0][0][0], 0]);//adds the origin point to the line
+        points.push([$scope.points[0].data[0][0], 0]);//adds the origin point to the line
 
     	for (var i = 0; i < numPoints; i++) {
     		points.push([($scope.chartMin + (i + 1) * range), 0]);
@@ -385,6 +397,9 @@ function chartDirective() {
             };
 
             var overviewOpts = {
+                legend: {
+                    show: false
+                },
             	series: {
         			lines: {
                         steps: true,
@@ -408,12 +423,13 @@ function chartDirective() {
             };
 
             scope.$watch(attrs.ngModel, function(v) {
+                var v2 = v.slice(0, 2);
                 if(!chart) {
                 	var chartElem = jQuery('#chart');
                 	var overviewElem = jQuery('#overview');
 
                     chart = jQuery.plot(chartElem, v, opts);
-                    overview = jQuery.plot(overviewElem, v, overviewOpts);
+                    overview = jQuery.plot(overviewElem, v2, overviewOpts);
                     chartElem.show();
                     overviewElem.show();
                     elem.show();
@@ -423,7 +439,7 @@ function chartDirective() {
                     chart.setData(v);
                     chart.setupGrid();
                     chart.draw();
-                    overview.setData(v);
+                    overview.setData(v2);
                     overview.setupGrid();
                     overview.draw();
                 }

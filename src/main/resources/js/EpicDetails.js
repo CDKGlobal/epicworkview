@@ -349,6 +349,7 @@ function chartDirective() {
             // options for the chart
             var opts = {
                 xaxis: {
+                	// set ticks so that there is one at start and end of chart
                     ticks: function(axis) {
                         var min = axis.min;
                         var step = Math.floor((axis.max - axis.min) / 4);
@@ -361,6 +362,7 @@ function chartDirective() {
                         }
                         return ticks;
                     },
+                    // format ticks to be nice time values
                     tickFormatter: function(val, axis) {
                         var range = axis.max - axis.min;
                         var day = 1000 * 60 * 60 * 24;
@@ -368,7 +370,7 @@ function chartDirective() {
                         var date = new Date(val);
 
                         if(range >= 4 * day) {
-                            return date.toLocaleDateString() + '<br/>&nbsp;';//hack to force using up som whitespace
+                            return date.toLocaleDateString() + '<br/>&nbsp;';//hack to force using up some whitespace
                         }
                         else if(range >= day) {
                             return date.toLocaleDateString() + '<br/>' + date.toLocaleTimeString();
@@ -381,10 +383,12 @@ function chartDirective() {
                 },
                 yaxis: {
                     minTickSize: 1,
+                    // round down y-axis ticks
                     tickFormatter: function(val, axis) {
                         return Math.floor(parseFloat(val));
                     }
                 },
+                // selectable along x-axis
                 selection: {
     				mode: "x"
     			}

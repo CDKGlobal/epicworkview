@@ -195,20 +195,20 @@
                             <target>
                                 <echo>NPM Install</echo>
                                 <exec executable="npm" dir="${project.basedir}" osfamily="unix" resultproperty="">
-                                    <env key="PATH" value="/usr/local/bin:/usr/bin:/bin:${node.anthill.home}"/>
+                                    <env key="PATH" value="/usr/local/bin:/usr/bin:/bin"/>
                                     <arg line="config set registry http://artifactory.cobalt.com/artifactory/api/npm/npm-repo"/>
                                 </exec>
                                 <echo>Pulling down node modules...</echo>
-                                <exec executable="npm" dir="${project.basedir}" osfamily="unix" resultproperty="npmresult" output="npm.status">
-                                    <env key="PATH" value="/usr/local/bin:/usr/bin:/bin:${node.anthill.home}"/>
+                                <exec executable="npm" dir="${project.basedir}" osfamily="unix" resultproperty="npm.result" output="npm.status">
+                                    <env key="PATH" value="/usr/local/bin:/usr/bin:/bin"/>
                                     <arg line="install"/>
                                 </exec>
-                                <echo>NPM Result: ${npmresult}</echo>
+                                <echo>NPM Result: ${npm.result}</echo>
                                 <loadfile property="npm.status" srcFile="npm.status"/>
                                 <echo>NPM Status: ${npm.status}</echo>
                                 <echo>Running GRUNT.....</echo>
                                 <exec executable="node_modules/grunt-cli/bin/grunt" dir="${project.basedir}" osfamily="unix" resultproperty="cmdresult" output="grunt.status">
-                                    <env key="PATH" value="/usr/local/bin:/usr/bin:/bin:./node_modules/.bin:${node.anthill.home}"/>
+                                    <env key="PATH" value="/usr/local/bin:/usr/bin:/bin:./node_modules/.bin"/>
                                     <arg line="ut"/>
                                 </exec>
                                 <loadfile property="grunt.status" srcFile="grunt.status"/>
@@ -227,12 +227,54 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.17</version>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.7.1.201405082137</version>
+                <executions>
+                    <execution>
+                        <id>jacoco-initialize</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>jacoco-post-test</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <dataFile>${sonar.jacoco.reportPath}</dataFile>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <propertyName>jacoco.agent.args</propertyName>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
     <properties>
         <jira.version>6.1.5</jira.version>
         <amps.version>5.0.3</amps.version>
         <plugin.testrunner.version>1.2.0</plugin.testrunner.version>
+
+        <sonar.junit.reportsPath>target/surefire-reports</sonar.junit.reportsPath>
+        <sonar.jacoco.reportPath>target/jacoco.exec</sonar.jacoco.reportPath>
+
+        <!-- sonar analyzer log flags -->
+        <sonar.showProfiling>true</sonar.showProfiling>
+        <sonar.showSql>true</sonar.showSql>
+        <sonar.showSqlResults>true</sonar.showSqlResults>
+        <sonar.verbose>true</sonar.verbose>
+
         <!-- TestKit version 5.x for JIRA 5.x, 6.x for JIRA 6.x -->
         <testkit.version>5.2.26</testkit.version>
     </properties>

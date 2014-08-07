@@ -275,30 +275,35 @@ function epicDetailsController ($scope, $http, $q, $location) {
     function getDataPoints(creation) {
     	var points = [];
     	var numPoints = 5;
-    	// if not zoomed in, set chart min and max
+    	// the largest point on the chart, excluding the forecast
+    	var dataMax = $scope.points[0].data[$scope.points[0].data.length - 1][0];
+    	// if no zoom yet, set chart min and max to be min and max points on chart
     	if ($scope.chartMin == $scope.chartMax) {
     		$scope.chartMin = $scope.points[0].data[0][0];
-    		$scope.chartMax = $scope.points[0].data[$scope.points[0].data.length - 1][0];
+    		var forecast = $scope.points[1].data;
+    		$scope.chartMax = forecast.length > 0 ? forecast[forecast.length - 1][0] : dataMax;
     	}
-    	// make sure the max is no larger than the last data point
-        if($scope.chartMax > $scope.points[0].data[$scope.points[0].data.length - 1][0]) {
-            $scope.chartMax = $scope.points[0].data[$scope.points[0].data.length - 1][0];
+    	var max = $scope.chartMax;
+    	var min = $scope.chartMin;
+    	// make sure the max is no larger than the last data point (excluding the forecast)
+        if(max > dataMax) {
+            max = dataMax;
         }
     	// range for one section to count creations or resolutions
-    	var range = ($scope.chartMax - $scope.chartMin) / numPoints;
+    	var range = (max - min) / numPoints;
         
-        points.push([$scope.chartMin, 0]);//adds the origin point to the line
+        points.push([min, 0]);//adds the origin point to the line
         // add a point for each section
     	for (var i = 0; i < numPoints; i++) {
-    		points.push([($scope.chartMin + (i + 1) * range), 0]);
+    		points.push([(min + (i + 1) * range), 0]);
     	}
     	// add to each point for each story in that range section
     	angular.forEach($scope.stories, function(story, index) {
     		// if creation is true, use story's created date. Otherwise, use resolution date
     		var date = Date.parse(creation ? story.fields.created : story.fields.resolutiondate);
     		// add to the point
-    		if (date > $scope.chartMin && date < $scope.chartMax) {
-    			var i = Math.floor((date - $scope.chartMin) / range) + 1;
+    		if (date > min && date < max) {
+    			var i = Math.floor((date - min) / range) + 1;
     			points[i][1] += $scope.getValue(story, $scope.workType);
     		}
     	});

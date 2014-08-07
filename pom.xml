@@ -232,9 +232,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.17</version>
-                <configuration>
-                    <argLine>${jacoco.agent.args},destfile=${sonar.jacoco.reportPath}</argLine>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -275,11 +272,7 @@
         <sonar.junit.reportsPath>target/surefire-reports</sonar.junit.reportsPath>
         <sonar.jacoco.reportPath>target/jacoco.exec</sonar.jacoco.reportPath>
 
-        <!-- sonar analyzer log flags -->
-        <sonar.showProfiling>true</sonar.showProfiling>
-        <sonar.showSql>true</sonar.showSql>
-        <sonar.showSqlResults>true</sonar.showSqlResults>
-        <sonar.verbose>true</sonar.verbose>
+        <sonar.sources>src</sonar.sources>
 
         <!-- TestKit version 5.x for JIRA 5.x, 6.x for JIRA 6.x -->
         <testkit.version>5.2.26</testkit.version>

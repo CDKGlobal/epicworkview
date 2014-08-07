@@ -422,7 +422,7 @@ function chartDirective() {
                 		var totalRange = totalMax - totalMin;
                         
                 		// if range is small, don't display date because it's too large
-                        if (range < (totalRange / 14)) {
+                        if (range < (totalRange / 12)) {
                         	return '^';
                         }
 

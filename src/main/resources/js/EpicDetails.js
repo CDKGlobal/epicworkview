@@ -101,21 +101,23 @@ function epicDetailsController ($scope, $http, $q, $location) {
     }
     
     // count the number of not started, in progress, and done stories
-    function countStories(stories) {
-        $scope.notStarted = 0;
-        $scope.inProgress = 0;
-        $scope.done = 0;
+    function countStories(stories, worktype) {
+        var notStarted = 0;
+        var inProgress = 0;
+        var done = 0;
 
     	angular.forEach(stories, function(story, index) {
     		var resolution = story.fields.resolutiondate;
     		if (resolution !== undefined && resolution !== null) {
-    			$scope.done += $scope.getValue(story);
+    			done += $scope.getValue(story, worktype);
     		} else if (jQuery.inArray(story.fields.status.name, notStartedNames) != -1) {
-    			$scope.notStarted += $scope.getValue(story);
+    			notStarted += $scope.getValue(story, worktype);
     		} else {
-    			$scope.inProgress += $scope.getValue(story);
+    			inProgress += $scope.getValue(story, worktype);
     		}
     	});
+
+        return [notStarted, inProgress, done];
     }
 
     // creates a list of (date, number) pairs
@@ -123,7 +125,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
         var list = [];
 
         angular.forEach(stories, function(story, index) {
-            var value = $scope.getValue(story);
+            var value = $scope.getValue(story, $scope.workType);
             list.push({
                 date: Date.parse(story.fields.created),
                 number: value
@@ -147,8 +149,8 @@ function epicDetailsController ($scope, $http, $q, $location) {
     }
 
     // get the value of the story based on which work type is selected
-    $scope.getValue = function(story) {
-        switch($scope.workType) {
+    $scope.getValue = function(story, worktype) {
+        switch(worktype) {
         case 1:
             return 1;
         case 2:
@@ -202,7 +204,11 @@ function epicDetailsController ($scope, $http, $q, $location) {
     
     // update the story counts and chart points
     $scope.refresh = function() {
-    	countStories($scope.stories);
+    	var counts = countStories($scope.stories, $scope.workType);
+        $scope.notStarted = counts[0];
+        $scope.inProgress = counts[1];
+        $scope.done = counts[2];
+
     	$scope.averageTime = getAverageTime($scope.stories).toFixed(2);
     	
     	// update points using full story list, so graph doesn't shrink
@@ -219,6 +225,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
         },
         {
             label: 'Forecast',
+            lines: { show: true },
             points: { show: true },
             data: []
         },
@@ -290,7 +297,8 @@ function epicDetailsController ($scope, $http, $q, $location) {
     };
 
     function getForecastLine(startPoint, averageTime) {
-        var stories = $scope.notStarted + $scope.inProgress;
+        var counts = countStories($scope.fullStories, 1);
+        var stories = counts[0] + counts[1];
         return averageTime > 0 && stories > 0 ? [startPoint, [startPoint[0] + (stories * averageTime * 1000 * 60 * 60), 0]] : [];
     }
     

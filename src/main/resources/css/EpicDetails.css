@@ -22,7 +22,7 @@
 
 .column2 {
 	float: left;
-	min-width: 550px;
+	min-width: 612px;
 }
 
 .btn-group {
@@ -100,6 +100,14 @@
 }
 
 .third-column {
+	width: 10%;
+}
+
+.fourth-column {
+	width: 14%;
+}
+
+.expanded-width {
 	width: 24%;
 }
 

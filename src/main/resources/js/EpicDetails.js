@@ -118,11 +118,11 @@ function epicDetailsController ($scope, $http, $q, $location) {
     	angular.forEach(stories, function(story, index) {
     		var resolution = story.fields.resolutiondate;
     		if (resolution !== undefined && resolution !== null) {
-    			$scope.done += getValue(story);
+    			$scope.done += $scope.getValue(story);
     		} else if (jQuery.inArray(story.fields.status.name, notStartedNames) != -1) {
-    			$scope.notStarted += getValue(story);
+    			$scope.notStarted += $scope.getValue(story);
     		} else {
-    			$scope.inProgress += getValue(story);
+    			$scope.inProgress += $scope.getValue(story);
     		}
     	});
     }
@@ -132,7 +132,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
         var list = [];
 
         angular.forEach(stories, function(story, index) {
-            var value = getValue(story);
+            var value = $scope.getValue(story);
             list.push({
                 date: Date.parse(story.fields.created),
                 number: value
@@ -156,7 +156,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
     }
 
     // get the value of the story based on which work type is selected
-    function getValue(story) {
+    $scope.getValue = function(story) {
         switch($scope.workType) {
         case 1:
             return 1;
@@ -173,7 +173,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
 
             return (time / 3600);
         }
-    }
+    };
     
     function getAverageTime(stories) {
     	var completedStories = 0;
@@ -271,7 +271,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
     	angular.forEach($scope.stories, function(story, index) {
     		var date = Date.parse(creation ? story.fields.created : story.fields.resolutiondate);
     		if (date > $scope.chartMin && date < $scope.chartMax) {
-    			var i = Math.floor((date - $scope.chartMin) / range);
+    			var i = Math.floor((date - $scope.chartMin) / range) + 1;
     			points[i][1]++;
     		}
     	});
@@ -310,6 +310,18 @@ function epicDetailsController ($scope, $http, $q, $location) {
             $scope.forecastRate = (results[0].data.total - results[1].data.total) / (forecast.epics * forecast.time);
             $scope.refresh();
         });
+    };
+    
+    // return a string representation of the work type
+    $scope.workTypeToString = function() {
+    	switch($scope.workType) {
+        case 1:
+            return "Stories";
+        case 2:
+            return "Points";
+        case 3:
+            return "Hours";
+        }
     };
 }
 

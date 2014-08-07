@@ -58,7 +58,10 @@
 				<div class="header">
 					<div class="first-column inline">Story Name</div>
 					<div class="second-column inline">Assignee</div>
-					<div class="third-column inline">Resolution Date</div>
+					<div ng-hide="workType == 1" class="third-column inline">{{workTypeToString()}}</div>
+					<div class="fourth-column inline" ng-class="{'expanded-width': workType == 1}">
+						{{workType == 1 ? "Resolution Date" : "Resolution"}}
+					</div>
 				</div>
 				<ul>
 					<li ng-repeat="story in stories">
@@ -68,7 +71,10 @@
 						<div class="second-column inline">
 							{{story.fields.assignee.displayName}}
 						</div>
-						<div class="third-column inline">
+						<div ng-hide="workType == 1" class="third-column inline">
+							{{getValue(story)}}
+						</div>
+						<div class="fourth-column inline" ng-class="{'expanded-width': workType == 1}">
 							{{doneDate(story.fields.resolutiondate)}}
 						</div>	
 					</li>

@@ -171,3 +171,7 @@
 .story-row:not(:last-child) {
 	margin-bottom: 10px;
 }
+
+.story-contributor {
+	float: right;
+}

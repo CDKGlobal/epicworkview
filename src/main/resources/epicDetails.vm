@@ -62,7 +62,7 @@
 						</div>
 						<div class ="story-comment">
 							<p>{{story.fields.summary}}</p>
-							<span>{{story.fields.assignee.displayName}}</span>
+							<span class="story-contributor">{{story.fields.assignee.displayName}}</span>
 							<span>{{formatResolutionDate(story.fields.resolutiondate)}}</span>
 							<span ng-hide="workType == 1">{{workTypeToString()}}: {{workType == 3 ? getValue(story, workType).toFixed(2) : getValue(story, workType)}}</span>
 						</div>

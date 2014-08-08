@@ -53,7 +53,7 @@
 		</div>
 		
 		<div class="column2">
-			<div>Average Working Time: {{averageTime}} hours</div>
+			<div>{{numofStories}} stories have been completed within last 7 days.</div>
 			<div class="story-list">
 				<ul>
 					<li class="story-row" ng-repeat="story in stories">

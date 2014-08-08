@@ -152,11 +152,6 @@
             <version>${plugin.testrunner.version}</version>
             <scope>test</scope>
         </dependency>-->
-        <dependency>
-            <groupId>org.codehaus.sonar.plugins</groupId>
-            <artifactId>sonar-surefire-plugin</artifactId>
-            <version>2.4</version>
-        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -267,11 +262,6 @@
                     <propertyName>jacoco.agent.args</propertyName>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>2.4</version>
-            </plugin>
         </plugins>
     </build>
     <properties>
@@ -285,11 +275,6 @@
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <sonar.junit.reportsPath>target/surefire-reports</sonar.junit.reportsPath>
         <sonar.jacoco.reportPath>target/jacoco.exec</sonar.jacoco.reportPath>
-
-        <sonar.showProfiling>true</sonar.showProfiling>
-        <sonar.showSql>true</sonar.showSql>
-        <sonar.showSqlResults>true</sonar.showSqlResults>
-        <sonar.verbose>true</sonar.verbose>
 
         <!-- TestKit version 5.x for JIRA 5.x, 6.x for JIRA 6.x -->
         <testkit.version>5.2.26</testkit.version>

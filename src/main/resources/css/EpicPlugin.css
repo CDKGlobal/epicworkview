@@ -499,6 +499,14 @@ story:nth-child(5n) div {
   	z-index:2;
 }
 
+.animate-story div {
+	box-shadow:10px 10px 7px rgba(0,0,0,.7) !important;
+  	transform: scale(1.25) !important;
+  	position:relative !important;
+  	z-index:2 !important;
+  	transition: transform .75s linear !important;
+}
+
 .contributor {
 	margin-right: 5px;
 }

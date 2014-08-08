@@ -558,6 +558,18 @@ story:nth-child(5n) div {
   	z-index:2;
 }
 
+.animate-story div {
+	-webkit-box-shadow:10px 10px 7px rgba(0,0,0,.7) !important;
+	        box-shadow:10px 10px 7px rgba(0,0,0,.7) !important;
+  	-webkit-transform: scale(1.25) !important;
+  	    -ms-transform: scale(1.25) !important;
+  	        transform: scale(1.25) !important;
+  	position:relative !important;
+  	z-index:2 !important;
+  	-webkit-transition: -webkit-transform .75s linear !important;
+  	        transition: transform .75s linear !important;
+}
+
 .contributor {
 	margin-right: 5px;
 }

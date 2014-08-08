@@ -116,7 +116,7 @@
 		      		<li class="epic-column">
 		      			<ul class="list inline" ng-controller="EpicController">
 		      				<li class="epic-holder" ng-repeat="epic in project.epics" ng-init="setUniqueId(epic)">
-		      					<div class="epic-info-button" ng-show="isClicked(epic.id)" ng-click="$event.stopPropagation(); setActiveEpic(epic, project)">
+		      					<div class="epic-info-button" ng-show="isClicked(epic.id) && !animating" ng-click="$event.stopPropagation(); setActiveEpic(epic, project)">
 			      					<i class="fa fa-info fa-2x"></i>
 			      				</div>
 		      					<div class="epic-container" ng-class="{'clicked-epic': isClicked(epic.id)}" ng-click="toggleEpic($event, epic.id); toggleOverflow()">
@@ -132,7 +132,7 @@
 		      	</ul>
 		      	<div class="epic-info" ng-controller="EpicController" ng-show="showEpicWindow(project)" ng-click="$event.stopPropagation()">
 		      		<ul class="in-progress-stories list-section inline">
-		      			<li class="story" ng-repeat="story in getEpicStories(project, false)">
+		      			<li class="story" ng-class="{'animate-story': storyIsAnimated(story.id)}" ng-repeat="story in getEpicStories(project, false)">
 		      				<div ng-style="{'background': '{{getClickedEpicColor(project)}}'}" ng-class="getClickedEpicColor(project)">
 			      				<ul ng-style="{'border-bottom-color': '{{getFontColor()}}'}" class="story-header list-section">
 			      					<li class="contributor-holder"><img class="contributor-image" ng-show="story.contributor" src="{{story.contributor.avatar}}" 
@@ -146,7 +146,7 @@
 		      			</li>
 		      		</ul>
 		      		<ul class="in-progress-stories list-section inline">
-		      			<li class="story" ng-repeat="story in getEpicStories(project, true)">
+		      			<li class="story" ng-class="{'animate-story': storyIsAnimated(story.id)}" ng-repeat="story in getEpicStories(project, true)">
 		      				<div ng-style="{'background': '{{getClickedEpicColor(project)}}'}" ng-class="getClickedEpicColor(project)">
 			      				<ul ng-style="{'border-bottom-color': '{{getFontColor()}}'}" class="story-header list-section">
 			      					<li class="contributor-holder"><img class="contributor-image" ng-show="story.contributor" src="{{story.contributor.avatar}}" 

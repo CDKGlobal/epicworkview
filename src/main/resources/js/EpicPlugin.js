@@ -507,7 +507,6 @@ function ProjectController($scope, $http, $cookieStore, $window) {
     };
 
     $scope.toggleOverflow = function() {
-    	console.log("toggling overflow");
     	if (clickedEpic === null) {
     		$scope.overflow = false;
     	} else {
@@ -541,13 +540,17 @@ function ProjectController($scope, $http, $cookieStore, $window) {
     /* --------------------------------- Epic Animation -------------------------------------- */
     /* --------------------------------------------------------------------------------------- */
 
+    $scope.animating = false;
+    
     // Animate each epic in the queue of epics to animate
     function animateEpics() {
         var resetEpic = function(){
             clickedEpic = null;
+            $scope.animating = false;
         };
 
         while (epicAnimationQueue.length > 0) {
+        	$scope.animating = true;
             epicData = epicAnimationQueue.shift();
             epic = epicData.shift();
             clickedEpic = epic.id;
@@ -560,10 +563,12 @@ function ProjectController($scope, $http, $cookieStore, $window) {
 
     // Animate the given story
     function animateStory(story) {
-        animatedStoryId = story.id;
         setTimeout(function() {
-            animatedStoryId = null;
-        }, 3000);
+        	$scope.$apply(animatedStoryId = story.id);
+        }, 1000);
+        setTimeout(function() {
+            $scope.$apply(animatedStoryId = null);
+        }, 4000);
     }
 
     $scope.storyIsAnimated = function(id) {

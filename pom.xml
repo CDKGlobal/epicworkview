@@ -193,7 +193,6 @@
                         <phase>compile</phase>
                         <configuration>
                             <target>
-                                <echo>${jacoco.agent.args}</echo>
                                 <echo>NPM Install</echo>
                                 <exec executable="npm" dir="${project.basedir}" osfamily="unix" resultproperty="">
                                     <env key="PATH" value="/usr/local/bin:/usr/bin:/bin"/>

@@ -314,7 +314,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
     //nicely format the date string
     $scope.formatResolutionDate = function(date) {
         if(date !== undefined && date !== null) {
-            return new Date(Date.parse(date)).toLocaleString();
+            return 'resolved: ' + new Date(Date.parse(date)).toLocaleString();
         }
         else {
             return 'unresolved';
@@ -334,9 +334,9 @@ function epicDetailsController ($scope, $http, $q, $location) {
         case 1:
             return "Stories";
         case 2:
-            return "Points";
+            return "Story Points";
         case 3:
-            return "Hours";
+            return "Work Hours";
         default:
             return "Unknown";
         }

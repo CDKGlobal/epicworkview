@@ -281,6 +281,11 @@
         <sonar.junit.reportsPath>target/surefire-reports</sonar.junit.reportsPath>
         <sonar.jacoco.reportPath>target/jacoco.exec</sonar.jacoco.reportPath>
 
+        <sonar.showProfiling>true</sonar.showProfiling>
+        <sonar.showSql>true</sonar.showSql>
+        <sonar.showSqlResults>true</sonar.showSqlResults>
+        <sonar.verbose>true</sonar.verbose>
+
         <!-- TestKit version 5.x for JIRA 5.x, 6.x for JIRA 6.x -->
         <testkit.version>5.2.26</testkit.version>
     </properties>

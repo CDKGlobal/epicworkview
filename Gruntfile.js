@@ -52,10 +52,13 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-karma');
     grunt.loadNpmTasks('grunt-protractor-runner');
     grunt.loadNpmTasks('grunt-autoprefixer');
+    grunt.loadNpmTasks('grunt-istanbul');
 
     grunt.registerTask('default', []);
     grunt.registerTask('ut', ['karma:unit', 'jshint', 'autoprefixer']);
     grunt.registerTask('it', ['protractor']);
     grunt.registerTask('autoprefix', ['autoprefixer']);
     grunt.registerTask('lint', ['jshint']);
+
+    grunt.registerTask('karmaTest', ['karma:unit']);
 };

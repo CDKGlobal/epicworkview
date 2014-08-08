@@ -5,7 +5,7 @@
   "main": "/",
   "dependencies": {},
   "devDependencies": {
-    "grunt": "0.4.x",
+    "grunt": "~0.4.2",
     "grunt-cli": "0.1.x",
     "grunt-karma": "0.8.x",
     "grunt-protractor-runner": "^1.0.1",
@@ -13,14 +13,16 @@
     "grunt-contrib-jshint": "0.10.x",
     "caniuse-db": "1.0.x",
     "grunt-autoprefixer": "0.8.2",
+    "grunt-istanbul": "~0.3.0",
     "jasmine-reporters": "0.4.x",
     "karma": "0.12.x",
+    "karma-coverage": "0.2.x",
     "karma-chrome-launcher": "0.1.x",
     "karma-jasmine": "0.1.x",
     "karma-phantomjs-launcher": "0.1.x",
     "phantomjs": "1.9.x"
   },
   "author": "ADP/Cobalt",
-  "license": "Commercial/Private",
+  "license": "BSD ISC",
   "private": true
 }

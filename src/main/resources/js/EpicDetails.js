@@ -14,6 +14,9 @@ function epicDetailsController ($scope, $http, $q, $location) {
 
     // average time to complete a story
     $scope.averageTime = 0;
+    
+    // number of completed stories within last 7 days
+    $scope.numofStories = 0;
 
     // the min and max time values of what is displayed in the chart
     $scope.chartMin = 0;
@@ -34,6 +37,9 @@ function epicDetailsController ($scope, $http, $q, $location) {
         'Epic Name': null,
         'Story Points': null
     };
+    
+    var timeInMs = Date.now();
+    var cutoffDate = timeInMs - 7*24*60*60*1000;
 
     var epicQuery = $scope.contextPath + '/rest/api/2/';
     var storiesQuery = $scope.contextPath + '/rest/api/2/search?jql=';
@@ -218,6 +224,24 @@ function epicDetailsController ($scope, $http, $q, $location) {
         }
         return number;
     };
+    
+    // get the number of stories completed in the time frame, by default last 7 days
+    function getCompletedStories(stories) {
+        var storyNum = 0;       		
+		
+        angular.forEach(stories, function(story) {
+            if((story.fields.resolutiondate !== null) && (Date.parse(story.fields.resolutiondate) >= cutoffDate)){
+                storyNum++;
+            }
+            if (Date.parse(story.fields.resolutiondate) < cutoffDate){
+            	return storyNum;
+            }
+        });
+        
+        return storyNum;
+    }
+
+    
 
     // update the story counts, average time and chart points
     $scope.refresh = function() {
@@ -226,7 +250,8 @@ function epicDetailsController ($scope, $http, $q, $location) {
         $scope.inProgress = counts[1];
         $scope.done = counts[2];
 
-        $scope.averageTime = getAverageTime($scope.stories).toFixed(2);
+        //$scope.averageTime = getAverageTime($scope.stories).toFixed(2);
+        $scope.numofStories = getCompletedStories($scope.fullStories);
 
         // update points using full story list, so graph doesn't shrink
         var points = getProgressList($scope.fullStories);

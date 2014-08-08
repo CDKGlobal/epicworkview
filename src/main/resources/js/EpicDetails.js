@@ -180,6 +180,8 @@ function epicDetailsController ($scope, $http, $q, $location) {
             }
 
             return (time / 3600);
+        default:
+            return 0;
         }
     };
 
@@ -335,6 +337,8 @@ function epicDetailsController ($scope, $http, $q, $location) {
             return "Points";
         case 3:
             return "Hours";
+        default:
+            return "Unknown";
         }
     };
 }

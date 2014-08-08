@@ -11,6 +11,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
     $scope.notStarted = 0;
     $scope.inProgress = 0;
     $scope.done = 0;
+    
 
     // average time to complete a story
     $scope.averageTime = 0;
@@ -18,6 +19,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
     // the min and max time values of what is displayed in the chart
     $scope.chartMin = 0;
     $scope.chartMax = 0;
+    $scope.hasZoomed = false;
 
     // initial work type is 1, stories
     $scope.workType = 1;
@@ -279,7 +281,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
         // the largest point on the chart, excluding the forecast
         var dataMax = $scope.points[0].data[$scope.points[0].data.length - 1][0];
         // if no zoom yet, set chart min and max to be min and max points on chart
-        if ($scope.chartMin === $scope.chartMax) {
+        if (!$scope.hasZoomed) {
             $scope.chartMin = $scope.points[0].data[0][0];
             var forecast = $scope.points[1].data;
             $scope.chartMax = forecast.length > 0 ? forecast[forecast.length - 1][0] : dataMax;
@@ -508,6 +510,7 @@ function chartDirective() {
                 });
                 scope.chartMin = min;
                 scope.chartMax = max;
+                scope.hasZoomed = true;
                 // refresh the page, wrap in apply so that page updates
                 scope.$apply(function() {
                     scope.refresh();

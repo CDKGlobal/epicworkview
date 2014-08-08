@@ -38,7 +38,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
     var epicQuery = $scope.contextPath + '/rest/api/2/';
     var storiesQuery = $scope.contextPath + '/rest/api/2/search?jql=';
 
-    if($scope.key.indexOf('-') != -1) {
+    if($scope.key.indexOf('-') !== -1) {
         epicQuery += 'issue';
         storiesQuery += '"Epic Link"=' + $scope.key;
     }
@@ -72,7 +72,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
 
             $q.all(requests).then(function(results) {
                 //add the new stories to the list
-                angular.forEach(results, function(e, i) {
+                angular.forEach(results, function(e) {
                     $scope.fullStories = $scope.fullStories.concat(e.data.issues);
                     $scope.stories = $scope.stories.concat(e.data.issues);
                 });
@@ -84,7 +84,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
 
         //setup field map
         angular.forEach(fieldMap, function(value, key) {
-            angular.forEach(fields, function(elem, index) {
+            angular.forEach(fields, function(elem) {
                 if(key === elem.name) {
                     fieldMap[key] = elem.id;
                 }
@@ -92,7 +92,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
         });
 
         // set epic name
-        if($scope.key.indexOf('-') != -1) {
+        if($scope.key.indexOf('-') !== -1) {
             $scope.epicName = getField(epic.fields, 'Epic Name');
         }
         else {
@@ -119,11 +119,11 @@ function epicDetailsController ($scope, $http, $q, $location) {
         var inProgress = 0;
         var done = 0;
 
-        angular.forEach(stories, function(story, index) {
+        angular.forEach(stories, function(story) {
             var resolution = story.fields.resolutiondate;
             if (resolution !== undefined && resolution !== null) {
                 done += $scope.getValue(story, worktype);
-            } else if (jQuery.inArray(story.fields.status.name, notStartedNames) != -1) {
+            } else if (jQuery.inArray(story.fields.status.name, notStartedNames) !== -1) {
                 notStarted += $scope.getValue(story, worktype);
             } else {
                 inProgress += $scope.getValue(story, worktype);
@@ -139,7 +139,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
     function getProgressList(stories) {
         var list = [];
 
-        angular.forEach(stories, function(story, index) {
+        angular.forEach(stories, function(story) {
             var value = $scope.getValue(story, $scope.workType);
             list.push({
                 date: Date.parse(story.fields.created),
@@ -191,7 +191,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
         var day = 1000 * 60 * 60 * 24;
         var week = day * 7;
 
-        angular.forEach(stories, function(story, index) {
+        angular.forEach(stories, function(story) {
             if(story.fields.resolutiondate !== null) {
                 completedStories++;
                 var completedTime = Date.parse(story.fields.resolutiondate) - Date.parse(story.fields.created);
@@ -211,7 +211,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
 
     // format the given value for display
     $scope.format = function(number) {
-        if ($scope.workType == 3) {
+        if ($scope.workType === 3) {
             return number.toFixed(2);
         }
         return number;
@@ -254,7 +254,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
         }];
 
         var runningTotal = 0;
-        angular.forEach(points, function(elem, index) {
+        angular.forEach(points, function(elem) {
             runningTotal += elem.number;
             $scope.points[0].data.push([elem.date, runningTotal]);
         });
@@ -277,7 +277,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
         // the largest point on the chart, excluding the forecast
         var dataMax = $scope.points[0].data[$scope.points[0].data.length - 1][0];
         // if no zoom yet, set chart min and max to be min and max points on chart
-        if ($scope.chartMin == $scope.chartMax) {
+        if ($scope.chartMin === $scope.chartMax) {
             $scope.chartMin = $scope.points[0].data[0][0];
             var forecast = $scope.points[1].data;
             $scope.chartMax = forecast.length > 0 ? forecast[forecast.length - 1][0] : dataMax;
@@ -297,7 +297,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
             points.push([(min + (i + 1) * range), 0]);
         }
         // add to each point for each story in that range section
-        angular.forEach($scope.stories, function(story, index) {
+        angular.forEach($scope.stories, function(story) {
             // if creation is true, use story's created date. Otherwise, use resolution date
             var date = Date.parse(creation ? story.fields.created : story.fields.resolutiondate);
             // add to the point
@@ -388,7 +388,7 @@ function chartDirective() {
                 yaxis: {
                     minTickSize: 1,
                     // round down y-axis ticks
-                    tickFormatter: function(val, axis) {
+                    tickFormatter: function(val) {
                         return Math.floor(parseFloat(val));
                     }
                 },
@@ -412,11 +412,11 @@ function chartDirective() {
                    },
                    xaxis: {
                        // display two ticks on selected area
-                       ticks: function(axis) {
+                       ticks: function() {
                            return [scope.chartMin, scope.chartMax];
                        },
                        // format ticks to be dates
-                    tickFormatter: function(val, axis) {
+                    tickFormatter: function(val) {
                         // range of zoomed chart
                         var range = scope.chartMax - scope.chartMin;
 
@@ -495,7 +495,7 @@ function chartDirective() {
             // update the current data to be a subset between the values
             function zoom(min, max) {
                 scope.stories = [];
-                angular.forEach(scope.fullStories, function(story, index) {
+                angular.forEach(scope.fullStories, function(story) {
                     var created = Date.parse(story.fields.created);
                     var resolved = story.fields.resolutiondate !== null ? Date.parse(story.fields.resolutiondate) : null;
                     if (created <= max && (resolved === null || resolved >= min)) {

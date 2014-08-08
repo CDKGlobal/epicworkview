@@ -124,10 +124,8 @@ function ProjectController($scope, $http, $cookieStore, $window) {
                     // animate if it is an epic
                     if (elementType === "epic") {
                         epicAnimationQueue.push([savedElement]);
-                    } else if (elementType === "story") {
-                        if (epicAnimationQueue.length > 0) {
-                            epicAnimationQueue[epicAnimationQueue.length - 1].push(savedElement);
-                        }
+                    } else if (elementType === "story" && epicAnimationQueue.length > 0) {
+                    	epicAnimationQueue[epicAnimationQueue.length - 1].push(savedElement);
                     }
                     // set its state to true if it is a project and not in the list of unchecked projects
                     element.included = elementType === "project" && !contains($scope.uncheckedProjectIds, element.id);
@@ -601,7 +599,7 @@ function ProjectController($scope, $http, $cookieStore, $window) {
 
                 $scope.uncheckedProjectIds = [];
 
-                angular.forEach(values, function(element, index) {
+                angular.forEach(values, function(element) {
                     $scope.uncheckedProjectIds.push(parseInt(element));
                 });
 

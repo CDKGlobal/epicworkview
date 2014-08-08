@@ -55,9 +55,6 @@
 		<div class="column2">
 			<div>Average Working Time: {{averageTime}} hours</div>
 			<div class="story-list">
-				<div class="header">
-					<span>Stories</span>
-				</div>
 				<ul>
 					<li class="story-row" ng-repeat="story in stories">
 						<div class="comment-img">

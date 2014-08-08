@@ -92,16 +92,16 @@
 
 /* Story List */
 
-.story-list > ul,
-.story-list > .header {
-	padding: 1%;
+.story-list {
+	overflow-x: auto;
+	max-height: 500px;
+	margin-top: 20px;
 }
 
 .story-list > ul {
 	list-style-type: none;
-	overflow-x: auto;
-	max-height: 500px;
 	position: relative;
+	padding: 1%;
 }
 
 .story-list > ul:before,

@@ -146,6 +146,8 @@
 .comment-img {
 	float: left;
 	margin-right: 30px;
+	width: 48px;
+	height: 48px;
 }
 
 .comment-img img {

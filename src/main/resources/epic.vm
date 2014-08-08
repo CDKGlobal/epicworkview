@@ -131,22 +131,8 @@
 		      		</li>
 		      	</ul>
 		      	<div class="epic-info" ng-controller="EpicController" ng-show="showEpicWindow(project)" ng-click="$event.stopPropagation()">
-		      		<ul class="in-progress-stories list-section inline">
-		      			<li class="story" ng-class="{'animate-story': storyIsAnimated(story.id)}" ng-repeat="story in getEpicStories(project, false)">
-		      				<div ng-style="{'background': '{{getClickedEpicColor(project)}}'}" ng-class="getClickedEpicColor(project)">
-			      				<ul ng-style="{'border-bottom-color': '{{getFontColor()}}'}" class="story-header list-section">
-			      					<li class="contributor-holder"><img class="contributor-image" ng-show="story.contributor" src="{{story.contributor.avatar}}" 
-			      							 title="{{story.contributor.name}}" height="24" width="24"></li>
-			      					<li>{{millisecondToString(story.timestamp, true)}}</li>
-			      					<li><i class="fa fa-info-circle info-button" ng-click="setActivePage(story)"></i></li>			      							
-			      				</ul>
-			      				<span class="checkmark" ng-show="story.completed">&#x2713;</span>
-			      				<p>{{story.name}}</p>
-			      			</div>
-		      			</li>
-		      		</ul>
-		      		<ul class="in-progress-stories list-section inline">
-		      			<li class="story" ng-class="{'animate-story': storyIsAnimated(story.id)}" ng-repeat="story in getEpicStories(project, true)">
+		      		<ul class="story-list list-section inline" ng-repeat="completed in [false, true]">
+		      			<li class="story" ng-class="{'animate-story': storyIsAnimated(story.id)}" ng-repeat="story in getEpicStories(project, completed)">
 		      				<div ng-style="{'background': '{{getClickedEpicColor(project)}}'}" ng-class="getClickedEpicColor(project)">
 			      				<ul ng-style="{'border-bottom-color': '{{getFontColor()}}'}" class="story-header list-section">
 			      					<li class="contributor-holder"><img class="contributor-image" ng-show="story.contributor" src="{{story.contributor.avatar}}" 

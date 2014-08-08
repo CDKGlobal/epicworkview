@@ -383,8 +383,7 @@ ul.inline .epic-container {
 	margin-bottom: 35px;
 }
 
-.completed-stories,
-.in-progress-stories {
+.story-list {
 	width: 50%;
 	float: left;
 }

@@ -45,10 +45,27 @@ module.exports = function(grunt) {
                 src: 'src/main/resources/css/EpicDetails.css',
                 dest: 'src/main/resources/css/EpicDetails.prefixed.css'
             }
+        },
+        watch: {
+            grunt: {
+                files: 'Gruntfile.js',
+                options: {
+                    reload: true
+                }
+            },
+            css: {
+                files: ['src/main/resources/css/*.css', '!src/main/resources/css/*.prefixed.css'],
+                tasks: ['autoprefix']
+            },
+            js: {
+                files: ['src/main/resources/js/*.js'],
+                tasks: ['karma:unit', 'jshint']
+            }
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-karma');
     grunt.loadNpmTasks('grunt-protractor-runner');
     grunt.loadNpmTasks('grunt-autoprefixer');

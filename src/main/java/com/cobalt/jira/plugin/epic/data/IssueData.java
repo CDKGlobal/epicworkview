@@ -26,6 +26,7 @@ public class IssueData extends JiraData {
 
         if(StatusUtil.hasBeenWorkedOn(issue)) {
             setDisplayTimestamp(StatusUtil.lastWorkedOnTime(issue));
+            setUpdatedTimestamp(getDisplayTimestamp());
         }
     }
 

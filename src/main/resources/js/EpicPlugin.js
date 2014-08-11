@@ -343,33 +343,34 @@ function ProjectController($scope, $http, $cookieStore, $window) {
         return res;
     };
 
-    // Return the difference between the current time and the given time, as a string
+    // Return the difference between the current time and the given time, 
+    // as a list of a number and a string
     // returns a shorter string if short is true
     $scope.millisecondToString = function(milli, short) {
         currentTime = new Date().getTime();
         lastUpdated = currentTime - milli;
         seconds = Math.round(lastUpdated / 1000);
         if (seconds < 60) {
-            return short ? seconds + "S" : pluralize(seconds, "second");
+            return short ? [seconds, "s"] : pluralize(seconds, "second");
         }
         minutes = Math.round(seconds / 60);
         if (minutes < 60) {
-            return short ? minutes + "M" : pluralize(minutes, "minute");
+            return short ? [minutes, "m"] : pluralize(minutes, "minute");
         }
         hours = Math.round(minutes / 60);
         if (hours < 24) {
-            return short ? hours + "H" : pluralize(hours, "hour");
+            return short ? [hours, "h"] : pluralize(hours, "hour");
         }
         days = Math.round(hours / 24);
-        return short ? days + "D" : pluralize(days, "day");
+        return short ? [days, "d"] : pluralize(days, "day");
     };
 
     // appends an "s" to the unit if the number is greater than one
     function pluralize(num, unit) {
         if (num === 1) {
-            return num + " " + unit;
+            return [num, unit];
         }
-        return num + " " + unit + "s";
+        return [num, unit + "s"];
     }
 
     /* --------------------------------------------------------------------------------------- */
@@ -497,20 +498,6 @@ function ProjectController($scope, $http, $cookieStore, $window) {
     /* ------------------------------------ Timeout ------------------------------------------ */
     /* --------------------------------------------------------------------------------------- */
 
-    $scope.overflow = false;
-
-    $scope.showOverflow = function() {
-    	return $scope.overflow;
-    };
-
-    $scope.toggleOverflow = function() {
-    	if (clickedEpic === null) {
-    		$scope.overflow = false;
-    	} else {
-    		$scope.overflow = true;
-    	}
-    };
-
     // set timer for closing windows after inactivity
     var inactivityTimer;
     jQuery(window).mousemove(inactivityReset);
@@ -530,7 +517,6 @@ function ProjectController($scope, $http, $cookieStore, $window) {
     $scope.hideEpicInfo = function() {
     	refresh = true;
     	clickedEpic = null;
-    	$scope.overflow = false;
     };
 
     /* --------------------------------------------------------------------------------------- */

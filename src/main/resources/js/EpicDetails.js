@@ -1,4 +1,4 @@
-function epicDetailsController ($scope, $http, $q, $location) {
+function epicDetailsController ($scope, $http, $q, $location, $window) {
     var notStartedNames = ["To Do", "Open"];
 
     $scope.contextPath = jQuery('meta[name="ajs-context-path"]').attr('content');
@@ -6,6 +6,8 @@ function epicDetailsController ($scope, $http, $q, $location) {
     $scope.epicName = '';
     $scope.fullStories = []; // the full list of stories
     $scope.stories = []; // the list of stories in the current date range
+    $scope.epics = [];
+    $scope.projectName = '';
 
     // number of stories in that state
     $scope.notStarted = 0;
@@ -61,11 +63,13 @@ function epicDetailsController ($scope, $http, $q, $location) {
     $q.all([
         $http.get(epicQuery),
         $http.get(storiesQuery),
-        $http.get($scope.contextPath + '/rest/api/2/field')
+        $http.get($scope.contextPath + '/rest/api/2/field'),
+        $http.get($scope.contextPath + '/rest/api/2/search?jql=project="' + $scope.key.split('-', 1)[0] + '" and issuetype="Epic"')
     ]).then(function(results) {
         var epic = results[0].data;
         var stories = results[1].data;
         var fields = results[2].data;
+        var epics = results[3].data.issues;
 
         //get the rest of the stories if there are more
         var maxResults = stories.maxResults;
@@ -99,13 +103,24 @@ function epicDetailsController ($scope, $http, $q, $location) {
             });
         });
 
+        angular.forEach(epics, function(epic) {
+            if(epic.key !== $scope.key) {
+                $scope.epics.push({
+                    name: getField(epic.fields, 'Epic Name'),
+                    location: $scope.contextPath + '/plugins/servlet/epicDetails?epic=' + epic.key
+                });
+            }
+        });
+
         // set epic name
         if($scope.key.indexOf('-') !== -1) {
             $scope.epicName = getField(epic.fields, 'Epic Name');
+            $scope.projectName = epic.fields.project.name;
         }
         else {
             // given key is a project key, so this is an "other stories" epic
             $scope.epicName = 'Other stories (' + epic.name + ')';
+            $scope.projectName = epic.name;
         }
 
         $scope.fullStories = stories.issues;
@@ -364,6 +379,10 @@ function epicDetailsController ($scope, $http, $q, $location) {
 
     $scope.round = function(number) {
         return Math.floor(number * 100) / 100;
+    };
+
+    $scope.redirect = function(url) {
+        $window.location = url;
     };
 }
 

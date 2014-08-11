@@ -1,6 +1,6 @@
 
 // Time of most recent update
-var lastUpdateTime = new Date().getTime();
+var lastUpdateTime = 0;//new Date().getTime();
 
 // Whether to continuously refresh projects
 var refresh = true;
@@ -205,7 +205,7 @@ function ProjectController($scope, $http, $cookieStore, $window) {
     // Loop through epics to find a non-null epic and set whether it is using new colors
     function setColor(projects) {
         for (var i = 0; i < projects.length; i++) {
-            if(projects[i].epics !== undefined && projects[i].epics !== null) {
+            //if(projects[i].epics !== undefined && projects[i].epics !== null) {
                 var j = 0;
                 var epic = projects[i].epics[0];
                 while (epic !== undefined && epic !== null) {
@@ -220,7 +220,7 @@ function ProjectController($scope, $http, $cookieStore, $window) {
                     j++;
                     epic = projects[i].epics[j];
                 }
-            }
+            //}
         }
     }
 

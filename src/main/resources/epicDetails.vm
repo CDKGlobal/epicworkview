@@ -53,7 +53,7 @@
 		</div>
 		
 		<div class="column2">
-			<div>{{numofStories}} stories have been completed within last 7 days.</div>
+			<div>{{format(numofStories)}} {{workTypeToString()}} have been completed within the last 7 days.</div>
 			<div class="story-list">
 				<ul>
 					<li class="story-row" ng-repeat="story in stories">

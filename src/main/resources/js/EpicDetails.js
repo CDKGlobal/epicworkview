@@ -232,18 +232,13 @@ function epicDetailsController ($scope, $http, $q, $location) {
         var storyNum = 0;       		
 		
         angular.forEach(stories, function(story) {
-            if((story.fields.resolutiondate !== null) && (Date.parse(story.fields.resolutiondate) >= cutoffDate)){
-                storyNum++;
-            }
-            if (Date.parse(story.fields.resolutiondate) < cutoffDate){
-            	return storyNum;
+            if(story.fields.resolutiondate !== null && Date.parse(story.fields.resolutiondate) >= cutoffDate) {
+                storyNum += $scope.getValue(story, $scope.workType);
             }
         });
         
         return storyNum;
     }
-
-    
 
     // update the story counts, average time and chart points
     $scope.refresh = function() {
@@ -252,7 +247,6 @@ function epicDetailsController ($scope, $http, $q, $location) {
         $scope.inProgress = counts[1];
         $scope.done = counts[2];
 
-        //$scope.averageTime = getAverageTime($scope.stories).toFixed(2);
         $scope.numofStories = getCompletedStories($scope.fullStories);
 
         // update points using full story list, so graph doesn't shrink

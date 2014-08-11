@@ -304,6 +304,30 @@ ul.inline .epic-container {
 	box-shadow: 3px 3px 5px #888888;
 	z-index: 11;
 	cursor: pointer;
+	opacity: 1;
+}
+
+.epic-info-button.ng-hide {
+	opacity: 0;
+}
+
+.epic-info-button.ng-hide-remove {
+	transition: all 1s linear;
+}
+
+.epic-info-button:before {
+	position: absolute;
+	content: "";
+	top: 36px;
+	left: 15px;
+	width: 9px;
+	height: 9px;
+	border-width: 0 1px 1px 0;
+	border-style: solid;
+	border-color: #000;
+	background: #f5f5f5;
+	box-shadow: 3px 3px 5px #888888;
+	transform: rotate(45deg);
 }
 
 .epic-info-button > i {

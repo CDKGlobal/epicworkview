@@ -307,9 +307,12 @@ function epicDetailsController ($scope, $http, $q, $location) {
         var dataMax = $scope.points[0].data[$scope.points[0].data.length - 1][0];
         // if no zoom yet, set chart min and max to be min and max points on chart
         if (!$scope.hasZoomed) {
+        	console.log("setting chart min and max");
             $scope.chartMin = $scope.points[0].data[0][0];
+            console.log("chart min is now " + new Date($scope.chartMin));
             var forecast = $scope.points[1].data;
             $scope.chartMax = forecast.length > 0 ? forecast[forecast.length - 1][0] : dataMax;
+            console.log("chart max is now " + new Date($scope.chartMax));
         }
         var max = $scope.chartMax;
         var min = $scope.chartMin;
@@ -525,6 +528,7 @@ function chartDirective() {
             // zoom to the given minimum and maximum millisecond values
             // update the current data to be a subset between the values
             function zoom(min, max) {
+            	console.log("zooming");
                 scope.stories = [];
                 angular.forEach(scope.fullStories, function(story) {
                     var created = Date.parse(story.fields.created);

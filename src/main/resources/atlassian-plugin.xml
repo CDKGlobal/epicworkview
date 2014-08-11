@@ -13,20 +13,30 @@
   <!-- add our web resources -->
   <web-resource key="EpicPlugin-resources" name="EpicPlugin Web Resources">
     <dependency>com.atlassian.auiplugin:ajs</dependency>
+    <resource type="download" name="bootstrap.css" location="lib/css/bootstrap.css"/>
+
     <resource type="download" name="EpicPlugin.prefixed.css" location="/css/EpicPlugin.prefixed.css"/>
+
+    <resource type="download" name="angular.min.js" location="lib/js/angular.min.js"/>
+    <resource type="download" name="angular-animate.min.js" location="lib/js/angular-animate.min.js"/>
+    <resource type="download" name="angular-cookies.min.js" location="lib/js/angular-cookies.min.js"/>
+    <resource type="download" name="ui-bootstrap-tpls-0.11.0.min.js" location="lib/js/ui-bootstrap-tpls-0.11.0.min.js"/>
+
     <resource type="download" name="EpicPlugin.js" location="/js/EpicPlugin.js"/>
     <resource type="download" name="images/" location="/images"/>
     <context>EpicPlugin</context>
   </web-resource>
   <web-resource key="EpicDetails-resources" name="EpicDetails Web Resources">
     <dependency>com.atlassian.auiplugin:ajs</dependency>
+
     <resource type="download" name="EpicDetails.prefixed.css" location="/css/EpicDetails.prefixed.css"/>
+
+    <resource type="download" name="jquery.flot.min.js" location="lib/js/jquery.flot.min.js"/>
+    <resource type="download" name="jquery.flot.selection.min.js" location="lib/js/jquery.flot.selection.min.js"/>
+    <resource type="download" name="jquery.flot.time.min.js" location="lib/js/jquery.flot.time.min.js"/>
+    <resource type="download" name="jquery.flot.resize.min.js" location="lib/js/jquery.flot.resize.min.js"/>
     <resource type="download" name="EpicDetails.js" location="/js/EpicDetails.js"/>
-    <resource type="download" name="jquery.flot.min.js" location="/js/jquery.flot.min.js"/>
-    <resource type="download" name="jquery.flot.selection.min.js" location="/js/jquery.flot.selection.min.js"/>
-    <resource type="download" name="jquery.flot.time.min.js" location="/js/jquery.flot.time.min.js"/>
-    <resource type="download" name="jquery.flot.resize.min.js" location="/js/jquery.flot.resize.min.js"/>
-    <resource type="download" name="images/" location="/images"/>
+    <resource type="download" name="images/" location="images"/>
     <context>EpicDetails</context>
   </web-resource>
   <!-- publish our component -->

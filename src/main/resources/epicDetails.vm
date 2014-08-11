@@ -8,7 +8,6 @@
 	<script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.min.js"></script>
 
 	<!--style tags-->
-	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
 
 	$webResourceManager.requireResource("com.cobalt.jira.plugin.epic.EpicPlugin:EpicDetails-resources")

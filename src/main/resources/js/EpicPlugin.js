@@ -20,11 +20,7 @@ var epicAnimationQueue = [];
 // Whether Jira is using the new colors
 var usingNewColors = false;
 
-var baseURL;
-
 jQuery(document).ready(function() {
-    baseURL = jQuery('input[title="baseURL"]').val();
-
     var duration = 500;
     jQuery(window).scroll(function() {
         if (jQuery(this).scrollTop() > 0) {
@@ -45,11 +41,12 @@ jQuery(document).ready(function() {
  * Controller to manage table of projects
  */
 function ProjectController($scope, $http, $cookieStore, $window) {
+    $scope.baseURL = jQuery('input[title="baseURL"]').val();
 
     $scope.filterDays = 7;
 
     $scope.getBaseURL = function() {
-        return baseURL;
+        return $scope.baseURL;
     };
 
     /*
@@ -91,7 +88,7 @@ function ProjectController($scope, $http, $cookieStore, $window) {
 
     // Get all the projects in the last amount of seconds and set them in a local variable (projects)
     $scope.getProjects = function(seconds) {
-        $http.get(baseURL+'/rest/epic/1/projects.json?seconds='+seconds).
+        $http.get($scope.baseURL+'/rest/epic/1/projects.json?seconds='+seconds).
         success(function(data) {
             // check if using new colors
             if (!usingNewColors) {
@@ -466,19 +463,19 @@ function ProjectController($scope, $http, $cookieStore, $window) {
 
     // Sets the modal to be the current user's page
     $scope.setActiveUser = function(id) {
-        setupModal(baseURL + "/secure/ViewProfile.jspa?name=" + id);
+        setupModal($scope.baseURL + "/secure/ViewProfile.jspa?name=" + id);
     };
 
     // Sets the modal to be the current page
     $scope.setActivePage = function(issue) {
-        setupModal(baseURL + "/browse/" + issue.key);
+        setupModal($scope.baseURL + "/browse/" + issue.key);
     };
 
     $scope.setActiveEpic = function(epic, project) {
     	if (epic.id < 0) {
-    		setupModal(baseURL + "/plugins/servlet/epicDetails?epic=" + project.key);
+    		setupModal($scope.baseURL + "/plugins/servlet/epicDetails?epic=" + project.key);
     	} else {
-    		setupModal(baseURL + "/plugins/servlet/epicDetails?epic=" + epic.key);
+    		setupModal($scope.baseURL + "/plugins/servlet/epicDetails?epic=" + epic.key);
     	}
     };
 

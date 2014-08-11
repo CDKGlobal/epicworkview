@@ -283,9 +283,7 @@ function epicDetailsController ($scope, $http, $q, $location) {
         });
 
         //set the second series data to the forecasted list
-        var temp = getAverageTime($scope.fullStories);
-        temp *= 3;
-        temp += Math.floor(temp/(5 * 24)) * 48;
+        var temp = getCompletedStories($scope.fullStories);
         $scope.points[1].data = getForecastLine($scope.points[0].data[$scope.points[0].data.length - 1], temp);
 
         $scope.points[2].data = getDataPoints(true);
@@ -343,10 +341,11 @@ function epicDetailsController ($scope, $http, $q, $location) {
     };
 
     // return a list of points for the forecast line
-    function getForecastLine(startPoint, averageTime) {
-        var counts = countStories($scope.fullStories, 1);
+    function getForecastLine(startPoint, numofStories) {
+        var counts = countStories($scope.fullStories, $scope.workType);
         var stories = counts[0] + counts[1];
-        return averageTime > 0 && stories > 0 ? [startPoint, [startPoint[0] + (stories * averageTime * 1000 * 60 * 60), 0]] : [];
+        //return averageTime > 0 && stories > 0 ? [startPoint, [startPoint[0] + (stories * averageTime * 1000 * 60 * 60), 0]] : [];
+        return numofStories > 0 && stories > 0 ? [startPoint, [startPoint[0] + (stories /  numofStories *7 *24 * 1000 * 60 * 60), 0]] : [];
     }
 
     // return a string representation of the work type

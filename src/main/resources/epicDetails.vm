@@ -35,9 +35,9 @@
 		<div class="column1">
 			<div class="progress-bar-container">
 				<progress>
-					<bar value="notStarted * 100 / (notStarted + inProgress + done)" type="info" ng-hide="notStarted <= 0"><span>{{format(notStarted)}}</span></bar>
-					<bar value="inProgress * 100 / (notStarted + inProgress + done)" type="warning" ng-hide="inProgress <= 0"><span>{{format(inProgress)}}</span></bar>
-					<bar value="done * 100 / (notStarted + inProgress + done)" type="success" ng-hide="done <= 0"><span>{{format(done)}}</span></bar>
+					<bar value="round(notStarted * 100 / (notStarted + inProgress + done))" type="info" ng-hide="notStarted <= 0"><span>{{format(notStarted)}}</span></bar>
+					<bar value="round(inProgress * 100 / (notStarted + inProgress + done))" type="warning" ng-hide="inProgress <= 0"><span>{{format(inProgress)}}</span></bar>
+					<bar value="round(done * 100 / (notStarted + inProgress + done))" type="success" ng-hide="done <= 0"><span>{{format(done)}}</span></bar>
 				</progress>
 				<div class="progress-bar-key">
 					<div class="key-element"><progressBar value="100" type="info"></progressBar><span>Not Started</span></div>

@@ -361,6 +361,10 @@ function epicDetailsController ($scope, $http, $q, $location) {
             return "Unknown";
         }
     };
+
+    $scope.round = function(number) {
+        return Math.floor(number * 100) / 100;
+    };
 }
 
 // Directive for creating charts

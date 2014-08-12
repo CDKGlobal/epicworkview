@@ -575,16 +575,15 @@ function chartDirective() {
             jQuery("#chart").bind("plothover", function (event, pos, item) {
             	if (item && ((item.seriesIndex == 2) || (item.seriesIndex == 3))){
             		console.log(item.series.label);
-            		if (previousPoint != item.dataIndex) {
+            		if (previousPoint !== item.dataIndex) {
                 		previousPoint = item.dataIndex;
                 		jQuery("#tooltip").remove();
 						var x = item.datapoint[0];
 							y = item.datapoint[1];
-						console.log(new Date(x).toLocaleDateString()+","+y)		
 						var index = item.dataIndex;
 						console.log(item.series.data[index]);
 						console.log(index);	
-						if (index != 0){
+						if (index !== 0){
 							var previousx = item.series.data[index - 1][0];
 							if (item.seriesIndex == 2){
 								showTooltip(item.pageX, item.pageY,

@@ -120,10 +120,12 @@ function epicDetailsController ($scope, $http, $q, $location, $window) {
         });
 
         //finally add the null epic for stories with no epic
-        $scope.epics.push({
-            name: 'Other Stories',
-            location: $scope.contextPath + '/plugins/servlet/epicDetails?epic=' + epic.key.split('-', 1)
-        });
+        if(epic.key.indexOf('-') > -1) {
+            $scope.epics.push({
+                name: 'Other Stories',
+                location: $scope.contextPath + '/plugins/servlet/epicDetails?epic=' + epic.key.split('-', 1)
+            });
+        }
 
         // set epic name
         if($scope.key.indexOf('-') !== -1) {

@@ -46,6 +46,16 @@
 	border-top: 1px solid #CCC;
 }
 
+.dropdown-menu {
+	margin-left: 56px;
+	top: -7%;
+	min-width: 90px;
+}
+
+.menu-item-selected {
+	background-color: #e5e5e5;
+}
+
 #search-slideout {
 	background-color: #ebf2f9;
 }
@@ -611,9 +621,6 @@ story:nth-child(5n) div {
 }
 
 .loading-bar {
-	background: #fff;
-	border: 1px solid #ccc;
-	border-radius: 5px;
 	margin: 1px;
 	float: left;
 	width: 100%;

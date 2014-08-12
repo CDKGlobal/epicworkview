@@ -43,8 +43,6 @@ jQuery(document).ready(function() {
 function ProjectController($scope, $http, $cookieStore, $window) {
     $scope.baseURL = jQuery('input[title="baseURL"]').val();
 
-    $scope.filterDays = 7;
-
     $scope.getBaseURL = function() {
         return $scope.baseURL;
     };
@@ -242,6 +240,19 @@ function ProjectController($scope, $http, $cookieStore, $window) {
         jQuery("header").slideToggle();
         jQuery("footer").fadeToggle();
         $scope.isFullScreen = !$scope.isFullScreen;
+    };
+    
+    /* --------------------------------------------------------------------------------------- */
+    /* ------------------------------ Time Filter Drop Down ---------------------------------- */
+    /* --------------------------------------------------------------------------------------- */
+    
+    $scope.filterDays = 7;
+    
+    $scope.changeFilterDays = function(number) {
+    	$scope.filterDays = number;
+    	$scope.loading = true;
+    	$scope.hideEpicInfo();
+    	$scope.getProjects($scope.filterDays * 24 * 60 * 60);
     };
 
     /* --------------------------------------------------------------------------------------- */

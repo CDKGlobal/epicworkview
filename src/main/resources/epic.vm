@@ -6,7 +6,7 @@
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link  href="https://fonts.googleapis.com/css?family=Reenie+Beanie:regular" rel="stylesheet" type="text/css">
     <script type="text/javascript">
-		var myApp = angular.module('myApp', ['ngAnimate', 'ngCookies']).directive('selectonclick', directives.selectOnClick).directive('modal', directives.modal);
+		var myApp = angular.module('myApp', ['ngAnimate', 'ngCookies', 'ui.bootstrap']).directive('selectonclick', directives.selectOnClick).directive('modal', directives.modal);
     </script>
   </head>
   <body>
@@ -28,13 +28,14 @@
     		</ul>
     		<ul>
     			<li>
-    				<div>
-    					<select ng-show="false" ng-model='filterDays' ng-change='loading=true; hideEpicInfo(); getProjects(filterDays * 24 * 60 * 60)'>
-		  					<option value="1">1 day</option>
-		 				 	<option value="2">2 days</option>
-		  					<option value="7">7 days</option>
-		  					<option value="14">14 days</option>
-						</select>
+    				<div class="btn-group dropdown-toggle" dropdown>
+    					<i class="fa fa-clock-o fa-2x"></i>
+    					<ul class="dropdown-menu" role="menu">
+				        	<li><a ng-class="{'menu-item-selected': filterDays===1}" ng-click="changeFilterDays(1)">1 day</a></li>
+				        	<li><a ng-class="{'menu-item-selected': filterDays===2}" ng-click="changeFilterDays(2)">2 days</a></li>
+				        	<li><a ng-class="{'menu-item-selected': filterDays===7}" ng-click="changeFilterDays(7)">7 days</a></li>
+				        	<li><a ng-class="{'menu-item-selected': filterDays===14}" ng-click="changeFilterDays(14)">14 days</a></li>
+				      	</ul>
     				</div>
     			</li>
     		</ul>
@@ -76,10 +77,11 @@
     	<!-- scroll-to-top button --> 
 		<a href="" id="scroll-to-top"><i class="fa fa-angle-up fa-2x"></i></a>
 		
-	    <ul id="projects" class="list-section project-list">
-	      	<li class="loading-bar" ng-show="loading">
-	      		<i class="fa fa-circle-o-notch fa-spin fa-4x"></i>
-	      	</li>
+		<div class="loading-bar" ng-show="loading">
+	      	<i class="fa fa-circle-o-notch fa-spin fa-4x"></i>
+	   	</div>
+		
+	    <ul id="projects" class="list-section project-list" ng-show="!loading">
 	      	<li class="project-row" ng-repeat="project in timeOrderedProjects() | filter: {included:true}">
 		   		<div class="project-icon-container">
 		    		<img class="project-icon" ng-src="{{project.icon}}" height="48" width="48">

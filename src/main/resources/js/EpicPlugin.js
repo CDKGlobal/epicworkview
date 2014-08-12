@@ -154,16 +154,21 @@ function ProjectController($scope, $http, $cookieStore, $window) {
 
     // update the child list of savedElement with the child list of element
     function updateChildList(elementType, savedElement, element) {
-        if (elementType === "project") {
-            // this is a project
-            updateElementList(savedElement.epics, element.epics, "epic");
-        } else if (elementType === "epic") {
-            // this is an epic
-            updateElementList(savedElement.stories, element.stories, "story");
-        } else if (elementType === "story") {
-            // this is a story
-            updateElementList(savedElement.subtasks, element.subtasks, "subtask");
-        }
+    	var type = elementType;
+    	switch(type) {
+    	case "project": 
+    		type = "epic";
+    		break;
+    	case "epic":
+    		type = "story";
+    		break;
+    	case "subtask":
+    		type = "subtask";
+    		break;
+    	}
+    	if (element.children !== undefined && element.children !== null) {
+    		updateElementList(savedElement.children, element.children, type);
+    	}
     }
     
     function addToAnimationQueue(element, elementType) {

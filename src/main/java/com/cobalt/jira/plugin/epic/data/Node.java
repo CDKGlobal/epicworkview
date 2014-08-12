@@ -2,7 +2,8 @@ package com.cobalt.jira.plugin.epic.data;
 
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**

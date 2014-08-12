@@ -1,14 +1,7 @@
 package com.cobalt.jira.plugin.epic.rest;
 
 import com.atlassian.crowd.embedded.api.User;
-import com.atlassian.event.api.EventListener;
-import com.atlassian.event.api.EventPublisher;
-import com.atlassian.jira.bc.issue.search.SearchService;
-import com.atlassian.jira.bc.project.ProjectService;
-import com.atlassian.jira.event.ProjectUpdatedEvent;
-import com.atlassian.jira.event.issue.IssueEvent;
 import com.atlassian.jira.user.ApplicationUser;
-import com.atlassian.jira.user.util.UserUtil;
 import com.atlassian.plugins.rest.common.security.AnonymousAllowed;
 import com.atlassian.sal.api.user.UserManager;
 import com.atlassian.sal.api.user.UserProfile;
@@ -17,10 +10,8 @@ import com.cobalt.jira.plugin.epic.data.IJiraData;
 import com.cobalt.jira.plugin.epic.data.JiraDataType;
 import com.cobalt.jira.plugin.epic.data.NaryTree;
 import com.cobalt.jira.plugin.epic.rest.jaxb.*;
-import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 
-import javax.annotation.PreDestroy;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
@@ -135,7 +126,7 @@ public class RestResource implements InitializingBean {
                 temp = new ArrayList<JaxbIssue>();
                 break;
             default:
-                return;//should never get here
+                throw new IllegalArgumentException("data.getType() returned an invalid enum value");
             }
 
             //while the next element is a subtype of data
@@ -155,7 +146,7 @@ public class RestResource implements InitializingBean {
                 output.add((T) JaxbFactory.newJaxbStory(data, temp));
                 break;
             default:
-                return;//should never get here
+                throw new IllegalArgumentException("data.getType() returned an invalid enum value");
             }
         }
     }

@@ -1,23 +1,16 @@
 package ut.com.cobalt.jira.plugin.epic.rest;
 
 import com.atlassian.crowd.embedded.api.User;
-import com.atlassian.event.api.EventPublisher;
-import com.atlassian.jira.MockEventPublisher;
 import com.atlassian.jira.avatar.Avatar;
 import com.atlassian.jira.avatar.AvatarService;
-import com.atlassian.jira.bc.issue.search.SearchService;
-import com.atlassian.jira.bc.project.ProjectService;
-import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.mock.component.MockComponentWorker;
 import com.atlassian.jira.user.*;
 import com.atlassian.jira.user.util.MockUserManager;
-import com.atlassian.jira.user.util.UserUtil;
 import com.atlassian.sal.api.user.UserManager;
 import com.atlassian.sal.api.user.UserProfile;
 import com.cobalt.jira.plugin.epic.data.*;
 import com.cobalt.jira.plugin.epic.rest.RestResource;
 import com.cobalt.jira.plugin.epic.rest.jaxb.*;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.Before;
 
@@ -162,11 +155,11 @@ public class RestResourceTest
         jaxbProjects = restResource.getProjects(7);
         assertEquals(1, jaxbProjects.size());
 
-        List<JaxbEpic> epics = jaxbProjects.get(0).getEpics();
+        List<? extends JaxbIssue> epics = jaxbProjects.get(0).getChildren();
         assertEquals(1, epics.size());
-        List<JaxbStory> stories = epics.get(0).getStories();
+        List<? extends JaxbIssue> stories = epics.get(0).getChildren();
         assertEquals(1, stories.size());
-        List<JaxbIssue> subtasks = stories.get(0).getSubtasks();
+        List<? extends JaxbIssue> subtasks = stories.get(0).getChildren();
         assertEquals(1, subtasks.size());
     }
 }

@@ -1,8 +1,8 @@
 package com.cobalt.jira.plugin.epic.data;
 
 import com.atlassian.crowd.embedded.api.User;
-import com.atlassian.event.api.*;
 import com.atlassian.event.api.EventListener;
+import com.atlassian.event.api.EventPublisher;
 import com.atlassian.jira.bc.issue.search.SearchService;
 import com.atlassian.jira.bc.project.ProjectService;
 import com.atlassian.jira.component.ComponentAccessor;

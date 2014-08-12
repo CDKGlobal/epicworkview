@@ -5,7 +5,9 @@ import com.atlassian.jira.avatar.Avatar;
 import com.atlassian.jira.avatar.AvatarService;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.user.ApplicationUser;
-import com.cobalt.jira.plugin.epic.data.*;
+import com.cobalt.jira.plugin.epic.data.IEpicData;
+import com.cobalt.jira.plugin.epic.data.IJiraData;
+import com.cobalt.jira.plugin.epic.data.IProjectData;
 
 import java.util.List;
 
@@ -27,7 +29,7 @@ public class JaxbFactory {
     public static JaxbProject newJaxbProject(String name, String key, long id, String description, long timestamp, JaxbUser assignee, String category, String icon, List<JaxbEpic> epics) {
         JaxbProject jaxbProject = new JaxbProject();
         setData(jaxbProject, name, key, id, description, timestamp, assignee);
-        jaxbProject.epics = epics;
+        jaxbProject.children = epics;
         jaxbProject.group = category;
         jaxbProject.icon = icon;
         return jaxbProject;
@@ -45,7 +47,7 @@ public class JaxbFactory {
     public static JaxbEpic newJaxbEpic(String name, String key, long id, String description, long timestamp, JaxbUser assignee, String color, List<JaxbStory> stories) {
         JaxbEpic jaxbEpic = new JaxbEpic();
         setData(jaxbEpic, name, key, id, description, timestamp, assignee);
-        jaxbEpic.stories = stories;
+        jaxbEpic.children = stories;
         jaxbEpic.color = color;
         return jaxbEpic;
     }
@@ -58,7 +60,7 @@ public class JaxbFactory {
         JaxbStory jaxbStory = new JaxbStory();
         setData(jaxbStory, name, key, id, description, timestamp, assignee);
         jaxbStory.completed = completed;
-        jaxbStory.subtasks = subtasks;
+        jaxbStory.children = subtasks;
         return jaxbStory;
     }
 

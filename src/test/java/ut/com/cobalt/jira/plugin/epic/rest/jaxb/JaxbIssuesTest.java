@@ -43,14 +43,14 @@ public class JaxbIssuesTest
         JaxbStory jaxbStory = JaxbFactory.newJaxbStory(ISSUE_NAME, ISSUE_KEY, ISSUE_ID, ISSUE_DESCRIPTION, ISSUE_TIMESTAMP, new JaxbUser(), true, new ArrayList<JaxbIssue>());
 
         assertTrue(jaxbStory.getCompleted());
-        assertEquals(0, jaxbStory.getSubtasks().size());
+        assertEquals(0, jaxbStory.getChildren().size());
     }
 
 	@Test
 	public void jaxbEpicIsValid() {
 		JaxbEpic jaxbEpic = JaxbFactory.newJaxbEpic(ISSUE_NAME, ISSUE_KEY, ISSUE_ID, ISSUE_DESCRIPTION, ISSUE_TIMESTAMP, new JaxbUser(), "#ccf", new ArrayList<JaxbStory>());
 
-        assertEquals(0, jaxbEpic.getStories().size());
+        assertEquals(0, jaxbEpic.getChildren().size());
         assertEquals("#ccf", jaxbEpic.getColor());
 	}
 
@@ -58,7 +58,7 @@ public class JaxbIssuesTest
     public void jaxbProjectIsValid() {
         JaxbProject jaxbProject = JaxbFactory.newJaxbProject(ISSUE_NAME, ISSUE_KEY, ISSUE_ID, ISSUE_DESCRIPTION, ISSUE_TIMESTAMP, new JaxbUser(), "category", "url", new ArrayList<JaxbEpic>());
 
-        assertEquals(0, jaxbProject.getEpics().size());
+        assertEquals(0, jaxbProject.getChildren().size());
         assertEquals("category", jaxbProject.getGroup());
         assertEquals("url", jaxbProject.getIcon());
     }

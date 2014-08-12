@@ -590,9 +590,9 @@ function chartDirective() {
 						    msg += "From " + new Date(previousx).toLocaleDateString() + " to ";
 					    }
 
-                  	    msg += new Date(x).toLocaleDateString() + "<br/>" + "<strong>" + y + "</strong>";
+                  	    msg += new Date(x).toLocaleDateString() + "<br/><strong>" + y + "</strong>";
 
-                  	    if (item.seriesIndex == 2){
+                  	    if (item.seriesIndex === 2){
                             msg += " Created";
                         }
                         else{

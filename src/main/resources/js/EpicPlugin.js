@@ -249,7 +249,7 @@ function ProjectController($scope, $http, $cookieStore, $window) {
     /* --------------------------------------------------------------------------------------- */
 
     // The max number of contributors to display
-    var maxContributors = 20;
+    var maxContributors = 26;
 
     // returns all contributors for this project in order of time worked on project
     $scope.getContributors = function(project) {

@@ -145,6 +145,7 @@ function ProjectController($scope, $http, $cookieStore, $window) {
                 // set completed field if a story
                 if (elementType === elementEnum.STORY) {
                     savedElement.completed = element.completed;
+                    savedElement.contributors = element.contributors;
                 }
                 // update the list held in the current element, if it has one
                 updateChildList(savedElement, element, elementType);
@@ -251,57 +252,40 @@ function ProjectController($scope, $http, $cookieStore, $window) {
 
     // returns all contributors for this project in order of time worked on project
     $scope.getContributors = function(project) {
-        project.contributorCount = 0;
-        // get map of timestamps to lists of contributors
-        var contributorTimestamps = {};
-        getContributorsHelper(contributorTimestamps, project);
-        // get list of all timestamps
-        var timestamps = [];
-        for (var key in contributorTimestamps) {
-            timestamps.push(key);
-        }
-        // sort timestamps
-        timestamps.sort(function(a, b){
-        	return b - a;
+        var contributors = []; 
+        getContributorsHelper(contributors, project);
+        // sort contributors
+        contributors.sort(function(a, b){
+        	return b.timestamp - a.timestamp;
         });
-        // add contributors for each timestamp to result
-        var result = [];
-        angular.forEach(timestamps, function(timestamp) {
-            var contributors = contributorTimestamps[timestamp];
-            angular.forEach(contributors, function(c) {
-                // add to result if not a duplicate and not above max contributors
-                if (indexOf(result, c) === -1) {
-                    result.push(c);
-                    project.contributorCount++;
-                }
-            });
-        });
-        if (result.length > maxContributors) {
+        // slice off any more than max
+        if (contributors.length > maxContributors) {
             return result.slice(0, maxContributors - 1);
         }
-        return result;
+        // set project's contributor count
+        project.contributorCount = contributors.length;
+        return contributors;
     };
 
-    // helper to get list of key value pairs from timestamp to contributor
+    // helper to get list of contributors
     function getContributorsHelper(result, element) {
+    	if (element.contributor !== undefined && element.contributor !== null) {
+    		if (indexOf(result, element.contributor) === -1) {
+    			result.push(element.contributor);
+    		}
+    	}
+    	if (element.contributors !== undefined && element.contributors !== null) {
+    		angular.forEach(element.contributors, function(contributor) {
+    			if (indexOf(result, contributor) === -1) {
+    				result.push(contributor);
+    			}
+    		});
+    	}
     	if (element.children !== undefined && element.children !== null) {
     		angular.forEach(element.children, function(child) {
     			getContributorsHelper(result, child);
     		});
     	}
-        // add contributor to the result with the key as the element's timestamp
-        var contributor = element.contributor;
-        var timestamp = element.timestamp;
-        // make sure there is a contributor
-        if (contributor !== undefined && contributor !== null) {
-            // if this timestamp is already in the list, add another contributor to it
-            if (timestamp in result) {
-                result[timestamp].push(contributor);
-            } else {
-                // if it is not in the list, add it with the contributor
-                result[timestamp] = [contributor];
-            }
-        }
     }
 
     // Return how many extra contributors there are for the project after

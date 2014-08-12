@@ -1,6 +1,6 @@
 
 // Time of most recent update
-var lastUpdateTime = 0;//new Date().getTime();
+var lastUpdateTime = 0;
 
 // Whether to continuously refresh projects
 var refresh = true;

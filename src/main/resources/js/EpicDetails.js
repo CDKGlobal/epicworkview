@@ -14,7 +14,6 @@ function epicDetailsController ($scope, $http, $q, $location, $window) {
     $scope.inProgress = 0;
     $scope.done = 0;
     
-
     // average time to complete a story
     $scope.averageTime = 0;
     
@@ -103,18 +102,39 @@ function epicDetailsController ($scope, $http, $q, $location, $window) {
             });
         });
 
+        //populate a list of all epics in the current project
         angular.forEach(epics, function(epic) {
+            //don't add the current epic into the list
             if(epic.key !== $scope.key) {
+                //get the epic name from the custom field but if not set fall back to the summary
+                var epicName = getField(epic.fields, 'Epic Name');
+                if(epicName === undefined || epicName === null) {
+                    epicName = epic.fields.summary;
+                }
+
                 $scope.epics.push({
-                    name: getField(epic.fields, 'Epic Name'),
+                    name: epicName,
                     location: $scope.contextPath + '/plugins/servlet/epicDetails?epic=' + epic.key
                 });
             }
         });
 
+        //finally add the null epic for stories with no epic
+        if(epic.key.indexOf('-') > -1) {
+            $scope.epics.push({
+                name: 'Other Stories',
+                location: $scope.contextPath + '/plugins/servlet/epicDetails?epic=' + epic.key.split('-', 1)
+            });
+        }
+
         // set epic name
         if($scope.key.indexOf('-') !== -1) {
             $scope.epicName = getField(epic.fields, 'Epic Name');
+            
+            if($scope.epicName === undefined || $scope.epicName === null) {
+                $scope.epicName = epic.fields.summary;
+            }
+
             $scope.projectName = epic.fields.project.name;
         }
         else {
@@ -257,6 +277,7 @@ function epicDetailsController ($scope, $http, $q, $location, $window) {
 
     // update the story counts, average time and chart points
     $scope.refresh = function() {
+        //go through the list and get the counts for not started, in progress and done stories
         var counts = countStories($scope.stories, $scope.workType);
         $scope.notStarted = counts[0];
         $scope.inProgress = counts[1];
@@ -270,6 +291,7 @@ function epicDetailsController ($scope, $http, $q, $location, $window) {
             return a.date - b.date;
         });
 
+        //setup the four different series
         $scope.points = [
         {
             label: 'In Flight',
@@ -291,17 +313,20 @@ function epicDetailsController ($scope, $http, $q, $location, $window) {
             data: []
         }];
 
+        //generate the in flight series
         var runningTotal = 0;
         angular.forEach(points, function(elem) {
             runningTotal += elem.number;
             $scope.points[0].data.push([elem.date, runningTotal]);
         });
 
-        //set the second series data to the forecasted list
+        //set the second series data to the forecasted points
         var temp = getCompletedStories($scope.fullStories);
         $scope.points[1].data = getForecastLine($scope.points[0].data[$scope.points[0].data.length - 1], temp);
 
+        //set the third series to the created stories over a period
         $scope.points[2].data = getDataPoints(true);
+        //set the fourth series to the resolved stories over a period
         $scope.points[3].data = getDataPoints(false);
     };
 
@@ -359,7 +384,7 @@ function epicDetailsController ($scope, $http, $q, $location, $window) {
     function getForecastLine(startPoint, numofStories) {
         var counts = countStories($scope.fullStories, $scope.workType);
         var stories = counts[0] + counts[1];
-        //return averageTime > 0 && stories > 0 ? [startPoint, [startPoint[0] + (stories * averageTime * 1000 * 60 * 60), 0]] : [];
+        
         return numofStories > 0 && stories > 0 ? [startPoint, [startPoint[0] + (stories /  numofStories *7 *24 * 1000 * 60 * 60), 0]] : [];
     }
 
@@ -377,10 +402,12 @@ function epicDetailsController ($scope, $http, $q, $location, $window) {
         }
     };
 
+    //rounds the given number to the hundreths place
     $scope.round = function(number) {
         return Math.floor(number * 100) / 100;
     };
 
+    //cause the browser to redirect to the given location
     $scope.redirect = function(url) {
         $window.location = url;
     };

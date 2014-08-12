@@ -1,8 +1,17 @@
+/* hack to fix what JIRA breaks for bootstrap.css */
+.tooltip {
+	background-color: transparent;
+	border: none;
+	width: auto;
+	right: auto;
+}
+
 /* hack to fix what bootstrap.css breaks for JIRA */
 #jira {
     background-color: #F5F5F5;
 }
 
+/* Epic Detail styles */
 .body-container {
     margin: 20px;
     font-size: 12pt;
@@ -125,8 +134,7 @@
 	border: 3px solid #fff;
 	border-radius: 100px;
 	margin: 16px 0 0 -6px;
-	-webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.2), inset 0 1px 1px rgba(0,0,0,0.1);
-	        box-shadow: 0 1px 1px rgba(0,0,0,0.2), inset 0 1px 1px rgba(0,0,0,0.1);
+	box-shadow: 0 1px 1px rgba(0,0,0,0.2), inset 0 1px 1px rgba(0,0,0,0.1);
 	background: #ccc;
 	left: 60px;
 	top: 0;

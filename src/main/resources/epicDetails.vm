@@ -66,7 +66,7 @@
 				<ul>
 					<li class="story-row" ng-repeat="story in stories">
 						<div class="comment-img">
-							<img ng-src="{{story.fields.assignee.avatarUrls.48x48}}" ng-class="{'no-img': story.fields.assignee === null}" height="48" width="48">
+							<img tooltip="{{story.fields.assignee.displayName}}" tooltip-placement="right" ng-src="{{story.fields.assignee.avatarUrls.48x48}}" ng-class="{'no-img': story.fields.assignee === null}" height="48" width="48">
 						</div>
 						<div class ="story-comment">
 							<p>{{story.fields.summary}}</p>

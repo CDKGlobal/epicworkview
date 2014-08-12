@@ -197,7 +197,7 @@ public class DataManagerTest {
         dataManager.afterPropertiesSet();
 
         List<IJiraData> projects = dataManager.getProjects(mockUser);
-        assertEquals(6, projects.size());
+        assertEquals(4, projects.size());
 
         dataManager.destroy();
 
@@ -222,7 +222,7 @@ public class DataManagerTest {
 
         List<IJiraData> projects = dataManager.getProjects(mockUser);
 
-        assertEquals(6, projects.size());//number of elements in the tree
+        assertEquals(4, projects.size());//number of elements in the tree
 
         assertEquals(JiraDataType.PROJECT, projects.get(0).getType());
         projects.remove(0);

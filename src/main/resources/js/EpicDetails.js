@@ -569,38 +569,40 @@ function chartDirective() {
                 chart.setSelection(ranges);
             });
             
-            // watch for hover            
+             // watch for hover            
      
             var previousPoint = null;
-            jQuery("#chart").bind("plothover", function (event, pos, item) {
-            	if (item && item.seriesIndex > 1){
-            	    if(previousPoint !== item.dataIndex) {
-                        previousPoint = item.dataIndex;
-
-                	    jQuery("#tooltip").remove();
-
-					    var x = item.datapoint[0];
-					    var y = item.datapoint[1];
-
-					    var index = item.dataIndex;
-					    var msg = '';
-
-					    if (index !== 0) {
-						    var previousx = item.series.data[index - 1][0];
-						    msg += "From " + new Date(previousx).toLocaleDateString() + " to ";
-					    }
-
-                  	    msg += new Date(x).toLocaleDateString() + "<br/><strong>" + y + "</strong>";
-
-                  	    if (item.seriesIndex === 2){
-                            msg += " Created";
-                        }
-                        else{
-                            msg += " Resolved";
-                        }
-
-                        showTooltip(item.pageX, item.pageY, msg);
-                    }
+            jQuery("#chart").bind("plothover", function (event, pos, item) {            	
+            	if (item && ((item.seriesIndex == 2) || (item.seriesIndex == 3))){
+            		if (previousPoint !== item.dataIndex) {
+                		previousPoint = item.dataIndex;
+                		jQuery("#tooltip").remove();
+						var x = item.datapoint[0];
+							y = item.datapoint[1];
+						var index = item.dataIndex;
+						console.log(item.series.data[index]);
+						console.log(index);	
+						if (index !== 0){
+							var previousx = item.series.data[index - 1][0];
+							if (item.seriesIndex == 2){
+								showTooltip(item.pageX, item.pageY,
+                  				"From " + new Date(previousx).toLocaleDateString() + " to " + new Date(x).toLocaleDateString() + "<br/>" + "<strong>" + y + "</strong>" + " " + showWorkType() +" created");
+                  			}else{
+                  				showTooltip(item.pageX, item.pageY,
+                  				"From " + new Date(previousx).toLocaleDateString() + " to " + new Date(x).toLocaleDateString() + "<br/>" + "<strong>" + y + "</strong>" + " " + showWorkType() +" Resolved");
+                  			}
+                  			
+						}else{	
+							if (item.seriesIndex == 2){	
+								showTooltip(item.pageX, item.pageY,
+                  				new Date(x).toLocaleDateString() + "<br/>" + "<strong>" + y + "</strong>" + " " + showWorkType() + " created");
+                  			}else{
+                  				showTooltip(item.pageX, item.pageY,
+                  				new Date(x).toLocaleDateString() + "<br/>" + "<strong>" + y + "</strong>" + " " + showWorkType() + " resolved");
+                  			}
+          
+                  		}
+                  	}
 				} else {
 					previousPoint = null;
 					jQuery("#tooltip").hide();
@@ -614,8 +616,21 @@ function chartDirective() {
         			top: y + 5,
         			left: x + 20        			
     			}).appendTo("body").fadeIn(200);
-			}
+			};
             
+            
+            function showWorkType() {
+        		switch(scope.workType) {
+        		case 1:
+            		return "Stories";
+       			case 2:
+            		return "Story Points";
+        		case 3:
+            		return "Work Hours";
+        		default:
+            		return "Unknown";
+        		}
+    		};
 
             // zoom to the given minimum and maximum millisecond values
             // update the current data to be a subset between the values

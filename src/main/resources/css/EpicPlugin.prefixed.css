@@ -232,8 +232,8 @@
 
 .project-list:before {
 	width: 3px;
-	top: 0;
-	bottom: 0;
+	top: -20px;
+	bottom: -4px;
 	left: 58px;
 	background: #e5e5e5;
 }
@@ -393,8 +393,6 @@ ul.inline .epic-container {
 	border-style: solid;
 	border-color: #000;
 	background: #fff;
-	-webkit-box-shadow: 3px 3px 5px #888888;
-	        box-shadow: 3px 3px 5px #888888;
 	box-shadow: 3px 3px 5px #888888;
 	-webkit-transform: rotate(45deg);
 	    -ms-transform: rotate(45deg);

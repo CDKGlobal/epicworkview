@@ -616,7 +616,7 @@ function chartDirective() {
         			top: y + 5,
         			left: x + 20        			
     			}).appendTo("body").fadeIn(200);
-			};
+			}
             
             
             function showWorkType() {
@@ -630,7 +630,7 @@ function chartDirective() {
         		default:
             		return "Unknown";
         		}
-    		};
+    		}
 
             // zoom to the given minimum and maximum millisecond values
             // update the current data to be a subset between the values

@@ -206,8 +206,8 @@
 
 .project-list:before {
 	width: 3px;
-	top: 0;
-	bottom: 0;
+	top: -20px;
+	bottom: -4px;
 	left: 58px;
 	background: #e5e5e5;
 }

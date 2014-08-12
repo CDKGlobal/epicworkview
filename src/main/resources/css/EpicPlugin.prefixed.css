@@ -352,7 +352,7 @@ ul.inline .epic-container {
 	position: absolute;
 	height: 40px;
 	width: 40px;
-	background: #f5f5f5;
+	background: #fff;
 	top: -50px;
 	left: calc(50% - 35px);
 	text-align: center;
@@ -361,6 +361,11 @@ ul.inline .epic-container {
 	z-index: 11;
 	cursor: pointer;
 	opacity: 1;
+}
+
+.epic-info-button:hover,
+.epic-info-button:hover:before  {
+	background: #e5e5e5;
 }
 
 .epic-info-button.ng-hide {
@@ -382,7 +387,7 @@ ul.inline .epic-container {
 	border-width: 0 1px 1px 0;
 	border-style: solid;
 	border-color: #000;
-	background: #f5f5f5;
+	background: #fff;
 	-webkit-box-shadow: 3px 3px 5px #888888;
 	        box-shadow: 3px 3px 5px #888888;
 	-webkit-transform: rotate(45deg);

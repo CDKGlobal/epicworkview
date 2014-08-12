@@ -586,19 +586,19 @@ function chartDirective() {
 							var previousx = item.series.data[index - 1][0];
 							if (item.seriesIndex == 2){
 								showTooltip(item.pageX, item.pageY,
-                  				"From " + new Date(previousx).toLocaleDateString() + " to " + new Date(x).toLocaleDateString() + "<br/>" + "<strong>" + y + "</strong>" + " " + showWorkType() +" created");
+                  				"From " + new Date(previousx).toLocaleDateString() + " to " + new Date(x).toLocaleDateString() + "<br/>" + "<strong>" + y + "</strong>" + " " + scope.workTypeToString() +" created");
                   			}else{
                   				showTooltip(item.pageX, item.pageY,
-                  				"From " + new Date(previousx).toLocaleDateString() + " to " + new Date(x).toLocaleDateString() + "<br/>" + "<strong>" + y + "</strong>" + " " + showWorkType() +" Resolved");
+                  				"From " + new Date(previousx).toLocaleDateString() + " to " + new Date(x).toLocaleDateString() + "<br/>" + "<strong>" + y + "</strong>" + " " + scope.workTypeToString() +" Resolved");
                   			}
                   			
 						}else{	
 							if (item.seriesIndex == 2){	
 								showTooltip(item.pageX, item.pageY,
-                  				new Date(x).toLocaleDateString() + "<br/>" + "<strong>" + y + "</strong>" + " " + showWorkType() + " created");
+                  				new Date(x).toLocaleDateString() + "<br/>" + "<strong>" + y + "</strong>" + " " + scope.workTypeToString() + " created");
                   			}else{
                   				showTooltip(item.pageX, item.pageY,
-                  				new Date(x).toLocaleDateString() + "<br/>" + "<strong>" + y + "</strong>" + " " + showWorkType() + " resolved");
+                  				new Date(x).toLocaleDateString() + "<br/>" + "<strong>" + y + "</strong>" + " " + scope.workTypeToString() + " resolved");
                   			}
           
                   		}
@@ -618,19 +618,6 @@ function chartDirective() {
     			}).appendTo("body").fadeIn(200);
 			}
             
-            
-            function showWorkType() {
-        		switch(scope.workType) {
-        		case 1:
-            		return "Stories";
-       			case 2:
-            		return "Story Points";
-        		case 3:
-            		return "Work Hours";
-        		default:
-            		return "Unknown";
-        		}
-    		}
 
             // zoom to the given minimum and maximum millisecond values
             // update the current data to be a subset between the values

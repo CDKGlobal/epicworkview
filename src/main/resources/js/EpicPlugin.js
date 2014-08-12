@@ -203,9 +203,9 @@ function ProjectController($scope, $http, $cookieStore, $window) {
     // Loop through epics to find a non-null epic and set whether it is using new colors
     function setColor(projects) {
         for (var i = 0; i < projects.length; i++) {
-            if(projects[i].epics !== undefined && projects[i].epics !== null) {
+            if(projects[i].children !== undefined && projects[i].children !== null) {
                 var j = 0;
-                var epic = projects[i].epics[0];
+                var epic = projects[i].children[0];
                 while (epic !== undefined && epic !== null) {
                     if (epic.id >= 0) {
                         if (epic.color[0] === '#') {
@@ -216,7 +216,7 @@ function ProjectController($scope, $http, $cookieStore, $window) {
                         return;
                     }
                     j++;
-                    epic = projects[i].epics[j];
+                    epic = projects[i].children[j];
                 }
             }
         }
@@ -259,7 +259,7 @@ function ProjectController($scope, $http, $cookieStore, $window) {
         project.contributorCount = 0;
         // get map of timestamps to lists of contributors
         var contributorTimestamps = {};
-        getContributorsHelper(contributorTimestamps, project, "project");
+        getContributorsHelper(contributorTimestamps, project);
         // get list of all timestamps
         var timestamps = [];
         for (var key in contributorTimestamps) {
@@ -288,23 +288,12 @@ function ProjectController($scope, $http, $cookieStore, $window) {
     };
 
     // helper to get list of key value pairs from timestamp to contributor
-    function getContributorsHelper(result, element, elementType) {
-        if (elementType === "project") {
-            // this is a project
-            angular.forEach(element.epics, function(epic) {
-                getContributorsHelper(result, epic, "epic");
-            });
-        } else if (elementType === "epic") {
-            // this is an epic
-            angular.forEach(element.stories, function(story) {
-                getContributorsHelper(result, story, "story");
-            });
-        } else if (elementType === "story") {
-            // this is a story
-            angular.forEach(element.subtasks, function(subtask) {
-                getContributorsHelper(result, subtask, "subtask");
-            });
-        }
+    function getContributorsHelper(result, element) {
+    	if (element.children !== undefined && element.children !== null) {
+    		angular.forEach(element.children, function(child) {
+    			getContributorsHelper(result, child)
+    		});
+    	}
         // add contributor to the result with the key as the element's timestamp
         var contributor = element.contributor;
         var timestamp = element.timestamp;
@@ -336,8 +325,8 @@ function ProjectController($scope, $http, $cookieStore, $window) {
     // Returns the number of completed stories for the project
     $scope.getCompletedStories = function(project) {
         var res = 0;
-        angular.forEach(project.epics, function(epic) {
-            angular.forEach(epic.stories, function(story) {
+        angular.forEach(project.children, function(epic) {
+            angular.forEach(epic.children, function(story) {
                 if (story.completed) {
                 	res++;
                 }
@@ -653,9 +642,9 @@ function EpicController($scope) {
         	return null;
         }
         var result = [];
-        for (var i = 0; i < epic.stories.length; i++) {
-            if (epic.stories[i].completed === completed) {
-                result.push(epic.stories[i]);
+        for (var i = 0; i < epic.children.length; i++) {
+            if (epic.children[i].completed === completed) {
+                result.push(epic.children[i]);
             }
         }
         return result;
@@ -663,9 +652,9 @@ function EpicController($scope) {
 
     // Return the clicked epic from the given project, or none if none are clicked
     getClickedEpic = function(project) {
-        for (var i = 0; i < project.epics.length; i++) {
-            if (project.epics[i].id === clickedEpic) {
-                return project.epics[i];
+        for (var i = 0; i < project.children.length; i++) {
+            if (project.children[i].id === clickedEpic) {
+                return project.children[i];
             }
         }
         return null;

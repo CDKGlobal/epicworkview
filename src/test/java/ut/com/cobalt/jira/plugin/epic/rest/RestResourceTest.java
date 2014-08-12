@@ -160,6 +160,6 @@ public class RestResourceTest
         List<? extends JaxbIssue> stories = epics.get(0).getChildren();
         assertEquals(1, stories.size());
         List<? extends JaxbIssue> subtasks = stories.get(0).getChildren();
-        assertEquals(1, subtasks.size());
+        assertNull(subtasks);
     }
 }

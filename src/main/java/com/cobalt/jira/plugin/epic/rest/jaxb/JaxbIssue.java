@@ -9,7 +9,7 @@ import java.util.List;
  * Contains information about a single issue in jira
  */
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY, fieldVisibility = JsonAutoDetect.Visibility.NONE)
-public class JaxbIssue {
+public abstract class JaxbIssue {
     String name;
 	String description;
 	String key;

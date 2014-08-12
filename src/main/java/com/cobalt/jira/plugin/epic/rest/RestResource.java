@@ -15,6 +15,8 @@ import org.springframework.beans.factory.InitializingBean;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -109,21 +111,25 @@ public class RestResource implements InitializingBean {
         input.remove(0);
 
         //if were down to subtasks build the jaxb and return it
-        if(data.getType() == JiraDataType.SUBTASK) {
-            output.add((T) JaxbFactory.newJaxbIssue(data));
+        if(data.getType() == JiraDataType.STORY) {
+            //output.add(JaxbFactory.newJaxbIssue(data));
+            List<JaxbUser> users = new ArrayList<JaxbUser>();
+            while(input.size() > 0 && input.get(0).getType().compareTo(JiraDataType.STORY) > 0) {
+                IJiraData subtask = input.get(0);
+                input.remove(0);
+                users.add(JaxbFactory.newJaxbUser(subtask.getAssignee(), subtask.getDisplayTimestamp()));
+            }
+            output.add((T)JaxbFactory.newJaxbStory(data, users));
         }
         else {
             //make a new list to build up based on our current data type
-            List temp;
+            List<? extends JaxbIssue> temp;
             switch(data.getType()) {
             case PROJECT:
                 temp = new ArrayList<JaxbEpic>();
                 break;
             case EPIC:
                 temp = new ArrayList<JaxbStory>();
-                break;
-            case STORY:
-                temp = new ArrayList<JaxbIssue>();
                 break;
             default:
                 throw new IllegalArgumentException("data.getType() returned an invalid enum value");
@@ -137,13 +143,10 @@ public class RestResource implements InitializingBean {
             //after build up all the sub types into a list create a new jaxb object of the current type
             switch(data.getType()) {
             case PROJECT:
-                output.add((T) JaxbFactory.newJaxbProject(data, temp));
+                output.add((T)JaxbFactory.newJaxbProject(data, temp));
                 break;
             case EPIC:
-                output.add((T) JaxbFactory.newJaxbEpic(data, temp));
-                break;
-            case STORY:
-                output.add((T) JaxbFactory.newJaxbStory(data, temp));
+                output.add((T)JaxbFactory.newJaxbEpic(data, temp));
                 break;
             default:
                 throw new IllegalArgumentException("data.getType() returned an invalid enum value");

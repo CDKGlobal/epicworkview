@@ -117,7 +117,7 @@
 			      	</div>
 			      	<div class="epic-list-container">
 			      		<ul class="list inline" ng-controller="EpicController">
-			      			<li class="epic-holder" ng-repeat="epic in project.epics" ng-init="setUniqueId(epic)">
+			      			<li class="epic-holder" ng-repeat="epic in project.children" ng-init="setUniqueId(epic)">
 			      				<div class="epic-info-button" ng-show="isClicked(epic.id) && !animating" ng-click="$event.stopPropagation(); setActiveEpic(epic, project)">
 				      				<i class="fa fa-info fa-2x"></i>
 				      			</div>

@@ -1,4 +1,11 @@
 
+var elementEnum = {
+	PROJECT: 0,
+	EPIC: 1,
+	STORY: 2,
+	SUBTASK: 3
+};
+
 // Time of most recent update
 var lastUpdateTime = 0;
 
@@ -94,7 +101,7 @@ function ProjectController($scope, $http, $cookieStore, $window) {
             }
             lastUpdateTime = new Date().getTime();
             //add the new projects to the projects array
-            updateElementList($scope.projects, data, "project");
+            updateElementList($scope.projects, data, elementEnum.PROJECT);
             animateEpics();
             $scope.loading = false;
         }).
@@ -117,9 +124,9 @@ function ProjectController($scope, $http, $cookieStore, $window) {
             	// animate
             	addToAnimationQueue(savedElement, elementType);
             	// set its state to true if it is a project and not in the list of unchecked projects
-            	element.included = elementType === "project" && !contains($scope.uncheckedProjectIds, element.id);
+            	element.included = elementType === elementEnum.PROJECT && !contains($scope.uncheckedProjectIds, element.id);
             	// update the list held in the current element (to sort and remove elements)
-            	updateChildList(elementType, savedElement, element);
+            	updateChildList(savedElement, element, elementType);
             } else if (elementIndex !== -1 && element.timestamp === -1) {
             	// element in list and marked for deletion, so delete it
             	currentList.splice(elementIndex, 1);
@@ -136,11 +143,11 @@ function ProjectController($scope, $http, $cookieStore, $window) {
                 savedElement.description = element.description;
                 savedElement.contributor = element.contributor;
                 // set completed field if a story
-                if (elementType === "story") {
+                if (elementType === elementEnum.STORY) {
                     savedElement.completed = element.completed;
                 }
                 // update the list held in the current element, if it has one
-                updateChildList(elementType, savedElement, element);
+                updateChildList(savedElement, element, elementType);
             }
         });
         // sort the list and remove all old elements
@@ -153,28 +160,16 @@ function ProjectController($scope, $http, $cookieStore, $window) {
     }
 
     // update the child list of savedElement with the child list of element
-    function updateChildList(elementType, savedElement, element) {
-    	var type = elementType;
-    	switch(type) {
-    	case "project": 
-    		type = "epic";
-    		break;
-    	case "epic":
-    		type = "story";
-    		break;
-    	case "subtask":
-    		type = "subtask";
-    		break;
-    	}
+    function updateChildList(savedElement, element, elementType) {
     	if (element.children !== undefined && element.children !== null) {
-    		updateElementList(savedElement.children, element.children, type);
+    		updateElementList(savedElement.children, element.children, elementType + 1);
     	}
     }
     
     function addToAnimationQueue(element, elementType) {
-    	if (elementType === "epic") {
+    	if (elementType === elementEnum.EPIC) {
     		epicAnimationQueue.push([element]);
-    	} else if (elementType === "story" && epicAnimationQueue.length > 0) {
+    	} else if (elementType === elementEnum.STORY && epicAnimationQueue.length > 0) {
     		epicAnimationQueue[epicAnimationQueue.length - 1].push(element);
     	}
     }

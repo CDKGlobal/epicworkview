@@ -291,7 +291,7 @@ function ProjectController($scope, $http, $cookieStore, $window) {
     function getContributorsHelper(result, element) {
     	if (element.children !== undefined && element.children !== null) {
     		angular.forEach(element.children, function(child) {
-    			getContributorsHelper(result, child)
+    			getContributorsHelper(result, child);
     		});
     	}
         // add contributor to the result with the key as the element's timestamp

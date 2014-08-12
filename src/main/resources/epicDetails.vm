@@ -26,13 +26,13 @@
 	
 		<h1 class="title">{{epicName}}</h1>
 	
-		<div class="btn-group">
+		<div class="btn-group work-selector">
 			<label class="btn btn-primary" ng-model="workType" btn-radio="1">Stories</label>
 			<label class="btn btn-primary" ng-model="workType" btn-radio="2">Story Points</label>
 			<label class="btn btn-primary" ng-model="workType" btn-radio="3">Work Hours</label>
 		</div>
 
-		<div class="btn-group" dropdown>
+		<div class="btn-group epic-dropdown" dropdown>
 			<button type="button" class="btn btn-warning dropdown-toggle">
 				{{projectName}} <span class="caret"></span>
 			</button>

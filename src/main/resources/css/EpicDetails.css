@@ -39,8 +39,13 @@
 	min-width: 612px;
 }
 
-.btn-group {
+.work-selector {
 	float: left;
+}
+
+.epic-dropdown {
+	float: right;
+	margin-right: 10px;
 }
 
 /* Graph */

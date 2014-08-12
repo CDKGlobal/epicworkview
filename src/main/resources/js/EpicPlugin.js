@@ -145,7 +145,7 @@ function ProjectController($scope, $http, $cookieStore, $window) {
         });
         // sort the list and remove all old elements
         if (currentList !== undefined && currentList !== null) {
-            currentList.sort(function(a, b){
+            currentList.sort(function(a, b) {
             	return b.timestamp - a.timestamp;
             });
             removeOldElements(currentList, $scope.filterDays);
@@ -216,14 +216,6 @@ function ProjectController($scope, $http, $cookieStore, $window) {
             }
         }
     }
-
-    // sort the projects by last updated time
-    $scope.timeOrderedProjects = function() {
-        $scope.projects.sort(function(a, b){
-        	return b.timestamp - a.timestamp;
-        });
-        return $scope.projects;
-    };
 
     /* --------------------------------------------------------------------------------------- */
     /* -------------------------------- Screen Navigation ------------------------------------ */
@@ -440,7 +432,11 @@ function ProjectController($scope, $http, $cookieStore, $window) {
 
     // sort the projects alphabetically by name
     $scope.alphabeticalProjects = function() {
-        $scope.projects.sort(function(a, b){
+    	var res = [];
+    	angular.forEach($scope.projects, function(project) {
+    		res.push(project);
+    	});
+        res.sort(function(a, b){
             if(a.name < b.name) {
             	return -1;
             }
@@ -449,7 +445,7 @@ function ProjectController($scope, $http, $cookieStore, $window) {
             }
             return 0;
         });
-        return $scope.projects;
+        return res;
     };
 
     /* --------------------------------------------------------------------------------------- */

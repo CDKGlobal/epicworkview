@@ -82,11 +82,11 @@
 	   	</div>
 		
 	    <ul id="projects" class="list-section project-list" ng-show="!loading">
-	      	<li class="project-row" ng-repeat="project in timeOrderedProjects() | filter: {included:true}">
+	      	<li class="project-row" ng-repeat="project in projects | filter: {included:true}">
 		   		<div class="project-icon-container">
 		    		<img class="project-icon" ng-src="{{project.icon}}" height="48" width="48">
 		      	</div>
-		   		<div class="project-content">    					      			
+		   		<div class="project-content">
 			      	<div class="project-info-container">
 				      	<span class="project-group">{{project.group}}</span>
 				     	<span>

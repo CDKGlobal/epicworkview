@@ -221,12 +221,12 @@ describe('ProjectController', function(){
     // test the timeOrderedProjects are sorted by time order
     it('should have timeOrderedProjects sorted by time order', function(){
    		httpBackend.flush();
-        expect(scope.timeOrderedProjects().length).toEqual(3); 
-        project1 = scope.timeOrderedProjects()[0]; 
+        expect(scope.projects.length).toEqual(3); 
+        project1 = scope.projects[0]; 
         expect(project1.name).toEqual("Project4");
-        project1 = scope.timeOrderedProjects()[1]; 
+        project1 = scope.projects[1]; 
         expect(project1.name).toEqual("Scrum1");
-        project1 = scope.timeOrderedProjects()[2]; 
+        project1 = scope.projects[2]; 
         expect(project1.name).toEqual("Project2");
         
     });

@@ -106,54 +106,41 @@ function ProjectController($scope, $http, $cookieStore, $window) {
     // Updates the current list with any changes from the new list of elements
     function updateElementList(currentList, newList, elementType) {
         angular.forEach(newList, function(element) {
-            //find index of the element in the current list
+            // find index of the new element in the current list
             var elementIndex = indexOf(currentList, element);
-            var savedElement = currentList[elementIndex];
-            //if the element isn't there, add it
-            if (elementIndex === -1) {
-                // if it is not a deleted element
-                if (element.timestamp !== -1) {
-                    //add to front of list
-                    currentList.unshift(element);
-                    savedElement = currentList[0];
-                    // animate if it is an epic
-                    if (elementType === "epic") {
-                        epicAnimationQueue.push([savedElement]);
-                    } else if (elementType === "story" && epicAnimationQueue.length > 0) {
-                    	epicAnimationQueue[epicAnimationQueue.length - 1].push(savedElement);
-                    }
-                    // set its state to true if it is a project and not in the list of unchecked projects
-                    element.included = elementType === "project" && !contains($scope.uncheckedProjectIds, element.id);
-
-                    //update the list held in the current element, if it has one
-                    updateChildList(elementType, savedElement, element);
+            var savedElement = null;
+            // if the element isn't there and isn't a deleted element, add it
+            if (elementIndex === -1 && element.timestamp !== -1) {
+            	savedElement = element;
+            	//add to front of list
+            	currentList.unshift(element);
+            	// animate
+            	addToAnimationQueue(savedElement, elementType);
+            	// set its state to true if it is a project and not in the list of unchecked projects
+            	element.included = elementType === "project" && !contains($scope.uncheckedProjectIds, element.id);
+            	// update the list held in the current element (to sort and remove elements)
+            	updateChildList(elementType, savedElement, element);
+            } else if (elementIndex !== -1 && element.timestamp === -1) {
+            	// element in list and marked for deletion, so delete it
+            	currentList.splice(elementIndex, 1);
+        	} else if (elementIndex !== -1) {
+        		// element in current list, so update it
+            	savedElement = currentList[elementIndex];
+                // animate any updated epics
+                if (savedElement.timestamp !== element.timestamp) {
+                    addToAnimationQueue(savedElement, elementType);
                 }
-            } else {
-                //element is in the current list, so update it
-                if (element.timestamp === -1) {
-                    // this element is marked for deletion, remove it
-                    currentList.splice(elementIndex, 1);
-                } else {
-                    // animate any updated epics
-                    if (savedElement.timestamp !== element.timestamp) {
-                        if (elementType === "epic") {
-                            epicAnimationQueue.push([savedElement]);
-                        } else if (elementType === "story") {
-                            epicAnimationQueue[epicAnimationQueue.length - 1].push(savedElement);
-                        }
-                    }
-                    savedElement.timestamp = element.timestamp;
-                    savedElement.name = element.name;
-                      savedElement.key = element.key;
-                      savedElement.description = element.description;
-                      savedElement.contributor = element.contributor;
-                    // set completed field if a story
-                    if (elementType === "story") {
-                        savedElement.completed = element.completed;
-                    }
-                    //update the list held in the current element, if it has one
-                    updateChildList(elementType, savedElement, element);
+                savedElement.timestamp = element.timestamp;
+                savedElement.name = element.name;
+                savedElement.key = element.key;
+                savedElement.description = element.description;
+                savedElement.contributor = element.contributor;
+                // set completed field if a story
+                if (elementType === "story") {
+                    savedElement.completed = element.completed;
                 }
+                // update the list held in the current element, if it has one
+                updateChildList(elementType, savedElement, element);
             }
         });
         // sort the list and remove all old elements
@@ -177,6 +164,14 @@ function ProjectController($scope, $http, $cookieStore, $window) {
             // this is a story
             updateElementList(savedElement.subtasks, element.subtasks, "subtask");
         }
+    }
+    
+    function addToAnimationQueue(element, elementType) {
+    	if (elementType === "epic") {
+    		epicAnimationQueue.push([element]);
+    	} else if (elementType === "story" && epicAnimationQueue.length > 0) {
+    		epicAnimationQueue[epicAnimationQueue.length - 1].push(element);
+    	}
     }
 
     /*

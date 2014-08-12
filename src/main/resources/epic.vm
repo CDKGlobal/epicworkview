@@ -96,7 +96,7 @@
 			     	<div class="contributor-container">
 			      		<ul class="list inline">
 			      			<li class="contributor" ng-repeat="contributor in getContributors(project)">
-			      				<img class="contributor-image" ng-src="{{contributor.avatar}}" title="{{contributor.name}}" ng-click="setActiveUser(contributor.id)" height="36" width="36">
+			      				<img class="contributor-image" ng-src="{{contributor.avatar}}" tooltip="{{contributor.name}}" ng-click="setActiveUser(contributor.id)" height="36" width="36">
 			      			</li>
 			      			<li class="extra-contributors" ng-show="extraContributorCount(project) > 1"><span>+{{extraContributorCount(project)}}</span></li>
 			      		</ul>

@@ -1,3 +1,11 @@
+/* hack to fix what JIRA breaks for bootstrap.css */
+.tooltip {
+	background-color: transparent;
+	border: none;
+	width: auto;
+	right: auto;
+}
+
 #annoucement-banner {
 	display: none;
 }
@@ -238,6 +246,7 @@
 	float: left;
 	width: 35%;
 	margin: 0 15px;
+	min-height: 1px;
 }
 
 .completed-story-container,

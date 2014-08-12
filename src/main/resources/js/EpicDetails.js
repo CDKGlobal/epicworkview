@@ -384,7 +384,7 @@ function epicDetailsController ($scope, $http, $q, $location, $window) {
     function getForecastLine(startPoint, numofStories) {
         var counts = countStories($scope.fullStories, $scope.workType);
         var stories = counts[0] + counts[1];
-        //return averageTime > 0 && stories > 0 ? [startPoint, [startPoint[0] + (stories * averageTime * 1000 * 60 * 60), 0]] : [];
+        
         return numofStories > 0 && stories > 0 ? [startPoint, [startPoint[0] + (stories /  numofStories *7 *24 * 1000 * 60 * 60), 0]] : [];
     }
 

@@ -154,8 +154,7 @@
 }
 
 #search-dropdown {
-	-webkit-box-shadow: 0px 3px 3px #555 ;
-	        box-shadow: 0px 3px 3px #555 ;
+	box-shadow: 0px 3px 3px #555 ;
 }
 
 /*-------------------------
@@ -219,9 +218,8 @@
 .project-content:before {
 	position: absolute;
 	content: "";
-	-webkit-box-sizing: border-box;
-	   -moz-box-sizing: border-box;
-	        box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	     box-sizing: border-box;
 }
 
 .project-list:before {
@@ -238,8 +236,7 @@
 	border: 3px solid #fff;
 	border-radius: 100px;
 	margin: 16px 0 0 -6px;
-	-webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.2), inset 0 1px 1px rgba(0,0,0,0.1);
-	        box-shadow: 0 1px 1px rgba(0,0,0,0.2), inset 0 1px 1px rgba(0,0,0,0.1);
+	box-shadow: 0 1px 1px rgba(0,0,0,0.2), inset 0 1px 1px rgba(0,0,0,0.1);
 	background: #ccc;
 	left: 60px;
 	top: 3px;
@@ -269,6 +266,7 @@
 	float: left;
 	width: 35%;
 	margin: 0 15px;
+	min-height: 1px;
 }
 
 .completed-story-container,
@@ -356,8 +354,7 @@ ul.inline .epic-container {
 	top: -50px;
 	left: calc(50% - 35px);
 	text-align: center;
-	-webkit-box-shadow: 3px 3px 5px #888888;
-	        box-shadow: 3px 3px 5px #888888;
+	box-shadow: 3px 3px 5px #888888;
 	z-index: 11;
 	cursor: pointer;
 	opacity: 1;
@@ -383,8 +380,7 @@ ul.inline .epic-container {
 	border-style: solid;
 	border-color: #000;
 	background: #f5f5f5;
-	-webkit-box-shadow: 3px 3px 5px #888888;
-	        box-shadow: 3px 3px 5px #888888;
+	box-shadow: 3px 3px 5px #888888;
 	-webkit-transform: rotate(45deg);
 	    -ms-transform: rotate(45deg);
 	        transform: rotate(45deg);
@@ -463,8 +459,7 @@ ul.inline .epic-container {
 	position: absolute;
 	border: 1px solid #ddd;
 	background-color: #F0F0F0;
-	-webkit-box-shadow: 3px 3px 5px #888888;
-	        box-shadow: 3px 3px 5px #888888;
+	box-shadow: 3px 3px 5px #888888;
 }
 
 .epic-info {
@@ -564,8 +559,7 @@ input {
 	width: 10em;
 	padding: 1em;
 	overflow: hidden;
-	-webkit-box-shadow: 5px 5px 7px rgba(33, 33, 33, .7);
-	        box-shadow: 5px 5px 7px rgba(33, 33, 33, .7);
+	box-shadow: 5px 5px 7px rgba(33, 33, 33, .7);
     -webkit-transform: rotate(-6deg);
         -ms-transform: rotate(-6deg);
             transform: rotate(-6deg);
@@ -601,8 +595,7 @@ story:nth-child(5n) div {
 
 /* Zooming in on stories */
 .story:hover div, .story:focus div {
-  	-webkit-box-shadow:10px 10px 7px rgba(0,0,0,.7);
-  	        box-shadow:10px 10px 7px rgba(0,0,0,.7);
+  	box-shadow:10px 10px 7px rgba(0,0,0,.7);
   	-webkit-transform: scale(1.25);
   	    -ms-transform: scale(1.25);
   	        transform: scale(1.25);
@@ -611,8 +604,7 @@ story:nth-child(5n) div {
 }
 
 .animate-story div {
-	-webkit-box-shadow:10px 10px 7px rgba(0,0,0,.7) !important;
-	        box-shadow:10px 10px 7px rgba(0,0,0,.7) !important;
+	box-shadow:10px 10px 7px rgba(0,0,0,.7) !important;
   	-webkit-transform: scale(1.25) !important;
   	    -ms-transform: scale(1.25) !important;
   	        transform: scale(1.25) !important;

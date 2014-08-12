@@ -66,16 +66,6 @@ public class JaxbFactory {
         return jaxbStory;
     }
 
-    /*public static JaxbIssue newJaxbIssue(IJiraData i) {
-        return newJaxbIssue(i.getName(), i.getKey(), i.getId(), i.getDescription(), i.getDisplayTimestamp(), newJaxbUser(i.getAssignee()));
-    }
-
-    public static JaxbIssue newJaxbIssue(String name, String key, long id, String description, long timestamp, JaxbUser assignee) {
-        JaxbIssue jaxbIssue = new JaxbIssue();
-        setData(jaxbIssue, name, key, id, description, timestamp, assignee);
-        return jaxbIssue;
-    }*/
-
     private static void setData(JaxbIssue issue, String name, String key, long id, String description, long timestamp, JaxbUser assignee) {
         issue.name = name;
         issue.key = key;

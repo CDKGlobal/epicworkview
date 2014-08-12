@@ -112,7 +112,6 @@ public class RestResource implements InitializingBean {
 
         //if were down to subtasks build the jaxb and return it
         if(data.getType() == JiraDataType.STORY) {
-            //output.add(JaxbFactory.newJaxbIssue(data));
             List<JaxbUser> users = new ArrayList<JaxbUser>();
             while(input.size() > 0 && input.get(0).getType().compareTo(JiraDataType.STORY) > 0) {
                 IJiraData subtask = input.get(0);

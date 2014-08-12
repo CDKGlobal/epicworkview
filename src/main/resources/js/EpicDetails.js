@@ -119,6 +119,12 @@ function epicDetailsController ($scope, $http, $q, $location, $window) {
             }
         });
 
+        //finally add the null epic for stories with no epic
+        $scope.epics.push({
+            name: 'Other Stories',
+            location: $scope.contextPath + '/plugins/servlet/epicDetails?epic=' + epic.key.split('-', 1)
+        });
+
         // set epic name
         if($scope.key.indexOf('-') !== -1) {
             $scope.epicName = getField(epic.fields, 'Epic Name');

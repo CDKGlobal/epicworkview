@@ -128,6 +128,11 @@ function epicDetailsController ($scope, $http, $q, $location, $window) {
         // set epic name
         if($scope.key.indexOf('-') !== -1) {
             $scope.epicName = getField(epic.fields, 'Epic Name');
+            
+            if($scope.epicName === undefined || $scope.epicName === null) {
+                $scope.epicName = epic.fields.summary;
+            }
+
             $scope.projectName = epic.fields.project.name;
         }
         else {

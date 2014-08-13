@@ -260,7 +260,7 @@ function ProjectController($scope, $http, $cookieStore, $window) {
         });
         // slice off any more than max
         if (contributors.length > maxContributors) {
-            return result.slice(0, maxContributors - 1);
+            return contributors.slice(0, maxContributors - 1);
         }
         // set project's contributor count
         project.contributorCount = contributors.length;

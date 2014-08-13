@@ -276,7 +276,7 @@ function ProjectController($scope, $http, $cookieStore, $window) {
     	}
     	if (element.contributors !== undefined && element.contributors !== null) {
     		angular.forEach(element.contributors, function(contributor) {
-    			if (indexOf(result, contributor) === -1) {
+    			if (contributor !== null && indexOf(result, contributor) === -1) {
     				result.push(contributor);
     			}
     		});

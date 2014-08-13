@@ -258,12 +258,12 @@ function ProjectController($scope, $http, $cookieStore, $window) {
         contributors.sort(function(a, b){
         	return b.timestamp - a.timestamp;
         });
+        // set project's contributor count
+        project.contributorCount = contributors.length;
         // slice off any more than max
         if (contributors.length > maxContributors) {
             return contributors.slice(0, maxContributors - 1);
         }
-        // set project's contributor count
-        project.contributorCount = contributors.length;
         return contributors;
     };
 

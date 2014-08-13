@@ -5,12 +5,9 @@
     $webResourceManager.requireResource("com.cobalt.jira.plugin.epic.EpicPlugin:EpicPlugin-resources")
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link  href="https://fonts.googleapis.com/css?family=Reenie+Beanie:regular" rel="stylesheet" type="text/css">
-    <script type="text/javascript">
-		var myApp = angular.module('myApp', ['ngAnimate', 'ngCookies', 'ui.bootstrap']).directive('selectonclick', directives.selectOnClick).directive('modal', directives.modal);
-    </script>
   </head>
   <body>
-    <div ng-app="myApp" ng-controller="ProjectController" ng-click="hideEpicInfo()" class="body-container unselectable">
+    <div ng-app="myApp" ng-controller="projectController" ng-click="hideEpicInfo()" class="body-container unselectable">
     	<div id="nav-bar">
     		<ul>
     			<li>
@@ -119,7 +116,7 @@
 				      		</ul>
 				      	</div>
 				      	<div class="epic-list-container">
-				      		<ul class="list inline" ng-controller="EpicController">
+				      		<ul class="list inline" ng-controller="epicController">
 				      			<li class="epic-holder" ng-repeat="epic in project.children" ng-init="setUniqueId(epic)">
 				      				<div class="epic-info-button" ng-show="isClicked(epic.id) && !animating" ng-click="$event.stopPropagation(); setActiveEpic(epic, project)">
 					      				<i class="fa fa-info fa-2x"></i>
@@ -135,7 +132,7 @@
 				      		</ul>
 				      	</div>
 				   	</div>
-			      	<div class="epic-info" ng-controller="EpicController" ng-show="showEpicWindow(project)" ng-click="$event.stopPropagation()">
+			      	<div class="epic-info" ng-controller="epicController" ng-show="showEpicWindow(project)" ng-click="$event.stopPropagation()">
 			      		<ul class="story-list list-section inline" ng-repeat="completed in [false, true]">
 			      			<li class="story" ng-class="{'animate-story': storyIsAnimated(story.id)}" ng-repeat="story in getEpicStories(project, completed)">
 			      				<div ng-style="{'background': '{{getClickedEpicColor(project)}}'}" ng-class="getClickedEpicColor(project)">

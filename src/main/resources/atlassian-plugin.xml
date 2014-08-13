@@ -23,6 +23,15 @@
     <resource type="download" name="ui-bootstrap-tpls-0.11.0.min.js" location="lib/js/ui-bootstrap-tpls-0.11.0.min.js"/>
 
     <resource type="download" name="EpicPlugin.js" location="/js/EpicPlugin.js"/>
+
+    <resource type="download" name="ProjectController.js" location="/js/controllers/ProjectController.js"/>
+    <resource type="download" name="WorkViewController.js" location="/js/controllers/WorkViewController.js"/>
+
+    <resource type="download" name="ModalDirective.js" location="/js/directives/ModalDirective.js"/>
+    <resource type="download" name="SelectAllOnClickDirective.js" location="/js/directives/SelectAllOnClickDirective.js"/>
+
+    <resource type="download" name="ProjectsServices.js" location="/js/services/ProjectsService.js"/>
+
     <resource type="download" name="images/" location="/images"/>
     <context>EpicPlugin</context>
   </web-resource>

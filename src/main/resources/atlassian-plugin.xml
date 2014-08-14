@@ -29,7 +29,7 @@
     <resource type="download" name="WorkViewController.js" location="/js/controllers/WorkViewController.js"/>
     <resource type="download" name="ProjectController.js" location="/js/controllers/ProjectController.js"/>
     <resource type="download" name="EpicController.js" location="/js/controllers/EpicController.js"/>
-    <resource type="download" name="NavBarController.js" location="/js/controllers/NavBarController.js"/>
+    <resource type="download" name="NavbarController.js" location="/js/controllers/NavbarController.js"/>
 
     <resource type="download" name="ModalDirective.js" location="/js/directives/ModalDirective.js"/>
     <resource type="download" name="SelectAllOnClickDirective.js" location="/js/directives/SelectAllOnClickDirective.js"/>

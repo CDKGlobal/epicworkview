@@ -22,7 +22,7 @@ angular.module('WorkView').controller('navBarController', ['$scope', '$filter', 
     //listens for newProject events
     $scope.$on('newProject', function(event, project) {
         //set the included field on the project
-        project.included = !contains($scope.uncheckedProjectIds, project.id);
+        project.included = !$scope.contains($scope.uncheckedProjectIds, project.id);
 
         //then add the project to the search/filter and sort by the name
         $scope.projects.push(project);
@@ -39,14 +39,14 @@ angular.module('WorkView').controller('navBarController', ['$scope', '$filter', 
     });
 
     // returns whether the given object is contained in the given list
-    function contains(a, obj) {
+    $scope.contains = function(a, obj) {
         for(var i = a.length - 1; i >= 0; i--) {
             if (a[i] === obj) {
                 return true;
             }
         }
         return false;
-    }
+    };
 
     //clears the checkbox for all checkboxes in the current filter list
     $scope.clearCheckboxes = function() {

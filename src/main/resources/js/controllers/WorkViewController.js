@@ -9,12 +9,12 @@ angular.module('WorkView').controller('workViewController', ['$scope', '$window'
         $scope.loading = newVal;
 
         if(!$scope.usingNewColors) {
-            $scope.usingNewColors = isUsingNewColors($scope.projects);
+            $scope.usingNewColors = $scope.isUsingNewColors($scope.projects);
         }
     });
 
     // Loop through epics to find a non-null epic and returns whether it is using new colors
-    function isUsingNewColors(projects) {
+    $scope.isUsingNewColors = function(projects) {
         for (var i = 0; i < projects.length; i++) {
             if(projects[i].children !== undefined && projects[i].children !== null) {
                 var j = 0;
@@ -29,11 +29,11 @@ angular.module('WorkView').controller('workViewController', ['$scope', '$window'
             }
         }
         return false;
-    }
+    };
 
     // Return the epic's color
     $scope.translateColor = function(color) {
-        if(isNull(color)) {
+        if($scope.isNull(color)) {
             return null;
         }
         else if (color[0] === '#' && $scope.usingNewColors) {
@@ -49,9 +49,9 @@ angular.module('WorkView').controller('workViewController', ['$scope', '$window'
         return "#000";
     };
 
-    function isNull(variable) {
+    $scope.isNull = function(variable) {
         return variable === undefined || variable === null;
-    }
+    };
 
     $scope.hideEpicInfo = function() {
         projectsFactory.setRefresh(true);
@@ -60,23 +60,23 @@ angular.module('WorkView').controller('workViewController', ['$scope', '$window'
 
     // Sets the modal to be the current user's page
     $scope.setActiveUser = function(id) {
-        setupModal(context + "/secure/ViewProfile.jspa?name=" + id);
+        $scope.setupModal(context + "/secure/ViewProfile.jspa?name=" + id);
     };
 
     // Sets the modal to be the current page
     $scope.setActivePage = function(issue) {
-        setupModal(context + "/browse/" + issue.key);
+        $scope.setupModal(context + "/browse/" + issue.key);
     };
 
     $scope.setActiveEpic = function(epic, project) {
         if (epic.id < 0) {
-            setupModal(context + "/plugins/servlet/epicDetails?epic=" + project.key);
+            $scope.setupModal(context + "/plugins/servlet/epicDetails?epic=" + project.key);
         } else {
-            setupModal(context + "/plugins/servlet/epicDetails?epic=" + epic.key);
+            $scope.setupModal(context + "/plugins/servlet/epicDetails?epic=" + epic.key);
         }
     };
     
-    function setupModal(url) {
+    $scope.setupModal = function(url) {
         if(fullscreenFactory.getFullscreen()) {
             var modal = $modal.open({
                 template: '<iframe style="width: 500px; height: 500px;" src="' + url + '"></iframe>'
@@ -90,7 +90,7 @@ angular.module('WorkView').controller('workViewController', ['$scope', '$window'
         else {
             $window.location.href = url;
         }
-    }
+    };
 
     // set timer for closing windows after inactivity
     var inactivityTimer;

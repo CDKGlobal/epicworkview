@@ -20,35 +20,54 @@ angular.module('WorkView').controller('projectController', ['$rootScope', '$scop
         lastUpdated = currentTime - milli;
         seconds = Math.round(lastUpdated / 1000);
         if (seconds < 60) {
-            return short ? [seconds, "s"] : pluralize(seconds, "second");
+            return short ? [seconds, "s"] : $scope.pluralize(seconds, "second");
         }
         minutes = Math.round(seconds / 60);
         if (minutes < 60) {
-            return short ? [minutes, "m"] : pluralize(minutes, "minute");
+            return short ? [minutes, "m"] : $scope.pluralize(minutes, "minute");
         }
         hours = Math.round(minutes / 60);
         if (hours < 24) {
-            return short ? [hours, "h"] : pluralize(hours, "hour");
+            return short ? [hours, "h"] : $scope.pluralize(hours, "hour");
         }
         days = Math.round(hours / 24);
-        return short ? [days, "d"] : pluralize(days, "day");
+        return short ? [days, "d"] : $scope.pluralize(days, "day");
     };
 
     // appends an "s" to the unit if the number is greater than one
-    function pluralize(num, unit) {
+    $scope.pluralize = function(num, unit) {
         if (num === 1) {
             return [num, unit];
         }
         return [num, unit + "s"];
-    }
+    };
 
     // The max number of contributors to display
     var maxContributors = 20;
 
+    // helper to get list of contributors
+    $scope.getContributorsHelper = function(result, element) {
+        if (!$scope.isNull(element.contributor) && $scope.indexOf(result, element.contributor) === -1) {
+            result.push(element.contributor);
+        }
+        if (!$scope.isNull(element.contributors)) {
+            angular.forEach(element.contributors, function(contributor) {
+                if ($scope.indexOf(result, contributor) === -1) {
+                    result.push(contributor);
+                }
+            });
+        }
+        if (!$scope.isNull(element.children)) {
+            angular.forEach(element.children, function(child) {
+                $scope.getContributorsHelper(result, child);
+            });
+        }
+    };
+
     // returns all contributors for this project in order of time worked on project
     $scope.getContributors = function(project) {
         var contributors = [];
-        getContributorsHelper(contributors, project);
+        $scope.getContributorsHelper(contributors, project);
         // sort contributors
         contributors.sort(function(a, b){
         	return b.timestamp - a.timestamp;
@@ -65,31 +84,12 @@ angular.module('WorkView').controller('projectController', ['$rootScope', '$scop
         return contributors;
     };
 
-    // helper to get list of contributors
-    function getContributorsHelper(result, element) {
-    	if (!isNull(element.contributor) && indexOf(result, element.contributor) === -1) {
-    		result.push(element.contributor);
-    	}
-    	if (!isNull(element.contributors)) {
-    		angular.forEach(element.contributors, function(contributor) {
-    			if (indexOf(result, contributor) === -1) {
-    				result.push(contributor);
-    			}
-    		});
-    	}
-    	if (!isNull(element.children)) {
-    		angular.forEach(element.children, function(child) {
-    			getContributorsHelper(result, child);
-    		});
-    	}
-    }
-
     /*
      * Finds if the element is already in the list and returns the index, based on the element ids
      * returns -1 if not found
      */
-    function indexOf(list, elem) {
-        if(!isNull(elem)) {
+    $scope.indexOf = function(list, elem) {
+        if(!$scope.isNull(elem)) {
             for(var i = 0; i < list.length; i++) {
                 //if element ids are equal
                 if(list[i].id === elem.id) {
@@ -98,11 +98,11 @@ angular.module('WorkView').controller('projectController', ['$rootScope', '$scop
             }
         }
         return -1;
-    }
+    };
 
-    function isNull(variable) {
+    $scope.isNull = function(variable) {
         return variable === undefined || variable === null;
-    }
+    };
 
     // Return how many extra contributors there are for the project after
     // the max contributor count

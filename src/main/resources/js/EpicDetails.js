@@ -590,7 +590,7 @@ function chartDirective() {
 						    msg += "From " + new Date(previousx).toLocaleDateString() + " to ";
 					    }
 
-                  	    msg += new Date(x).toLocaleDateString() + "<br/><strong>" + y + "</strong>" + scope.workType;
+                  	    msg += new Date(x).toLocaleDateString() + "<br/><strong>" + y + "</strong>" + " " + scope.workTypeToString();
 
                   	    if (item.seriesIndex === 2){
                             msg += " Created";

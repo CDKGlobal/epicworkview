@@ -8,7 +8,7 @@ module.exports = function(grunt) {
                 ]
             },
             all: [
-                'src/main/resources/js/*.js'
+                'src/main/resources/js/**/*.js'
             ]
         },
         //Interface with the Karma test runner

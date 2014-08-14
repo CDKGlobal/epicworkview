@@ -48,6 +48,11 @@
 	margin-right: 10px;
 }
 
+.epic-dropdown-menu {
+	right: 0 !important;
+	left: initial !important;
+}
+
 /* Graph */
 
 .clear {

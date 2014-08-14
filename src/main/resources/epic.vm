@@ -7,23 +7,23 @@
     <link  href="https://fonts.googleapis.com/css?family=Reenie+Beanie:regular" rel="stylesheet" type="text/css">
   </head>
   <body>
-    <div ng-app="myApp" ng-controller="projectController" ng-click="hideEpicInfo()" class="body-container unselectable">
-    	<div id="nav-bar">
-    		<ul>
+    <div ng-app="WorkView" ng-controller="workViewController" ng-click="hideEpicInfo()" class="body-container unselectable">
+    	<div id="nav-bar" ng-controller="navBarController">
+    		<ul ng-click="$event.stopPropagation()">
     			<li>
-    				<div ng-click="toggleFullScreen()">
-						<i class="fa fa-expand fa-2x" ng-class="{'fa-compress': isFullScreen}"></i>
+    				<div ng-click="toggleFullscreen()">
+						<i class="fa fa-expand fa-2x" ng-class="{'fa-compress': isFullscreen}"></i>
 					</div>
     			</li>
     		</ul>
-    		<ul>
+    		<ul ng-click="$event.stopPropagation()">
     			<li>
-    				<div ng-click="showInfoWindow=true">
+    				<div ng-click="open()">
 						<i class="fa fa-info fa-2x"></i>
 					</div>
     			</li>
     		</ul>
-    		<ul>
+    		<ul ng-click="$event.stopPropagation()">
     			<li>
     				<div class="btn-group dropdown-toggle" dropdown>
     					<i class="fa fa-clock-o fa-2x"></i>
@@ -38,28 +38,19 @@
     		</ul>
     		<ul id="search-tab">
     			<li>
-    				<div id="search-slideout" ng-click="cookieState()">
-    					<input type="text" ng-model="embeddedUrl" autocomplete="off" wrap="off" readonly selectonclick/>
-    					<i class="fa fa-link fa-2x"></i>
-    				</div>
-    			</li>
-    		</ul>
-    		<ul id="search-tab">
-    			<li>
     				<div id="search-slideout">
     					<input type="text" ng-model="query" autocomplete="off" placeholder="Find Projects..." wrap="off"/>
     					<i class="fa fa-search fa-2x"></i>
     					<div id="search-dropdown" style="background-color: #ebf2f9;">
     						<div style="text-align: center; padding-top: 5px;">
-    							<button id="Clear button" ng-click="clearchkbox()">Clear</button>
-				    			<button id="Checkall button" ng-click="checkchkbox()">Check All</button>
+    							<button id="Clear button" ng-click="clearCheckboxes()">Clear</button>
+				    			<button id="Checkall button" ng-click="checkCheckboxes()">Check All</button>
 				    		</div>
 				    		<div class="aui-list-scroll" style="display: block; width: 180px;">
 				    			<ul class="list-section">
-				    				<li ng-repeat="project in (filteredProjects = (alphabeticalProjects() | filter:search))" class="check-list-item repeat-item">
+				    				<li ng-repeat="project in (filteredProjects = (projects | filter:search))" class="check-list-item repeat-item">
 				    					<label class="item-label" title="{{project.name}}">
-				    						<span id="mycheckboxState" style="display:none;" hidden>{{project.included}}</span>
-				    						<input id="mycheckbox" type="checkbox" ng-click="checkProject(project)" ng-model='project.included'/>
+				    						<input id="mycheckbox" type="checkbox" ng-change="checkProject(project)" ng-model='project.included'/>
 				    						{{project.name}}
 				    					</label>
 				    				</li>
@@ -73,13 +64,13 @@
 
     	<!-- scroll-to-top button --> 
 		<a href="" id="scroll-to-top"><i class="fa fa-angle-up fa-2x"></i></a>
-		
+
 		<div class="loading-bar" ng-show="loading">
 	      	<i class="fa fa-circle-o-notch fa-spin fa-4x"></i>
 	   	</div>
 		
 	    <ul id="projects" class="list-section project-list" ng-show="!loading">
-	      	<li class="project-row" ng-repeat="project in projects | filter: {included:true}">
+	      	<li class="project-row" ng-repeat="project in projects | filter: {included:true}" ng-controller="projectController">
 		   		<div class="project-content">
 		   			<div class="column1">
 			   			<div class="project-icon-container">
@@ -116,15 +107,15 @@
 				      		</ul>
 				      	</div>
 				      	<div class="epic-list-container">
-				      		<ul class="list inline" ng-controller="epicController">
-				      			<li class="epic-holder" ng-repeat="epic in project.children" ng-init="setUniqueId(epic)">
-				      				<div class="epic-info-button" ng-show="isClicked(epic.id) && !animating" ng-click="$event.stopPropagation(); setActiveEpic(epic, project)">
+				      		<ul class="list inline">
+				      			<li class="epic-holder" ng-repeat="epic in project.children" >
+				      				<div class="epic-info-button" ng-show="isClicked(epic) && !animating" ng-click="$event.stopPropagation(); setActiveEpic(epic, project)">
 					      				<i class="fa fa-info fa-2x"></i>
 					      			</div>
-				      				<div class="epic-container" ng-class="{'clicked-epic': isClicked(epic.id)}" ng-click="toggleEpic($event, epic.id)">
-					      				<div class="post-it" ng-repeat="padding in getPostItOffsets(shorten(epic.name))" ng-style="{'left': '{{padding}}px', 'background': '{{getEpicColor(epic)}}'}" ng-class="getEpicColor(epic)"></div>
-					      				<div class="post-it" ng-repeat="padding in getPostItOffsets(shorten(epic.name))" ng-style="{'right': '{{padding}}px', 'background': '{{getEpicColor(epic)}}'}" ng-class="getEpicColor(epic)"></div>
-					      				<span class="epic" ng-style="{'background-color': '{{getEpicColor(epic)}}'}" ng-class="getEpicColor(epic)">
+				      				<div class="epic-container" ng-class="{'clicked-epic': isClicked(epic)}" ng-click="toggleEpic($event, epic)">
+					      				<div class="post-it" ng-repeat="padding in getPostItOffsets(shorten(epic.name))" ng-style="{'left': '{{padding}}px', 'background': '{{translateColor(epic.color)}}'}" ng-class="translateColor(epic.color)"></div>
+					      				<div class="post-it" ng-repeat="padding in getPostItOffsets(shorten(epic.name))" ng-style="{'right': '{{padding}}px', 'background': '{{translateColor(epic.color)}}'}" ng-class="translateColor(epic.color)"></div>
+					      				<span class="epic" ng-style="{'background-color': '{{translateColor(epic.color)}}'}" ng-class="translateColor(epic.color)">
 					      					{{shorten(epic.name)}}
 					      				</span>
 				      				</div>
@@ -132,10 +123,10 @@
 				      		</ul>
 				      	</div>
 				   	</div>
-			      	<div class="epic-info" ng-controller="epicController" ng-show="showEpicWindow(project)" ng-click="$event.stopPropagation()">
+			      	<div class="epic-info" ng-show="showEpicInfo(project)" ng-click="$event.stopPropagation()">
 			      		<ul class="story-list list-section inline" ng-repeat="completed in [false, true]">
-			      			<li class="story" ng-class="{'animate-story': storyIsAnimated(story.id)}" ng-repeat="story in getEpicStories(project, completed)">
-			      				<div ng-style="{'background': '{{getClickedEpicColor(project)}}'}" ng-class="getClickedEpicColor(project)">
+			      			<li class="story" ng-class="{'animate-story': storyIsAnimated(story.id)}" ng-repeat="story in getStories(completed)">
+			      				<div ng-style="{'background': '{{translateColor(clickedEpic.color)}}'}" ng-class="translateColor(clickedEpic.color)">
 				      				<ul ng-style="{'border-bottom-color': '{{getFontColor()}}'}" class="story-header list-section">
 				      					<li class="contributor-holder"><img class="contributor-image" ng-show="story.contributor" ng-src="{{story.contributor.avatar}}" 
 				      							 title="{{story.contributor.name}}" height="24" width="24"></li>
@@ -151,11 +142,8 @@
 		      	</div>
 		 	</li>
     	</ul>
-    	<modal ng-show="getShowWindow()" ng-click="setShowWindow(false)">
-			<iframe ng-src="{{url}}"></iframe>
-  		</modal>
-  		<modal ng-show="showInfoWindow" ng-click="showInfoWindow=false">
-			<div class="info-window" ng-click="$event.stopPropagation()">
+		<script type="text/ng-template" id="info.html">
+			<div>
 				<h1>Epic Work View for JIRA</h1>
 				<h2>Overview</h2>
 				<p>Epic Work View displays information about the work in progress on projects, epics and stories. </p>
@@ -169,7 +157,7 @@
 				<p>Projects can be filtered by name or project group. Project filters are remembered across sessions on a 
 				user's computer. To share a link with a given filter, copy the text from the link button in the navigation bar. </p>
 			</div>
-  		</modal>
+		</script>
     </div>
   </body>
 </html>

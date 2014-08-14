@@ -1,6 +1,6 @@
 (
     function() {
-        angular.module('myApp').directive('selectonclick', function() {
+        angular.module('WorkView').directive('selectonclick', function() {
             return {
                 restrict: 'A',
                 link: function(scope, element) {

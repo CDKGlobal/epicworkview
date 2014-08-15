@@ -15,23 +15,23 @@ angular.module('WorkView').controller('projectController', ['$rootScope', '$scop
     // Return the difference between the current time and the given time,
     // as a list of a number and a string
     // returns a shorter string if short is true
-    $scope.millisecondToString = function(milli, short) {
+    $scope.millisecondToString = function(milli, shorten) {
         currentTime = new Date().getTime();
         lastUpdated = currentTime - milli;
         seconds = Math.round(lastUpdated / 1000);
         if (seconds < 60) {
-            return short ? [seconds, "s"] : $scope.pluralize(seconds, "second");
+            return shorten ? [seconds, "s"] : $scope.pluralize(seconds, "second");
         }
         minutes = Math.round(seconds / 60);
         if (minutes < 60) {
-            return short ? [minutes, "m"] : $scope.pluralize(minutes, "minute");
+            return shorten ? [minutes, "m"] : $scope.pluralize(minutes, "minute");
         }
         hours = Math.round(minutes / 60);
         if (hours < 24) {
-            return short ? [hours, "h"] : $scope.pluralize(hours, "hour");
+            return shorten ? [hours, "h"] : $scope.pluralize(hours, "hour");
         }
         days = Math.round(hours / 24);
-        return short ? [days, "d"] : $scope.pluralize(days, "day");
+        return shorten ? [days, "d"] : $scope.pluralize(days, "day");
     };
 
     // appends an "s" to the unit if the number is greater than one

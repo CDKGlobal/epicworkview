@@ -43,7 +43,7 @@ angular.module('WorkView').controller('projectController', ['$rootScope', '$scop
     };
 
     // The max number of contributors to display
-    var maxContributors = 20;
+    var maxContributors = 16;
 
     // helper to get list of contributors
     $scope.getContributorsHelper = function(result, element) {

@@ -31,9 +31,6 @@
     <resource type="download" name="EpicController.js" location="/js/controllers/EpicController.js"/>
     <resource type="download" name="NavbarController.js" location="/js/controllers/NavbarController.js"/>
 
-    <resource type="download" name="ModalDirective.js" location="/js/directives/ModalDirective.js"/>
-    <resource type="download" name="SelectAllOnClickDirective.js" location="/js/directives/SelectAllOnClickDirective.js"/>
-
     <resource type="download" name="FullscreenFactory.js" location="/js/factories/FullscreenFactory.js"/>
     <resource type="download" name="ProjectsFactory.js" location="/js/factories/ProjectsFactory.js"/>
 

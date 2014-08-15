@@ -5,7 +5,7 @@ target/
 node_modules/
 
 # Emacs temporary files
-*.*~
+*~
 
 # Finder file
 .DS_Store
@@ -20,6 +20,3 @@ node_modules/
 .classpath
 .settings
 .project
-
-# Prefixed files
-*.prefixed.css

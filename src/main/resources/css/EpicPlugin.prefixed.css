@@ -279,7 +279,8 @@
 
 .column3 {
 	float: left;
-	width: calc(76% - 110px);
+	width: calc(78% - 142px);
+	max-width: 69%;
 }
 
 .epic-list-container {

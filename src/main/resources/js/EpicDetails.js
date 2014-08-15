@@ -46,7 +46,7 @@ function epicDetailsController ($scope, $http, $q, $location, $window) {
 
     var epicQuery = $scope.contextPath + '/rest/api/2/';
     var storiesQuery = $scope.contextPath + '/rest/api/2/search?jql=';
-
+	
     if($scope.key.indexOf('-') !== -1) {
         epicQuery += 'issue';
         storiesQuery += '"Epic Link"=' + $scope.key;
@@ -66,6 +66,7 @@ function epicDetailsController ($scope, $http, $q, $location, $window) {
         $http.get($scope.contextPath + '/rest/api/2/search?jql=project="' + $scope.key.split('-', 1)[0] + '" and issuetype="Epic"')
     ]).then(function(results) {
         var epic = results[0].data;
+        $window.console.log(epic);
         var stories = results[1].data;
         var fields = results[2].data;
         var epics = results[3].data.issues;
@@ -590,7 +591,7 @@ function chartDirective() {
 						    msg += "From " + new Date(previousx).toLocaleDateString() + " to ";
 					    }
 
-                  	    msg += new Date(x).toLocaleDateString() + "<br/><strong>" + y + "</strong>" + " " + scope.workTypeToString();
+                  	    msg += new Date(x).toLocaleDateString() + "<br/><strong>" + scope.format(y) + "</strong>" + " " + scope.workTypeToString();
 
                   	    if (item.seriesIndex === 2){
                             msg += " Created";

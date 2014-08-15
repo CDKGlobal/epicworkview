@@ -82,18 +82,18 @@
 					      		<a class="project-name" ng-click="setActivePage(project)">{{project.name}}</a>
 					      	</span>   					     						      			
 					    </div>
-					    <div class="completed-story-container">
+					    <div class="last-update-container">
 				      		<div class="content">
-				      			<span>- {{getCompletedStories(project)}} stories completed</span>
+				      			<span>updated {{millisecondToString(project.timestamp, false)[0]}} {{millisecondToString(project.timestamp, false)[1]}} ago</span>
 				      		</div>
 				      	</div>
 					</div>
 				    <div class="column2">
-				      	<div class="last-update-container">
-				      		<span class="header">Last Update</span>
+				      	<div class="completed-story-container">
+				      		<span class="header">STOREIS COMPLETED</span>
 				      		<div class="content">
-				      			<span class="bold">{{millisecondToString(project.timestamp, false)[0]}}</span>
-				      			<span>{{millisecondToString(project.timestamp, false)[1]}} ago</span>
+				      			<span class="bold">{{getCompletedStories(project)}}</span>
+				      			<span>in last {{getFilterDays()}} {{pluralize(getFilterDays(), "day")[1]}}</span>
 				      		</div>
 				      	</div>
 				   	</div>

@@ -92,6 +92,10 @@ angular.module('WorkView').controller('workViewController', ['$scope', '$window'
             $window.location.href = url;
         }
     };
+    
+    $scope.getFilterDays = function() {
+    	return projectsFactory.getFilterDays();
+    };
 
     // set timer for closing windows after inactivity
     var inactivityTimer;

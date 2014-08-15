@@ -90,7 +90,7 @@
 					</div>
 				    <div class="column2">
 				      	<div class="completed-story-container">
-				      		<span class="header">STOREIS COMPLETED</span>
+				      		<span class="header">STORIES COMPLETED</span>
 				      		<div class="content">
 				      			<span class="bold">{{getCompletedStories(project)}}</span>
 				      			<span>in last {{getFilterDays()}} {{pluralize(getFilterDays(), "day")[1]}}</span>

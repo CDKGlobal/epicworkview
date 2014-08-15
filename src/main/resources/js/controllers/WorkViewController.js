@@ -107,9 +107,9 @@ angular.module('WorkView').controller('workViewController', ['$scope', '$window'
         clearTimeout(inactivityTimer);
         inactivityTimer = setTimeout(function() {
             if(fullscreenFactory.getFullscreen()) {
-                /*jQuery('#scroll-to-top').click();
+                jQuery('#scroll-to-top').click();
                 $scope.hideEpicInfo();
-                $scope.$emit('hideModal');*/
+                $scope.$emit('hideModal');
             }
         }, 30000);
     }

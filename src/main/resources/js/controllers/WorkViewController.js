@@ -79,7 +79,8 @@ angular.module('WorkView').controller('workViewController', ['$scope', '$window'
     $scope.setupModal = function(url) {
         if(fullscreenFactory.getFullscreen()) {
             var modal = $modal.open({
-                template: '<iframe style="width: 500px; height: 500px;" src="' + url + '"></iframe>'
+                template: '<iframe src="' + url + '"></iframe>',
+                size: 'lg'
             });
 
             var unregister = $scope.$parent.$on('hideModal', function() {
@@ -102,9 +103,9 @@ angular.module('WorkView').controller('workViewController', ['$scope', '$window'
         clearTimeout(inactivityTimer);
         inactivityTimer = setTimeout(function() {
             if(fullscreenFactory.getFullscreen()) {
-                jQuery('#scroll-to-top').click();
+                /*jQuery('#scroll-to-top').click();
                 $scope.hideEpicInfo();
-                $scope.$emit('hideModal');
+                $scope.$emit('hideModal');*/
             }
         }, 30000);
     }

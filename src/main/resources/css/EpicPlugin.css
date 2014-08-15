@@ -184,8 +184,7 @@
 .column1 {
 	float: left;
 	width: 20%;
-	margin-top: 20px;
-	margin-left: 10px;
+	margin: 20px 10px 0 10px;
 }
 
 .project-icon-container {
@@ -206,12 +205,12 @@
 .contributor-container {
 	float: left;
 	margin: 0 15px;
-	min-height: 1px;
+	min-height: 45px;
 }
 
 .column2 {
 	float: left;
-	width: 10%;
+	width: 9%;
 	min-width: 102px;
 }
 
@@ -250,7 +249,7 @@
 
 .column3 {
 	float: left;
-	width: 67%;
+	width: 65%;
 }
 
 .epic-list-container {
@@ -259,8 +258,8 @@
 	margin: 10px 15px;
 }
 
-.project-info {
-	margin-left: 50px;
+.project-info-container {
+	margin-left: 53px;
 }
 
 .project-group {
@@ -681,51 +680,8 @@ story:nth-child(5n) div {
   border-color: #202020 !important;
 }
 
-.windowView {
-	display: block;
-
-	position: fixed;
-	top: 0px;
-	right: 0px;
-	left: 0px;
-	bottom: 0px;
-
-	overflow: hidden;
-
-	z-index: 1050;
-}
-
-#windowBackground {
-	background-color: #333;
-	opacity: 0.5;	
-}
-
-iframe {
-	position: absolute;
-	left:10%;
-	top:10%;
-	width:82%;
-	height:80%;
-
-	border: 5px solid #CCC;
-	border-radius: 5px;
-
-	background-color: white;
-}
-
 .info-window {
-	padding: 10px;
-	position: absolute;
-	left:25%;
-	top:25%;
-	width:50%;
-	height:50%;
-	overflow-y: auto;
-
-	border: 5px solid #CCC;
-	border-radius: 5px;
-
-	background-color: white;
+	padding: 15px;
 }
 
 .info-window h1, h2 {
@@ -735,6 +691,21 @@ iframe {
 .info-window h1 {
 	text-align: center;
 	border-bottom: 1px solid black;
+}
+
+iframe {
+	width: 100%;
+	height: 100%;
+}
+
+.modal-lg {
+	width: 80%;
+	height: 80%;
+}
+
+.modal-lg .modal-content {
+	height: 100%;
+	width: 100%;
 }
 
 #announcement-banner {

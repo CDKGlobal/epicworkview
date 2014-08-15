@@ -143,7 +143,7 @@
 		 	</li>
     	</ul>
 		<script type="text/ng-template" id="info.html">
-			<div>
+			<div class="info-window">
 				<h1>Epic Work View for JIRA</h1>
 				<h2>Overview</h2>
 				<p>Epic Work View displays information about the work in progress on projects, epics and stories. </p>

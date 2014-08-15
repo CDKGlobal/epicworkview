@@ -116,7 +116,10 @@ public class RestResource implements InitializingBean {
             while(input.size() > 0 && input.get(0).getType().compareTo(JiraDataType.STORY) > 0) {
                 IJiraData subtask = input.get(0);
                 input.remove(0);
-                users.add(JaxbFactory.newJaxbUser(subtask.getAssignee(), subtask.getDisplayTimestamp()));
+                User user = subtask.getAssignee();
+                if(user != null) {
+                    users.add(JaxbFactory.newJaxbUser(user, subtask.getDisplayTimestamp()));
+                }
             }
             output.add((T)JaxbFactory.newJaxbStory(data, users));
         }

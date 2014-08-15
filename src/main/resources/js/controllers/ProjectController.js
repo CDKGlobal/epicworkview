@@ -92,7 +92,7 @@ angular.module('WorkView').controller('projectController', ['$rootScope', '$scop
         if(!$scope.isNull(elem)) {
             for(var i = 0; i < list.length; i++) {
                 //if element ids are equal
-                if(list[i] !== null && list[i].id === elem.id) {
+                if(list[i].id === elem.id) {
                     return i;
                 }
             }

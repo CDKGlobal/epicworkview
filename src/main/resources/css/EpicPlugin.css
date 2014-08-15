@@ -254,13 +254,13 @@
 
 .column3 {
 	float: left;
-	width: 66%;
+	width: calc(76% - 110px);
 }
 
 .epic-list-container {
 	float: left;
 	clear: both;
-	margin: 10px 15px;
+	margin: 10px 0 10px 15px;
 }
 
 .project-info-container {

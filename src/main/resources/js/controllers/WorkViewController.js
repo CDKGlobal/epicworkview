@@ -111,6 +111,6 @@ angular.module('WorkView').controller('workViewController', ['$scope', '$window'
                 $scope.hideEpicInfo();
                 $scope.$emit('hideModal');
             }
-        }, 30000);
+        }, 90000);
     }
 }]);

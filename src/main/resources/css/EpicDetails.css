@@ -87,7 +87,7 @@
 
 .chart-container, .overview-container {
 	padding: 23px;
-	border: 1px solid black;
+	border: 1px solid #e5e5e5;
 	border-radius: 10px;
 	margin-top: 10px;
 	background: #fff;
@@ -101,8 +101,7 @@
 
 .progress-bar-key {
 	padding: 10px;
-	border: 1px solid black;
-	border-radius: 5px;
+	padding-top: 0;
 	width: 100%;
 }
 
@@ -120,6 +119,7 @@
 .key-element {
 	display: inline-block;
 	width: 32%;
+	text-align: center;
 }
 
 /* Story List */

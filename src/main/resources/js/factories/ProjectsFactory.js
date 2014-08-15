@@ -8,7 +8,6 @@ angular.module('WorkView').factory('ProjectsFactory', ['$rootScope', '$http', '$
     var projects = [];
     var filterDays = 7;
     var loading = true;
-    var newProjectListeners = [];
     var refresh = true;
 
     // Time of most recent update

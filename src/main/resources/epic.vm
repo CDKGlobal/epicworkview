@@ -155,7 +155,11 @@
 				and while in fullscreen mode, will open all windows within the display instead of navigating away from the page. </p>
 				<h2>Project Filtering</h2>
 				<p>Projects can be filtered by name or project group. Project filters are remembered across sessions on a 
-				user's computer. To share a link with a given filter, copy the text from the link button in the navigation bar. </p>
+				user's computer. To share a specific filter with another computer, simply copy the url. </p>
+				<h2>Epic Details Page</h2>
+				<p>To view more details about an epic, click on the information button that appears on top of the epic you are
+				currently viewing. The epic details page displays displays a list of stories, a progress bar for the epic, and
+				a chart showing story creation and completion with a forecasted completion date for the epic. </p>
 			</div>
 		</script>
     </div>

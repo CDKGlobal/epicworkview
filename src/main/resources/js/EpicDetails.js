@@ -66,7 +66,6 @@ function epicDetailsController ($scope, $http, $q, $location, $window) {
         $http.get($scope.contextPath + '/rest/api/2/search?jql=project="' + $scope.key.split('-', 1)[0] + '" and issuetype="Epic"')
     ]).then(function(results) {
         var epic = results[0].data;
-        $window.console.log(epic);
         var stories = results[1].data;
         var fields = results[2].data;
         var epics = results[3].data.issues;

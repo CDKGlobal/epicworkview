@@ -228,32 +228,7 @@ function epicDetailsController ($scope, $http, $q, $location, $window) {
         }
     };
 
-    // return the average length of a story from creation to completion, in hours
-    function getAverageTime(stories) {
-        var completedStories = 0;
-        var sumTime = 0;
-
-        var day = 1000 * 60 * 60 * 24;
-        var week = day * 7;
-
-        angular.forEach(stories, function(story) {
-            if(story.fields.resolutiondate !== null) {
-                completedStories++;
-                var completedTime = Date.parse(story.fields.resolutiondate) - Date.parse(story.fields.created);
-
-                completedTime -= (2 * day * Math.floor(completedTime / week));
-                completedTime /= 3;
-
-                sumTime+= completedTime;
-            }
-        });
-
-        if(completedStories !== 0) {
-            return (sumTime/(completedStories* 60 * 60 * 1000));
-        }
-        return 0;
-    }
-
+    
     // format the given value for display
     $scope.format = function(number) {
         if ($scope.workType === 3) {

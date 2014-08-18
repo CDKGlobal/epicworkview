@@ -329,6 +329,8 @@ ul.inline .epic-container {
 	position: relative;
 	margin-right: 24px;
 	cursor: pointer;
+	-webkit-transition: all .15s linear;
+	        transition: all .15s linear;
 }
 
 .epic-info-button {
@@ -359,6 +361,11 @@ ul.inline .epic-container {
 .epic-info-button.ng-hide-remove {
 	-webkit-transition: all .5s linear;
 	        transition: all .5s linear;
+}
+
+.epic-info-button.ng-hide-add {
+	-webkit-transition: all .25s linear;
+	        transition: all .25s linear;
 }
 
 .epic-info-button:before {

@@ -383,8 +383,6 @@ ul.inline .epic-container {
 
 .list {
 	padding-left: 0px;
-	display: flex;
-	flex-wrap: wrap;
 }
 
 .epic {

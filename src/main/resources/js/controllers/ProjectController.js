@@ -1,4 +1,4 @@
-angular.module('WorkView').controller('projectController', ['$rootScope', '$scope', 'ProjectsFactory', function($rootScope, $scope, projectsFactory) {
+angular.module('WorkView').controller('projectController', ['$rootScope', '$scope', '$date', 'ProjectsFactory', function($rootScope, $scope, $date, projectsFactory) {
     // Returns the number of completed stories for the project
     $scope.getCompletedStories = function(project) {
         var res = 0;
@@ -16,7 +16,7 @@ angular.module('WorkView').controller('projectController', ['$rootScope', '$scop
     // as a list of a number and a string
     // returns a shorter string if short is true
     $scope.millisecondToString = function(milli, shorten) {
-        currentTime = Date.now();
+        currentTime = $date.now();
         lastUpdated = currentTime - milli;
         seconds = Math.round(lastUpdated / 1000);
         if (seconds < 60) {

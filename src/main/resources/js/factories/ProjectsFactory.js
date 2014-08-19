@@ -1,4 +1,4 @@
-angular.module('WorkView').factory('ProjectsFactory', ['$rootScope', '$http', '$interval', 'Context', function($rootScope, $http, $interval, context) {
+angular.module('WorkView').factory('ProjectsFactory', ['$rootScope', '$http', '$interval', '$date', 'Context', function($rootScope, $http, $interval, $date, context) {
     var elementEnum = {
     	PROJECT: 0,
     	EPIC: 1,
@@ -17,7 +17,7 @@ angular.module('WorkView').factory('ProjectsFactory', ['$rootScope', '$http', '$
         $http.get(
             context +'/rest/epic/1/projects.json?seconds=' + seconds
         ).success(function(data) {
-            lastUpdateTime = Date.now();
+            lastUpdateTime = $date.now();
 
             //add the new projects to the projects array
             updateElementList(projects, data, elementEnum.PROJECT);
@@ -98,7 +98,7 @@ angular.module('WorkView').factory('ProjectsFactory', ['$rootScope', '$http', '$
      * (elements should be in time order)
      */
     function removeOldElements(elements, days) {
-        var time = Date.now();
+        var time = $date.now();
         var i = elements.length - 1;
         var element = elements[i];
         var removedElements = [];
@@ -140,7 +140,7 @@ angular.module('WorkView').factory('ProjectsFactory', ['$rootScope', '$http', '$
     // Update projects every 5 seconds
     $interval(function() {
         if(refresh) {
-            var secsSinceUpdate = (Date.now() - lastUpdateTime) / 1000;
+            var secsSinceUpdate = ($date.now() - lastUpdateTime) / 1000;
             getProjectsSince(Math.ceil(secsSinceUpdate));
         }
     }, 5000);

@@ -22,6 +22,9 @@
     <resource type="download" name="angular-cookies.min.js" location="lib/js/angular-cookies.min.js"/>
     <resource type="download" name="ui-bootstrap-tpls-0.11.0.min.js" location="lib/js/ui-bootstrap-tpls-0.11.0.min.js"/>
 
+    <!-- module independent angular services -->
+    <resource type="download" name="DateFactory.js" location="/js/factories/DateFactory.js"/>
+
     <resource type="download" name="ScrollToTop.js" location="/js/ScrollToTop.js"/>
 
     <resource type="download" name="EpicPlugin.js" location="/js/EpicPlugin.js"/>
@@ -41,6 +44,9 @@
     <dependency>com.atlassian.auiplugin:ajs</dependency>
 
     <resource type="download" name="EpicDetails.prefixed.css" location="/css/EpicDetails.prefixed.css"/>
+
+    <!-- module independent angular services -->
+    <resource type="download" name="DateFactory.js" location="/js/factories/DateFactory.js"/>
 
     <resource type="download" name="jquery.flot.min.js" location="lib/js/jquery.flot.min.js"/>
     <resource type="download" name="jquery.flot.selection.min.js" location="lib/js/jquery.flot.selection.min.js"/>

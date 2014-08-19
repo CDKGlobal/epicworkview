@@ -17,7 +17,7 @@ module.exports = function(config) {
     files: [
       'libs/angular.js',//angular need to be loaded before everything
       'libs/**/*.js',
-      //'../java/ut/com/cobalt/jira/plugin/epic/test/*Spec.js',
+      '../java/ut/com/cobalt/jira/plugin/epic/test/*Spec.js',
       'tests/**/*.js',
       '../../main/resources/js/**/*.js'
     ],

@@ -1,21 +1,33 @@
 describe('Unit: WorkViewController Tests', function() {
     var rootScope,
+        timeout,
         scope,
         ctrl,
         window,
         projectsFactory,
         fullscreenFactory,
-        projects = [],
-        loading = true,
-        refresh = true,
-        filterDays = 7,
-        fullscreen = true;
+        projects,
+        loading,
+        refresh,
+        filterDays,
+        fullscreen;
+
+    beforeEach(function() {
+
+    });
 
     beforeEach(module('WorkView'));
 
-    beforeEach(inject(function($rootScope, $controller) {
+    beforeEach(inject(function($rootScope, $controller, $timeout) {
         rootScope = $rootScope;
+        timeout = $timeout;
         scope = $rootScope.$new();
+
+        projects = [];
+        loading = true;
+        refresh = true;
+        filterDays = 7;
+        fullscreen = true;
 
         projectsFactory = {
             getProjects: function() {
@@ -194,5 +206,54 @@ describe('Unit: WorkViewController Tests', function() {
         expect(scope.getFilterDays()).toEqual(filterDays);
         filterDays = 14;
         expect(scope.getFilterDays()).toEqual(filterDays);
+    });
+
+    it('should create a url for the user', function() {
+        spyOn(scope, 'setupModal');
+        scope.setActiveUser(100);
+        var regex = /^\/jira(.)*100$/; //starts with /jira and ends with 100
+        expect(scope.setupModal.calls[0].args).toMatch(regex);
+    });
+
+    it('should create a url for the issue', function() {
+        spyOn(scope, 'setupModal');
+        scope.setActivePage({ key: 'TPT-3' });
+
+        var regex = /^\/jira(.)*TPT-3$/; //starts with /jira and ends with TPT-3
+        expect(scope.setupModal.calls[0].args).toMatch(regex);
+    });
+
+    it('should create a url for epic details', function() {
+        spyOn(scope, 'setupModal');
+        scope.setActiveEpic({ id: 10000, key: 'TPT-3' }, {});
+
+        var regex = /^\/jira(.)*TPT-3$/; //starts with /jira and ends with TPT-3
+        expect(scope.setupModal.calls[0].args).toMatch(regex);
+
+        scope.setActiveEpic({ id: -1, key: 'TPT-3' }, { key: 'TPT' });
+
+        regex = /^\/jira(.)*TPT$/; //starts with /jira and ends with TPT
+        expect(scope.setupModal.calls[1].args).toMatch(regex);
+    });
+
+    it('should hide epic info after 90 seconds when in fullscreen', function() {
+        var called = false;
+        rootScope.$on('hideModal', function(event) {
+            called = true;
+        });
+
+        scope.inactivityReset();
+        timeout.flush(90000);
+
+        expect(called).toBeTruthy();
+
+        called = false;
+        fullscreen = false;
+
+        scope.inactivityReset();
+        timeout.flush(90000);
+
+        expect(called).toBeFalsy();
+        timeout.verifyNoPendingTasks();
     });
 });

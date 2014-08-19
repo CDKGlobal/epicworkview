@@ -97,6 +97,8 @@ angular.module('WorkView').controller('workViewController', ['$scope', '$window'
     	return projectsFactory.getFilterDays();
     };
 
+    var inactivityTimer;
+
     $scope.inactivityReset = function() {
         $timeout.cancel(inactivityTimer);
         inactivityTimer = $timeout(function() {
@@ -109,7 +111,6 @@ angular.module('WorkView').controller('workViewController', ['$scope', '$window'
     };
 
     // set timer for closing windows after inactivity
-    var inactivityTimer;
     jQuery(window).mousemove($scope.inactivityReset);
     jQuery(window).scroll($scope.inactivityReset);
     jQuery(window).click($scope.inactivityReset);

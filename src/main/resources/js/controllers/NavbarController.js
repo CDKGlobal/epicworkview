@@ -50,32 +50,22 @@ angular.module('WorkView').controller('navBarController', ['$scope', '$filter', 
 
     //clears the checkbox for all checkboxes in the current filter list
     $scope.clearCheckboxes = function() {
-        $scope.uncheckedProjectIds = [];
         angular.forEach($scope.filteredProjects, function(project) {
-            project.included = false;
-            $scope.uncheckedProjectIds.push(project.id);
-            //if(project.included) {
-            //    project.included = false;
-            //    $scope.checkProject(project);
-            //}
+            if(project.included) {
+                project.included = false;
+                $scope.checkProject(project);
+            }
         });
-
-        $scope.cookieState();
     };
 
     //checks the checkbox for all checkboxes in the current filter list
     $scope.checkCheckboxes = function() {
         angular.forEach($scope.filteredProjects, function(project) {
-            project.included = true;
-
-            //if(!project.included) {
-            //    project.included = true;
-            //    $scope.checkProject(project);
-            //}
+            if(!project.included) {
+                project.included = true;
+                $scope.checkProject(project);
+            }
         });
-
-        $scope.uncheckedProjectIds = [];
-        $scope.cookieState();
     };
 
     //on checkbox change

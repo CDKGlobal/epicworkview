@@ -16,7 +16,7 @@ angular.module('WorkView').controller('projectController', ['$rootScope', '$scop
     // as a list of a number and a string
     // returns a shorter string if short is true
     $scope.millisecondToString = function(milli, shorten) {
-        currentTime = new Date().getTime();
+        currentTime = Date.now();
         lastUpdated = currentTime - milli;
         seconds = Math.round(lastUpdated / 1000);
         if (seconds < 60) {

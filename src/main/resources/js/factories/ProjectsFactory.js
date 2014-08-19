@@ -17,7 +17,7 @@ angular.module('WorkView').factory('ProjectsFactory', ['$rootScope', '$http', '$
         $http.get(
             context +'/rest/epic/1/projects.json?seconds=' + seconds
         ).success(function(data) {
-            lastUpdateTime = new Date().getTime();
+            lastUpdateTime = Date.now();
 
             //add the new projects to the projects array
             updateElementList(projects, data, elementEnum.PROJECT);
@@ -98,7 +98,7 @@ angular.module('WorkView').factory('ProjectsFactory', ['$rootScope', '$http', '$
      * (elements should be in time order)
      */
     function removeOldElements(elements, days) {
-        var time = new Date().getTime();
+        var time = Date.now();
         var i = elements.length - 1;
         var element = elements[i];
         var removedElements = [];

@@ -1,4 +1,4 @@
-angular.module('WorkView').controller('workViewController', ['$scope', '$window', '$modal', 'ProjectsFactory', 'FullscreenFactory', 'Context', function($scope, $window, $modal, projectsFactory, fullscreenFactory, context) {
+angular.module('WorkView').controller('workViewController', ['$scope', '$window', '$timeout', '$modal', 'ProjectsFactory', 'FullscreenFactory', 'Context', function($scope, $window, $timeout, $modal, projectsFactory, fullscreenFactory, context) {
     $scope.projects = projectsFactory.getProjects();
     $scope.loading = projectsFactory.isLoading();
     $scope.usingNewColors = false;
@@ -97,20 +97,20 @@ angular.module('WorkView').controller('workViewController', ['$scope', '$window'
     	return projectsFactory.getFilterDays();
     };
 
-    // set timer for closing windows after inactivity
-    var inactivityTimer;
-    jQuery(window).mousemove(inactivityReset);
-    jQuery(window).scroll(inactivityReset);
-    jQuery(window).click(inactivityReset);
-
-    function inactivityReset() {
-        clearTimeout(inactivityTimer);
-        inactivityTimer = setTimeout(function() {
+    $scope.inactivityReset = function() {
+        $timeout.cancel(inactivityTimer);
+        inactivityTimer = $timeout(function() {
             if(fullscreenFactory.getFullscreen()) {
                 jQuery('#scroll-to-top').click();
                 $scope.hideEpicInfo();
                 $scope.$emit('hideModal');
             }
         }, 90000);
-    }
+    };
+
+    // set timer for closing windows after inactivity
+    var inactivityTimer;
+    jQuery(window).mousemove($scope.inactivityReset);
+    jQuery(window).scroll($scope.inactivityReset);
+    jQuery(window).click($scope.inactivityReset);
 }]);

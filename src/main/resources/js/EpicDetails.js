@@ -199,7 +199,7 @@ function epicDetailsController ($scope, $http, $q, $location, $window) {
         });
 
         list.push({
-            date: Date.now();,
+            date: Date.now(),
             number: 0
         });
 

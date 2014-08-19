@@ -70,7 +70,7 @@
 	   	</div>
 		
 	    <ul id="projects" class="list-section project-list" ng-show="!loading">
-	      	<li class="project-row" ng-repeat="project in projects | filter: {included:true}" ng-controller="projectController">
+	      	<li class="project-row" ng-repeat="project in projects" ng-show="project.included" ng-controller="projectController">
 		   		<div class="project-content">
 		   			<div class="column1">
 			   			<div class="project-icon-container">

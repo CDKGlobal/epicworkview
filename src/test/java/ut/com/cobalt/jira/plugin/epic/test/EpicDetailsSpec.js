@@ -1284,20 +1284,22 @@ describe('epicDetailsController', function(){
               
     }));
     
+    
+    
     //test
     
-    
-    
+    // test whether the default worktype is story    
     it('should initially take the worktype as stories', function(){
    		expect(scope.workType).toEqual(1);
     });
     
+    // test it get the epic key
     it('should get the epic key', function(){
     	expect(scope.key).toEqual("ADVADM-316");
     });
     
     
-    
+    // test it make 4 http GET requests
     it('should make 4 http GET requests for epic details', function () {
     	httpBackend.expectGET(scope.getBaseURL+"/rest/api/2/issue/ADVADM-316");
         httpBackend.expectGET(scope.getBaseURL+'/rest/api/2/search?jql="Epic Link"=ADVADM-316 order by resolutiondate desc'); 
@@ -1306,7 +1308,8 @@ describe('epicDetailsController', function(){
         httpBackend.flush();
         
     });
-    
+
+	// verify the eipc name
     it('should get the eipic name', function(){
     	httpBackend.flush();
     	expect(scope.epicName).toEqual("Market Class Intent");
@@ -1341,6 +1344,30 @@ describe('epicDetailsController', function(){
     	httpBackend.flush();
     	expect(scope.numofStories).toEqual(0);
     });
+    
+    it('should completed 0 story points in the past 7 days', function(){
+    	scope.workType = 2;
+    	httpBackend.flush();
+    	expect(scope.numofStories).toEqual(0);
+    });
+    
+    it('should completed 0 work hours in the past 7 days', function(){
+    	scope.workType = 3;
+    	httpBackend.flush();
+    	expect(scope.numofStories).toEqual(0);
+    });
+    
+    it('should get the correspondent worktype string according to the selection of worktype', function(){
+    	scope.workType = 0;
+    	expect(scope.workTypeToString()).toEqual("Unknown");
+    	scope.workType = 1;
+    	expect(scope.workTypeToString()).toEqual("Stories");
+    	scope.workType = 2;
+    	expect(scope.workTypeToString()).toEqual("Story Points");
+    	scope.workType = 3;
+    	expect(scope.workTypeToString()).toEqual("Work Hours");
+    });
+    
     
     it('should format the work hours', function(){
     	scope.workType = 3;

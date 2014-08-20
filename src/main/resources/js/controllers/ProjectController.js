@@ -37,29 +37,9 @@ angular.module('WorkView').controller('projectController', ['$rootScope', '$scop
     // The max number of contributors to display
     var maxContributors = 16;
 
-    // helper to get list of contributors
-    $scope.getContributorsHelper = function(result, element) {
-        if (!$utilities.isNull(element.contributor) && $utilities.indexOf(result, element.contributor) === -1) {
-            result.push(element.contributor);
-        }
-        if (!$utilities.isNull(element.contributors)) {
-            angular.forEach(element.contributors, function(contributor) {
-                if ($utilities.indexOf(result, contributor) === -1) {
-                    result.push(contributor);
-                }
-            });
-        }
-        if (!$utilities.isNull(element.children)) {
-            angular.forEach(element.children, function(child) {
-                $scope.getContributorsHelper(result, child);
-            });
-        }
-    };
-
     // returns all contributors for this project in order of time worked on project
     $scope.getContributors = function(project) {
-        var contributors = [];
-        $scope.getContributorsHelper(contributors, project);
+        var contributors = $utilities.getContributors(project);
         // sort contributors
         contributors.sort(function(a, b){
         	return b.timestamp - a.timestamp;

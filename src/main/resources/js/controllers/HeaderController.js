@@ -10,7 +10,7 @@ angular.module('WorkView').controller('headerController', ['$scope', '$date', '$
     };
 
     $scope.projectCount = function() {
-        return $scope.projects().length
+        return $scope.projects().length;
     };
 
     $scope.countStories = function(completed) {

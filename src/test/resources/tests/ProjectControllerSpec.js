@@ -206,6 +206,10 @@ describe('Unit: ProjectController Tests', function() {
         expect(scope.isClicked({ id: 200 })).toBeFalsy();
     });
 
+    it('should generate a list of offset for the post its based on the epic\'s name length', function() {
+        expect(scope.getPostItOffsets('01234567890123456789012345678901')).toBeDefined();
+    });
+
     it('should shorten long epic names', function() {
         var string = '01234567890123456789012345678901';
         expect(scope.shorten(string)).toEqual(string);

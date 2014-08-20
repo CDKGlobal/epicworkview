@@ -36,7 +36,7 @@
 			<button type="button" class="btn btn-warning dropdown-toggle">
 				{{projectName}} <span class="caret"></span>
 			</button>
-			<ul class="dropdown-menu epic-dropdown-menu" role="menu">
+			<ul class="dropdown-menu dropdown-menu-right epic-dropdown-menu" role="menu">
 				<li ng-hide="epics.length==0" ng-repeat="epic in epics" ng-click="redirect(epic.location)"><a href="#">{{epic.name}}</a></li>
 			</ul>
 		</div>

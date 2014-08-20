@@ -22,10 +22,13 @@ angular.module('WorkView').controller('headerController', ['$scope', '$date', '$
     };
 
     $scope.contributors = function() {
-        var result = 0;
+        var result = {};
         angular.forEach($scope.projects(), function(project) {
-            result += $utilities.getContributors(project).length;
+            angular.forEach($utilities.getContributors(project), function(contributor) {
+                result[contributor.id] = true;
+            });
         });
-        return result;
+
+        return Object.keys(result).length;
     };
 }]);

@@ -50,7 +50,7 @@ module.exports = function(config) {
     },
 
     junitReporter: {
-        outputFile: '../../../target/surefire-reports/test-results.xml'
+        outputFile: '../../../target/test-reports/test-results.xml'
     },
 
 

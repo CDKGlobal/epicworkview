@@ -181,6 +181,17 @@
 	overflow: hidden;
 }
 
+.project-header {
+	padding-left: 10%;
+	padding-right: 10%;
+}
+
+.project-header > div {
+	float: left;
+	width: 25%;
+	text-align: center;
+}
+
 .column1 {
 	float: left;
 	width: 18%;
@@ -691,6 +702,8 @@ story:nth-child(5n) div {
 
 .info-window {
 	padding: 15px;
+	max-height: 550px;
+	overflow-y: auto;
 }
 
 .info-window h1, h2 {

@@ -71,8 +71,11 @@
 		
 	    <ul id="projects" class="list-section project-list" ng-show="!loading">
 			<li class="project-row" ng-controller="headerController">
-				<div class="project-content">
-					{{projects}} projects, {{countStories(true)}} stories completed, {{countStories(false)}} stories in flight, {{contributors()}} contributors
+				<div class="project-content project-header">
+					<div><span class="bold">{{projectCount()}}</span> projects</div>
+					<div><span class="bold">{{countStories(true)}}</span> stories completed</div>
+					<div><span class="bold">{{countStories(false)}}</span> stories in flight</div>
+					<div><span class="bold">{{contributors()}}</span> contributors</div>
 				</div>
 			</li>
 	      	<li class="project-row" ng-repeat="project in projects" ng-show="project.included" ng-controller="projectController">
@@ -165,6 +168,18 @@
 				<p>To view more details about an epic, click on the information button that appears on top of the epic you are
 				currently viewing. The epic details page displays displays a list of stories, a progress bar for the epic, and
 				a chart showing story creation and completion with a forecasted completion date for the epic. </p>
+				<h2>Source Code</h2>
+				<p>Epic Work View is open source. All source code is available on 
+					<a href="https://github.com/cobaltdev/epicworkview">GitHub</a>
+				under the 
+					<a href="https://github.com/cobaltdev/epicworkview/blob/master/LICENSE">BSD ISC licence</a>. 
+				</p>
+				<h2>Feedback</h2>
+				<p>We appreciate any feedback. Bugs, feature requests, or other issues can be filed
+					<a href="https://github.com/cobaltdev/epicworkview/issues">here</a>. 
+				If you would like to leave a review, please see our listing in the 
+					<a href="https://marketplace.atlassian.com/plugins/com.cobalt.jira.plugin.epic.EpicPlugin">Atlassian Marketplace</a>. 
+				</p>
 			</div>
 		</script>
     </div>

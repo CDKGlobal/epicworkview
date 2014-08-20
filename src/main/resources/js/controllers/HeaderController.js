@@ -1,15 +1,31 @@
 angular.module('WorkView').controller('headerController', ['$scope', '$date', '$utilities', 'ProjectsFactory', function($scope, $date, $utilities, projectsFactory) {
-    $scope.projects = projectsFactory.getProjects().length;
+    $scope.projects = function() {
+        var projects = [];
+        angular.forEach(projectsFactory.getProjects(), function(project) {
+            if(project.included) {
+                projects.push(project);
+            }
+        });
+        return projects;
+    };
+
+    $scope.projectCount = function() {
+        return $scope.projects().length
+    };
 
     $scope.countStories = function(completed) {
         var result = 0;
-        angular.forEach(projectsFactory.getProjects(), function(project) {
+        angular.forEach($scope.projects(), function(project) {
             result += $utilities.storyCount(project, completed);
         });
         return result;
     };
 
     $scope.contributors = function() {
-        return 10;
+        var result = 0;
+        angular.forEach($scope.projects(), function(project) {
+            result += $utilities.getContributors(project).length;
+        });
+        return result;
     };
 }]);

@@ -25,4 +25,20 @@ describe('Unit: UtilityService Tests', function() {
         expect(utilities.isNull(null)).toBeTruthy();
         expect(utilities.isNull({})).toBeFalsy();
     });
+
+    it('should be able to get the list of contributors in a project', function() {
+        var contributors = utilities.getContributors({
+            contributors: [
+                { id: 100 },
+                { id: 200 },
+                { id: 200 },
+            ],
+            children: [
+                { contributor: { id: 100 } },
+                { contributor: { id: 300 } }
+            ]
+        });
+
+        expect(contributors.length).toEqual(3);
+    });
 });

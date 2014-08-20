@@ -24,6 +24,7 @@
 
     <!-- module independent angular services -->
     <resource type="download" name="DateFactory.js" location="/js/factories/DateFactory.js"/>
+    <resource type="download" name="UtilityService.js" location="/js/services/UtilityService.js"/>
 
     <resource type="download" name="ScrollToTop.js" location="/js/ScrollToTop.js"/>
 
@@ -33,6 +34,7 @@
     <resource type="download" name="ProjectController.js" location="/js/controllers/ProjectController.js"/>
     <resource type="download" name="EpicController.js" location="/js/controllers/EpicController.js"/>
     <resource type="download" name="NavbarController.js" location="/js/controllers/NavbarController.js"/>
+    <resource type="download" name="HeaderController.js" location="/js/controllers/HeaderController.js"/>
 
     <resource type="download" name="FullscreenFactory.js" location="/js/factories/FullscreenFactory.js"/>
     <resource type="download" name="ProjectsFactory.js" location="/js/factories/ProjectsFactory.js"/>

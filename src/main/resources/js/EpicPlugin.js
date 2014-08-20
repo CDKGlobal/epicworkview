@@ -1,5 +1,5 @@
 //initialize our module with ngAnimate, ngCookies and ui.bootstrap as dependencies
-angular.module('WorkView', ['ngAnimate', 'ngCookies', 'ui.bootstrap', 'epic-date']);
+angular.module('WorkView', ['ngAnimate', 'ngCookies', 'ui.bootstrap', 'epic-date', 'epic-utilities']);
 
 //enable html5 mode so that $location.search() works as expected
 angular.module('WorkView').config(function($locationProvider) {

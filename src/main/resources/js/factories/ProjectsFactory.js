@@ -1,4 +1,4 @@
-angular.module('WorkView').factory('ProjectsFactory', ['$rootScope', '$http', '$interval', '$date', 'Context', function($rootScope, $http, $interval, $date, context) {
+angular.module('WorkView').factory('ProjectsFactory', ['$rootScope', '$http', '$interval', '$date', '$utilities', 'Context', function($rootScope, $http, $interval, $date, $utilities, context) {
     var elementEnum = {
     	PROJECT: 0,
     	EPIC: 1,
@@ -29,7 +29,7 @@ angular.module('WorkView').factory('ProjectsFactory', ['$rootScope', '$http', '$
     function updateElementList(currentList, newList, elementType) {
         angular.forEach(newList, function(element) {
             // find index of the new element in the current list
-            var elementIndex = indexOf(currentList, element);
+            var elementIndex = $utilities.indexOf(currentList, element);
             var savedElement = null;
             // if the element isn't there and isn't a deleted element, add it
             if (elementIndex === -1 && element.timestamp !== -1) {
@@ -42,7 +42,7 @@ angular.module('WorkView').factory('ProjectsFactory', ['$rootScope', '$http', '$
                     $rootScope.$broadcast('newProject', element);
                 }
                 // update the list held in the current element (to sort and remove elements)
-                if (!isNull(element.children)) {
+                if (!$utilities.isNull(element.children)) {
                     updateElementList(savedElement.children, element.children, elementType + 1);
                 }
             } else if (elementIndex !== -1 && element.timestamp === -1) {
@@ -67,13 +67,13 @@ angular.module('WorkView').factory('ProjectsFactory', ['$rootScope', '$http', '$
                     savedElement.contributors = element.contributors;
                 }
                 // update the list held in the current element, if it has one
-                if (!isNull(element.children)) {
+                if (!$utilities.isNull(element.children)) {
                     updateElementList(savedElement.children, element.children, elementType + 1);
                 }
             }
         });
         // sort the list and remove all old elements
-        if (!isNull(currentList)) {
+        if (!$utilities.isNull(currentList)) {
             currentList.sort(function(a, b) {
                 return b.timestamp - a.timestamp;
             });
@@ -104,28 +104,6 @@ angular.module('WorkView').factory('ProjectsFactory', ['$rootScope', '$http', '$
         }
 
         return removedElements;
-    }
-
-    /** Helper Functions **/
-
-    /*
-     * Finds if the element is already in the list and returns the index, based on the element ids
-     * returns -1 if not found
-     */
-    function indexOf(list, elem) {
-        if(!isNull(elem)) {
-            for(var i = 0; i < list.length; i++) {
-                //if element ids are equal
-                if(list[i].id === elem.id) {
-                    return i;
-                }
-            }
-        }
-        return -1;
-    }
-
-    function isNull(variable) {
-        return variable === undefined || variable === null;
     }
 
     getProjectsSince(filterDays * 24 * 60 * 60);

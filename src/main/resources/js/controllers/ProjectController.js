@@ -1,15 +1,7 @@
-angular.module('WorkView').controller('projectController', ['$rootScope', '$scope', '$date', 'ProjectsFactory', function($rootScope, $scope, $date, projectsFactory) {
+angular.module('WorkView').controller('projectController', ['$rootScope', '$scope', '$date', '$utilities', 'ProjectsFactory', function($rootScope, $scope, $date, $utilities, projectsFactory) {
     // Returns the number of completed stories for the project
     $scope.getCompletedStories = function(project) {
-        var res = 0;
-        angular.forEach(project.children, function(epic) {
-            angular.forEach(epic.children, function(story) {
-                if (story.completed) {
-                	res++;
-                }
-            });
-        });
-        return res;
+        return $utilities.storyCount(project, true);
     };
 
     // Return the difference between the current time and the given time,
@@ -47,17 +39,17 @@ angular.module('WorkView').controller('projectController', ['$rootScope', '$scop
 
     // helper to get list of contributors
     $scope.getContributorsHelper = function(result, element) {
-        if (!$scope.isNull(element.contributor) && $scope.indexOf(result, element.contributor) === -1) {
+        if (!$utilities.isNull(element.contributor) && $utilities.indexOf(result, element.contributor) === -1) {
             result.push(element.contributor);
         }
-        if (!$scope.isNull(element.contributors)) {
+        if (!$utilities.isNull(element.contributors)) {
             angular.forEach(element.contributors, function(contributor) {
-                if ($scope.indexOf(result, contributor) === -1) {
+                if ($utilities.indexOf(result, contributor) === -1) {
                     result.push(contributor);
                 }
             });
         }
-        if (!$scope.isNull(element.children)) {
+        if (!$utilities.isNull(element.children)) {
             angular.forEach(element.children, function(child) {
                 $scope.getContributorsHelper(result, child);
             });
@@ -82,26 +74,6 @@ angular.module('WorkView').controller('projectController', ['$rootScope', '$scop
         }
 
         return contributors;
-    };
-
-    /*
-     * Finds if the element is already in the list and returns the index, based on the element ids
-     * returns -1 if not found
-     */
-    $scope.indexOf = function(list, elem) {
-        if(!$scope.isNull(elem)) {
-            for(var i = 0; i < list.length; i++) {
-                //if element ids are equal
-                if(list[i].id === elem.id) {
-                    return i;
-                }
-            }
-        }
-        return -1;
-    };
-
-    $scope.isNull = function(variable) {
-        return variable === undefined || variable === null;
     };
 
     // Return how many extra contributors there are for the project after

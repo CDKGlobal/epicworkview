@@ -137,25 +137,6 @@ describe('Unit: ProjectController Tests', function() {
         expect(project.contributorCount).toEqual(17);
     });
 
-    it('should be able to get the indexOf an epic based on the id', function() {
-        var epics = [
-            { id: 100 },
-            { id: 200 },
-            { id: 300 },
-            { id: 400 }
-        ];
-
-        expect(scope.indexOf(epics, null)).toEqual(-1);
-        expect(scope.indexOf(epics, { id: 500 })).toEqual(-1);
-        expect(scope.indexOf(epics, { id: 300 })).toEqual(2);
-    });
-
-    it('should be able to determine if something is null', function() {
-        expect(scope.isNull(undefined)).toBeTruthy();
-        expect(scope.isNull(null)).toBeTruthy();
-        expect(scope.isNull({})).toBeFalsy();
-    });
-
     it('should calculate the number of extra contributors', function() {
         var project = {
             contributorCount: 17

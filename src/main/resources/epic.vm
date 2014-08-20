@@ -70,6 +70,11 @@
 	   	</div>
 		
 	    <ul id="projects" class="list-section project-list" ng-show="!loading">
+			<li class="project-row" ng-controller="headerController">
+				<div class="project-content">
+					{{projects}} projects, {{countStories(true)}} stories completed, {{countStories(false)}} stories in flight, {{contributors()}} contributors
+				</div>
+			</li>
 	      	<li class="project-row" ng-repeat="project in projects" ng-show="project.included" ng-controller="projectController">
 		   		<div class="project-content">
 		   			<div class="column1">

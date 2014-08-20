@@ -207,14 +207,60 @@
 }
 
 .project-header {
-	padding-left: 10%;
-	padding-right: 10%;
+	padding: 0 10%;
+	max-height: 100px;
+	-webkit-transition: all .5s linear;
+	        transition: all .5s linear;
+}
+
+.project-header-bar {
+	width: 100%;
+	height: 20px;
+	position: absolute;
+	top: -20px;
+}
+
+.project-header-opener {
+	position: absolute;
+	top: 3px;
+	left: calc(50% - 25px);
+	height: 15px;
+	width: 50px;
+	border: 1px solid #e5e5e5;
+	border-radius: 5px;
+	background: #fff;
+	cursor: pointer;
+	text-align: center;
+}
+
+.project-header > button {
+	display: none;
+}
+
+.project-header:hover > button {
+	display: block;
+}
+
+.project-header-opener:hover {
+	background: #e5e5e5;
+}
+
+.project-header.ng-hide {
+	max-height: 0;
 }
 
 .project-header > div {
 	float: left;
 	width: 25%;
+	margin-top: 15px;
+	margin-bottom: 15px;
 	text-align: center;
+}
+
+.top-right {
+	position: absolute;
+	top: 6px;
+	right: 10px;
 }
 
 .column1 {

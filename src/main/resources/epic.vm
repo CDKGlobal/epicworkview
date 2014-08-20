@@ -71,7 +71,15 @@
 		
 	    <ul id="projects" class="list-section project-list" ng-show="!loading">
 			<li class="project-row" ng-controller="headerController">
-				<div class="project-content project-header">
+				<div class="project-header-bar" ng-mouseover="showHeaderOpener=true" ng-mouseleave="showHeaderOpener=false">
+					<div class="project-header-opener" ng-show="!showHeader && showHeaderOpener" ng-click="showHeader=true">
+						<i class="fa fa-ellipsis-h"></i>
+					</div>
+				</div>
+				<div class="project-content project-header" ng-show="showHeader">
+					<button type="button" class="close top-right" ng-click="showHeader=false">
+						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+					</button>
 					<div><span class="bold">{{projectCount()}}</span> projects</div>
 					<div><span class="bold">{{countStories(true)}}</span> stories completed</div>
 					<div><span class="bold">{{countStories(false)}}</span> stories in flight</div>

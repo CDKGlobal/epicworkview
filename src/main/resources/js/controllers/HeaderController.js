@@ -1,4 +1,8 @@
 angular.module('WorkView').controller('headerController', ['$scope', '$date', '$utilities', 'ProjectsFactory', function($scope, $date, $utilities, projectsFactory) {
+	
+	$scope.showHeader = true;
+	$scope.showHeaderOpener = false;
+	
     $scope.projects = function() {
         var projects = [];
         angular.forEach(projectsFactory.getProjects(), function(project) {

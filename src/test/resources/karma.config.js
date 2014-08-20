@@ -31,9 +31,10 @@ module.exports = function(config) {
 
     plugins:[
      'karma-jasmine',
+     'karma-junit-reporter',
      'karma-coverage',
      'karma-phantomjs-launcher',
-     'karma-chrome-launcher',
+     'karma-chrome-launcher'
     ],
 
     // preprocess matching files before serving them to the browser
@@ -48,11 +49,15 @@ module.exports = function(config) {
       subdir: '.'
     },
 
+    junitReporter: {
+        outputFile: '../../../target/surefire-reports/test-results.xml'
+    },
+
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress', 'coverage'],
+    reporters: ['progress', 'junit', 'coverage'],
 
     // web server port
     port: 9876,

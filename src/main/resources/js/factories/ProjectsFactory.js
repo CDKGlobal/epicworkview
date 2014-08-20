@@ -21,10 +21,7 @@ angular.module('WorkView').factory('ProjectsFactory', ['$rootScope', '$http', '$
 
             //add the new projects to the projects array
             updateElementList(projects, data, elementEnum.PROJECT);
-            //Todo animateEpics();
             loading = false;
-        }).error(function() {
-            console.log('error loading projects');
         });
     }
 
@@ -39,8 +36,7 @@ angular.module('WorkView').factory('ProjectsFactory', ['$rootScope', '$http', '$
                 savedElement = element;
                 //add to front of list
                 currentList.unshift(element);
-                // animate
-                //Todo addToAnimationQueue(savedElement, elementType);
+
                 // set its state to true if it is a project and not in the list of unchecked projects
                 if(elementType === elementEnum.PROJECT) {
                     $rootScope.$broadcast('newProject', element);
@@ -59,10 +55,7 @@ angular.module('WorkView').factory('ProjectsFactory', ['$rootScope', '$http', '$
             } else if (elementIndex !== -1) {
                 // element in current list, so update it
                 savedElement = currentList[elementIndex];
-                // animate any updated epics
-                /*Todo if (savedElement.timestamp !== element.timestamp) {
-                    addToAnimationQueue(savedElement, elementType);
-                }*/
+
                 savedElement.timestamp = element.timestamp;
                 savedElement.name = element.name;
                 savedElement.key = element.key;

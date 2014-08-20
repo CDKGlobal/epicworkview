@@ -45,14 +45,15 @@
 
     <resource type="download" name="EpicDetails.prefixed.css" location="/css/EpicDetails.prefixed.css"/>
 
-    <!-- module independent angular services -->
-    <resource type="download" name="DateFactory.js" location="/js/factories/DateFactory.js"/>
+    <resource type="download" name="moment.min.js" location="/lib/js/moment.min.js"/>
 
     <resource type="download" name="jquery.flot.min.js" location="lib/js/jquery.flot.min.js"/>
     <resource type="download" name="jquery.flot.selection.min.js" location="lib/js/jquery.flot.selection.min.js"/>
     <resource type="download" name="jquery.flot.time.min.js" location="lib/js/jquery.flot.time.min.js"/>
     <resource type="download" name="jquery.flot.resize.min.js" location="lib/js/jquery.flot.resize.min.js"/>
+
     <resource type="download" name="EpicDetails.js" location="/js/EpicDetails.js"/>
+
     <resource type="download" name="images/" location="images"/>
     <context>EpicDetails</context>
   </web-resource>

@@ -185,14 +185,14 @@ function epicDetailsController ($scope, $http, $q, $location, $window) {
         angular.forEach(stories, function(story) {
             var value = $scope.getValue(story, $scope.workType);
             list.push({
-                date: Date.parse(story.fields.created),
+                date: moment(story.fields.created),
                 number: value
             });
 
             var resolution = story.fields.resolutiondate;
             if(resolution !== undefined && resolution !== null) {
                 list.push({
-                    date: Date.parse(story.fields.resolutiondate),
+                    date: moment(story.fields.resolutiondate),
                     number: -value
                 });
             }
@@ -242,7 +242,7 @@ function epicDetailsController ($scope, $http, $q, $location, $window) {
         var storyNum = 0;       		
 		
         angular.forEach(stories, function(story) {
-            if(story.fields.resolutiondate !== null && Date.parse(story.fields.resolutiondate) >= cutoffDate) {
+            if(story.fields.resolutiondate !== null && moment(story.fields.resolutiondate) >= cutoffDate) {
                 storyNum += $scope.getValue(story, $scope.workType);
             }
         });
@@ -335,7 +335,7 @@ function epicDetailsController ($scope, $http, $q, $location, $window) {
         // add to each point for each story in that range section
         angular.forEach($scope.stories, function(story) {
             // if creation is true, use story's created date. Otherwise, use resolution date
-            var date = Date.parse(creation ? story.fields.created : story.fields.resolutiondate);
+            var date = moment(creation ? story.fields.created : story.fields.resolutiondate);
             // add to the point
             if (date > min && date < max) {
                 var i = Math.floor((date - min) / range) + 1;
@@ -348,7 +348,7 @@ function epicDetailsController ($scope, $http, $q, $location, $window) {
     //nicely format the date string
     $scope.formatResolutionDate = function(date) {
         if(date !== undefined && date !== null) {
-            return 'resolved: ' + new Date(Date.parse(date)).toLocaleString();
+            return 'resolved: ' + new Date(moment(date)).toLocaleString();
         }
         else {
             return 'unresolved';
@@ -598,8 +598,8 @@ function chartDirective() {
             function zoom(min, max) {
                 scope.stories = [];
                 angular.forEach(scope.fullStories, function(story) {
-                    var created = Date.parse(story.fields.created);
-                    var resolved = story.fields.resolutiondate !== null ? Date.parse(story.fields.resolutiondate) : null;
+                    var created = moment(story.fields.created);
+                    var resolved = story.fields.resolutiondate !== null ? moment(story.fields.resolutiondate) : null;
                     if (created <= max && (resolved === null || resolved >= min)) {
                         scope.stories.push(story);
                     }

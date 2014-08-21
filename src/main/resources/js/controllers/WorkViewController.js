@@ -107,7 +107,7 @@ angular.module('WorkView').controller('workViewController', ['$scope', '$window'
                 $scope.hideEpicInfo();
                 $scope.$emit('hideModal');
             }
-        }, 90000);
+        }, 300000);
     };
 
     // set timer for closing windows after inactivity

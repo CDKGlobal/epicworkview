@@ -238,14 +238,14 @@ describe('Unit: WorkViewController Tests', function() {
         expect(scope.setupModal.calls[1].args).toMatch(regex);
     });
 
-    it('should hide epic info after 90 seconds when in fullscreen', function() {
+    it('should hide epic info after 300 seconds when in fullscreen', function() {
         var called = false;
         rootScope.$on('hideModal', function(event) {
             called = true;
         });
 
         scope.inactivityReset();
-        timeout.flush(90000);
+        timeout.flush(300000);
 
         expect(called).toBeTruthy();
 
@@ -253,7 +253,7 @@ describe('Unit: WorkViewController Tests', function() {
         fullscreen = false;
 
         scope.inactivityReset();
-        timeout.flush(90000);
+        timeout.flush(300000);
 
         expect(called).toBeFalsy();
         timeout.verifyNoPendingTasks();

@@ -102,7 +102,7 @@ angular.module('WorkView').controller('navBarController', ['$scope', '$filter', 
             $scope.firstChar = false;
             $scope.clearCheckboxes();
         }
-    }
+    };
 
     /*----- Time Filtering -----*/
     $scope.filterDays = projectsFactory.getFilterDays();

@@ -4,6 +4,7 @@ describe('Unit: WorkViewController Tests', function() {
         scope,
         ctrl,
         window,
+        modal,
         projectsFactory,
         fullscreenFactory,
         projects,
@@ -18,10 +19,11 @@ describe('Unit: WorkViewController Tests', function() {
 
     beforeEach(module('WorkView'));
 
-    beforeEach(inject(function($rootScope, $controller, $timeout) {
+    beforeEach(inject(function($rootScope, $controller, $timeout, $modal) {
         rootScope = $rootScope;
         timeout = $timeout;
         scope = $rootScope.$new();
+        modal = $modal;
 
         projects = [];
         loading = true;
@@ -255,5 +257,22 @@ describe('Unit: WorkViewController Tests', function() {
 
         expect(called).toBeFalsy();
         timeout.verifyNoPendingTasks();
+    });
+
+    it('should open a modal when in fullscreen mode', function() {
+        var dismissed = false;
+        spyOn(modal, 'open').andCallFake(function() {
+            return {
+                dismiss: function(reason) {
+                    dismissed = true;
+                }
+            };
+        });
+
+        scope.setupModal('/test');
+        rootScope.$emit('hideModal');
+
+        expect(modal.open).toHaveBeenCalled();
+        expect(dismissed).toBeTruthy();
     });
 });

@@ -25,12 +25,8 @@ describe('Unit: ProjectController Tests', function() {
             children: [
                 {
                     children: [
-                        {
-                            completed: true
-                        },
-                        {
-                            completed: false
-                        }
+                        { completed: true },
+                        { completed: false }
                     ]
                 },
                 {

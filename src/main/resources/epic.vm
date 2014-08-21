@@ -39,7 +39,7 @@
     		<ul id="search-tab">
     			<li>
     				<div id="search-slideout">
-    					<input type="text" ng-model="query" autocomplete="off" placeholder="Find Projects..." wrap="off"/>
+    					<input type="text" ng-model="query" autocomplete="off" ng-change="initialClear()" placeholder="Find Projects..." wrap="off"/>
     					<i class="fa fa-search fa-2x"></i>
     					<div id="search-dropdown" style="background-color: #ebf2f9;">
     						<div style="text-align: center; padding-top: 5px;">

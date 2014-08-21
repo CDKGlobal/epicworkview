@@ -10,6 +10,8 @@ angular.module('WorkView').controller('navBarController', ['$scope', '$filter', 
     //the current search term
     $scope.query = '';
 
+    $scope.firstChar = true;
+
     /*----- Project Filtering -----*/
 
     $scope.search = function(item) {
@@ -94,6 +96,13 @@ angular.module('WorkView').controller('navBarController', ['$scope', '$filter', 
         var idString = $scope.uncheckedProjectIds.join();
         $location.search('ids', idString);
     };
+
+    $scope.initialClear = function() {
+        if($scope.firstChar) {
+            $scope.firstChar = false;
+            $scope.clearCheckboxes();
+        }
+    }
 
     /*----- Time Filtering -----*/
     $scope.filterDays = projectsFactory.getFilterDays();

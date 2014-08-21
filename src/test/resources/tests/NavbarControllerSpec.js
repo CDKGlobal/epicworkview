@@ -3,16 +3,18 @@ describe('Unit: NavbarController Tests', function() {
         scope,
         ctrl,
         location,
-        cookieStore;
+        cookieStore,
+        modal;
 
     beforeEach(module('WorkView'));
 
-    beforeEach(inject(function($rootScope, $controller, $location, $cookieStore) {
+    beforeEach(inject(function($rootScope, $controller, $location, $cookieStore, $modal) {
         rootScope = $rootScope;
         scope = $rootScope.$new();
 
         location = $location;
         cookieStore = $cookieStore;
+        modal = $modal;
 
         //clear out cookies to start fresh each time
         cookieStore.remove('projectIds');
@@ -225,4 +227,36 @@ describe('Unit: NavbarController Tests', function() {
          expect(scope.isFullscreen).toBeTruthy();
          expect(FullscreenFactory.toggleFullscreen).toHaveBeenCalled();
     }));
+
+    it('should clear all projects when you first type something', function() {
+        spyOn(scope, 'clearCheckboxes');
+
+        expect(scope.firstChar).toBeTruthy();
+
+        scope.initialClear();
+
+        expect(scope.firstChar).toBeFalsy();
+        expect(scope.clearCheckboxes).toHaveBeenCalled();
+
+        scope.initialClear();
+
+        expect(scope.clearCheckboxes.calls.length).toEqual(1);
+    });
+
+    it('should open a modal using the info template', function() {
+        var dismissed = false;
+        spyOn(modal, 'open').andCallFake(function() {
+            return {
+                dismiss: function(reason) {
+                    dismissed = true;
+                }
+            };
+        });
+
+        scope.open();
+
+        expect(modal.open).toHaveBeenCalled();
+        rootScope.$emit('hideModal');
+        expect(dismissed).toBeTruthy();
+    });
 });

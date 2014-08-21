@@ -216,5 +216,44 @@ describe('Unit: ProjectsFactory Tests', function() {
         expect(children[0].timestamp).toEqual(baseTimestamp - 1);
 
     }));
-    //todo test rest api code here
+
+    it('should update stories completed and contributors fields', inject(function(ProjectsFactory) {
+        httpBackend.expectGET(
+            '/jira/rest/epic/1/projects.json?seconds=' + (7 * 24 * 60 * 60)
+        ).respond([{
+            id: 100,
+            timestamp: baseTimestamp - 2,
+            children: [{
+                id: 10000,
+                timestamp: baseTimestamp - 2,
+                children: [{ id: 10100, timestamp: baseTimestamp - 2 }]
+            }]
+        }]);
+        httpBackend.flush();
+
+        httpBackend.expectGET(
+            '/jira/rest/epic/1/projects.json?seconds=5'
+        ).respond([{
+            id: 100,
+            timestamp: baseTimestamp - 1,
+            children: [{
+                id: 10000,
+                timestamp: baseTimestamp - 1,
+                children: [{
+                    id: 10100,
+                    timestamp: baseTimestamp - 1,
+                    completed: true,
+                    contributors: []
+                }]
+            }]
+        }]);
+        baseTimestamp += 5000;
+        interval.flush(5000);
+        httpBackend.flush();
+
+        var story = ProjectsFactory.getProjects()[0].children[0].children[0];
+
+        expect(story.completed).toBeTruthy();
+        expect(story.contributors).toEqual([]);
+    }));
 });

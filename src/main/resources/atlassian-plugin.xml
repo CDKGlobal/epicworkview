@@ -38,6 +38,8 @@
 
     <resource type="download" name="FullscreenFactory.js" location="/js/factories/FullscreenFactory.js"/>
     <resource type="download" name="ProjectsFactory.js" location="/js/factories/ProjectsFactory.js"/>
+    
+    <resource type="download" name="ProjectRowAniamtion.js" location="/js/animations/ProjectRowAnimation.js"/>
 
     <resource type="download" name="images/" location="/images"/>
     <context>EpicPlugin</context>

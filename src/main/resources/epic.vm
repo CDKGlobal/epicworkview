@@ -82,30 +82,26 @@
 					</button>
 					<div><span class="bold">{{projectCount()}}</span>
 						<ng-pluralize count="projectCount()"
-									when="{'0': ' project',
-											'one': ' project',
-											'other': ' projects'}">
+									when="{'one': ' project',
+										   'other': ' projects'}">
 						</ng-pluralize>
 					</div>
 					<div><span class="bold">{{countStories(true)}}</span> 
 						<ng-pluralize count="countStories(true)"
-									when="{'0': ' story completed',
-											'one': ' story completed',
-											'other': ' stories completed'}">
+									when="{'one': ' story completed',
+										   'other': ' stories completed'}">
 						</ng-pluralize>
 					</div>
 					<div><span class="bold">{{countStories(false)}}</span>
 						<ng-pluralize count="countStories(false)"
-									when="{'0': ' story in flight',
-											'one': ' story in flight',
-											'other': ' stories in flight'}">
+									when="{'one': ' story in flight',
+										   'other': ' stories in flight'}">
 						</ng-pluralize> 
 					</div>
 					<div><span class="bold">{{contributors()}}</span>
 						<ng-pluralize count="contributors()"
-									when="{'0': ' contributor',
-											'one': ' contributor',
-											'other': ' contributors'}">
+									when="{'one': ' contributor',
+										   'other': ' contributors'}">
 						</ng-pluralize> 
 					</div>
 				</div>

@@ -377,31 +377,6 @@ function epicDetailsController ($scope, $http, $q, $location, $window) {
         }
     };
 
-	$scope.workTypeToStringwithNum = function(number) {
-        switch($scope.workType) {
-        case 1:{
-        	if (number===1){
-        		return "Story";
-        	}
-            return "Stories";
-        }
-        case 2:{
-        	if (number===1){
-        		return "Story Point";
-        	}
-            return "Story Points";
-        }
-        case 3:{
-        	if (number===1){
-        		return "Work Hour";
-        	}
-            return "Work Hours";
-        }
-        default:
-            return "Unknown";
-        }
-    };
-    
     //rounds the given number to the hundreths place
     $scope.round = function(number) {
         return Math.floor(number * 100) / 100;

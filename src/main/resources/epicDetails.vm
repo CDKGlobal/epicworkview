@@ -62,7 +62,7 @@
 		
 		<div class="column2">
 			<div class="stories-completed">
-				{{format(numofStories)}} {{workTypeToStringwithNum(numofStories)}} have been completed within the last 7 days.
+				{{format(numofStories)}} {{workTypeToString()}} have been completed within the last 7 days.
 			</div>
 			<div class="story-list">
 				<ul>

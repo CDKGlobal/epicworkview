@@ -58,8 +58,7 @@ angular.module('WorkView').animation('.project-row', ['$rootScope', '$timeout', 
 	
 	function animationCleanup(element) {
 		jQuery(element).css({
-			'z-index':'',
-			'max-height':''
+			'z-index':''
 		});
 	}
 	

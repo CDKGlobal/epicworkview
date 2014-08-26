@@ -86,7 +86,7 @@
 					<div><span class="bold">{{contributors()}}</span> contributors</div>
 				</div>
 			</li>
-	      	<li class="project-row" ng-repeat="project in projects" ng-show="project.included" ng-controller="projectController">
+	      	<li class="project-row" ng-repeat="project in projects" id="{{project.id}}" ng-show="project.included" ng-controller="projectController">
 		   		<div class="project-content">
 		   			<div class="column1">
 			   			<div class="project-icon-container">

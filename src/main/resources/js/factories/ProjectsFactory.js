@@ -6,6 +6,7 @@ angular.module('WorkView').factory('ProjectsFactory', ['$rootScope', '$http', '$
     	SUBTASK: 3
     };
     var projects = [];
+    var projectTimestamps = {};
     var filterDays = 7;
     var loading = true;
     var refresh = true;
@@ -19,8 +20,11 @@ angular.module('WorkView').factory('ProjectsFactory', ['$rootScope', '$http', '$
         ).success(function(data) {
             lastUpdateTime = $date.now();
 
+            projectTimestamps = {};
+            
             //add the new projects to the projects array
             updateElementList(projects, data, elementEnum.PROJECT);
+            $rootScope.$broadcast('animateProjects');
             loading = false;
         });
     }
@@ -56,6 +60,11 @@ angular.module('WorkView').factory('ProjectsFactory', ['$rootScope', '$http', '$
                 // element in current list, so update it
                 savedElement = currentList[elementIndex];
 
+                // project has been updated, so animate
+                if (elementType === elementEnum.PROJECT && savedElement.timestamp !== element.timestamp) {
+                	projectTimestamps[element.id] = element.timestamp;
+                }
+                
                 savedElement.timestamp = element.timestamp;
                 savedElement.name = element.name;
                 savedElement.key = element.key;
@@ -128,6 +137,9 @@ angular.module('WorkView').factory('ProjectsFactory', ['$rootScope', '$http', '$
         },
         getFilterDays: function() {
             return filterDays;
+        },
+        getProjectTimestamps: function() {
+        	return projectTimestamps;
         },
         setFilterDays: function(days) {
             loading = true;

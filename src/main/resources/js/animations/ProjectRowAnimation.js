@@ -4,74 +4,59 @@ angular.module('WorkView').animation('.project-row', ['$rootScope', '$timeout', 
 	 * Move animations for an individual project
 	 */
 	
-	// move up
-	function animateUp(element, top) {
+	function animate(element, top, up) {
+		var backgroundColor = up ? '#6C3' : '#C64343';
+		var leftOffset = up ? '4%' : '-4%';
+		var zIndex = up ? 11 : 10;
 		jQuery(element).css({
-			top:top + 'px'
+			top:top + 'px',
+			'z-index':zIndex
 		});
 		jQuery(element.firstElementChild).animate({
-			'background-color':'#6C3'
-		}, 2000);
+			'background-color':backgroundColor
+		}, 1500);
+		jQuery(element.firstElementChild.children[1]).animate({
+			opacity:0
+		}, 1500);
+		jQuery(element.firstElementChild.children[0].children[2]).animate({
+			opacity:0
+		}, 1500);
 		jQuery(element).animate({
-			left:'4%'
-		}, 2000, function() {
-			animateUp2(element);
+			left:leftOffset
+		}, 1500, function() {
+			animate2(element, up);
 		});
 	}
 	
-	function animateUp2(element) {
-		jQuery(element).css({
-			'z-index':1
-		});
+	function animate2(element, up) {
 		jQuery(element).animate({
 			top:0
 		}, 2000, function() {
-			animateUp3(element);
+			animate3(element, up);
 		});
 	}
 	
-	function animateUp3(element) {
+	function animate3(element, up) {
+		jQuery(element.firstElementChild).animate({
+			'background-color':'#FFF'
+		}, 1500);
+		jQuery(element.firstElementChild.children[1]).animate({
+			opacity:1
+		}, 1500);
+		jQuery(element.firstElementChild.children[0].children[2]).animate({
+			opacity:1
+		}, 1500);
+		jQuery(element).animate({
+			left:0
+		}, 1500, function() {
+			animationCleanup(element);
+		});
+	}
+	
+	function animationCleanup(element) {
 		jQuery(element).css({
 			'z-index':''
 		});
-		jQuery(element.firstElementChild).animate({
-			'background-color':'#FFF'
-		}, 2000);
-		jQuery(element).animate({
-			left:0
-		}, 2000);
-	}
-	
-	// move down
-	function animateDown(element, top) {
-		jQuery(element).css({
-			top:top + 'px'
-		});
-		jQuery(element.firstElementChild).animate({
-			'background-color':'#C64343'
-		}, 2000);
-		jQuery(element).animate({
-			left:'-4%'
-		}, 2000, function() {
-			animateDown2(element);
-		});
-	}
-	
-	function animateDown2(element) {
-		jQuery(element).animate({
-			top:0
-		}, 2000, function() {
-			animateDown3(element);
-		});
-	}
-	
-	function animateDown3(element) {
-		jQuery(element.firstElementChild).animate({
-			'background-color':'#FFF'
-		}, 2000);
-		jQuery(element).animate({
-			left:0
-		}, 2000);
 	}
 	
 	// animate all projects
@@ -108,7 +93,7 @@ angular.module('WorkView').animation('.project-row', ['$rootScope', '$timeout', 
 							offsetAbove += jQuery('#' + id).outerHeight(true);
 						}
 					}
-					animateUp(domElement, jQuery(domElement).offset().top - topHeight - offsetAbove);
+					animate(domElement, jQuery(domElement).offset().top - topHeight - offsetAbove, true);
 				} else {
 					// element not in offset list, so animate down
 					var elementOffset = jQuery(domElement).offset().top;
@@ -116,7 +101,6 @@ angular.module('WorkView').animation('.project-row', ['$rootScope', '$timeout', 
 					
 					// find total height below this that is moving up
 					for (var offsetId in projectOffsets) {
-						console.log(jQuery(projectOffsets[offsetId]));
 						if (projectOffsets[offsetId] > elementOffset) {
 							newOffset -= jQuery('#' + offsetId).outerHeight(true);
 						}
@@ -124,7 +108,7 @@ angular.module('WorkView').animation('.project-row', ['$rootScope', '$timeout', 
 					
 					// only animate down if something below is moving up
 					if (newOffset !== 0) {
-						animateDown(domElement, newOffset);
+						animate(domElement, newOffset, false);
 					}
 				}
 			}

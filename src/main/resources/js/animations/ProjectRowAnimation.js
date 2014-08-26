@@ -1,7 +1,7 @@
 angular.module('WorkView').animation('.project-row', ['$rootScope', '$timeout', 'ProjectsFactory', function($rootScope, $timeout, projectsFactory) {
 	
 	// number of pixels for a row to be animating in order to simplify the animation
-	var simplifyHeight = 2000;
+	var simplifyHeight = 1600;
 	
 	/*
 	 * Move animations for an individual project

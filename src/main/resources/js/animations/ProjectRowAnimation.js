@@ -1,5 +1,8 @@
 angular.module('WorkView').animation('.project-row', ['$rootScope', '$timeout', 'ProjectsFactory', function($rootScope, $timeout, projectsFactory) {
 	
+	// number of pixels for a row to be animating in order to simplify the animation
+	var simplifyHeight = 2000;
+	
 	/*
 	 * Move animations for an individual project
 	 */
@@ -55,7 +58,8 @@ angular.module('WorkView').animation('.project-row', ['$rootScope', '$timeout', 
 	
 	function animationCleanup(element) {
 		jQuery(element).css({
-			'z-index':''
+			'z-index':'',
+			'max-height':''
 		});
 	}
 	
@@ -66,10 +70,15 @@ angular.module('WorkView').animation('.project-row', ['$rootScope', '$timeout', 
 		if (!jQuery.isEmptyObject(projectTimestamps)) {
 			var topHeight = 0;
 			var projectOffsets = {};
+			var simplify = false;
 			
 			// get list of project offsets
 			for (var project in projectTimestamps) {
-				projectOffsets[project] = jQuery('#' + project).offset().top;
+				var offset = jQuery('#' + project).offset().top;
+				if (offset > simplifyHeight) {
+					simplify = true;
+				}
+				projectOffsets[project] = offset;
 			}
 			
 			// loop through all projects in dom
@@ -106,8 +115,8 @@ angular.module('WorkView').animation('.project-row', ['$rootScope', '$timeout', 
 						}
 					}
 					
-					// only animate down if something below is moving up
-					if (newOffset !== 0) {
+					// only animate down if something below is moving up and not simplifying animation
+					if (newOffset !== 0 && !simplify) {
 						animate(domElement, newOffset, false);
 					}
 				}

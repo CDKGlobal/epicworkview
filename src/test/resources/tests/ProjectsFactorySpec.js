@@ -81,15 +81,15 @@ describe('Unit: ProjectsFactory Tests', function() {
         expect(projectsFactory.getProjects()).toEqual([]);
     }));
 
-    it('should request an update from the server every 5 seconds', inject(function(ProjectsFactory) {
+    it('should request an update from the server every 10 seconds', inject(function(ProjectsFactory) {
         httpBackend.expectGET(
             '/jira/rest/epic/1/projects.json?seconds=' + (7 * 24 * 60 * 60)
         ).respond([]);
         httpBackend.flush();
 
-        httpBackend.expectGET('/jira/rest/epic/1/projects.json?seconds=5').respond([]);
-        baseTimestamp += 5000;
-        interval.flush(5000);
+        httpBackend.expectGET('/jira/rest/epic/1/projects.json?seconds=10').respond([]);
+        baseTimestamp += 10000;
+        interval.flush(10000);
         httpBackend.flush();
     }));
 
@@ -99,18 +99,18 @@ describe('Unit: ProjectsFactory Tests', function() {
         ).respond([]);
         httpBackend.flush();
 
-        httpBackend.expectGET('/jira/rest/epic/1/projects.json?seconds=5').respond([]);
-        baseTimestamp += 5000;
-        interval.flush(5000);
+        httpBackend.expectGET('/jira/rest/epic/1/projects.json?seconds=10').respond([]);
+        baseTimestamp += 10000;
+        interval.flush(10000);
         httpBackend.flush();
         httpBackend.resetExpectations();
 
-        httpBackend.whenGET('/jira/rest/epic/1/projects.json?seconds=5').respond([]);
+        httpBackend.whenGET('/jira/rest/epic/1/projects.json?seconds=10').respond([]);
         httpBackend.expectGET(
             '/jira/rest/epic/1/projects.json?seconds=' + (7 * 24 * 60 * 60)
         ).respond([]);
-        baseTimestamp += 5000;
-        interval.flush((5 * 60 * 1000) - 5000);
+        baseTimestamp += 10000;
+        interval.flush((5 * 60 * 1000) - 10000);
 
         httpBackend.flush();
     }));
@@ -232,7 +232,7 @@ describe('Unit: ProjectsFactory Tests', function() {
         httpBackend.flush();
 
         httpBackend.expectGET(
-            '/jira/rest/epic/1/projects.json?seconds=5'
+            '/jira/rest/epic/1/projects.json?seconds=10'
         ).respond([{
             id: 100,
             timestamp: baseTimestamp - 1,
@@ -247,8 +247,8 @@ describe('Unit: ProjectsFactory Tests', function() {
                 }]
             }]
         }]);
-        baseTimestamp += 5000;
-        interval.flush(5000);
+        baseTimestamp += 10000;
+        interval.flush(10000);
         httpBackend.flush();
 
         var story = ProjectsFactory.getProjects()[0].children[0].children[0];

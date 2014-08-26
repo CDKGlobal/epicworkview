@@ -123,7 +123,7 @@ angular.module('WorkView').factory('ProjectsFactory', ['$rootScope', '$http', '$
             var secsSinceUpdate = ($date.now() - lastUpdateTime) / 1000;
             getProjectsSince(Math.ceil(secsSinceUpdate));
         }
-    }, 5000);
+    }, 10000);
 
     $interval(function() {
         if(refresh) {

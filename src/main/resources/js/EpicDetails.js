@@ -376,6 +376,32 @@ function epicDetailsController ($scope, $http, $q, $location, $window) {
             return "Unknown";
         }
     };
+    
+    // return a string representation of the work type
+    $scope.workTypeToString = function(number) {
+        switch($scope.workType) {
+        case 1:{
+        	if (number === 1){
+        		return "Story";
+        	}
+            return "Stories";
+        }
+        case 2:{
+        	if (number === 1){
+        		return "Story Point";
+        	}        
+            return "Story Points";
+        }
+        case 3:{
+        	if (number === 1){
+        		return "Work Hour";
+        	}
+            return "Work Hours";
+        }
+        default:
+            return "Unknown";
+        }
+    };
 
     //rounds the given number to the hundreths place
     $scope.round = function(number) {
@@ -565,7 +591,7 @@ function chartDirective() {
 						    msg += "From " + new Date(previousx).toLocaleDateString() + " to ";
 					    }
 
-                  	    msg += new Date(x).toLocaleDateString() + "<br/><strong>" + scope.format(y) + "</strong>" + " " + scope.workTypeToString();
+                  	    msg += new Date(x).toLocaleDateString() + "<br/><strong>" + scope.format(y) + "</strong>" + " " + scope.workTypeToString(y);
 
                   	    if (item.seriesIndex === 2){
                             msg += " Created";

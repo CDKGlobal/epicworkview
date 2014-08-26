@@ -80,10 +80,30 @@
 					<button type="button" class="close top-right" ng-click="showHeader=false">
 						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 					</button>
-					<div><span class="bold">{{projectCount()}}</span> projects</div>
-					<div><span class="bold">{{countStories(true)}}</span> stories completed</div>
-					<div><span class="bold">{{countStories(false)}}</span> stories in flight</div>
-					<div><span class="bold">{{contributors()}}</span> contributors</div>
+					<div><span class="bold">{{projectCount()}}</span>
+						<ng-pluralize count="projectCount()"
+									when="{'one': ' project',
+										   'other': ' projects'}">
+						</ng-pluralize>
+					</div>
+					<div><span class="bold">{{countStories(true)}}</span> 
+						<ng-pluralize count="countStories(true)"
+									when="{'one': ' story completed',
+										   'other': ' stories completed'}">
+						</ng-pluralize>
+					</div>
+					<div><span class="bold">{{countStories(false)}}</span>
+						<ng-pluralize count="countStories(false)"
+									when="{'one': ' story in flight',
+										   'other': ' stories in flight'}">
+						</ng-pluralize> 
+					</div>
+					<div><span class="bold">{{contributors()}}</span>
+						<ng-pluralize count="contributors()"
+									when="{'one': ' contributor',
+										   'other': ' contributors'}">
+						</ng-pluralize> 
+					</div>
 				</div>
 			</li>
 	      	<li class="project-row" ng-repeat="project in projects" id="{{project.id}}" ng-show="project.included" ng-controller="projectController">

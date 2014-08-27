@@ -42,11 +42,11 @@ angular.module('WorkView').animation('.project-row', ['$rootScope', '$timeout', 
 		jQuery(element).animate({
 			top:0
 		}, 2000, easing, function() {
-			animate3(element, up);
+			animate3(element);
 		});
 	}
 	
-	function animate3(element, up) {
+	function animate3(element) {
 		jQuery(element.firstElementChild).animate({
 			'background-color':'#FFF'
 		}, 1500);
@@ -71,7 +71,7 @@ angular.module('WorkView').animation('.project-row', ['$rootScope', '$timeout', 
 	
 	// animate all projects
 	// calculate positions based off original offsets and new offsets
-	$rootScope.$on('animateProjects', function(event) {
+	$rootScope.$on('animateProjects', function() {
 		var projectTimestamps = projectsFactory.getProjectTimestamps();
 		if (!jQuery.isEmptyObject(projectTimestamps)) {
 			var topHeight = 0;
@@ -146,7 +146,7 @@ angular.module('WorkView').animation('.project-row', ['$rootScope', '$timeout', 
 		
 		// ng-hide animation
 		beforeAddClass : function(element, className, done) {
-			if(className == 'ng-hide') {
+			if(className === 'ng-hide') {
 				var maxHeight = jQuery(element).outerHeight() + 'px';
 				jQuery(element).css({
 					overflow:'hidden',
@@ -163,8 +163,7 @@ angular.module('WorkView').animation('.project-row', ['$rootScope', '$timeout', 
 		
 		// ng-show animation
 		removeClass : function(element, className, done) {
-			if(className == 'ng-hide') {
-				var maxHeight = jQuery(element).outerHeight() + 'px';
+			if(className === 'ng-hide') {
 				element.css({
 					'max-height':0
 				});

@@ -101,6 +101,7 @@ angular.module('WorkView').controller('navBarController', ['$scope', '$filter', 
         $location.search('ids', idString);
     };
 
+    // clear all checkboxes on initial typing
     $scope.initialClear = function() {
         if($scope.firstChar) {
             $scope.firstChar = false;

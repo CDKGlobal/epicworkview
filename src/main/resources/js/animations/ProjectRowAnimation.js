@@ -8,7 +8,7 @@ angular.module('WorkView').animation('.project-row', ['$rootScope', '$timeout', 
 	
 	/*
 	 * Move animations for an individual row
-	 * Rows moving up slide turn green, slide to the right, move up, and slide back in. 
+	 * Rows moving up turn green, slide to the right, move up, and slide back in. 
 	 * Rows moving down turn red, slide left, move down, and slide back in. 
 	 * If simplify is true, then rows animate faster
 	 */

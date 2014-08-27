@@ -56,14 +56,17 @@ public class DataManager implements DisposableBean {
         logger.warn("*******************************************");
     }
 
+    /**
+     * Builds up the initial tree
+     */
     public void afterPropertiesSet() {
         if(tree == null) {
             logger.warn("*******************************************");
             logger.warn("Epic is currently initializing");
             logger.warn("*******************************************");
             eventPublisher.register(this);
+            
             //build the tree with what a user with full access would see
-
 
             //get an admin in jira
             User admin = null;
@@ -117,8 +120,10 @@ public class DataManager implements DisposableBean {
 
     /**
      * get all projects from jira that the given user can see in the last 7 days
+     * This method is necessary as a default if no seconds are provided
+     * 
      * @param user - user to prune the tree down
-     * @return
+     * @return list of projects
      */
     public List<IJiraData> getProjects(User user) {
         return getProjects(user, 7 * 24 * 60 * 60);//get project in the last 7 days
@@ -130,6 +135,7 @@ public class DataManager implements DisposableBean {
      * Projects contain epics which contain stories which contain subtasks
      *
      * @param user the current user
+     * @param seconds the number of seconds back to look for projects
      * @requires all issues have projects, all subtasks have stories
      * @return a list of projects, an empty list if there are none
      */
@@ -172,8 +178,9 @@ public class DataManager implements DisposableBean {
     }
 
     /**
-     * Event listener for when changes occur to the tree
-     * @param issueEvent
+     * Event listener for when changes occur. 
+     * Updates the tree accordingly
+     * @param issueEvent the issue that triggered the listener
      */
     @EventListener
     public void newIssueEvent(IssueEvent issueEvent) {
@@ -219,6 +226,10 @@ public class DataManager implements DisposableBean {
         }
     }
 
+    /**
+     * Return the tree
+     * @return the tree
+     */
     public NaryTree getTree() {
         return tree;
     }

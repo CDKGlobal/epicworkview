@@ -1,40 +1,47 @@
+/*
+ * Animations for project rows
+ */
 angular.module('WorkView').animation('.project-row', ['$rootScope', '$timeout', 'ProjectsFactory', function($rootScope, $timeout, projectsFactory) {
 	
 	// number of pixels for a row to be animating in order to simplify the animation
 	var simplifyHeight = 1600;
 	
 	/*
-	 * Move animations for an individual project
+	 * Move animations for an individual row
+	 * Rows moving up slide turn green, slide to the right, move up, and slide back in. 
+	 * Rows moving down turn red, slide left, move down, and slide back in. 
+	 * If simplify is true, then rows animate faster
 	 */
-	
-	function animate(element, top, up) {
+	function animate(element, top, up, simplify) {
 		var backgroundColor = up ? '#6C3' : '#C64343';
 		var leftOffset = up ? '4%' : '-4%';
 		var zIndex = up ? 11 : 10;
+		var time = simplify ? 500 : 1500;
 		jQuery(element).css({
 			top:top + 'px',
 			'z-index':zIndex
 		});
 		jQuery(element.firstElementChild).animate({
 			'background-color':backgroundColor
-		}, 1500);
+		}, time);
 		jQuery(element.firstElementChild.children[1]).animate({
 			opacity:0
-		}, 1500);
+		}, time);
 		jQuery(element.firstElementChild.children[0].children[2]).animate({
 			opacity:0
-		}, 1500);
+		}, time);
 		jQuery(element).animate({
 			left:leftOffset
-		}, 1500, function() {
-			animate2(element, up);
+		}, time, function() {
+			animate2(element, up, simplify);
 		});
 	}
 	
-	function animate2(element, up) {
+	function animate2(element, up, simplify) {
+		var easing = simplify ? 'easeOutQuint' : 'swing';
 		jQuery(element).animate({
 			top:0
-		}, 2000, function() {
+		}, 2000, easing, function() {
 			animate3(element, up);
 		});
 	}
@@ -101,7 +108,7 @@ angular.module('WorkView').animation('.project-row', ['$rootScope', '$timeout', 
 							offsetAbove += jQuery('#' + id).outerHeight(true);
 						}
 					}
-					animate(domElement, jQuery(domElement).offset().top - topHeight - offsetAbove, true);
+					animate(domElement, jQuery(domElement).offset().top - topHeight - offsetAbove, true, simplify);
 				} else {
 					// element not in offset list, so animate down
 					var elementOffset = jQuery(domElement).offset().top;
@@ -116,7 +123,7 @@ angular.module('WorkView').animation('.project-row', ['$rootScope', '$timeout', 
 					
 					// only animate down if something below is moving up and not simplifying animation
 					if (newOffset !== 0 && !simplify) {
-						animate(domElement, newOffset, false);
+						animate(domElement, newOffset, false, false);
 					}
 				}
 			}

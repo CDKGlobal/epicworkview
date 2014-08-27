@@ -73,7 +73,7 @@
 			<li class="project-row" ng-controller="headerController">
 				<div class="project-header-bar" ng-mouseover="showHeaderOpener=true" ng-mouseleave="showHeaderOpener=false">
 					<div class="project-header-opener" ng-show="!showHeader && showHeaderOpener" ng-click="showHeader=true">
-						<i class="fa fa-ellipsis-h"></i>
+						<i class="fa fa-caret-down"></i>
 					</div>
 				</div>
 				<div class="project-content project-header" ng-show="showHeader">

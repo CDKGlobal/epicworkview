@@ -149,7 +149,8 @@ angular.module('WorkView').controller('navBarController', ['$scope', '$filter', 
     $scope.init = function() {
         //initialize the filtered project ids to what is stored in the cookie
         $scope.uncheckedProjectIds = $cookieStore.get('projectIds');
-        if($scope.uncheckedProjectIds === undefined) {
+        // sometimes gets set to '' instead of undefined, not sure why
+        if($scope.uncheckedProjectIds === undefined || $scope.uncheckedProjectIds === '') {
             $scope.uncheckedProjectIds = [];
             $cookieStore.put('projectIds', $scope.uncheckedProjectIds);
         }

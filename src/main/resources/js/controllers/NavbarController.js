@@ -93,7 +93,10 @@ angular.module('WorkView').controller('navBarController', ['$scope', '$filter', 
         $cookieStore.remove('projectIds');
         $cookieStore.put('projectIds', $scope.uncheckedProjectIds);
 
-        var idString = $scope.uncheckedProjectIds.join();
+        var idString = '';
+        if ($scope.uncheckedProjectIds) {
+        	idString = $scope.uncheckedProjectIds.join();
+        }
         $location.search('ids', idString);
     };
 

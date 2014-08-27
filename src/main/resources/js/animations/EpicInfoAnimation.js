@@ -1,3 +1,6 @@
+/*
+ * Epic info dropdown animations
+ */
 angular.module('WorkView').animation('.epic-info', function() {
 	return {
 		enter : function(element, done) {

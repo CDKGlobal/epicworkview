@@ -14,6 +14,7 @@ angular.module('WorkView').controller('navBarController', ['$scope', '$filter', 
 
     /*----- Project Filtering -----*/
 
+    // return whether the given item should be included for this query
     $scope.search = function(item) {
         var query = $scope.query.toLowerCase();
         var group = item.group.toLowerCase();

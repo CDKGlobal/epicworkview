@@ -76,7 +76,7 @@ angular.module('WorkView').factory('ProjectsFactory', ['$rootScope', '$http', '$
                     savedElement.contributors = element.contributors;
                 }
                 // update the list held in the current element, if it has one
-                if (!$utilities.isNull(element.children)) {
+                if (!$utilities.isNull(element.children) && !$utilities.isNull(savedElement.children)) {
                     updateElementList(savedElement.children, element.children, elementType + 1);
                 }
             }

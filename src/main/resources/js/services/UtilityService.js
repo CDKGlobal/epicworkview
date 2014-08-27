@@ -1,6 +1,6 @@
 angular.module('epic-utilities', []).service('$utilities', function() {
     var isNull = function(variable) {
-        return variable === undefined || variable === null;
+        return (variable === undefined || variable === null);
     };
     this.isNull = isNull;
 

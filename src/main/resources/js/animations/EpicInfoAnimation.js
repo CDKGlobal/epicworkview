@@ -18,7 +18,7 @@ angular.module('WorkView').animation('.epic-info', function() {
 		
 		// ng-hide animation
 		beforeAddClass : function(element, className, done) {
-			if(className == 'ng-hide') {
+			if(className === 'ng-hide') {
 				var maxHeight = jQuery(element).outerHeight() + 'px';
 				jQuery(element).css({
 					overflow:'hidden',
@@ -35,7 +35,7 @@ angular.module('WorkView').animation('.epic-info', function() {
 		
 		// ng-show animation
 		removeClass : function(element, className, done) {
-			if(className == 'ng-hide') {
+			if(className === 'ng-hide') {
 				element.css({
 					height:'',
 					'max-height':0

@@ -59,6 +59,7 @@ function epicDetailsController ($scope, $http, $q, $location, $window) {
     epicQuery += '/' + $scope.key;
     storiesQuery += ' order by resolutiondate desc';
 
+    // Get the information to displayed in the page
     $q.all([
         $http.get(epicQuery),
         $http.get(storiesQuery),

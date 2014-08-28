@@ -1379,8 +1379,7 @@ describe('epicDetailsController', function(){
     	var date = null;
     	expect(scope.formatResolutionDate(date)).toEqual("unresolved");
     	date = "2014-08-11T12:04:31.000-0700";
-    	console.log(new Date(moment(date)).toLocaleString());
-    	expect(scope.formatResolutionDate(date)).toEqual("resolved: 8/11/2014 12:04:31 PM");
+    	expect(scope.formatResolutionDate(date)).toMatch("12:04:31 PM");
     });
     
     it('should format the work hours', function(){

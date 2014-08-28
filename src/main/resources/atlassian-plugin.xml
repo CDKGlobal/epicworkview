@@ -21,6 +21,10 @@
     <resource type="download" name="angular-animate.min.js" location="lib/js/angular-animate.min.js"/>
     <resource type="download" name="angular-cookies.min.js" location="lib/js/angular-cookies.min.js"/>
     <resource type="download" name="ui-bootstrap-tpls-0.11.0.min.js" location="lib/js/ui-bootstrap-tpls-0.11.0.min.js"/>
+    
+    <resource type="download" name="angular.min.js.map" location="lib/js/angular.min.js.map"/>
+    <resource type="download" name="angular-animate.min.js.map" location="lib/js/angular-animate.min.js.map"/>
+    <resource type="download" name="angular-cookies.min.js.map" location="lib/js/angular-cookies.min.js.map"/>
 
     <!-- module independent angular services -->
     <resource type="download" name="DateFactory.js" location="/js/factories/DateFactory.js"/>

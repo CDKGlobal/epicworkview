@@ -349,7 +349,7 @@ function epicDetailsController ($scope, $http, $q, $location, $window) {
     //nicely format the date string
     $scope.formatResolutionDate = function(date) {
         if(date !== undefined && date !== null) {
-            return 'resolved: ' + new Date(moment(date)).toLocaleString();
+            return 'resolved: ' + moment(date).format('MMMM Do YYYY, h:mm:ss a');
         }
         else {
             return 'unresolved';

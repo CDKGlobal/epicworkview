@@ -1271,7 +1271,7 @@ describe('epicDetailsController', function(){
         "self":"localhost:2990/rest/api/2/status/1",
         "description":"The issue is open and ready for the assignee to start work on it.",
         "iconUrl":"","name":"Open","id":"1"}, },"votes":{
-        "self":"localhost:2990/rest/api/2/issue/ADVADM-4/votes","votes":0,"hasVoted":false}}]});
+        "self":"localhost:2990/rest/api/2/issue/ADVADM-4/votes","votes":0,"hasVoted":false}}]}); 
         
         
         
@@ -1301,6 +1301,7 @@ describe('epicDetailsController', function(){
     
     // test it make 4 http GET requests
     it('should make 4 http GET requests for epic details', function () {
+    	
     	httpBackend.expectGET(scope.getBaseURL+"/rest/api/2/issue/ADVADM-316");
         httpBackend.expectGET(scope.getBaseURL+'/rest/api/2/search?jql="Epic Link"=ADVADM-316 order by resolutiondate desc'); 
         httpBackend.expectGET(scope.getBaseURL+'/rest/api/2/field'); 
@@ -1310,7 +1311,7 @@ describe('epicDetailsController', function(){
     });
 
 	// verify the eipc name
-    it('should get the eipic name', function(){
+    it('should get the epic name', function(){
     	httpBackend.flush();
     	expect(scope.epicName).toEqual("Market Class Intent");
     });
@@ -1357,6 +1358,12 @@ describe('epicDetailsController', function(){
     	expect(scope.numofStories).toEqual(0);
     });
     
+    it('should return 0 if the worktype is invalid', function(){
+    	scope.workType = 4;
+    	var value = scope.getValue(5, scope.workType);
+    	expect(value).toEqual(0);
+    });
+    
     it('should get the correspondent worktype string according to the selection of worktype', function(){
     	scope.workType = 0;
     	expect(scope.workTypeToString()).toEqual("Unknown");
@@ -1368,6 +1375,13 @@ describe('epicDetailsController', function(){
     	expect(scope.workTypeToString()).toEqual("Work Hours");
     });
     
+    it('should format the date', function(){
+    	var date = null;
+    	expect(scope.formatResolutionDate(date)).toEqual("unresolved");
+    	date = "2014-08-11T12:04:31.000-0700";
+    	console.log(new Date(moment(date)).toLocaleString());
+    	expect(scope.formatResolutionDate(date)).toEqual("resolved: 8/11/2014 12:04:31 PM");
+    });
     
     it('should format the work hours', function(){
     	scope.workType = 3;
@@ -1376,9 +1390,16 @@ describe('epicDetailsController', function(){
     	expect(scope.format(3)).toBe(3);
     });
     
+    it('should round the number', function(){
+    	var number = 52.4532;
+    	expect(scope.round(number)).toEqual(52.45);
+    });
+    
+    
 });             
       
 
     
- 
+          
+       
    

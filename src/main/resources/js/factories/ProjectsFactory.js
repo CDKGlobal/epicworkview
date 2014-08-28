@@ -1,4 +1,4 @@
-angular.module('WorkView').factory('ProjectsFactory', ['$rootScope', '$http', '$interval', '$date', '$utilities', 'Context', function($rootScope, $http, $interval, $date, $utilities, context) {
+angular.module('WorkView').factory('ProjectsFactory', ['$rootScope', '$http', '$interval', '$date', '$utilities', 'Context', 'ProjectRowAnimation', function($rootScope, $http, $interval, $date, $utilities, context, projectRowAnimation) {
     var elementEnum = {
     	PROJECT: 0,
     	EPIC: 1,
@@ -24,7 +24,10 @@ angular.module('WorkView').factory('ProjectsFactory', ['$rootScope', '$http', '$
             
             //add the new projects to the projects array
             updateElementList(projects, data, elementEnum.PROJECT);
-            $rootScope.$broadcast('animateProjects');
+            
+            // animate
+            projectRowAnimation().animateAllProjects(projectTimestamps);
+            
             loading = false;
         });
     }
@@ -137,9 +140,6 @@ angular.module('WorkView').factory('ProjectsFactory', ['$rootScope', '$http', '$
         },
         getFilterDays: function() {
             return filterDays;
-        },
-        getProjectTimestamps: function() {
-        	return projectTimestamps;
         },
         setFilterDays: function(days) {
             loading = true;

@@ -1,7 +1,7 @@
 /*
  * Animations for project rows
  */
-angular.module('WorkView').animation('.project-row', ['$rootScope', '$timeout', 'ProjectsFactory', function($rootScope, $timeout, projectsFactory) {
+var projectRowAnimation = function($rootScope, $timeout, projectsFactory) {
 	
 	// number of pixels for a row to be animating in order to simplify the animation
 	var simplifyHeight = 1600;
@@ -69,67 +69,6 @@ angular.module('WorkView').animation('.project-row', ['$rootScope', '$timeout', 
 		});
 	}
 	
-	// animate all projects
-	// calculate positions based off original offsets and new offsets
-	$rootScope.$on('animateProjects', function() {
-		var projectTimestamps = projectsFactory.getProjectTimestamps();
-		if (!jQuery.isEmptyObject(projectTimestamps)) {
-			var topHeight = 0;
-			var projectOffsets = {};
-			var simplify = false;
-			
-			// get list of project offsets
-			for (var project in projectTimestamps) {
-				var offset = jQuery('#' + project).offset().top;
-				if (offset > simplifyHeight) {
-					simplify = true;
-				}
-				projectOffsets[project] = offset;
-			}
-			
-			// loop through all projects in dom
-			var projectElements = jQuery('#projects').children();
-			for (var i = 1; i < projectElements.length; i++) {
-				var domElement = projectElements[i];
-				
-				// set height of top of page if this is first element
-				if (i === 1) {
-					topHeight = jQuery(domElement).offset().top;
-				}
-				
-				// if this is an updated project, animate up
-				if (domElement.id in projectTimestamps) {
-					var updatedTime = projectTimestamps[domElement.id];
-					offsetAbove = 0;
-					
-					// find total height above this that is also animating up
-					for (var id in projectTimestamps) {
-						if (projectTimestamps[id] > updatedTime) {
-							offsetAbove += jQuery('#' + id).outerHeight(true);
-						}
-					}
-					animate(domElement, jQuery(domElement).offset().top - topHeight - offsetAbove, true, simplify);
-				} else {
-					// element not in offset list, so animate down
-					var elementOffset = jQuery(domElement).offset().top;
-					var newOffset = 0;
-					
-					// find total height below this that is moving up
-					for (var offsetId in projectOffsets) {
-						if (projectOffsets[offsetId] > elementOffset) {
-							newOffset -= jQuery('#' + offsetId).outerHeight(true);
-						}
-					}
-					
-					// only animate down if something below is moving up and not simplifying animation
-					if (newOffset !== 0 && !simplify) {
-						animate(domElement, newOffset, false, false);
-					}
-				}
-			}
-		}
-	});
-	
 	return {
 		enter : function(element, done) {
 			done();
@@ -164,7 +103,7 @@ angular.module('WorkView').animation('.project-row', ['$rootScope', '$timeout', 
 		// ng-show animation
 		removeClass : function(element, className, done) {
 			if(className === 'ng-hide') {
-				element.css({
+				jQuery(element).css({
 					'max-height':0
 				});
 				jQuery(element).animate({
@@ -185,6 +124,73 @@ angular.module('WorkView').animation('.project-row', ['$rootScope', '$timeout', 
             		jQuery(element).stop();
             	}
             };
+		},
+		
+		// animate all projects, given a list of updated project ids and their timestamps
+		// calculate positions based off original offsets and new offsets
+		animateAllProjects : function(projectTimestamps) {
+			if (!jQuery.isEmptyObject(projectTimestamps)) {
+				var topHeight = 0;
+				var projectOffsets = {};
+				var simplify = false;
+				
+				// get list of project offsets
+				for (var project in projectTimestamps) {
+					// stop animation if any of the updated projects don't have a dom element (in tests)
+					if (jQuery('#' + project).offset() === null) {
+						return;
+					}
+					var offset = jQuery('#' + project).offset().top;
+					if (offset > simplifyHeight) {
+						simplify = true;
+					}
+					projectOffsets[project] = offset;
+				}
+				
+				// loop through all projects in dom
+				var projectElements = jQuery('#projects').children();
+				for (var i = 1; i < projectElements.length; i++) {
+					var domElement = projectElements[i];
+					
+					// set height of top of page if this is first element
+					if (i === 1) {
+						topHeight = jQuery(domElement).offset().top;
+					}
+					
+					// if this is an updated project, animate up
+					if (domElement.id in projectTimestamps) {
+						var updatedTime = projectTimestamps[domElement.id];
+						offsetAbove = 0;
+						
+						// find total height above this that is also animating up
+						for (var id in projectTimestamps) {
+							if (projectTimestamps[id] > updatedTime) {
+								offsetAbove += jQuery('#' + id).outerHeight(true);
+							}
+						}
+						animate(domElement, jQuery(domElement).offset().top - topHeight - offsetAbove, true, simplify);
+					} else {
+						// element not in offset list, so animate down
+						var elementOffset = jQuery(domElement).offset().top;
+						var newOffset = 0;
+						
+						// find total height below this that is moving up
+						for (var offsetId in projectOffsets) {
+							if (projectOffsets[offsetId] > elementOffset) {
+								newOffset -= jQuery('#' + offsetId).outerHeight(true);
+							}
+						}
+						
+						// only animate down if something below is moving up and not simplifying animation
+						if (newOffset !== 0 && !simplify) {
+							animate(domElement, newOffset, false, false);
+						}
+					}
+				}
+			}
 		}
 	};
-}]);
+};
+
+angular.module('WorkView').animation('.project-row', ['$rootScope', '$timeout', 'ProjectsFactory', projectRowAnimation]);
+angular.module('WorkView').value('ProjectRowAnimation', projectRowAnimation);

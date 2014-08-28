@@ -1,7 +1,7 @@
 /*
  * Epic info dropdown animations
  */
-angular.module('WorkView').animation('.epic-info', function() {
+var epicInfoAnimation = function() {
 	return {
 		enter : function(element, done) {
 			done();
@@ -36,7 +36,7 @@ angular.module('WorkView').animation('.epic-info', function() {
 		// ng-show animation
 		removeClass : function(element, className, done) {
 			if(className === 'ng-hide') {
-				element.css({
+				jQuery(element).css({
 					height:'',
 					'max-height':0
 				});
@@ -60,4 +60,7 @@ angular.module('WorkView').animation('.epic-info', function() {
             };
 		}
 	};
-});
+};
+
+angular.module('WorkView').animation('.epic-info', epicInfoAnimation);
+angular.module('WorkView').value('EpicInfoAnimation', epicInfoAnimation);

@@ -98,13 +98,25 @@ var projectRowAnimation = function($rootScope, $timeout, projectsFactory) {
 			else {
 				done();
 			}
+			
+			// onDone callback
+			return function(isCancelled) {
+				// reset overflow
+            	jQuery(element).css({
+					overflow:''
+				});
+            	if (isCancelled) {
+            		jQuery(element).stop();
+            	}
+            };
 		},
 		
 		// ng-show animation
 		removeClass : function(element, className, done) {
 			if(className === 'ng-hide') {
 				jQuery(element).css({
-					'max-height':0
+					'max-height':0,
+					overflow:'hidden'
 				});
 				jQuery(element).animate({
 					'max-height':'400px'
@@ -116,9 +128,10 @@ var projectRowAnimation = function($rootScope, $timeout, projectsFactory) {
 			
 			// onDone callback
 			return function(isCancelled) {
-				// reset max height
+				// reset max height and overflow
             	jQuery(element).css({
-					'max-height':'none'
+					'max-height':'',
+					overflow:''
 				});
             	if (isCancelled) {
             		jQuery(element).stop();

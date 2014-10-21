@@ -10,7 +10,7 @@ Epic Work View for JIRA is compatible with JIRA 6.1 and up and with JIRA Agile 6
 The Epic Work View for JIRA  application can be easily installed via UPM. Licenses can be freely obtained at the Atlassian Marketplace.
  
 For more detailed installation instructions: 
-https://github.com/cobaltdev/epicworkview/wiki/Installation-&-License
+https://github.com/cdkglobal/epicworkview/wiki/Installation-&-License
 
 For development instructions: 
-https://github.com/cobaltdev/epicworkview/wiki/Development-Instructions
+https://github.com/cdkglobal/epicworkview/wiki/Development-Instructions
